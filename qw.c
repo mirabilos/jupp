@@ -11,7 +11,6 @@
 #include "utils.h"
 #include "vs.h"
 #include "charmap.h"
-#include "scrn.h"
 #include "utf8.h"
 #include "w.h"
 

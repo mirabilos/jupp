@@ -41,7 +41,7 @@ static void menudisp(MENU *m)
 	for (y = 0; y != m->h; ++y) {
 		col = 0;
 		for (x = 0; x != m->perline && y*m->perline+x+m->top<m->nitems; ++x) {
-			int atr;
+			int atr, z, lcol;
 	
 			if (x + y*m->perline + m->top == m->cursor)
 				atr = INVERSE;

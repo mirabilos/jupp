@@ -238,7 +238,7 @@ BW *find_a_good_bw(B *b)
 int parserrb(B *b)
 {
 	BW *bw;
-	long n;
+	int n;
 	errbuf = b;
 	freeall();
 	n = parserr(b);
@@ -253,7 +253,7 @@ int parserrb(B *b)
 
 int uparserr(BW *bw)
 {
-	long n;
+	int n;
 	errbuf = bw->b;
 	freeall();
 	n = parserr(bw->b);

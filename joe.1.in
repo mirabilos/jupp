@@ -1,4 +1,3 @@
-.\" $MirBSD: joe.1.in,v 1.2 2004/11/10 21:18:51 tg Exp $
 .TH JOE 1
 .SH Name
 joe \- Joe's Own Editor
@@ -12,8 +11,6 @@ joe \- Joe's Own Editor
 .B rjoe [global-options] [ [local-options] filename ]...
 
 .B jpico [global-options] [ [local-options] filename ]...
-
-.B jupp [global-options] [ [local-options] filename ]...
 .SH Description
 JOE is a powerful ASCII-text screen editor.  It has a "mode-less" user
 interface which is similar to many user-friendly PC editors.  Users of
@@ -28,18 +25,16 @@ improvements.  JMACS is a GNU-EMACS imitation.  RJOE is a restricted
 version of JOE, which allows you to edit only the files specified on the
 command line.
 
-Although JOE is actually six different editors, it still requires only one
-executable, but one with six different names.  The name of the editor with
+Although JOE is actually five different editors, it still requires only one
+executable, but one with five different names.  The name of the editor with
 an "rc" appended gives the name of JOE's initialization file, which
 determines the personality of the editor.
 
 JOE is free software;  you can distribute it and/or modify it under the
-terms of the GNU General Public License, Version 1, as published by the
-Free Software Foundation.
-I have no plans for turning JOE into a commercial or share-ware product.
-JOE is available over the Internet from
+terms of the GNU General Public License as published by the Free Software
+Foundation.  I have no plans for turning JOE into a commercial or share-ware
+product.  JOE is available over the Internet from
 \fBwww.sourceforge.net/projects/joe-editor\fR.
-JUPP is available at \fBhttp://wiki.mirbsd.de/JuppEditor\fR.
 
 .SH Usage 
 

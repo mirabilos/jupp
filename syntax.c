@@ -9,7 +9,6 @@
 #include "config.h"
 #include <stdlib.h>
 #include <string.h>
-#include "b.h"
 #include "types.h"
 #include "scrn.h"
 #include "utils.h"
@@ -164,7 +163,7 @@ struct high_syntax *load_dfa(unsigned char *name)
 	int clist[256];
 	unsigned char *p;
 	int c;
-	FILE *f = NULL;
+	FILE *f;
 	struct high_state *state=0;	/* Current state */
 	struct high_syntax *syntax;	/* New syntax table */
 	int line = 0;

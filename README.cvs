@@ -1,10 +1,3 @@
-$MirBSD: README.cvs,v 1.2 2004/11/10 21:55:44 tg Exp $
-
-WARNING: Jupp uses automake 1.4, *DON'T* use a newer version. This version
-has got fixes, and the Makefile.am workaround for its bugs. *ONLY* use the
-automake version which comes with the MirPorts Framework.
-_____________________________________________________________________________
-
 You can downlaod sources of the JOE editor by various ways. One of them is
 CVS. You have to have cvs package installed to properly access the CVS
 server. CVS package can be downloaded from http://www.cvshome.org/.

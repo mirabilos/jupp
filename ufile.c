@@ -584,6 +584,10 @@ int doedit1(BW *bw,int c,unsigned char *s,int *notify)
 
 int doedit(BW *bw, unsigned char *s, void *obj, int *notify)
 {
+	int ret = 0;
+	int er;
+	void *object;
+	W *w;
 	B *b;
 
 	b = bcheck_loaded(s);
@@ -621,6 +625,12 @@ int uedit(BW *bw)
 
 int doswitch(BW *bw, unsigned char *s, void *obj, int *notify)
 {
+	int ret = 0;
+	int er;
+	void *object;
+	W *w;
+	B *b;
+
 	/* Try buffer, then file */
 	return doedit1(bw, 'n', s, notify);
 }

@@ -2,7 +2,6 @@
  *	UTF-8 Utilities
  *	Copyright
  *		(C) 2004 Joseph H. Allen
- *		(c) 2004 Thorsten Glaser
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
@@ -15,11 +14,6 @@
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
-
-#ifdef __OpenBSD__
-/* OpenBSD, MirOS and ekkoBSD do not have locale support */
-#undef HAVE_SETLOCALE
 #endif
 
 #if defined(HAVE_LOCALE_H) && defined(HAVE_SETLOCALE)
@@ -162,7 +156,7 @@ int utf8_decode_string(unsigned char *s)
 {
 	struct utf8_sm sm;
 	int x;
-	int c = 0;
+	int c;
 	utf8_init(&sm);
 	for(x=0;s[x];++x)
 		c = utf8_decode(&sm,s[x]);
@@ -197,7 +191,7 @@ int utf8_decode_fwrd(unsigned char **p,int *plen)
 
 unsigned char *codeset;	/* Codeset of terminal */
 
-unsigned char *non_utf8_codeset = US "ascii";
+unsigned char *non_utf8_codeset;
 			/* Codeset of local language non-UTF-8 */
 
 struct charmap *locale_map;
@@ -205,9 +199,10 @@ struct charmap *locale_map;
 
 void joe_locale()
 {
+#ifdef HAVE_SETLOCALE
 	unsigned char *s, *t;
 
-	/* int x; */
+	int x;
 
 	s=(unsigned char *)getenv("LC_ALL");
 	if (!s) {
@@ -217,7 +212,6 @@ void joe_locale()
 		}
 	}
 
-#ifdef HAVE_SETLOCALE
 	if (s)
 		s=(unsigned char *)strdup((char *)s);
 	else
@@ -233,35 +227,9 @@ void joe_locale()
 	codeset = (unsigned char *)strdup(nl_langinfo(CODESET));
 
 	locale_map = find_charmap(codeset);
-#else
-	if (s == NULL) {
-		locale_map = NULL;
-	} else {
-		if ((t = strrchr(s, '.')) != NULL)
-			locale_map = find_charmap(++t);
-		if (locale_map == NULL)
-			locale_map = find_charmap(s);
-	}
-#endif
 	if (!locale_map)
 		locale_map = find_charmap(US "ascii");
 
-	/* For files, the default map should be:
-	 * > the result of nl_langinfo
-	 *   -> on systems which have it only
-	 * > ascii
-	 *   -> for technical reasons
-	 * > iso-8859-1
-	 *   -> to unify. Well, cp437. Well, windows-1252. You see?
-	 * > utf-8
-	 *   -> because that is what the user expects.
-	 *
-	 * We are going with the dumb way and are setting the
-	 * default file encoding to utf-8 as well if we are run
-	 * in an uxterm on a non-locale-aware operating system
-	 * such as MirOS; users should be careful as to avoid
-	 * sending utf-8 in accident instead of iso-8859-1.
-	 */
 	fdefault.charmap = locale_map;
 	pdefault.charmap = locale_map;
 
@@ -277,6 +245,12 @@ void joe_locale()
 #ifdef junk
 	to_utf = iconv_open("UTF-8", (char *)non_utf8_codeset);
 	from_utf = iconv_open((char *)non_utf8_codeset, "UTF-8");
+#endif
+
+#else
+	locale_map = find_charmap("ascii");
+	fdefault.charmap = locale_map;
+	pdefault.charmap = locale_map;
 #endif
 }
 

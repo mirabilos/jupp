@@ -272,7 +272,7 @@ int parse_char(unsigned char **pp, unsigned char c)
 int parse_int(unsigned char **pp, int *buf)
 {
 	unsigned char *p = *pp;
-	if ((*p>='0' && *p<='9') || *p=='-') {
+	if (*p>='0' && *p<='9' || *p=='-') {
 		*buf = atoi((char *)p);
 		if(*p=='-')
 			++p;

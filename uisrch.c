@@ -235,6 +235,7 @@ static int itype(BW *bw, int c, struct isrch *isrch, int *notify)
 		/* Translate utf-8 to bytes */
 		unsigned char *p = isrch->pattern;
 		int len = sLEN(isrch->pattern);
+		int c;
 		while (len) {
 			int c = utf8_decode_fwrd(&p, &len);
 			if (c>=0) {

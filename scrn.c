@@ -12,7 +12,6 @@
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
-#include <string.h>
 
 #include "bw.h"
 #include "blocks.h"
@@ -224,7 +223,7 @@ void outatr(struct charmap *map,SCRN *t,int *scrn,int *attrf,int xx,int yy,int c
 			if(t->attrib != a)
 				set_attr(t, a);
 			if (uni_ctrl) {
-				joe_snprintf_1((char *)buf,16,"<%X>",c);
+				sprintf((char *)buf,"<%X>",c);
 				ttputs(buf);
 			} else {
 				utf8_encode(buf,c);
@@ -239,7 +238,7 @@ void outatr(struct charmap *map,SCRN *t,int *scrn,int *attrf,int xx,int yy,int c
 		} else {
 			/* UTF-8 char to non-UTF-8 terminal */
 			/* Don't convert control chars below 256 */
-			if ((c>=32 && c<=126) || c>=160) {
+			if (c>=32 && c<=126 || c>=160) {
 				if (unictrl(c))
 					a ^= UNDERLINE;
 				c = from_uni(locale_map,c);
@@ -675,11 +674,8 @@ SCRN *nopen(CAP *cap)
 	leave = 1;
 	ttclose();
 	signrm();
-#ifdef	DEBUG
-	/* these are strings, but I do not know if %s is appropriate -mirabile */
         fprintf(stderr,"cm=%d ch=%d cv=%d ho=%d lf=%d DO=%d ll=%d up=%d UP=%d cr=%d\n",
                        t->cm, t->ch, t->cv, t->ho, t->lf, t->DO, t->ll, t->up, t->UP, t->cr);
-#endif
 	fprintf(stderr,"Sorry, your terminal can't do absolute cursor positioning.\nIt's broken\n");
 	return NULL;
       ok:
@@ -1351,7 +1347,7 @@ void magic(SCRN *t, int y, int *cs, int *ca,int *s, int *a, int placex)
 			ofst[x++] = t->co - 1;
 		else {
 			int aryy;
-			int maxaryy = 0;
+			int maxaryy;
 			int maxlen = 0;
 			int best = 0;
 			int bestback = 0;
@@ -1827,7 +1823,7 @@ void genfield(SCRN *t,int *scrn,int *attr,int x,int y,int ofst,unsigned char *s,
 			/* Byte mode: character is one column wide */
 			wid = 1 ;
 		}
-		if (wid>=0) {
+		if (wid>=0)
 			if (col >= ofst) {
 				if (x + wid > last_col) {
 					/* Character crosses end of field, so fill balance of field with '>' characters instead */
@@ -1858,7 +1854,6 @@ void genfield(SCRN *t,int *scrn,int *attr,int x,int y,int ofst,unsigned char *s,
 				}
 			} else
 				col += wid;
-		}
 	}
 	/* Fill balance of field with spaces */
 	while (x < last_col) {
@@ -1954,7 +1949,7 @@ void genfmt(SCRN *t, int x, int y, int ofst, unsigned char *s, int flg)
 				wid = 1 ;
 			}
 
-			if (wid>=0) {
+			if (wid>=0)
 				if (col >= ofst) {
 					outatr(locale_map, t, scrn, attr, x, y, c, atr);
 					scrn += wid;
@@ -1976,7 +1971,6 @@ void genfmt(SCRN *t, int x, int y, int ofst, unsigned char *s, int flg)
 					}
 				} else
 					col += wid;
-			}
 		}
 	if (flg)
 		eraeol(t, x, y);
@@ -1992,7 +1986,7 @@ int fmtlen(unsigned char *s)
 
 	utf8_init(&sm);
 
-	while ((c = (*s++))) {
+	while (c= *s++) {
 		if (c == '\\') {
 			switch (*s++) {
 			case 'u':

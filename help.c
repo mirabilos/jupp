@@ -81,7 +81,7 @@ int help_init(unsigned char *filename)
 					}
 					hlpbsz += bfl + 1024;
 				}
-				strlcpy((char *)(tmp->text + hlpsiz), (char *)buf, 1024);
+				strcpy((char *)(tmp->text + hlpsiz), (char *)buf);
 				hlpsiz += bfl;
 				++tmp->lines;
 			}

@@ -83,7 +83,4 @@ struct charmap *find_charmap PARAMS((unsigned char *name));
 /* Get available encodings */
 unsigned char **get_encodings PARAMS((void));
 
-int to_uni PARAMS((struct charmap *cset, int c));
-int from_uni PARAMS((struct charmap *cset, int c));
-
 #endif
