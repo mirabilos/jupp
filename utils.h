@@ -1,6 +1,6 @@
 /*
  *	Various utilities
- *	
+ *
  *	Copyright
  *		(C) 1992 Joseph H. Allen
  *		(C) 2001 Marek 'Marx' Grac
@@ -20,7 +20,7 @@
 #endif
 
 /*
- * Functions which return minimum/maximum of two numbers  
+ * Functions which return minimum/maximum of two numbers
  */
 unsigned int uns_min PARAMS((unsigned int a, unsigned int b));
 signed int int_min PARAMS((signed int a, int signed b));

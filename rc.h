@@ -1,7 +1,7 @@
 /*
  *	*rc file parser
  *	Copyright
- *		(C) 1992 Joseph H. Allen; 
+ *		(C) 1992 Joseph H. Allen;
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
@@ -31,5 +31,7 @@ int procrc PARAMS((CAP *cap, unsigned char *name));
 int glopt PARAMS((unsigned char *s, unsigned char *arg, OPTIONS *options, int set));
 
 int umode PARAMS((BW *bw));
+
+void lazy_opts PARAMS((OPTIONS *o));
 
 #endif

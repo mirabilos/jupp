@@ -4,10 +4,10 @@
  *		(C) 1992 Joseph H. Allen
  *
  *	This file is part of JOE (Joe's Own Editor)
- */ 
+ */
 #ifndef _JOE_TERMCAP_H
 #define _JOE_TERMCAP_H 1
- 
+
 #include "config.h"
 #include "types.h"
 
@@ -91,9 +91,9 @@ void rmcap PARAMS((CAP *cap));
 
    'cap' is the CAP returned by getcap which contains the baud rate and output
    function.
-   
+
    'str' is the string to execute.  If 'str'==NULL, nothing happens.
-   
+
    'l' is the number of lines effected by this string.  For example, if you
    use the clear to end of screen capability, the number of lines between
    the current cursor position and the end of the screen should be
@@ -109,9 +109,9 @@ void texec PARAMS((CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, in
 
    'cap' is the CAP returned by getcap which contains the baud rate and output
    functions.
-   
+
    'str' is the string to execute.  If 'str'==NULL, tcost return 10000.
-   
+
    'l' is the number of lines effected by this string.  Ex: if you
    use the clear to end of screen capability, the number of lines between
    the current cursor position and the end of the screen should be
@@ -129,15 +129,11 @@ int tcost PARAMS((CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int
 */
 unsigned char *tcompile PARAMS((CAP *cap, unsigned char *s, int a0, int a1, int a2, int a3));
 
-/* Old termcap support */
-#ifdef junk
-int tgetent();
-unsigned char *tgetstr();
-int tgetflag();
-int tgetnum();
-unsigned char *tgoto();
-void tputs();
-extern short ospeed;
-extern unsigned char PC, *UP, *BC;
-#endif
+int tgetent PARAMS((char *, const char *));
+int tgetflag PARAMS((char *));
+int tgetnum PARAMS((char *));
+int tputs PARAMS((const char *, int, int (*)(int)));
+char *tgetstr PARAMS((char *, char **));
+char *tgoto PARAMS((const char *, int, int));
+
 #endif

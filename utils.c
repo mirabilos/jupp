@@ -63,9 +63,9 @@ signed long int long_min(signed long int a, signed long int b)
 }
 
 #if 0
-/* 
- * Characters which are considered as word characters 
- * 	_ is considered as word character because is often used 
+/*
+ * Characters which are considered as word characters
+ * 	_ is considered as word character because is often used
  *	in the names of C/C++ functions
  */
 int isalnum_(int wide,struct charmap *map,int c)
@@ -272,7 +272,7 @@ int parse_char(unsigned char **pp, unsigned char c)
 int parse_int(unsigned char **pp, int *buf)
 {
 	unsigned char *p = *pp;
-	if (*p>='0' && *p<='9' || *p=='-') {
+	if ((*p>='0' && *p<='9') || *p=='-') {
 		*buf = atoi((char *)p);
 		if(*p=='-')
 			++p;

@@ -6,7 +6,7 @@
  *	This file is part of JOE (Joe's Own Editor)
  */
 #ifndef _JOE_QUEUE
-#define _JOE_QUEUE 1 
+#define _JOE_QUEUE 1
 
 #include "config.h"
 

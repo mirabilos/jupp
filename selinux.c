@@ -136,7 +136,7 @@ output_security_context(char *from_file)
 		 */
 		if (errno == EOPNOTSUPP)
 			return 0;
-		
+
 		error(0, errno, "Could not get security context for %s",
 		      from_file);
 		return 1;

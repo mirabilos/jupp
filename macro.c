@@ -378,7 +378,7 @@ int exmacro(MACRO *m, int u)
 	int larg;
 	int negarg = 0;
 	int flg = 0;
-	CMD *cmd;
+	CMD *cmd = NULL;
 	int ret = 0;
 
 	if (argset) {

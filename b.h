@@ -93,7 +93,7 @@ P *prfind PARAMS((P *p, unsigned char *s, int len));
 P *prifind PARAMS((P *p, unsigned char *s, int len));
 
 /* copy text between 'from' and 'to' into new buffer */
-B *bcpy PARAMS((P *from, P *to));	
+B *bcpy PARAMS((P *from, P *to));
 
 void pcoalesce PARAMS((P *p));
 
@@ -102,7 +102,7 @@ void bdel PARAMS((P *from, P *to));
 /* insert buffer 'b' into another at 'p' */
 P *binsb PARAMS((P *p, B *b));
 /* insert a block 'blk' of size 'amnt' into buffer at 'p' */
-P *binsm PARAMS((P *p, unsigned char *blk, int amnt)); 
+P *binsm PARAMS((P *p, unsigned char *blk, int amnt));
 
 /* insert character 'c' into buffer at 'p' */
 P *binsc PARAMS((P *p, int c));

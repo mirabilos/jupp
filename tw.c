@@ -1,4 +1,4 @@
-/* 
+/*
  *	Text editing windows
  *	Copyright
  *		(C) 1992 Joseph H. Allen
@@ -72,7 +72,7 @@ static void resizetw(BW *bw, int wi, int he)
  *
  * There are actually two possibilities:
  *
- * We want the first line- 
+ * We want the first line-
  *
  * int
  * foo(int x,int y) {
@@ -98,19 +98,21 @@ unsigned char *get_context(BW *bw)
 	do {
 		p_goto_bol(p);
 		if (!pisindent(p) && !pisblank(p)) {
+			/* Uncomment to get the last line instead of the first line (see above)
 			next:
+			*/
 			brzs(p,stdbuf,stdsiz-1);
 			/* Ignore comment and block structuring lines */
 			if (!(stdbuf[0]=='{' ||
-			    stdbuf[0]=='/' && stdbuf[1]=='*' ||
-			    stdbuf[0]=='\f' ||
-			    stdbuf[0]=='/' && stdbuf[1]=='/' ||
-			    stdbuf[0]=='#' ||
-			    stdbuf[0]=='b' && stdbuf[1]=='e' && stdbuf[2]=='g' && stdbuf[3]=='i' && stdbuf[4]=='n' ||
-			    stdbuf[0]=='B' && stdbuf[1]=='E' && stdbuf[2]=='G' && stdbuf[3]=='I' && stdbuf[4]=='N' ||
-			    stdbuf[0]=='-' && stdbuf[1]=='-' ||
+			    (stdbuf[0]=='/' && stdbuf[1]=='*') ||
+			    (stdbuf[0]=='\f') ||
+			    (stdbuf[0]=='/' && stdbuf[1]=='/') ||
+			    (stdbuf[0]=='#') ||
+			    (stdbuf[0]=='b' && stdbuf[1]=='e' && stdbuf[2]=='g' && stdbuf[3]=='i' && stdbuf[4]=='n') ||
+			    (stdbuf[0]=='B' && stdbuf[1]=='E' && stdbuf[2]=='G' && stdbuf[3]=='I' && stdbuf[4]=='N') ||
+			    (stdbuf[0]=='-' && stdbuf[1]=='-') ||
 			    stdbuf[0]==';')) {
-			    	strcpy(buf1,stdbuf);
+			    	strlcpy(buf1,stdbuf,stdsiz);
 				/* Uncomment to get the last line instead of the first line (see above)
 			    	if (pprevl(p)) {
 			    		p_goto_bol(p);
@@ -120,7 +122,7 @@ unsigned char *get_context(BW *bw)
 			    	*/
 			    	break;
 			}
-			
+
 		}
 	} while (!buf1[0] && pprevl(p));
 

@@ -241,7 +241,7 @@ static int backup(BW *bw)
 
 		/* Create backup file name */
 		unsigned char *simple_backup_suffix = (unsigned char *)getenv("SIMPLE_BACKUP_SUFFIX");
-		
+
 		if (simple_backup_suffix == NULL) {
 			simple_backup_suffix = US "~";
 		}
@@ -250,7 +250,7 @@ static int backup(BW *bw)
 		} else {
 			joe_snprintf_2((char *)name, sizeof(name), "%s%s", bw->b->name, simple_backup_suffix);
 		}
-		
+
 		/* Attempt to delete backup file first */
 		unlink((char *)name);
 
@@ -467,7 +467,7 @@ static int dosave1(BW *bw, unsigned char *s, struct savereq *req, int *notify)
 int usave(BW *bw)
 {
 	BW *pbw;
-	
+
 	pbw = wmkpw(bw->parent, US "Name of file to save (^C to abort): ", &filehist, dosave1, US "Names", NULL, cmplt, mksavereq(NULL,NULL,NULL,0), NULL, locale_map);
 
 	if (pbw && bw->b->name) {
@@ -584,10 +584,6 @@ int doedit1(BW *bw,int c,unsigned char *s,int *notify)
 
 int doedit(BW *bw, unsigned char *s, void *obj, int *notify)
 {
-	int ret = 0;
-	int er;
-	void *object;
-	W *w;
 	B *b;
 
 	b = bcheck_loaded(s);
@@ -625,12 +621,6 @@ int uedit(BW *bw)
 
 int doswitch(BW *bw, unsigned char *s, void *obj, int *notify)
 {
-	int ret = 0;
-	int er;
-	void *object;
-	W *w;
-	B *b;
-
 	/* Try buffer, then file */
 	return doedit1(bw, 'n', s, notify);
 }
