@@ -1,4 +1,4 @@
-# $MirBSD: Makefile.am,v 1.4 2004/11/10 21:14:07 tg Exp $
+# $MirBSD: Makefile.am,v 1.5 2004/11/10 21:21:21 tg Exp $
 
 AUTOMAKE_OPTIONS = foreign
 
@@ -55,5 +55,6 @@ uninstall-local:
 
 distclean-local:
 	rm -f *~
+	rm -f stamp-h.in charmaps/klingon syntax/asm.jsf syntax/c.jsf syntax/conf.jsf syntax/csh.jsf syntax/diff.jsf syntax/fortran.jsf syntax/html.jsf syntax/java.jsf syntax/lisp.jsf syntax/mail.jsf syntax/mason.jsf syntax/pascal.jsf syntax/perl.jsf syntax/php.jsf syntax/python.jsf syntax/sh.jsf syntax/tcl.jsf syntax/verilog.jsf syntax/vhdl.jsf syntax/xml.jsf
 
 .PHONY: termcap
