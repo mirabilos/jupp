@@ -1,70 +1,69 @@
-/*
- *	Basic user edit functions
- *	Copyright
- *		(C) 1992 Joseph H. Allen
- *
- *	This file is part of JOE (Joe's Own Editor)
- */
-#ifndef _JOE_UEDIT_H
-#define _JOE_UEDIT_H 1
+/* Basic user edit functions
+   Copyright (C) 1992 Joseph H. Allen
 
-#include "config.h"
-#include "types.h"
+This file is part of JOE (Joe's Own Editor)
+
+JOE is free software; you can redistribute it and/or modify it under the 
+terms of the GNU General Public License as published by the Free Software 
+Foundation; either version 1, or (at your option) any later version.  
+
+JOE is distributed in the hope that it will be useful, but WITHOUT ANY 
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
+FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more 
+details.  
+
+You should have received a copy of the GNU General Public License along with 
+JOE; see the file COPYING.  If not, write to the Free Software Foundation, 
+675 Mass Ave, Cambridge, MA 02139, USA.  */ 
+
+#ifndef _Iuedit
+#define _Iuedit 1
 
 extern int pgamnt;
 
-/*
- * Movable functions
- *	return 0 if action was done
- *	return -1 otherwise
- */
-int u_goto_bol PARAMS((BW *bw));	/* move cursor to beginning of line */
-int u_goto_eol PARAMS((BW *bw));	/* move cursor to end of line */
-int u_goto_bof PARAMS((BW *bw));	/* move cursor to beginning of file */
-int u_goto_eof PARAMS((BW *bw));	/* move cursor to end of file */
-int u_goto_left PARAMS((BW *bw));	/* move cursor to left (left arrow) */
-int u_goto_right PARAMS((BW *bw));	/* move cursor to right (right arrow) */
-int u_goto_prev PARAMS((BW *bw));	/* move cursor to prev. word, edge,
-					   or beginning of line */
-int u_goto_next PARAMS((BW *bw));	/* move cursor to next word, edge,
-					   or end of line */
-
-int utomatch PARAMS((BW *bw));
-int uuparw PARAMS((BW *bw));
-int udnarw PARAMS((BW *bw));
-int utos PARAMS((BW *bw));
-int ubos PARAMS((BW *bw));
-void scrup PARAMS((BW *bw, int n, int flg));
-void scrdn PARAMS((BW *bw, int n, int flg));
-int upgup PARAMS((BW *bw));
-int upgdn PARAMS((BW *bw));
-int uupslide PARAMS((BW *bw));
-int udnslide PARAMS((BW *bw));
-int uline PARAMS((BW *bw));
-int udelch PARAMS((BW *bw));
-int ubacks PARAMS((BW *bw, int k));
-int u_word_delete PARAMS((BW *bw));
-int ubackw PARAMS((BW *bw));
-int udelel PARAMS((BW *bw));
-int udelbl PARAMS((BW *bw));
-int udelln PARAMS((BW *bw));
-int uinsc PARAMS((BW *bw));
-int utypebw PARAMS((BW *bw, int k));
-int uquote PARAMS((BW *bw));
-int uquote8 PARAMS((BW *bw));
-int rtntw PARAMS((BW *bw));
-int uopen PARAMS((BW *bw));
-int usetmark PARAMS((BW *bw, int c));
-int ugomark PARAMS((BW *bw, int c));
-int ufwrdc PARAMS((BW *bw, int k));
-int ubkwdc PARAMS((BW *bw, int k));
-int umsg PARAMS((BASE *b));
-int uctrl PARAMS((BW *bw));
-int unedge PARAMS((BW *bw));
-int upedge PARAMS((BW *bw));
-int ubyte PARAMS((BW *bw));
-int ucol PARAMS((BW *bw));
-int utxt PARAMS((BASE *bw));
-int uhome PARAMS((BW *bw));
+int ubol();
+int ueol();
+int ubof();
+int ueof();
+int ultarw();
+int urtarw();
+int uprvwrd();
+int unxtwrd();
+int utomatch();
+int uuparw();
+int udnarw();
+int utos();
+int ubos();
+void scrup();
+void scrdn();
+int upgup();
+int upgdn();
+int uupslide();
+int udnslide();
+int uline();
+int udelch();
+int ubacks();
+int udelw();
+int ubackw();
+int udelel();
+int udelbl();
+int udelln();
+int uinsc();
+int utypebw();
+int uquote();
+int uquote8();
+int rtntw();
+int uopen();
+int usetmark();
+int ugomark();
+int ufwrdc();
+int ubkwdc();
+int umsg();
+int uctrl();
+int unedge();
+int upedge();
+int ubyte();
+int ucol();
+int utxt();
 
 #endif

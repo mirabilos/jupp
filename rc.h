@@ -1,35 +1,54 @@
-/*
- *	*rc file parser
- *	Copyright
- *		(C) 1992 Joseph H. Allen; 
- *
- *	This file is part of JOE (Joe's Own Editor)
- */
-#ifndef _JOE_RC_H
-#define _JOE_RC_H 1
+#ifndef _Irc
+#define _Irc 1
 
-#include "config.h"
-#include "types.h"
+#include "kbd.h"
+#include "macro.h"
+
+typedef struct options OPTIONS;
+struct options
+ {
+ OPTIONS *next;
+ char *name;
+ int overtype;
+ int lmargin;
+ int rmargin;
+ int autoindent;
+ int wordwrap;
+ int tab;
+ int indentc;
+ int istep;
+ char *context;
+ char *lmsg;
+ char *rmsg;
+ int linums;
+ int readonly;
+ int french;
+ int spaces;
+ int crlf;
+ MACRO *mnew;		/* Macro to execute for new files */
+ MACRO *mold;		/* Macro to execute for existing files */
+ MACRO *msnew;		/* Macro to execute before saving new files */
+ MACRO *msold;		/* Macro to execute before saving existing files */
+ };
 
 extern OPTIONS pdefault;
-extern OPTIONS fdefault;
-void setopt PARAMS((B *b, unsigned char *name));
+void setopt();
 
-/* KMAP *kmap_getcontext(char *name);
+/* KMAP *getcontext(char *name);
  * Find and return the KMAP for a given context name.  If none is found, an
  * empty kmap is created, bound to the context name, and returned.
  */
-KMAP *kmap_getcontext PARAMS((unsigned char *name));
+KMAP *getcontext();
 
-/* int procrc(CAP *cap, char *name);  Process an rc file
+/* int procrc(char *name);  Process an rc file
    Returns 0 for success
           -1 for file not found
            1 for syntax error (errors written to stderr)
 */
-int procrc PARAMS((CAP *cap, unsigned char *name));
+int procrc();
 
-int glopt PARAMS((unsigned char *s, unsigned char *arg, OPTIONS *options, int set));
-
-int umode PARAMS((BW *bw));
+int glopt();
+int umode();
+void izhelp();
 
 #endif

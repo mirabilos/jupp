@@ -1,407 +1,387 @@
-/* 
- *	Directory and path functions
- *	Copyright
- *		(C) 1992 Joseph H. Allen
- *
- *	This file is part of JOE (Joe's Own Editor)
- */
-#include "config.h"
-#include "types.h"
+/* Directory and path functions
+   Copyright (C) 1992 Joseph H. Allen
+
+This file is part of JOE (Joe's Own Editor)
+
+JOE is free software; you can redistribute it and/or modify it under the 
+terms of the GNU General Public License as published by the Free Software 
+Foundation; either version 1, or (at your option) any later version.  
+
+JOE is distributed in the hope that it will be useful, but WITHOUT ANY 
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
+FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more 
+details.  
+
+You should have received a copy of the GNU General Public License along with 
+JOE; see the file COPYING.  If not, write to the Free Software Foundation, 
+675 Mass Ave, Cambridge, MA 02139, USA.  */ 
 
 #include <stdio.h>
 #include <sys/types.h>
-#ifdef HAVE_SYS_STAT_H
-#include <sys/stat.h>
-#endif
 #include <fcntl.h>
-#include <string.h>
-#include <unistd.h>
-#ifdef HAVE_PATHS_H
-#  include <paths.h>	/* for _PATH_TMP */
-#endif
-#ifdef HAVE_LIMITS_H
-#include <limits.h>
-#endif
-#ifdef HAVE_STDLIB_H
-#include <stdlib.h>
-#endif
-
-#include "path.h"
+#include "config.h"
+#include "zstr.h"
 #include "vs.h"
 #include "va.h"
+#include "tty.h"
+#include "path.h"
 
-#ifdef HAVE_DIRENT_H
-#  include <dirent.h>
-#  define NAMLEN(dirent) strlen((dirent)->d_name)
+#ifdef DIRENT
+#include <dirent.h>
 #else
-#  ifdef HAVE_SYS_DIRENT_H
-#    include <sys/dirent.h>
-#    define NAMLEN(dirent) strlen((dirent)->d_name)
-#  else
-#    define direct dirent
-#    define NAMLEN(dirent) (dirent)->d_namlen
-#    ifdef HAVE_SYS_NDIR_H
-#      include <sys/ndir.h>
-#    else
-#      ifdef HAVE_SYS_DIR_H
-#        include <sys/dir.h>
-#      else
-#        ifdef HAVE_NDIR_H
-#          include <ndir.h>
-#        else
-#          ifndef __MSDOS__
-#            include "dir.c"
-#          endif
-#        endif
-#      endif
-#    endif
-#  endif
-#endif
-
-#ifdef __MSDOS__	/* paths in MS-DOS can include a drive letter followed by semicolon */
-#define	do_if_drive_letter(path, command) do { \
-						if ((path)[0] && (path)[1] == ':') { \
-							command; \
-						} \
-					} while(0)
+#ifdef SYSDIRENT
+#include <sys/dirent.h>
 #else
-#define do_if_drive_letter(path, command)	do { } while(0)
-#endif
-#define skip_drive_letter(path)	do_if_drive_letter((path), (path) += 2)
-
-#ifndef		_PATH_TMP
-#  ifdef __MSDOS__
-#    define	_PATH_TMP	""
-#  else
-#    define	_PATH_TMP	"/tmp/"
-#  endif
-#endif
-
-#ifndef PATH_MAX
-#warning What should we include to have PATH_MAX defined?
-#define PATH_MAX	4096
-#endif
-
-/********************************************************************/
-unsigned char *joesep(unsigned char *path)
-{
-	int x;
-
-	for (x = 0; path[x]; ++x)
-		if (path[x] == '\\')
-			path[x] = '/';
-	return path;
-}
-/********************************************************************/
-unsigned char *namprt(unsigned char *path)
-{
-	unsigned char *z;
-
-	skip_drive_letter(path);
-	z = path + slen(path);
-	while ((z != path) && (z[-1] != '/'))
-		--z;
-	return vsncpy(NULL, 0, sz(z));
-}
-/********************************************************************/
-unsigned char *namepart(unsigned char *tmp, unsigned char *path)
-{
-	unsigned char *z;
-
-	skip_drive_letter(path);
-	z = path + strlen((char *)path);
-	while ((z != path) && (z[-1] != '/'))
-		--z;
-	return (unsigned char *)strcpy((char *)tmp, (char *)z);
-}
-/********************************************************************/
-unsigned char *dirprt(unsigned char *path)
-{
-	unsigned char *b = path;
-	unsigned char *z = path + slen(path);
-
-	skip_drive_letter(b);
-	while ((z != b) && (z[-1] != '/'))
-		--z;
-	return vsncpy(NULL, 0, path, z - path);
-}
-/********************************************************************/
-unsigned char *begprt(unsigned char *path)
-{
-	unsigned char *z = path + slen(path);
-	int drv = 0;
-
-	do_if_drive_letter(path, drv = 2);
-	while ((z != path + drv) && (z[-1] == '/'))
-		--z;
-	if (z == path + drv)
-		return vsncpy(NULL, 0, sz(path));
-	else {
-		while ((z != path + drv) && (z[-1] != '/'))
-			--z;
-		return vsncpy(NULL, 0, path, z - path);
-	}
-}
-/********************************************************************/
-unsigned char *endprt(unsigned char *path)
-{
-	unsigned char *z = path + slen(path);
-	int drv = 0;
-
-	do_if_drive_letter(path, drv = 2);
-	while ((z != path + drv) && (z[-1] == '/'))
-		--z;
-	if (z == path + drv)
-		return vsncpy(NULL, 0, sc(""));
-	else {
-		while (z != path + drv && z[-1] != '/')
-			--z;
-		return vsncpy(NULL, 0, sz(z));
-	}
-}
-/********************************************************************/
-int mkpath(unsigned char *path)
-{
-	unsigned char *s;
-
-	if (path[0] == '/') {
-		if (chddir("/"))
-			return 1;
-		s = path;
-		goto in;
-	}
-
-	while (path[0]) {
-		int c;
-
-		for (s = path; (*s) && (*s != '/'); s++) ;
-		c = *s;
-		*s = 0;
-		if (chddir((char *)path)) {
-			if (mkdir((char *)path, 0777))
-				return 1;
-			if (chddir((char *)path))
-				return 1;
-		}
-		*s = c;
-	      in:
-		while (*s == '/')
-			++s;
-		path = s;
-	}
-	return 0;
-}
-/********************************************************************/
-/* Create a temporary file */
-/********************************************************************/
-unsigned char *mktmp(unsigned char *where)
-{
-#ifndef HAVE_MKSTEMP
-	static unsigned seq = 0;
-#endif
-	unsigned char *name;
-	int fd;
-	unsigned namesize;
-
-	if (!where)
-		where = (unsigned char *)getenv("TEMP");
-	if (!where)
-		where = US _PATH_TMP;
-
-	namesize = strlen((char *)where) + 16;
-	name = vsmk(namesize);	/* [G.Ghibo'] we need to use vsmk() and not malloc() as
-				   area returned by mktmp() is destroyed later with
-				   vsrm(); */
-#ifdef HAVE_MKSTEMP
-	joe_snprintf_1((char *)name, namesize, "%s/joe.tmp.XXXXXX", where);
-	if((fd = mkstemp((char *)name)) == -1)
-		return NULL;	/* FIXME: vflsh() and vflshf() */
-				/* expect mktmp() always succeed!!! */
-
-	fchmod(fd, 0600);       /* Linux glibc 2.0 mkstemp() creates it with */
-				/* 0666 mode --> change it to 0600, so nobody */
-				/* else sees content of temporary file */
-	close(fd);
-
+#ifdef SYSDIR
+#include <sys/dir.h>
 #else
-      loop:
-	seq = (seq + 1) % 1000;
-	joe_snprintf_3(name, namesize, "%s/joe.tmp.%03u%03u", where, seq, (unsigned) time(NULL) % 1000);
-	if ((fd = open(name, O_RDONLY)) != -1) {
-		close(fd);
-		goto loop;	/* FIXME: possible endless loop --> DoS attack */
-	}
-	if ((fd = open(name, O_RDWR | O_CREAT | O_EXCL, 0600)) == -1)
-		return NULL;	/* FIXME: see above */
-	else
-		close(fd);
+#ifdef BSDSYSDIR
+#include <bsd/sys/dir.h>
+#else
+#ifndef __MSDOS__
+#include "dir.c"
 #endif
-	return name;
-}
-/********************************************************************/
-int rmatch(unsigned char *a, unsigned char *b)
-{
-	int flag, inv, c;
+#endif
+#endif
+#endif
+#endif
 
-	for (;;)
-		switch (*a) {
-		case '*':
-			++a;
-			do {
-				if (rmatch(a, b))
-					return 1;
-			} while (*b++);
-			return 0;
-		case '[':
-			++a;
-			flag = 0;
-			if (*a == '^') {
-				++a;
-				inv = 1;
-			} else
-				inv = 0;
-			if (*a == ']')
-				if (*b == *a++)
-					flag = 1;
-			while (*a && (c = *a++) != ']')
-				if ((c == '-') && (a[-2] != '[') && (*a)) {
-					if ((*b >= a[-2]) && (*b <= *a))
-						flag = 1;
-				} else if (*b == c)
-					flag = 1;
-			if ((!flag && !inv) || (flag && inv) || (!*b))
-				return 0;
-			++b;
-			break;
-		case '?':
-			++a;
-			if (!*b)
-				return 0;
-			++b;
-			break;
-		case 0:
-			if (!*b)
-				return 1;
-			else
-				return 0;
-		default:
-			if (*a++ != *b++)
-				return 0;
-		}
-}
-/********************************************************************/
-int isreg(unsigned char *s)
-{
-	int x;
+#ifdef junk
+char *abspth(path)
+char *path;
+ {
+ char *s=0;
+ int x=0;
+ int y;
+ if(path[0]=='/')
+  {
+  s=vsadd(s,'/');
+  while(path[x]=='/') ++x;
+  y=1;
+  }
+ else
+  {
+  if(!(s=pwd())) return 0;
+  s=vsncpy(NULL,0,sz(s));
+  if(s[1]) s=vsadd(s,'/');
+  y=sLEN(s);
+  }
+ while(path[x])
+  {
+  if(path[x]=='.' && (path[x+1]==0 || path[x+1]=='/'))
+   {
+   x+=1;
+   while(path[x]=='/') ++x;
+   continue;
+   }
+  if(path[x]=='.' && path[x+1]=='.' && (path[x+2]==0 || path[x+2]=='/'))
+   {
+   x+=2;
+   while(path[x]=='/') ++x;
+   if(y!=1)
+    {
+    --y;
+    while(s[y-1]!='/') --y;
+    }
+   continue;
+   }
+  do
+   s=vsset(s,y,path[x]), ++y, ++x;
+   while(path[x] && path[x]!='/');
+  s=vsset(s,y,'/'), ++y;
+  while(path[x]=='/') x++;
+  }
+ if(y!=1 && s[y-1]=='/') --y;
+ s=vstrunc(s,y);
+ return s;
+ }
+#endif
 
-	for (x = 0; s[x]; ++x)
-		if ((s[x] == '*') || (s[x] == '?') || (s[x] == '['))
-			return 1;
-	return 0;
-}
-/********************************************************************/
+char *ossep(path)
+char *path;
+ {
+ int x;
+ for(x=0;path[x];++x)
 #ifdef __MSDOS__
+  if(path[x]=='/') path[x]='\\';
+#else
+  if(path[x]=='\\') path[x]='/';
+#endif
+ return path;
+ }
+
+char *joesep(path)
+char *path;
+ {
+ int x;
+ for(x=0;path[x];++x) if(path[x]=='\\') path[x]='/';
+ return path;
+ }
+
+char *namprt(path)
+char *path;
+ {
+ char *z;
+#ifdef __MSDOS__
+ if(path[0] && path[1]==':') path+=2;
+#endif
+ z=path+slen(path);
+ while(z!=path && z[-1]!='/') --z;
+ return vsncpy(NULL,0,sz(z));
+ }
+
+char *namepart(tmp,path)
+char *tmp;
+char *path;
+ {
+ char *z;
+#ifdef __MSDOS__
+ if(path[0] && path[1]==':') path+=2;
+#endif
+ z=path+zlen(path);
+ while(z!=path && z[-1]!='/') --z;
+ return zcpy(tmp,z);
+ }
+
+char *dirprt(path)
+char *path;
+ {
+ char *b=path;
+ char *z=path+slen(path);
+#ifdef __MSDOS__
+ if(b[0] && b[1]==':') b+=2;
+#endif
+ while(z!=b && z[-1]!='/') --z;
+ return vsncpy(NULL,0,path,z-path);
+ }
+
+char *begprt(path)
+char *path;
+ {
+ char *z=path+slen(path);
+ int drv=0;
+#ifdef __MSDOS__
+ if(path[0] && path[1]==':') drv=2;
+#endif
+ while(z!=path+drv && z[-1]=='/') --z;
+ if(z==path+drv) return vsncpy(NULL,0,sz(path));
+ else
+  {
+  while(z!=path+drv && z[-1]!='/') --z;
+  return vsncpy(NULL,0,path,z-path);
+  }
+ }
+
+char *endprt(path)
+char *path;
+ {
+ char *z=path+slen(path);
+ int drv=0;
+#ifdef __MSDOS__
+ if(path[0] && path[1]==':') drv=2;
+#endif
+ while(z!=path+drv && z[-1]=='/') --z;
+ if(z==path+drv) return vsncpy(NULL,0,sc(""));
+ else
+  {
+  while(z!=path+drv && z[-1]!='/') --z;
+  return vsncpy(NULL,0,sz(z));
+  }
+ }
+
+int mkpath(path)
+char *path;
+ {
+ char *s;
+ if(path[0]=='/')
+  {
+  if(chddir("/")) return 1;
+  s=path;
+  goto in;
+  }
+ while(path[0])
+  {
+  int c;
+  for(s=path;*s && *s!='/';s++);
+  c= *s; *s=0;
+  if(chddir(path))
+   {
+   if(mkdir(path,0777)) return 1;
+   if(chddir(path)) return 1;
+   }
+  *s=c;
+  in:
+  while(*s=='/') ++s;
+  path=s;
+  }
+ return 0;
+ }
+
+/* Create a temporary file */
+
+char *mktmp(where)
+char *where;
+ {
+ static int seq=0;
+ char *name;
+ int fd;
+ if(!where) where=getenv("TEMP");
+#ifdef __MSDOS__
+ if(!where) where="";
+#else
+ if(!where) where="/tmp";
+#endif
+ name=(char *)malloc(zlen(where)+16);
+ loop:
+ sprintf(name,"%s/J%d%d.tmp",where,seq= ++seq%1000,(unsigned)time(NULL)%1000);
+ ossep(name);
+ if((fd=open(name,O_RDONLY))!= -1)
+  {
+  close(fd);
+  goto loop;
+  }
+ if((fd=creat(name,0666))== -1) return 0;
+ else close(fd);
+ return name;
+ }
+
+int rmatch(a,b)
+char *a, *b;
+ {
+ int flag, inv, c;
+ for(;;)
+  switch(*a)
+   {
+  case '*': ++a;
+            do if(rmatch(a,b)) return 1; while(*b++);
+            return 0;
+
+  case '[': ++a;
+            flag=0;
+            if(*a=='^') ++a, inv=1; else inv=0;
+            if(*a==']') if(*b==*a++) flag=1;
+            while(*a && (c= *a++)!=']')
+             if(c=='-' && a[-2]!='[' && *a)
+              { if(*b>=a[-2] && *b<=*a) flag=1; }
+             else if(*b==c) flag=1;
+            if((!flag && !inv) || (flag && inv) || !*b) return 0;
+            ++b;
+            break;
+
+  case '?': ++a;
+            if(!*b) return 0;
+            ++b;
+            break;
+
+  case 0:   if(!*b) return 1;
+            else return 0;
+
+  default:  if(*a++!=*b++) return 0;
+   }
+ }
+
+int isreg(s)
+char *s;
+ {
+ int x;
+ for(x=0;s[x];++x) if(s[x]=='*' || s[x]=='?' || s[x]=='[') return 1;
+ return 0;
+ }
+
+#ifdef __MSDOS__
+
 #include <dos.h>
 #include <dir.h>
 
-struct direct {
-	unsigned char d_name[16];
-} direc;
-int dirstate = 0;
+struct direct
+ {
+ char d_name[16];
+ } direc;
+int dirstate=0;
 struct ffblk ffblk;
-unsigned char *dirpath = NULL;
+char *dirpath=0;
 
-void *opendir(unsigned char *path)
-{
-	dirstate = 0;
-	return &direc;
-}
+void *opendir(path)
+char *path;
+ {
+ dirstate=0;
+ return &direc;
+ }
 
 void closedir()
-{
-}
+ {
+ }
 
 struct direct *readdir()
-{
-	int x;
+ {
+ int x;
+ if(dirstate)
+  {
+  if(findnext(&ffblk)) return 0;
+  }
+ else
+  {
+  if(findfirst("*.*",&ffblk,FA_DIREC))
+   return 0;
+  dirstate=1;
+  }
+ zcpy(direc.d_name,ffblk.ff_name);
+ for(x=0;direc.d_name[x];++x) direc.d_name[x]=todn(direc.d_name[x]);
+ return &direc;
+ }
 
-	if (dirstate) {
-		if (findnext(&ffblk))
-			return NULL;
-	} else {
-		if (findfirst("*.*", &ffblk, FA_DIREC))
-			return NULL;
-		dirstate = 1;
-	}
-
-	strcpy(direc.d_name, ffblk.ff_name);
-	for (x = 0; direc.d_name[x]; ++x)
-		direc.d_name[x] = tolower(direc.d_name[x]);
-	return &direc;
-}
 #endif
-/********************************************************************/
-unsigned char **rexpnd(unsigned char *word)
-{
-	void *dir;
-	unsigned char **lst = NULL;
 
-	struct dirent *de;
-	dir = opendir(".");
-	if (dir) {
-		while ((de = readdir(dir)) != NULL)
-			if (strcmp(".", de->d_name))
-				if (rmatch(word, (unsigned char *)de->d_name))
-					lst = vaadd(lst, vsncpy(NULL, 0, sz((unsigned char *)de->d_name)));
-		closedir(dir);
-	}
-	return lst;
-}
-/********************************************************************/
-int chpwd(unsigned char *path)
-{
+char **rexpnd(word)
+char *word;
+ {
+ void *dir;
+ char **lst=0;
+#ifdef DIRENT
+ struct dirent *de;
+#else
+#ifdef SYSDIRENT
+ struct dirent *de;
+#else
+ struct direct *de;
+#endif
+#endif
+ dir=opendir(".");
+ if(dir)
+  {
+  while(de=readdir(dir))
+   if(zcmp(".",de->d_name))
+    if(rmatch(word,de->d_name))
+     lst=vaadd(lst,vsncpy(NULL,0,sz(de->d_name)));
+  closedir(dir);
+  }
+ return lst;
+ }
+
+int chpwd(path)
+char *path;
+ {
 #ifdef __MSDOS__
-	unsigned char buf[256];
-	int x;
-
-	if (!path)
-		return 0;
-	if ((path[0]) && (path[1] == ':')) {
-		if (_chdrive(path[0] & 0x1F))
-			return -1;
-		path += 2;
-	}
-	if (!path[0])
-		return 0;
-	strcpy(buf, path);
-	x = strlen(buf);
-	while (x > 1) {
-		--x;
-		if ((buf[x] == '/') || (buf[x] == '\\'))
-			buf[x] = 0;
-		else
-			break;
-	}
-	return chdir(buf);
+ char buf[256];
+ int x;
+ if(!path) return 0;
+ if(path[0] && path[1]==':')
+  {
+  if(_chdrive(path[0]&0x1F)) return -1;
+  path+=2;
+  }
+ if(!path[0]) return 0;
+ zcpy(buf,path);
+ x=zlen(buf);
+ while(x>1)
+  {
+  --x;
+  if(buf[x]=='/' || buf[x]=='\\') buf[x]=0;
+  else break;
+  }
+ return chdir(buf);
 #else
-	if ((!path) || (!path[0]))
-		return 0;
-	return chdir((char *)path);
+ if(!path || !path[0]) return 0;
+ return chdir(path);
 #endif
-}
-
-/* The pwd function */
-unsigned char *pwd(void)
-{
-	static unsigned char buf[PATH_MAX];
-	unsigned char	*ret;
-
-#ifdef HAVE_GETCWD
-	ret = (unsigned char *)getcwd((char *)buf, PATH_MAX - 1);
-#else
-	ret = (unsigned char *)getwd((char *)buf);
-#endif
-	buf[PATH_MAX - 1] = '\0';
-
-	return ret;
-}
+ }

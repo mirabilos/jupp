@@ -1,799 +1,596 @@
-/*
- *	*rc file parser
- *	Copyright
- *		(C) 1992 Joseph H. Allen; 
- *
- *	This file is part of JOE (Joe's Own Editor)
- */
-#include "config.h"
-#include "types.h"
+/* rc file parser */
 
 #include <stdio.h>
-#include <string.h>
-#ifdef HAVE_STDLIB_H
-#include <stdlib.h>
-#endif
-
-#include "cmd.h"
-#include "kbd.h"
+#include "zstr.h"
 #include "macro.h"
-#include "menu.h"
-#include "path.h"
-#include "pw.h"
-#include "tw.h"
-#include "uedit.h"
-#include "umath.h"
-#include "utils.h"
+#include "cmd.h"
+#include "bw.h"
+#include "help.h"
 #include "vs.h"
-#include "b.h"
-#include "syntax.h"
 #include "va.h"
-#include "utf8.h"
-#include "charmap.h"
+#include "menu.h"
+#include "umath.h"
+#include "uedit.h"
+#include "pw.h"
+#include "path.h"
 #include "w.h"
+#include "tw.h"
+#include "termcap.h"
+#include "rc.h"
 
-#define OPT_BUF_SIZE 300
-
-static struct context {
-	struct context *next;
-	unsigned char *name;
-	KMAP *kmap;
-} *contexts = NULL;		/* List of named contexts */
+static struct context
+ {
+ struct context *next;
+ char *name;
+ KMAP *kmap;
+ } *contexts=0;		/* List of named contexts */
 
 /* Find a context of a given name- if not found, one with an empty kmap
  * is created.
  */
 
-KMAP *kmap_getcontext(unsigned char *name)
-{
-	struct context *c;
+KMAP *getcontext(name)
+char *name;
+ {
+ struct context *c;
+ for(c=contexts;c;c=c->next) if(!zcmp(c->name,name)) return c->kmap;
+ c=(struct context *)malloc(sizeof(struct context));
+ c->next=contexts;
+ c->name=zdup(name);
+ contexts=c;
+ return c->kmap=mkkmap();
+ }
 
-	for (c = contexts; c; c = c->next)
-		if (!strcmp(c->name, name))
-			return c->kmap;
-	c = (struct context *) joe_malloc(sizeof(struct context));
+OPTIONS *options=0;
+extern int mid, dspasis, dspctrl, force, help, pgamnt, square, csmode,
+           nobackups, lightoff, exask, skiptop, noxon, lines, staen,
+           columns, Baud, dopadding, orphan, marking, beep, keepup,
+           nonotice;
+extern char *backpath;
 
-	c->next = contexts;
-	c->name = (unsigned char *)strdup((char *)name);
-	contexts = c;
-	return c->kmap = mkkmap();
-}
-
-OPTIONS *options = NULL;
-
-/* Global variable options */
-extern int mid, dspasis, dspctrl, force, help, pgamnt, square, csmode, nobackups, lightoff, exask, skiptop;
-extern int noxon, lines, staen, columns, Baud, dopadding, orphan, marking, beep, keepup, nonotice;
-extern int notite, usetabs, assume_color, guesscrlf, guessindent, menu_explorer, icase, wrap, autoswap;
-extern unsigned char *backpath;
-
-/* Default options for prompt windows */
-
-OPTIONS pdefault = {
-	NULL,		/* *next */
-	NULL,		/* *name_regex */
-	NULL,		/* *contents_regex */
-	0,		/* overtype */
-	0,		/* lmargin */
-	76,		/* rmargin */
-	0,		/* autoindent */
-	0,		/* wordwrap */
-	8,		/* tab */
-	' ',		/* indent char */
-	1,		/* indent step */
-	NULL,		/* *context */
-	NULL,		/* *lmsg */
-	NULL,		/* *rmsg */
-	0,		/* line numbers */
-	0,		/* read only */
-	0,		/* french spacing */
-	0,		/* spaces */
 #ifdef __MSDOS__
-	1,		/* crlf */
+OPTIONS pdefault=
+ { 0, 0, 0, 0, 76, 0, 0, 8, ' ', 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0 };
+
+OPTIONS fdefault=
+ { 0, 0, 0, 0, 76, 0, 0, 8, ' ', 1, "main", "\\i%n %m %M",
+   " %S Ctrl-K H for help", 0, 0, 0, 0, 1, 0, 0, 0, 0 };
 #else
-	0,		/* crlf */
+OPTIONS pdefault=
+ { 0, 0, 0, 0, 76, 0, 0, 8, ' ', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+OPTIONS fdefault=
+ { 0, 0, 0, 0, 76, 0, 0, 8, ' ', 1, "main", "\\i%n %m %M",
+   " %S Ctrl-K H for help", 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 #endif
-	0,		/* Highlight */
-	NULL,		/* Syntax name */
-	NULL,		/* Syntax */
-	NULL,		/* Name of character set */
-	NULL,		/* Character set */
-	0,		/* Smart home key */
-	0,		/* Goto indent first */
-	0,		/* Smart backspace key */
-	0,		/* Purify indentation */
-	0,		/* Picture mode */
-	NULL,		/* macro to execute for new files */
-	NULL,		/* macro to execute for existing files */
-	NULL,		/* macro to execute before saving new files */
-	NULL,		/* macro to execute before saving existing files */
-};
 
-/* Default options for file windows */
+void setopt(n,name)
+OPTIONS *n;
+char *name;
+ {
+ OPTIONS *o;
+ for(o=options;o;o=o->next)
+  if(rmatch(o->name,name))
+   {
+   *n= *o;
+   return;
+   }
+ *n=fdefault;
+ }
 
-OPTIONS fdefault = {
-	NULL,		/* *next */
-	NULL,		/* *name_regex */
-	NULL,		/* *contents_regex */
-	0,		/* overtype */
-	0,		/* lmargin */
-	76,		/* rmargin */
-	0,		/* autoindent */
-	0,		/* wordwrap */
-	8,		/* tab */
-	' ',		/* indent char */
-	1,		/* indent step */
-	US "main",		/* *context */
-	US "\\i%n %m %M",	/* *lmsg */
-	US " %S Ctrl-K H for help",	/* *rmsg */
-	0,		/* line numbers */
-	0,		/* read only */
-	0,		/* french spacing */
-	0,		/* spaces */
-#ifdef __MSDOS__
-	1,		/* crlf */
-#else
-	0,		/* crlf */
-#endif
-	0,		/* Highlight */
-	NULL,		/* Syntax name */
-	NULL,		/* Syntax */
-	NULL,		/* Name of character set */
-	NULL,		/* Character set */
-	0,		/* Smart home key */
-	0,		/* Goto indent first */
-	0,		/* Smart backspace key */
-	0,		/* Purity indentation */
-	0,		/* Picture mode */
-	NULL, NULL, NULL, NULL	/* macros (see above) */
-};
-
-/* Update options */
-
-void lazy_opts(OPTIONS *o)
-{
-	o->syntax = load_dfa(o->syntax_name);
-	o->charmap = find_charmap(o->map_name);
-	if (!o->charmap)
-		o->charmap = locale_map;
-}
-
-/* Set local options depending on file name and contents */
-
-void setopt(B *b, unsigned char *parsed_name)
-{
-	OPTIONS *o;
-	int x;
-	unsigned char *pieces[26];
-	for (x = 0; x!=26; ++x)
-		pieces[x] = NULL;
-
-	for (o = options; o; o = o->next)
-		if (rmatch(o->name_regex, parsed_name)) {
-			if(o->contents_regex) {
-				P *p = pdup(b->bof);
-				if (pmatch(pieces,o->contents_regex,strlen((char *)o->contents_regex),p,0,0)) {
-					prm(p);
-					b->o = *o;
-					lazy_opts(&b->o);
-					goto done;
-				} else {
-					prm(p);
-				}
-			} else {
-				b->o = *o;
-				lazy_opts(&b->o);
-				goto done;
-			}
-		}
-
-	b->o = fdefault;
-	lazy_opts(&b->o);
-
-	done:
-	for (x = 0; x!=26; ++x)
-		vsrm(pieces[x]);
-}
-
-/* Table of options and how to set them */
-
-/* local means it's in an OPTION structure, global means it's in a global
- * variable */
-
-struct glopts {
-	unsigned char *name;		/* Option name */
-	int type;		/*      0 for global option flag
-				   1 for global option numeric
-				   2 for global option string
-				   4 for local option flag
-				   5 for local option numeric
-				   6 for local option string
-				   7 for local option numeric+1, with range checking
-				 */
-	int *set;		/* Address of global option */
-	unsigned char *addr;		/* Local options structure member address */
-	unsigned char *yes;		/* Message if option was turned on, or prompt string */
-	unsigned char *no;		/* Message if option was turned off */
-	unsigned char *menu;		/* Menu string */
-	int ofst;		/* Local options structure member offset */
-	int low;		/* Low limit for numeric options */
-	int high;		/* High limit for numeric options */
-} glopts[] = {
-	{US "overwrite",4, NULL, (unsigned char *) &fdefault.overtype, US "Overtype mode", US "Insert mode", US "T Overtype " },
-	{US "autoindent",	4, NULL, (unsigned char *) &fdefault.autoindent, US "Autoindent enabled", US "Autindent disabled", US "I Autoindent " },
-	{US "wordwrap",	4, NULL, (unsigned char *) &fdefault.wordwrap, US "Wordwrap enabled", US "Wordwrap disabled", US "Word wrap " },
-	{US "tab",	5, NULL, (unsigned char *) &fdefault.tab, US "Tab width (%d): ", 0, US "D Tab width ", 0, 1, 64 },
-	{US "lmargin",	7, NULL, (unsigned char *) &fdefault.lmargin, US "Left margin (%d): ", 0, US "Left margin ", 0, 0, 63 },
-	{US "rmargin",	7, NULL, (unsigned char *) &fdefault.rmargin, US "Right margin (%d): ", 0, US "Right margin ", 0, 7, 255 },
-	{US "square",	0, &square, NULL, US "Rectangle mode", US "Text-stream mode", US "X Rectangle mode " },
-	{US "icase",	0, &icase, NULL, US "Ignore case by default", US "Case sensitive by default", US "  Case insensitivity " },
-	{US "wrap",	0, &wrap, NULL, US "Search wraps", US "Search doesn't wrap", US "  Search wraps " },
-	{US "menu_explorer",	0, &menu_explorer, NULL, US "Menu explorer mode", US "  Simple completion", US "  Menu explorer " },
-	{US "autoswap",	0, &autoswap, NULL, US "Autoswap ^KB and ^KK", US "  Autoswap off ", US "  Autoswap mode " },
-	{US "indentc",	5, NULL, (unsigned char *) &fdefault.indentc, US "Indent char %d (SPACE=32, TAB=9, ^C to abort): ", 0, US "  Indent char ", 0, 0, 255 },
-	{US "istep",	5, NULL, (unsigned char *) &fdefault.istep, US "Indent step %d (^C to abort): ", 0, US "  Indent step ", 0, 1, 64 },
-	{US "french",	4, NULL, (unsigned char *) &fdefault.french, US "One space after periods for paragraph reformat", US "Two spaces after periods for paragraph reformat", US "  french spacing " },
-	{US "highlight",	4, NULL, (unsigned char *) &fdefault.highlight, US "Highlighting enabled", US "Highlighting disabled", US "Highlighting " },
-	{US "spaces",	4, NULL, (unsigned char *) &fdefault.spaces, US "Inserting spaces when tab key is hit", US "Inserting tabs when tab key is hit", US "  no tabs " },
-	{US "mid",	0, &mid, NULL, US "Cursor will be recentered on scrolls", US "Cursor will not be recentered on scroll", US "Center on scroll " },
-	{US "guess_crlf",0, &guesscrlf, NULL, US "Automatically detect MS-DOS files", US "Do not automatically detect MS-DOS files", US "  Auto detect CR-LF " },
-	{US "guess_indent",0, &guessindent, NULL, US "Automatically detect indentation", US "Do not automatically detect indentation", US "  Guess indent " },
-	{US "crlf",	4, NULL, (unsigned char *) &fdefault.crlf, US "CR-LF is line terminator", US "LF is line terminator", US "Z CR-LF (MS-DOS) " },
-	{US "linums",	4, NULL, (unsigned char *) &fdefault.linums, US "Line numbers enabled", US "Line numbers disabled", US "N Line numbers " },
-	{US "marking",	0, &marking, NULL, US "Anchored block marking on", US "Anchored block marking off", US "Marking " },
-	{US "asis",	0, &dspasis, NULL, US "Characters above 127 shown as-is", US "Characters above 127 shown in inverse", US "  Meta chars as-is " },
-	{US "force",	0, &force, NULL, US "Last line forced to have NL when file saved", US "Last line not forced to have NL", US "Force last NL " },
-	{US "nobackups",	0, &nobackups, NULL, US "Backup files will not be made", US "Backup files will be made", US "  Disable backups " },
-	{US "lightoff",	0, &lightoff, NULL, US "Highlighting turned off after block operations", US "Highlighting not turned off after block operations", US "Auto unmark " },
-	{US "exask",	0, &exask, NULL, US "Prompt for filename in save & exit command", US "Don't prompt for filename in save & exit command", US "  Exit ask " },
-	{US "beep",	0, &beep, NULL, US "Warning bell enabled", US "Warning bell disabled", US "Beeps " },
-	{US "nosta",	0, &staen, NULL, US "Top-most status line disabled", US "Top-most status line enabled", US "  Disable status line " },
-	{US "keepup",	0, &keepup, NULL, US "Status line updated constantly", US "Status line updated once/sec", US "  Fast status line " },
-	{US "pg",		1, &pgamnt, NULL, US "Lines to keep for PgUp/PgDn or -1 for 1/2 window (%d): ", 0, US "  No. PgUp/PgDn lines ", 0, -1, 64 },
-	{US "csmode",	0, &csmode, NULL, US "Start search after a search repeats previous search", US "Start search always starts a new search", US "Continued search " },
-	{US "rdonly",	4, NULL, (unsigned char *) &fdefault.readonly, US "Read only", US "Full editing", US "O Read only " },
-	{US "smarthome",	4, NULL, (unsigned char *) &fdefault.smarthome, US "Smart home key enabled", US "Smart home key disabled", US "  Smart home key " },
-	{US "indentfirst",	4, NULL, (unsigned char *) &fdefault.indentfirst, US "Smart home goes to indent first", US "Smart home goes home first", US "  To indent first " },
-	{US "smartbacks",	4, NULL, (unsigned char *) &fdefault.smartbacks, US "Smart backspace key enabled", US "Smart backspace key disabled", US "  Smart backspace " },
-	{US "purify",	4, NULL, (unsigned char *) &fdefault.purify, US "Indentation clean up enabled", US "Indentation clean up disabled", US "  Clean up indents " },
-	{US "picture",	4, NULL, (unsigned char *) &fdefault.picture, US "Picture drawing mode enabled", US "Picture drawing mode disabled", US "Picture mode " },
-	{US "backpath",	2, (int *) &backpath, NULL, US "Backup files stored in (%s): ", 0, US "  Path to backup files " },
-	{US "syntax",	9, NULL, NULL, US "Select syntax (^C to abort): ", 0, US "Y Syntax" },
-	{US "encoding",13, NULL, NULL, US "Select file character set (^C to abort): ", 0, US "Encoding " },
-	{US "nonotice",	0, &nonotice, NULL, 0, 0, 0 },
-	{US "noxon",	0, &noxon, NULL, 0, 0, 0 },
-	{US "orphan",	0, &orphan, NULL, 0, 0, 0 },
-	{US "help",	0, &help, NULL, 0, 0, 0 },
-	{US "dopadding",	0, &dopadding, NULL, 0, 0, 0 },
-	{US "lines",	1, &lines, NULL, 0, 0, 0, 0, 2, 1024 },
-	{US "baud",	1, &Baud, NULL, 0, 0, 0, 0, 50, 32767 },
-	{US "columns",	1, &columns, NULL, 0, 0, 0, 0, 2, 1024 },
-	{US "skiptop",	1, &skiptop, NULL, 0, 0, 0, 0, 0, 64 },
-	{US "notite",	0, &notite, NULL, 0, 0, 0 },
-	{US "usetabs",	0, &usetabs, NULL, 0, 0, 0 },
-	{US "assume_color", 0, &assume_color, NULL, 0, 0, 0 },
-	{ NULL,		0, NULL, NULL, NULL, NULL, NULL, 0, 0, 0 }
-};
-
-/* Initialize .ofsts above.  Is this really necessary? */
-
-int isiz = 0;
-
-static void izopts(void)
-{
-	int x;
-
-	for (x = 0; glopts[x].name; ++x)
-		switch (glopts[x].type) {
-		case 4:
-		case 5:
-		case 6:
-		case 7:
-		case 8:
-			glopts[x].ofst = glopts[x].addr - (unsigned char *) &fdefault;
-		}
-	isiz = 1;
-}
-
-/* Set a global or local option:
- * 's' is option name
- * 'arg' is a possible argument string (taken only if option has an arg)
- * 'options' points to options structure to modify (can be NULL).
- * 'set'==0: set only in 'options' if it's given.
- * 'set'!=0: set global variable option.
- * return value: no. of fields taken (1 or 2), or 0 if option not found.
- *
- * So this function is used both to set options, and to parse over options
- * without setting them.
- *
- * These combinations are used:
- *
- * glopt(name,arg,NULL,1): set global variable option
- * glopt(name,arg,NULL,0): parse over option
- * glopt(name,arg,options,0): set file local option
- * glopt(name,arg,&fdefault,1): set default file options
- * glopt(name,arg,options,1): set file local option
+/* Set a global or local option 
+ * returns 0 for no such option,
+ *         1 for option accepted
+ *         2 for option + argument accepted
  */
 
-int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options, int set)
-{
-	int val;
-	int ret = 0;
-	int st = 1;	/* 1 to set option, 0 to clear it */
-	int x;
+struct glopts
+ {
+ char *name;	/* Option name */
+ int type;	/* 0 for global option flag
+                   1 for global option numeric
+                   2 for global option string
+                   4 for local option flag
+                   5 for local option numeric
+                   6 for local option string
+                   7 for local option numeric+1
+                */
+ int *set;	/* Address of global option */
+ char *addr;	/* Local options structure member address */
+ char *yes;	/* Message if option was turned on, or prompt string */
+ char *no;	/* Message if option was turned off */
+ char *menu;	/* Menu string */
+ int ofst;	/* Local options structure member offset */
+ int low;	/* Low limit for numeric options */
+ int high;	/* High limit for numeric options */
+ } glopts[]=
+ {
+  {"overwrite", 4, 0, (char *)&fdefault.overtype,
+   "Overtype mode",
+   "Insert mode",
+   "T Overtype "},
 
-	/* Initialize offsets */
-	if (!isiz)
-		izopts();
+  {"autoindent", 4, 0, (char *)&fdefault.autoindent,
+   "Autoindent enabled",
+   "Autindent disabled",
+   "I Autoindent "},
 
-	/* Clear instead of set? */
-	if (s[0] == '-') {
-		st = 0;
-		++s;
-	}
+  {"wordwrap", 4, 0, (char *)&fdefault.wordwrap,
+   "Wordwrap enabled",
+   "Wordwrap disabled",
+   "Word wrap "},
 
-	for (x = 0; glopts[x].name; ++x)
-		if (!strcmp(glopts[x].name, s)) {
-			switch (glopts[x].type) {
-			case 0: /* Global variable flag option */
-				if (set)
-					*glopts[x].set = st;
-				break;
-			case 1: /* Global variable integer option */
-				if (set && arg) {
-					sscanf((char *)arg, "%d", &val);
-					if (val >= glopts[x].low && val <= glopts[x].high)
-						*glopts[x].set = val;
-				}
-				break;
-			case 2: /* Global variable string option */
-				if (set) {
-					if (arg)
-						*(unsigned char **) glopts[x].set = (unsigned char *)strdup((char *)arg);
-					else
-						*(unsigned char **) glopts[x].set = 0;
-				}
-				break;
-			case 4: /* Local option flag */
-				if (options)
-					*(int *) ((unsigned char *) options + glopts[x].ofst) = st;
-				break;
-			case 5: /* Local option integer */
-				if (arg) {
-					if (options) {
-						sscanf((char *)arg, "%d", &val);
-						if (val >= glopts[x].low && val <= glopts[x].high)
-							*(int *) ((unsigned char *)
-								  options + glopts[x].ofst) = val;
-					} 
-				}
-				break;
-			case 7: /* Local option numeric + 1, with range checking */
-				if (arg) {
-					int zz = 0;
+  {"tab", 5, 0, (char *)&fdefault.tab,
+   "Tab width (%d): ",
+   0,
+   "D Tab width ",0,1,64},
 
-					sscanf((char *)arg, "%d", &zz);
-					if (zz >= glopts[x].low && zz <= glopts[x].high) {
-						--zz;
-						if (options)
-							*(int *) ((unsigned char *)
-								  options + glopts[x].ofst) = zz;
-					}
-				}
-				break;
+  {"lmargin", 7, 0, (char *)&fdefault.lmargin,
+   "Left margin (%d): ",
+   0,
+   "Left margin ",0,0,63},
 
-			case 9: /* Set syntax */
-				if (arg && options)
-					options->syntax_name = (unsigned char *)strdup((char *)arg);
-				/* this was causing all syntax files to be loaded...
-				if (arg && options)
-					options->syntax = load_dfa(arg); */
-				break;
+  {"rmargin", 7, 0, (char *)&fdefault.rmargin,
+   "Right margin (%d): ",
+   0,
+   "Right margin ",0,7,255},
 
-			case 13: /* Set byte mode encoding */
-				if (arg && options)
-					options->map_name = (unsigned char *)strdup((char *)arg);
-				break;
-			}
-			/* This is a stupid hack... */
-			if ((glopts[x].type & 3) == 0 || !arg)
-				return 1;
-			else
-				return 2;
-		}
-	/* Why no case 6, string option? */
-	/* Keymap, mold, mnew, etc. are not strings */
-	/* These options do not show up in ^T */
-	if (!strcmp(s, "lmsg")) {
-		if (arg) {
-			if (options)
-				options->lmsg = (unsigned char *)strdup((char *)arg);
-			ret = 2;
-		} else
-			ret = 1;
-	} else if (!strcmp(s, "rmsg")) {
-		if (arg) {
-			if (options)
-				options->rmsg = (unsigned char *)strdup((char *)arg);
-			ret = 2;
-		} else
-			ret = 1;
-	} else if (!strcmp(s, "keymap")) {
-		if (arg) {
-			int y;
+  {"square", 0, &square, 0,
+   "Rectangle mode",
+   "Text-stream mode",
+   "X Rectangle mode " },
 
-			for (y = 0; !joe_isspace(locale_map,arg[y]); ++y) ;
-			if (!arg[y])
-				arg[y] = 0;
-			if (options && y)
-				options->context = (unsigned char *)strdup((char *)arg);
-			ret = 2;
-		} else
-			ret = 1;
-	} else if (!strcmp(s, "mnew")) {
-		if (arg) {
-			int sta;
+  {"indentc", 5, 0, (char *)&fdefault.indentc,
+   "Indent char %d (SPACE=32, TAB=9, ^C to abort): ",
+   0,
+   " Indent char ",0,0,255},
 
-			if (options)
-				options->mnew = mparse(NULL, arg, &sta);
-			ret = 2;
-		} else
-			ret = 1;
-	} else if (!strcmp(s, "mold")) {
-		if (arg) {
-			int sta;
+  {"istep", 5, 0, (char *)&fdefault.istep,
+   "Indent step %d (^C to abort): ",
+   0,
+   " Indent step ",0,1,64},
 
-			if (options)
-				options->mold = mparse(NULL, arg, &sta);
-			ret = 2;
-		} else
-			ret = 1;
-	} else if (!strcmp(s, "msnew")) {
-		if (arg) {
-			int sta;
+  {"french", 4, 0, (char *)&fdefault.french,
+   "One space after periods for paragraph reformat",
+   "Two spaces after periods for paragraph reformat",
+   " french spacing "},
 
-			if (options)
-				options->msnew = mparse(NULL, arg, &sta);
-			ret = 2;
-		} else
-			ret = 1;
-	} else if (!strcmp(s, "msold")) {
-		if (arg) {
-			int sta;
+  {"spaces", 4, 0, (char *)&fdefault.spaces,
+   "Inserting spaces when tab key is hit",
+   "Inserting tabs when tab key is hit",
+   " no tabs "},
 
-			if (options)
-				options->msold = mparse(NULL, arg, &sta);
-			ret = 2;
-		} else
-			ret = 1;
-	}
+  {"mid", 0, &mid, 0,
+   "Cursor will be recentered on scrolls",
+   "Cursor will not be recentered on scroll",
+   "Center on scroll " },
 
-	return ret;
-}
+  {"crlf", 4, 0, (char *)&fdefault.crlf,
+   "CR-LF is line terminator",
+   "LF is line terminator",
+   "Z CR-LF (MS-DOS) "},
 
-/* Option setting user interface (^T command) */
+  {"linums", 4, 0, (char *)&fdefault.linums,
+   "Line numbers enabled",
+   "Line numbers disabled",
+   "N Line numbers "},
 
-static int optx = 0; /* Menu cursor position: remember it for next time */
+  {"marking", 0, &marking, 0,
+   "Anchored block marking on",
+   "Anchored block marking off",
+   "Marking " },
 
-static int doabrt1(BW *bw, int *xx)
-{
-	joe_free(xx);
-	return -1;
-}
+  {"asis", 0, &dspasis, 0,
+   "Characters above 127 shown as-is",
+   "Characters above 127 shown in inverse",
+   "Meta chars as-is "
+    },
 
-static int doopt1(BW *bw, unsigned char *s, int *xx, int *notify)
-{
-	int ret = 0;
-	int x = *xx;
-	int v;
+  {"force", 0, &force, 0,
+   "Last line forced to have NL when file saved",
+   "Last line not forces to have NL",
+   "Force last NL " },
 
-	joe_free(xx);
-	switch (glopts[x].type) {
-	case 1:
-		v = calc(bw, s);
-		if (merr) {
-			msgnw(bw->parent, merr);
-			ret = -1;
-		} else if (v >= glopts[x].low && v <= glopts[x].high)
-			*glopts[x].set = v;
-		else {
-			msgnw(bw->parent, US "Value out of range");
-			ret = -1;
-		}
-		break;
-	case 2:
-		if (s[0])
-			*(unsigned char **) glopts[x].set = (unsigned char *)strdup((char *)s);
-		break;
-	case 5:
-		v = calc(bw, s);
-		if (merr) {
-			msgnw(bw->parent, merr);
-			ret = -1;
-		} else if (v >= glopts[x].low && v <= glopts[x].high)
-			*(int *) ((unsigned char *) &bw->o + glopts[x].ofst) = v;
-		else {
-			msgnw(bw->parent, US "Value out of range");
-			ret = -1;
-		}
-		break;
-	case 7:
-		v = calc(bw, s) - 1.0;
-		if (merr) {
-			msgnw(bw->parent, merr);
-			ret = -1;
-		} else if (v >= glopts[x].low && v <= glopts[x].high)
-			*(int *) ((unsigned char *) &bw->o + glopts[x].ofst) = v;
-		else {
-			msgnw(bw->parent, US "Value out of range");
-			ret = -1;
-		}
-		break;
-	}
-	vsrm(s);
-	bw->b->o = bw->o;
-	wfit(bw->parent->t);
-	updall();
-	if (notify)
-		*notify = 1;
-	return ret;
-}
+  {"nobackups", 0, &nobackups, 0,
+   "Backup files will not be made",
+   "Backup files will be made",
+   " Disable backups " },
 
-static int dosyntax(BW *bw, unsigned char *s, int *xx, int *notify)
-{
-	int ret = 0;
-	struct high_syntax *syn;
+  {"lightoff", 0, &lightoff, 0,
+   "Highlighting turned off after block operations",
+   "Highlighting not turned off after block operations",
+   "Auto unmark " },
 
-	syn = load_dfa(s);
+  {"exask", 0, &exask, 0,
+   "Prompt for filename in save & exit command",
+   "Don't prompt for filename in save & exit command",
+   "Exit ask "},
 
-	if (syn)
-		bw->o.syntax = syn;
-	else
-		msgnw(bw->parent, US "Syntax definition file not found");
+  {"beep", 0, &beep, 0,
+   "Warning bell enabled", 
+   "Warning bell disabled",
+   "Beeps " },
 
-	vsrm(s);
-	bw->b->o = bw->o;
-	updall();
-	if (notify)
-		*notify = 1;
-	return ret;
-}
+  {"nosta", 0, &staen, 0,
+   "Top-most status line disabled",
+   "Top-most status line enabled",
+   " Disable status line " },
 
-unsigned char **syntaxes = NULL; /* Array of available syntaxes */
+  {"keepup", 0, &keepup, 0,
+   "Status line updated constantly",
+   "Status line updated once/sec",
+   " Fast status line " },
 
-static int syntaxcmplt(BW *bw)
-{
-	if (!syntaxes) {
-		unsigned char *oldpwd = pwd();
-		unsigned char **t;
-		unsigned char *p;
-		int x, y;
+  {"pg", 1, &pgamnt, 0,
+   "Lines to keep for PgUp/PgDn or -1 for 1/2 window (%d): ",
+   0,
+   " No. PgUp/PgDn lines ", 0, -1, 64 },
 
-		if (chpwd(US (JOERC "syntax")))
-			return -1;
-		t = rexpnd(US "*.jsf");
-		if (!t) {
-			chpwd(oldpwd);
-			return -1;
-		}
-		if (!aLEN(t)) {
-			varm(t);
-			chpwd(oldpwd);
-			return -1;
-		}
+  {"csmode", 0, &csmode, 0,
+   "Start search after a search repeats previous search",
+   "Start search always starts a new search",
+   "Continued search " },
 
-		for (x = 0; x != aLEN(t); ++x) {
-			unsigned char *r = vsncpy(NULL,0,t[x],(unsigned char *)strrchr((char *)(t[x]),'.')-t[x]);
-			syntaxes = vaadd(syntaxes,r);
-		}
-		varm(t);
+  {"rdonly", 4, 0, (char *)&fdefault.readonly,
+   "Read only",
+   "Full editing",
+   "O Read only "},
 
-		p = (unsigned char *)getenv("HOME");
-		if (p) {
-			unsigned char buf[1024];
-			joe_snprintf_1((char *)buf,sizeof(buf),"%s/.joe/syntax",p);
-			if (!chpwd(buf) && (t = rexpnd(US "*.jsf"))) {
-				for (x = 0; x != aLEN(t); ++x)
-					*strrchr((char *)t[x],'.') = 0;
-				for (x = 0; x != aLEN(t); ++x) {
-					for (y = 0; y != aLEN(syntaxes); ++y)
-						if (!strcmp(t[x],syntaxes[y]))
-							break;
-					if (y == aLEN(syntaxes)) {
-						unsigned char *r = vsncpy(NULL,0,sv(t[x]));
-						syntaxes = vaadd(syntaxes,r);
-					}
-				}
-				varm(t);
-			}
-		}
+  {"backpath", 2, (int *)&backpath, 0,
+   "Backup files stored in (%s): ",
+   0,
+   "Path to backup files " },
 
-		vasort(av(syntaxes));
-		chpwd(oldpwd);
-	}
-	return simple_cmplt(bw,syntaxes);
-}
+  {"nonotice", 0, &nonotice, 0,
+   0, 0, 0 },
 
-static int doencoding(BW *bw, unsigned char *s, int *xx, int *notify)
-{
-	int ret = 0;
-	struct charmap *map;
+  {"noxon", 0, &noxon, 0,
+   0, 0, 0 },
 
+  {"orphan", 0, &orphan, 0,
+   0, 0, 0 },
 
-	map = find_charmap(s);
+  {"help", 0, &help, 0,
+   0, 0, 0 },
 
-	if (map) {
-		bw->o.charmap = map;
-		joe_snprintf_1((char *)msgbuf, JOE_MSGBUFSIZE, "%s encoding assumed for this file", map->name);
-		msgnw(bw->parent, msgbuf);
-	} else
-		msgnw(bw->parent, US "Character set not found");
+  {"dopadding", 0, &dopadding, 0,
+   0, 0, 0 },
 
-	vsrm(s);
-	bw->b->o = bw->o;
-	updall();
-	if (notify)
-		*notify = 1;
-	return ret;
-}
+  {"lines", 1, &lines, 0,
+   0, 0, 0, 0, 2, 1024 },
 
-unsigned char **encodings = NULL; /* Array of available encodinges */
+  {"baud", 1, &Baud, 0,
+   0, 0, 0, 0, 50, 32767 }, 
 
-static int encodingcmplt(BW *bw)
-{
-	if (!encodings) {
-		encodings = get_encodings();
-		vasort(av(encodings));
-	}
-	return simple_cmplt(bw,encodings);
-}
+  {"columns", 1, &columns, 0,
+   0, 0, 0, 0, 2, 1024 },
 
-static int doopt(MENU *m, int x, void *object, int flg)
-{
-	BW *bw = m->parent->win->object;
-	int *xx;
-	unsigned char buf[OPT_BUF_SIZE];
-	int *notify = m->parent->notify;
+  {"skiptop", 1, &skiptop, 0,
+   0, 0, 0, 0, 0, 64 }, 
 
-	switch (glopts[x].type) {
-	case 0:
-		if (!flg)
-			*glopts[x].set = !*glopts[x].set;
-		else if (flg == 1)
-			*glopts[x].set = 1;
-		else
-			*glopts[x].set = 0;
-		wabort(m->parent);
-		msgnw(bw->parent, *glopts[x].set ? glopts[x].yes : glopts[x].no);
-		break;
-	case 4:
-		if (!flg)
-			*(int *) ((unsigned char *) &bw->o + glopts[x].ofst) = !*(int *) ((unsigned char *) &bw->o + glopts[x].ofst);
-		else if (flg == 1)
-			*(int *) ((unsigned char *) &bw->o + glopts[x].ofst) = 1;
-		else
-			*(int *) ((unsigned char *) &bw->o + glopts[x].ofst) = 0;
-		wabort(m->parent);
-		msgnw(bw->parent, *(int *) ((unsigned char *) &bw->o + glopts[x].ofst) ? glopts[x].yes : glopts[x].no);
-		if (glopts[x].ofst == (unsigned char *) &fdefault.readonly - (unsigned char *) &fdefault)
-			bw->b->rdonly = bw->o.readonly;
-		break;
-	case 1:
-		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, *glopts[x].set);
-		xx = (int *) joe_malloc(sizeof(int));
+  { 0, 0, 0 }
+ };
 
-		*xx = x;
-		m->parent->notify = 0;
-		wabort(m->parent);
-		if (wmkpw(bw->parent, buf, NULL, doopt1, NULL, doabrt1, utypebw, xx, notify, locale_map))
-			return 0;
-		else
-			return -1;
-	case 2:
-		if (*(unsigned char **) glopts[x].set)
-			joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, *(unsigned char **) glopts[x].set);
-		else
-			joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, "");
-		xx = (int *) joe_malloc(sizeof(int));
+int isiz=0;
 
-		*xx = x;
-		m->parent->notify = 0;
-		wabort(m->parent);
-		if (wmkpw(bw->parent, buf, NULL, doopt1, NULL, doabrt1, utypebw, xx, notify, locale_map))
-			return 0;
-		else
-			return -1;
-	case 5:
-		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, *(int *) ((unsigned char *) &bw->o + glopts[x].ofst));
-		goto in;
-	case 7:
-		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, *(int *) ((unsigned char *) &bw->o + glopts[x].ofst) + 1);
-	      in:xx = (int *) joe_malloc(sizeof(int));
+void izopts()
+ {
+ int x;
+ for(x=0;glopts[x].name;++x)
+  switch(glopts[x].type)
+   {
+   case 4: case 5: case 6: case 7: case 8:
+   glopts[x].ofst=glopts[x].addr-(char *)&fdefault;
+   }
+ isiz=1;
+ }
 
-		*xx = x;
-		m->parent->notify = 0;
-		wabort(m->parent);
-		if (wmkpw(bw->parent, buf, NULL, doopt1, NULL, doabrt1, utypebw, xx, notify, locale_map))
-			return 0;
-		else
-			return -1;
+int glopt(s,arg,options,set)
+char *s, *arg;
+OPTIONS *options;
+ {
+ int val;
+ int ret=0;
+ int st=1;
+ int x;
+ if(!isiz) izopts();
+ if(s[0]=='-') st=0, ++s;
+ for(x=0;glopts[x].name;++x)
+  if(!zcmp(glopts[x].name,s))
+   {
+   switch(glopts[x].type)
+    {
+    case 0: if(set) *glopts[x].set=st;
+    break;
+    
+    case 1: if(set && arg)
+             {
+             sscanf(arg,"%d",&val);
+             if(val>=glopts[x].low && val<=glopts[x].high) *glopts[x].set=val;
+             }
+    break;
 
-	case 9:
-		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, "");
-		m->parent->notify = 0;
-		wabort(m->parent);
-		if (wmkpw(bw->parent, buf, NULL, dosyntax, NULL, NULL, syntaxcmplt, NULL, notify, locale_map))
-			return 0;
-		else
-			return -1;
+    case 2: if(set)
+             if(arg) *(char **)glopts[x].set=zdup(arg);
+             else *(char **)glopts[x].set=0;
+    break;
 
-	case 13:
-		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, "");
-		m->parent->notify = 0;
-		wabort(m->parent);
-		if (wmkpw(bw->parent, buf, NULL, doencoding, NULL, NULL, encodingcmplt, NULL, notify, locale_map))
-			return 0;
-		else
-			return -1;
-	}
-	if (notify)
-		*notify = 1;
-	bw->b->o = bw->o;
-	wfit(bw->parent->t);
-	updall();
-	return 0;
-}
+    case 4: if(options) *(int *)((char *)options+glopts[x].ofst)=st;
+            else if(set==2) *(int *)((char *)&fdefault+glopts[x].ofst)=st;
+    break;
+    
+    case 5: if(arg)
+             if(options)
+              {
+              sscanf(arg,"%d",&val);
+              if(val>=glopts[x].low && val<=glopts[x].high)
+               *(int *)((char *)options+glopts[x].ofst)=val;
+              }
+             else if(set==2)
+              {
+              sscanf(arg,"%d",&val);
+              if(val>=glopts[x].low && val<=glopts[x].high)
+               *(int *)((char *)&fdefault+glopts[x].ofst)=val;
+              }
+    break;
 
-static int doabrt(MENU *m, int x, unsigned char **s)
-{
-	optx = x;
-	for (x = 0; s[x]; ++x)
-		joe_free(s[x]);
-	joe_free(s);
-	return -1;
-}
+    case 7: if(arg)
+             {
+             int zz=0;
+             sscanf(arg,"%d",&zz);
+             if(zz>=glopts[x].low && zz <=glopts[x].high)
+              {
+              --zz;
+              if(options) *(int *)((char *)options+glopts[x].ofst)=zz;
+              else if(set==2) *(int *)((char *)&fdefault+glopts[x].ofst)=zz;
+              }
+             }
+    break;
+    }
+   if((glopts[x].type&3)==0 || !arg) return 1;
+   else return 2;
+   }
+ if(!zcmp(s,"lmsg"))
+  {
+  if(arg)
+   {
+   if(options) options->lmsg=zdup(arg);
+   else if(set==2) fdefault.lmsg=zdup(arg);
+   ret=2;
+   }
+  else ret=1;
+  }
+ else if(!zcmp(s,"rmsg"))
+  {
+  if(arg)
+   {
+   if(options) options->rmsg=zdup(arg);
+   else if(set==2) fdefault.rmsg=zdup(arg);
+   ret=2;
+   }
+  else ret=1;
+  }
+ else if(!zcmp(s,"keymap"))
+  {
+  if(arg)
+   {
+   int y;
+   for(y=0;!cwhitel(arg[y]);++y);
+   if(!arg[y]) arg[y]=0;
+   if(options && y) options->context=zdup(arg);
+   ret=2;
+   }
+  else ret=1;
+  }
+ else if(!zcmp(s,"mnew"))
+  {
+  if(arg)
+   {
+   int sta;
+   if(options) options->mnew=mparse(NULL,arg,&sta);
+   else if(set==2) fdefault.mnew=mparse(NULL,arg,&sta);
+   ret=2;
+   }
+  else ret=1;
+  }
+ else if(!zcmp(s,"mold"))
+  {
+  if(arg)
+   {
+   int sta;
+   if(options) options->mold=mparse(NULL,arg,&sta);
+   else if(set==2) fdefault.mold=mparse(NULL,arg,&sta);
+   ret=2;
+   }
+  else ret=1;
+  }
+ else if(!zcmp(s,"msnew"))
+  {
+  if(arg)
+   {
+   int sta;
+   if(options) options->msnew=mparse(NULL,arg,&sta);
+   else if(set==2) fdefault.msnew=mparse(NULL,arg,&sta);
+   ret=2;
+   }
+  else ret=1;
+  }
+ else if(!zcmp(s,"msold"))
+  {
+  if(arg)
+   {
+   int sta;
+   if(options) options->msold=mparse(NULL,arg,&sta);
+   else if(set==2) fdefault.msold=mparse(NULL,arg,&sta);
+   ret=2;
+   }
+  else ret=1;
+  }
+ done: return ret;
+ }
 
-int umode(BW *bw)
-{
-	int size;
-	unsigned char **s;
-	int x;
+static int optx=0;
 
-	bw->b->o.readonly = bw->o.readonly = bw->b->rdonly;
-	for (size = 0; glopts[size].menu; ++size) ;
-	s = (unsigned char **) joe_malloc(sizeof(unsigned char *) * (size + 1));
+int doabrt1(bw,xx)
+BW *bw;
+int *xx;
+ {
+ free(xx);
+ return -1;
+ }
 
-	for (x = 0; x != size; ++x) {
-		s[x] = (unsigned char *) joe_malloc(80);		/* FIXME: why 40 ??? */
-		switch (glopts[x].type) {
-		case 0:
-			joe_snprintf_2((char *)(s[x]), OPT_BUF_SIZE, "%s%s", glopts[x].menu, *glopts[x].set ? "ON" : "OFF");
-			break;
-		case 1:
-			joe_snprintf_2((char *)(s[x]), OPT_BUF_SIZE, "%s%d", glopts[x].menu, *glopts[x].set);
-			break;
-		case 2:
-		case 9:
-		case 13:
-			strcpy((char *)(s[x]), (char *)glopts[x].menu);
-			break;
-		case 4:
-			joe_snprintf_2((char *)(s[x]), OPT_BUF_SIZE, "%s%s", glopts[x].menu, *(int *) ((unsigned char *) &bw->o + glopts[x].ofst) ? "ON" : "OFF");
-			break;
-		case 5:
-			joe_snprintf_2((char *)(s[x]), OPT_BUF_SIZE, "%s%d", glopts[x].menu, *(int *) ((unsigned char *) &bw->o + glopts[x].ofst));
-			break;
-		case 7:
-			joe_snprintf_2((char *)(s[x]), OPT_BUF_SIZE, "%s%d", glopts[x].menu, *(int *) ((unsigned char *) &bw->o + glopts[x].ofst) + 1);
-			break;
-		}
-	}
-	s[x] = 0;
-	if (mkmenu(bw->parent, s, doopt, doabrt, NULL, optx, s, NULL))
-		return 0;
-	else
-		return -1;
-}
+int doopt1(bw,s,xx,notify)
+BW *bw;
+char *s;
+int *xx;
+int *notify;
+ {
+ int ret=0;
+ int x= *xx;
+ int v;
+ free(xx);
+ switch(glopts[x].type)
+  {
+  case 1:
+   v=calc(bw,s);
+   if(merr) msgnw(bw,merr), ret= -1;
+   else if(v>=glopts[x].low && v<=glopts[x].high) *glopts[x].set=v;
+   else msgnw(bw,"Value out of range"), ret= -1;
+   break;
+  case 2: if(s[0]) *(char **)glopts[x].set=zdup(s); break;
+  case 5:
+   v=calc(bw,s);
+   if(merr) msgnw(bw,merr), ret= -1;
+   else if(v>=glopts[x].low && v<=glopts[x].high) *(int *)((char *)&bw->o+glopts[x].ofst)=v;
+   else msgnw(bw,"Value out of range"), ret= -1;
+   break;
+  case 7:
+   v=calc(bw,s)-1.0;
+   if(merr) msgnw(bw,merr), ret= -1;
+   else if(v>=glopts[x].low && v<=glopts[x].high) *(int *)((char *)&bw->o+glopts[x].ofst)=v;
+   else msgnw(bw,"Value out of range"), ret= -1;
+   break;
+  }
+ vsrm(s);
+ bw->b->o=bw->o;
+ wfit(bw->parent->t);
+ updall();
+ if(notify) *notify=1;
+ return ret;
+ }
+
+int doopt(m,x,object,flg)
+MENU *m;
+void *object;
+ {
+ BW *bw=m->parent->win->object;
+ int *xx;
+ char buf[80];
+ int *notify=m->parent->notify;
+ switch(glopts[x].type)
+  {
+  case 0:
+  if(!flg) *glopts[x].set= !*glopts[x].set;
+  else if(flg==1) *glopts[x].set= 1;
+  else *glopts[x].set=0;
+  uabort(m,MAXINT);
+  msgnw(bw,*glopts[x].set?glopts[x].yes:glopts[x].no);
+  break;
+
+  case 4:
+  if(!flg) *(int *)((char *)&bw->o+glopts[x].ofst)= !*(int *)((char *)&bw->o+glopts[x].ofst);
+  else if(flg==1) *(int *)((char *)&bw->o+glopts[x].ofst)=1;
+  else *(int *)((char *)&bw->o+glopts[x].ofst)=0;
+  uabort(m,MAXINT);
+  msgnw(bw,*(int *)((char *)&bw->o+glopts[x].ofst)?glopts[x].yes:glopts[x].no);
+  if(glopts[x].ofst==(char *)&fdefault.readonly-(char *)&fdefault)
+   bw->b->rdonly=bw->o.readonly;
+  break;
+
+  case 1:
+  sprintf(buf,glopts[x].yes,*glopts[x].set);
+  xx=(int *)malloc(sizeof(int)); *xx=x;
+  m->parent->notify=0;
+  uabort(m,MAXINT);
+  if(wmkpw(bw,buf,NULL,doopt1,NULL,doabrt1,utypebw,xx,notify)) return 0;
+  else return -1;
+
+  case 2:
+  if(*(char **)glopts[x].set) sprintf(buf,glopts[x].yes,*(char **)glopts[x].set);
+  else sprintf(buf,glopts[x].yes,"");
+  xx=(int *)malloc(sizeof(int)); *xx=x;
+  m->parent->notify=0;
+  uabort(m,MAXINT);
+  if(wmkpw(bw,buf,NULL,doopt1,NULL,doabrt1,utypebw,xx,notify)) return 0;
+  else return -1;
+
+  case 5:
+  sprintf(buf,glopts[x].yes,*(int *)((char *)&bw->o+glopts[x].ofst));
+  goto in;
+  
+  case 7:
+  sprintf(buf,glopts[x].yes,*(int *)((char *)&bw->o+glopts[x].ofst)+1);
+  in: xx=(int *)malloc(sizeof(int)); *xx=x;
+  m->parent->notify=0;
+  uabort(m,MAXINT);
+  if(wmkpw(bw,buf,NULL,doopt1,NULL,doabrt1,utypebw,xx,notify)) return 0;
+  else return -1;
+  }
+ if(notify) *notify=1;
+ bw->b->o=bw->o;
+ wfit(bw->parent->t);
+ updall();
+ return 0;
+ }
+
+int doabrt(m,x,s)
+MENU *m;
+char **s;
+ {
+ optx=x;
+ for(x=0;s[x];++x) free(s[x]);
+ free(s);
+ return -1;
+ }
+
+int umode(bw)
+BW *bw;
+ {
+ int size;
+ char **s;
+ int x;
+ bw->b->o.readonly=bw->o.readonly=bw->b->rdonly;
+ for(size=0;glopts[size].menu;++size);
+ s=(char **)malloc(sizeof(char *)*(size+1));
+ for(x=0;x!=size;++x)
+  {
+  s[x]=(char *)malloc(40);
+  switch(glopts[x].type)
+   {
+   case 0: sprintf(s[x],"%s%s",glopts[x].menu,*glopts[x].set?"ON":"OFF");
+   break;
+   
+   case 1: sprintf(s[x],"%s%d",glopts[x].menu,*glopts[x].set);
+   break;
+
+   case 2: zcpy(s[x],glopts[x].menu);
+   break;
+
+   case 4: sprintf(s[x],"%s%s",glopts[x].menu,*(int *)((char *)&bw->o+glopts[x].ofst)?"ON":"OFF");
+   break;
+   
+   case 5: sprintf(s[x],"%s%d",glopts[x].menu,*(int *)((char *)&bw->o+glopts[x].ofst));
+   break;
+
+   case 7: sprintf(s[x],"%s%d",glopts[x].menu,*(int *)((char *)&bw->o+glopts[x].ofst)+1);
+   break;
+   }
+  }
+ s[x]=0;
+ if(mkmenu(bw,s,doopt,doabrt,NULL,optx,s,NULL)) return 0;
+ else return -1;
+ }
+
 
 /* Process rc file
  * Returns 0 if the rc file was succefully processed
@@ -801,218 +598,268 @@ int umode(BW *bw)
  *         1 if there was a syntax error in the file
  */
 
-int procrc(CAP *cap, unsigned char *name)
-{
-	OPTIONS *o = &fdefault;	/* Current options */
-	KMAP *context = NULL;	/* Current context */
-	unsigned char buf[1024];	/* Input buffer */
-	FILE *fd;		/* rc file */
-	int line = 0;		/* Line number */
-	int err = 0;		/* Set to 1 if there was a syntax error */
+int nhelp=0;			/* No. help screens so far */
 
-	strcpy((char *)buf, (char *)name);
+int procrc(cap,name)
+CAP *cap;
+char *name;
+ {
+ OPTIONS *o=0;			/* Current options */
+ KMAP *context=0;		/* Current context */
+ unsigned char buf[1024];	/* Input buffer */
+ FILE *fd;			/* rc file */
+ int line=0;			/* Line number */
+ int err=0;			/* Set to 1 if there was a syntax error */
+ ossep(zcpy(buf,name));
 #ifdef __MSDOS__
-	fd = fopen((char *)buf, "rt");
+ fd=fopen(buf,"rt");
 #else
-	fd = fopen((char *)buf, "r");
+ fd=fopen(buf,"r");
 #endif
+ 
+ if(!fd) return -1;		/* Return if we couldn't open the rc file */
+ 
+ fprintf(stderr,"Processing '%s'...",name); fflush(stderr);
+ 
+ while(++line, fgets(buf,1024,fd))
+  switch(buf[0])
+   {
+   case ' ': case '\t': case '\n': case '\f': case 0:
+   break;	/* Skip comment lines */
 
-	if (!fd)
-		return -1;	/* Return if we couldn't open the rc file */
+   case '*':	/* Select file types for file-type dependant options */
+    {
+    int x;
+    o=(OPTIONS *)malloc(sizeof(OPTIONS));
+    *o=fdefault;
+    for(x=0;buf[x] && buf[x]!='\n' && buf[x]!=' ' && buf[x]!='\t';++x);
+    buf[x]=0;
+    o->next=options;
+    options=o;
+    o->name=zdup(buf);
+    }
+   break;
+   
+   case '-':	/* Set an option */
+    {
+    unsigned char *opt=buf+1;
+    int x;
+    unsigned char *arg=0;
+    for(x=0;buf[x] && buf[x]!='\n' && buf[x]!=' ' && buf[x]!='\t';++x);
+    if(buf[x] && buf[x]!='\n')
+     {
+     buf[x]=0;
+     for(arg=buf+ ++x;buf[x] && buf[x]!='\n';++x);
+     }
+    buf[x]=0;
+    if(!glopt(opt,arg,o,2))
+     {
+     err=1;
+     fprintf(stderr,"\n%s %d: Unknown option %s",name,line,opt);
+     }
+    }
+   break;
+   
+   case '{':	/* Enter help text */
+    {
+    int bfl;
+    struct help *tmp=(struct help *)malloc(sizeof(struct help));
+    nhelp++;
+    tmp->next=first_help;
+    first_help=tmp;
+    tmp->name=vsncpy(NULL,0,sz(buf+1)-1);
+    help_names=vaadd(help_names,tmp->name);
+    tmp->hlptxt=0;
+    tmp->hlpsiz=0;
+    tmp->hlpbsz=0;
+    tmp->hlplns=0;
+    up:
+    if(++line, !fgets(buf,256,fd))
+     {
+     err=1;
+     fprintf(stderr,"\n%s %d: End of joerc file occured before end of help text",name,line);
+     break;
+     }
+    if(buf[0]=='}')
+     {
+     if(!hlptxt)
+      hlptxt=tmp->hlptxt,
+      hlpsiz=tmp->hlpsiz,
+      hlpbsz=tmp->hlpbsz,
+      hlplns=tmp->hlplns;
+     continue;
+     }
+    bfl=zlen(buf);
+    if(tmp->hlpsiz+bfl>tmp->hlpbsz)
+     {
+     if(tmp->hlptxt) tmp->hlptxt=(char *)realloc(tmp->hlptxt,tmp->hlpbsz+bfl+1024);
+     else tmp->hlptxt=(char *)malloc(bfl+1024), tmp->hlptxt[0]=0;
+     tmp->hlpbsz+=bfl+1024;
+     }
+    zcpy(tmp->hlptxt+tmp->hlpsiz,buf);
+    tmp->hlpsiz+=bfl;
+    ++tmp->hlplns;
+    goto up;
+    }
+   break;
 
-	fprintf(stderr, "Processing '%s'...", name);
-	fflush(stderr);
+   case ':':	/* Select context */
+    {
+    int x, c;
+    for(x=1;!cwhitef(buf[x]);++x);
+    c=buf[x]; buf[x]=0;
+    if(x!=1)
+     if(!zcmp(buf+1,"def"))
+      {
+      int y;
+      for(buf[x]=c;cwhite(buf[x]);++x);
+      for(y=x;!cwhitef(buf[y]);++y);
+      c=buf[y]; buf[y]=0;
+      if(y!=x)
+       {
+       int sta;
+       MACRO *m;
+       if(cwhite(c) && (m=mparse(NULL,buf+y+1,&sta)))
+        addcmd(buf+x,m);
+       else
+        {
+        err=1;
+        fprintf(stderr,"\n%s %d: macro missing from :def",name,line);
+        }
+       }
+      else
+       {
+       err=1;
+       fprintf(stderr,"\n%s %d: command name missing from :def",name,line);
+       }
+      }
+     else if(!zcmp(buf+1,"inherit"))
+      if(context)
+       {
+       for(buf[x]=c;cwhite(buf[x]);++x);
+       for(c=x;!cwhitef(buf[c]);++c);
+       buf[c]=0;
+       if(c!=x) kcpy(context,getcontext(buf+x));
+       else
+        {
+        err=1;
+        fprintf(stderr,"\n%s %d: context name missing from :inherit",name,line);
+        }
+       }
+      else
+       {
+       err=1;
+       fprintf(stderr,"\n%s %d: No context selected for :inherit",name,line);
+       }
+     else if(!zcmp(buf+1,"include"))
+      {
+      for(buf[x]=c;cwhite(buf[x]);++x);
+      for(c=x;!cwhitef(buf[c]);++c);
+      buf[c]=0;
+      if(c!=x)
+       {
+       switch(procrc(buf+x))
+        {
+        case 1: err=1; break;
+        case -1: fprintf(stderr,"\n%s %d: Couldn't open %s",name,line,buf+x);
+                 err=1; break;
+        }
+       context=0;
+       o=0;
+       }
+      else
+       {
+       err=1;
+       fprintf(stderr,"\n%s %d: :include missing file name",name,line);
+       }
+      }
+     else if(!zcmp(buf+1,"delete"))
+      if(context)
+       {
+       int y;
+       for(buf[x]=c;cwhite(buf[x]);++x);
+       for(y=x;buf[y]!=0 && buf[y]!='\t' && buf[y]!='\n' &&
+               (buf[y]!=' ' || buf[y+1]!=' ');++y);
+       buf[y]=0;
+       kdel(context,buf+x);
+       }
+      else
+       {
+       err=1;
+       fprintf(stderr,"\n%s %d: No context selected for :delete",name,line);
+       }
+     else context=getcontext(buf+1);
+    else
+     {
+     err=1;
+     fprintf(stderr,"\n%s %d: Invalid context name",name,line);
+     }
+    }
+   break;
 
-	while (fgets((char *)buf, sizeof(buf), fd)) {
-		line++;
-		switch (buf[0]) {
-		case ' ':
-		case '\t':
-		case '\n':
-		case '\f':
-		case 0:
-			break;	/* Skip comment lines */
-		case '*':	/* Select file types for file-type dependant options */
-			{
-				int x;
+   default:	/* Get key-sequence to macro binding */
+    {
+    int x, y, c;
+    MACRO *m;
+    if(!context)
+     {
+     err=1;
+     fprintf(stderr,"\n%s %d: No context selected for macro to key-sequence binding",name,line);
+     break;
+     }
 
-				o = (OPTIONS *) joe_malloc(sizeof(OPTIONS));
-				*o = fdefault;
-				for (x = 0; buf[x] && buf[x] != '\n' && buf[x] != ' ' && buf[x] != '\t'; ++x) ;
-				buf[x] = 0;
-				o->next = options;
-				options = o;
-				o->name_regex = (unsigned char *)strdup((char *)buf);
-			}
-			break;
-		case '+':	/* Set file contents match regex */
-			{
-				int x;
+    m=0;
+    macroloop:
+    m=mparse(m,buf,&x);
+    if(x== -1)
+     {
+     err=1;
+     fprintf(stderr,"\n%s %d: Unknown command in macro",name,line);
+     break;
+     }
+    else if(x== -2)
+     {
+     fgets(buf,1024,fd);
+     goto macroloop;
+     }
+    if(!m) break;
 
-				for (x = 0; buf[x] && buf[x] != '\n' && buf[x] != '\r'; ++x) ;
-				buf[x] = 0;
-				if (o)
-					o->contents_regex = (unsigned char *)strdup((char *)(buf+1));
-			}
-			break;
-		case '-':	/* Set an option */
-			{
-				unsigned char *opt = buf + 1;
-				int x;
-				unsigned char *arg = NULL;
+    /* Skip to end of key sequence */
+    for(y=x;buf[y]!=0 && buf[y]!='\t' && buf[y]!='\n' && 
+            (buf[y]!=' ' || buf[y+1]!=' ');++y);
+    buf[y]=0;
 
-				for (x = 0; buf[x] && buf[x] != '\n' && buf[x] != ' ' && buf[x] != '\t'; ++x) ;
-				if (buf[x] && buf[x] != '\n') {
-					buf[x] = 0;
-					for (arg = buf + ++x; buf[x] && buf[x] != '\n'; ++x) ;
-				}
-				buf[x] = 0;
-				if (!glopt(opt, arg, o, 2)) {
-					err = 1;
-					fprintf(stderr, "\n%s %d: Unknown option %s", name, line, opt);
-				}
-			}
-			break;
-		case '{':	/* Ignore help text */
-			{
-				while ((fgets((char *)buf, 256, fd)) && (buf[0] != '}'))
-					/* do nothing */;
-				if (buf[0] != '}') {
-					err = 1;
-					fprintf(stderr, "\n%s %d: End of joerc file occured before end of help text\n", name, line);
-					break;
-				}
-			}
-			break;
-		case ':':	/* Select context */
-			{
-				int x, c;
+    /* Add binding to context */
+    if(kadd(cap,context,buf+x,m)== -1)
+     {
+     fprintf(stderr,"\n%s %d: Bad key sequence '%s'",name,line,buf+x);
+     err=1;
+     }
+    }
+   break;
+   }
+ fclose(fd);			/* Close rc file */
 
-				for (x = 1; !joe_isspace_eof(locale_map,buf[x]); ++x) ;
-				c = buf[x];
-				buf[x] = 0;
-				if (x != 1)
-					if (!strcmp(buf + 1, "def")) {
-						int y;
+ /* Print proper ending string */
+ if(err) fprintf(stderr,"\ndone\n");
+ else fprintf(stderr,"done\n");
 
-						for (buf[x] = c; joe_isblank(locale_map,buf[x]); ++x) ;
-						for (y = x; !joe_isspace_eof(locale_map,buf[y]); ++y) ;
-						c = buf[y];
-						buf[y] = 0;
-						if (y != x) {
-							int sta;
-							MACRO *m;
+ return err;			/* 0 for success, 1 for syntax error */
+ }
 
-							if (joe_isblank(locale_map,c)
-							    && (m = mparse(NULL, buf + y + 1, &sta)))
-								addcmd(buf + x, m);
-							else {
-								err = 1;
-								fprintf(stderr, "\n%s %d: macro missing from :def", name, line);
-							}
-						} else {
-							err = 1;
-							fprintf(stderr, "\n%s %d: command name missing from :def", name, line);
-						}
-					} else if (!strcmp(buf + 1, "inherit"))
-						if (context) {
-							for (buf[x] = c; joe_isblank(locale_map,buf[x]); ++x) ;
-							for (c = x; !joe_isspace_eof(locale_map,buf[c]); ++c) ;
-							buf[c] = 0;
-							if (c != x)
-								kcpy(context, kmap_getcontext(buf + x));
-							else {
-								err = 1;
-								fprintf(stderr, "\n%s %d: context name missing from :inherit", name, line);
-							}
-						} else {
-							err = 1;
-							fprintf(stderr, "\n%s %d: No context selected for :inherit", name, line);
-					} else if (!strcmp(buf + 1, "include")) {
-						for (buf[x] = c; joe_isblank(locale_map,buf[x]); ++x) ;
-						for (c = x; !joe_isspace_eof(locale_map,buf[c]); ++c) ;
-						buf[c] = 0;
-						if (c != x) {
-							switch (procrc(cap, buf + x)) {
-							case 1:
-								err = 1;
-								break;
-							case -1:
-								fprintf(stderr, "\n%s %d: Couldn't open %s", name, line, buf + x);
-								err = 1;
-								break;
-							}
-							context = 0;
-							o = &fdefault;
-						} else {
-							err = 1;
-							fprintf(stderr, "\n%s %d: :include missing file name", name, line);
-						}
-					} else if (!strcmp(buf + 1, "delete"))
-						if (context) {
-							int y;
-
-							for (buf[x] = c; joe_isblank(locale_map,buf[x]); ++x) ;
-							for (y = x; buf[y] != 0 && buf[y] != '\t' && buf[y] != '\n' && (buf[y] != ' ' || buf[y + 1]
-															!= ' '); ++y) ;
-							buf[y] = 0;
-							kdel(context, buf + x);
-						} else {
-							err = 1;
-							fprintf(stderr, "\n%s %d: No context selected for :delete", name, line);
-					} else
-						context = kmap_getcontext(buf + 1);
-				else {
-					err = 1;
-					fprintf(stderr, "\n%s %d: Invalid context name", name, line);
-				}
-			}
-			break;
-		default:	/* Get key-sequence to macro binding */
-			{
-				int x, y;
-				MACRO *m;
-
-				if (!context) {
-					err = 1;
-					fprintf(stderr, "\n%s %d: No context selected for macro to key-sequence binding", name, line);
-					break;
-				}
-
-				m = 0;
-			      macroloop:
-				m = mparse(m, buf, &x);
-				if (x == -1) {
-					err = 1;
-					fprintf(stderr, "\n%s %d: Unknown command in macro", name, line);
-					break;
-				} else if (x == -2) {
-					fgets((char *)buf, 1024, fd);
-					goto macroloop;
-				}
-				if (!m)
-					break;
-
-				/* Skip to end of key sequence */
-				for (y = x; buf[y] != 0 && buf[y] != '\t' && buf[y] != '\n' && (buf[y] != ' ' || buf[y + 1] != ' '); ++y) ;
-				buf[y] = 0;
-
-				/* Add binding to context */
-				if (kadd(cap, context, buf + x, m) == -1) {
-					fprintf(stderr, "\n%s %d: Bad key sequence '%s'", name, line, buf + x);
-					err = 1;
-				}
-			}
-			break;
-		}
-	}
-	fclose(fd);		/* Close rc file */
-
-	/* Print proper ending string */
-	if (err)
-		fprintf(stderr, "\ndone\n");
-	else
-		fprintf(stderr, "done\n");
-
-	return err;		/* 0 for success, 1 for syntax error */
-}
+void izhelp()
+ {
+ struct help *tmp;
+ /* Convert list of help screens into an array */
+ if(nhelp)
+  {
+  help_structs=(struct help **) malloc(sizeof(struct help *)*(nhelp+1));
+  help_structs[nhelp]=0;
+  tmp=first_help;
+  while(nhelp--)
+   {
+   help_structs[nhelp]=tmp;
+   tmp=tmp->next;
+   }
+  }
+ }

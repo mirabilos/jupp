@@ -1,76 +1,60 @@
-/*
- *	Simple hash table
- *	Copyright
- *		(C) 1992 Joseph H. Allen
- *
- *	This file is part of JOE (Joe's Own Editor)
- */
-#include "config.h"
-#include "types.h"
+/* Simple hash table */
 
-#include <string.h>
-
+#include "zstr.h"
 #include "hash.h"
-#include "utils.h"
 
-#define hnext(accu, c) (((accu) << 4) + ((accu) >> 28) + (c))
+static HENTRY *freentry=0;
 
-static HENTRY *freentry = NULL;
+unsigned long hash(s)
+char *s;
+ {
+ unsigned long accu=0;
+ while(*s) accu=hnext(accu,*s++);
+ return accu;
+ }
 
-unsigned long hash(unsigned char *s)
-{
-	unsigned long accu = 0;
+HASH *htmk(len)
+ {
+ HASH *t=(HASH *)malloc(sizeof(HASH));
+ t->len=len-1;
+ t->tab=(HENTRY **)calloc(sizeof(HENTRY *),len);
+ return t;
+ }
 
-	while (*s) {
-		accu = hnext(accu, *s++);
-	}
-	return accu;
-}
+void htrm(ht)
+HASH *ht;
+ {
+ free(ht->tab);
+ free(ht);
+ }
 
-HASH *htmk(int len)
-{
-	HASH *t = (HASH *) joe_malloc(sizeof(HASH));
+void *htadd(ht,name,val)
+HASH *ht;
+char *name;
+void *val;
+ {
+ int idx=hash(name)&ht->len;
+ HENTRY *entry;
+ if(!freentry)
+  {
+  int x;
+  entry=(HENTRY *)malloc(sizeof(HENTRY)*64);
+  for(x=0;x!=64;++x) entry[x].next=freentry, freentry=entry+x;
+  }
+ entry=freentry;
+ freentry=entry->next;
+ entry->next=ht->tab[idx];
+ ht->tab[idx]=entry;
+ entry->name=name;
+ return entry->val=val;
+ }
 
-	t->len = len - 1;
-	t->tab = (HENTRY **) joe_calloc(sizeof(HENTRY *), len);
-	return t;
-}
-
-void htrm(HASH *ht)
-{
-	joe_free(ht->tab);
-	joe_free(ht);
-}
-
-void *htadd(HASH *ht, unsigned char *name, void *val)
-{
-	int idx = hash(name) & ht->len;
-	HENTRY *entry;
-	int x;
-
-	if (!freentry) {
-		entry = (HENTRY *) joe_malloc(sizeof(HENTRY) *64);
-		for (x = 0; x != 64; ++x) {
-			entry[x].next = freentry;
-			freentry = entry + x;
-		}
-	}
-	entry = freentry;
-	freentry = entry->next;
-	entry->next = ht->tab[idx];
-	ht->tab[idx] = entry;
-	entry->name = name;
-	return entry->val = val;
-}
-
-void *htfind(HASH *ht, unsigned char *name)
-{
-	HENTRY *e;
-
-	for (e = ht->tab[hash(name) & ht->len]; e; e = e->next) {
-		if (!strcmp(e->name, name)) {
-			return e->val;
-		}
-	}
-	return NULL;
-}
+void *htfind(ht,name)
+HASH *ht;
+char *name;
+ {
+ HENTRY *e;
+ for(e=ht->tab[hash(name)&ht->len];e;e=e->next)
+  if(!zcmp(e->name,name)) return e->val;
+ return 0;
+ }

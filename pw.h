@@ -1,34 +1,49 @@
-/*
- *	Prompt windows
- *	Copyright
- *		(C) 1992 Joseph H. Allen
- *
- *	This file is part of JOE (Joe's Own Editor)
- */
-#ifndef _JOE_PW_H
-#define _JOE_PW_H 1
+/* Prompt windows
+   Copyright (C) 1992 Joseph H. Allen
+
+This file is part of JOE (Joe's Own Editor)
+
+JOE is free software; you can redistribute it and/or modify it under the 
+terms of the GNU General Public License as published by the Free Software 
+Foundation; either version 1, or (at your option) any later version.  
+
+JOE is distributed in the hope that it will be useful, but WITHOUT ANY 
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
+FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more 
+details.  
+
+You should have received a copy of the GNU General Public License along with 
+JOE; see the file COPYING.  If not, write to the Free Software Foundation, 
+675 Mass Ave, Cambridge, MA 02139, USA.  */ 
+
+#ifndef _Ipw
+#define _Ipw 1
 
 #include "config.h"
-#include "types.h"
+#include "bw.h"
+
+typedef struct pw PW;
+
+struct pw
+ {
+ int (*pfunc)();	/* Func which gets called when RTN is hit */
+ int (*abrt)();		/* Func which gets called when window is aborted */
+ int (*tab)();		/* Func which gets called when TAB is hit */
+ char *prompt;		/* Prompt string */
+ int promptlen;		/* Width of prompt string */
+ int promptofst;	/* Prompt scroll offset */
+ B *hist;		/* History buffer */
+ void *object;		/* Object */
+ };
+
+#define TYPEPW 0x200
 
 /* BW *wmkpw(BW *bw,char *prompt,int (*func)(),char *huh,int (*abrt)(),
              int (*tab)(),void *object,int *notify);
  * Create a prompt window for the given window
  */
-BW *wmkpw PARAMS((W *w, unsigned char *prompt, B **history, int (*func) (), unsigned char *huh, int (*abrt) (), int (*tab) (), void *object, int *notify, struct charmap *map));
+BW *wmkpw();
 
-int ucmplt PARAMS((BW *bw, int k));
-
-/* Function for TAB completion */
-
-unsigned char **regsub PARAMS((unsigned char **z, int len, unsigned char *s));
-
-void cmplt_ins PARAMS((BW *bw,unsigned char *line));
-
-int cmplt_abrt PARAMS((BW *bw,int x, unsigned char *line));
-
-int cmplt_rtn PARAMS((MENU *m,int x,unsigned char *line));
-
-int simple_cmplt PARAMS((BW *bw,unsigned char **list));
+int ucmplt();
 
 #endif

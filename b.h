@@ -1,117 +1,168 @@
-/*
- *	Editor engine
- *	Copyright
- *		(C) 1992 Joseph H. Allen
- *
- *	This file is part of JOE (Joe's Own Editor)
- */
-#ifndef _JOE_B_H
-#define _JOE_B_H 1
+#ifndef _Ib
+#define _Ib 1
 
 #include "config.h"
-#include "types.h"
+#include "queue.h"
+#include "rc.h"
+#include "vfile.h"
 
+#define stdsiz 8192
 /* 31744 */
-extern unsigned char stdbuf[stdsiz];
+extern char stdbuf[stdsiz];
 
-extern int force;		/* Set to have final '\n' added to file */
-extern int tabwidth;		/* Default tab width */
+typedef struct buffer B;
+typedef struct point P;
+typedef struct header H;
 
-extern VFILE *vmem;		/* Virtual memory file used for buffer system */
+struct header
+ {
+ LINK(H) link;
+ long seg;
+ int hole;
+ int ehole;
+ int nlines;
+ };
 
-extern unsigned char *msgs[];
+struct point
+ {
+ LINK(P) link;
+ 
+ B *b;
+ int ofst;
+ char *ptr;
+ H *hdr;
+ 
+ long byte;
+ long line;
+ long col;
+ long xcol;
+ int valcol;
+ int end;
+ 
+ P **owner;
+ };
 
-B *bmk PARAMS((B *prop));
-void brm PARAMS((B *b));
+struct buffer
+ {
+ LINK(B) link;
+ P *bof;
+ P *eof;
+ char *name;
+ int orphan;
+ int count;
+ int changed;
+ int backup;
+ void *undo;
+ P *marks[10];			/* Bookmarks */
+ OPTIONS o;			/* Options */
+ P *oldcur;			/* Last cursor position before orphaning */
+ P *oldtop;			/* Last top screen position before orphaning */
+ int rdonly;			/* Set for read-only */
+ int internal;			/* Set for internal buffers */
+ int er;			/* Error code when file was loaded */
+ };
 
-B *bfind PARAMS((unsigned char *s));
-B *bfind_scratch PARAMS((unsigned char *s));
-B *bcheck_loaded PARAMS((unsigned char *s));
-B *bfind_reload PARAMS((unsigned char *s));
+extern int force;	/* Set to have final '\n' added to file */
+extern int tabwidth;	/* Default tab width */
 
-P *pdup PARAMS((P *p));
-P *pdupown PARAMS((P *p, P **o));
-P *poffline PARAMS((P *p));
-P *ponline PARAMS((P *p));
-B *bonline PARAMS((B *b));
-B *boffline PARAMS((B *b));
+extern VFILE *vmem;	/* Virtual memory file used for buffer system */
 
-void prm PARAMS((P *p));
-P *pset PARAMS((P *n, P *p));
+extern char *msgs[];
 
-P *p_goto_bof PARAMS((P *p));		/* move cursor to begging of file */
-P *p_goto_eof PARAMS((P *p));		/* move cursor to end of file */
-P *p_goto_bol PARAMS((P *p));		/* move cursor to begging of line */
-P *p_goto_eol PARAMS((P *p));		/* move cursor to end of line */
+B *bmk();
+void brm();
 
-P *p_goto_indent PARAMS((P *p,int c));	/* move cursor to indentation point */
+B *bfind();
 
-int pisbof PARAMS((P *p));
-int piseof PARAMS((P *p));
-int piseol PARAMS((P *p));
-int pisbol PARAMS((P *p));
-int pisbow PARAMS((P *p));
-int piseow PARAMS((P *p));
+P *pdup();
+P *pdupown();
+P *poffline();
+P *ponline();
+B *bonline();
+B *boffline();
 
-#define piscol(p) ((p)->valcol ? (p)->col : (pfcol(p), (p)->col))
+void prm();
+P *pset();
 
-int pisblank PARAMS((P *p));
-int piseolblank PARAMS((P *p));
+P *pbof();
+P *peof();
 
-long pisindent PARAMS((P *p));
-int pispure PARAMS((P *p,int c));
+int pisbof();
+int piseof();
+int piseol();
+int pisbol();
+int pisbow();
+int piseow();
 
-int pnext PARAMS((P *p));
-int pprev PARAMS((P *p));
+#define piscol(p) ((p)->valcol?(p)->col:(pfcol(p),(p)->col))
 
-int pgetb PARAMS((P *p));
-int prgetb PARAMS((P *p));
+int pisblank();
 
-int pgetc PARAMS((P *p));
-int prgetc PARAMS((P *p));
+long pisindent();
 
-P *pgoto PARAMS((P *p, long int loc));
-P *pfwrd PARAMS((P *p, long int n));
-P *pbkwd PARAMS((P *p, long int n));
+int pnext();
+int pprev();
 
-P *pfcol PARAMS((P *p));
+int pgetc();
 
-P *pnextl PARAMS((P *p));
-P *pprevl PARAMS((P *p));
+P *pfwrd();
 
-P *pline PARAMS((P *p, long int line));
+int prgetc();
 
-P *pcolwse PARAMS((P *p, long int goalcol));
-P *pcol PARAMS((P *p, long int goalcol));
-P *pcoli PARAMS((P *p, long int goalcol));
-void pbackws PARAMS((P *p));
-void pfill PARAMS((P *p, long int to, int usetabs));
+P *pbkwd();
+P *pgoto();
 
-P *pfind PARAMS((P *p, unsigned char *s, int len));
-P *pifind PARAMS((P *p, unsigned char *s, int len));
-P *prfind PARAMS((P *p, unsigned char *s, int len));
-P *prifind PARAMS((P *p, unsigned char *s, int len));
+P *pfcol();
 
-/* copy text between 'from' and 'to' into new buffer */
-B *bcpy PARAMS((P *from, P *to));	
+P *pbol();
 
-void pcoalesce PARAMS((P *p));
+P *peol();
 
-void bdel PARAMS((P *from, P *to));
+P *pnextl();
 
-/* insert buffer 'b' into another at 'p' */
-P *binsb PARAMS((P *p, B *b));
-/* insert a block 'blk' of size 'amnt' into buffer at 'p' */
-P *binsm PARAMS((P *p, unsigned char *blk, int amnt)); 
+P *pprevl();
 
-/* insert character 'c' into buffer at 'p' */
-P *binsc PARAMS((P *p, int c));
+P *pline();
 
-/* insert byte 'c' into buffer at at 'p' */
-P *binsbyte PARAMS((P *p, unsigned char c));
+P *pcolwse();
+P *pcol();
+P *pcoli();
+void pbackws();
+void pfill();
 
-/* insert zero term. string 's' into buffer at 'p' */
-P *binss PARAMS((P *p, unsigned char *s));
+P *pfind();
+P *pifind();
+P *prfind();
+P *prifind();
+
+/* B *bcpy(P *from,P *to);
+ * Copy text between from and to into a new buffer
+ */
+B *bcpy();
+
+void pcoalesce();
+
+void bdel();
+
+/* P *binsb(P *p,B *b);
+ * Insert an entire buffer 'b' into another buffer at 'p'
+ */
+P *binsb();
+
+/* P *binsm(P *p,char *blk,int amnt);
+ * Insert a block 'blk' of size 'amnt' into buffer at 'p'
+ */
+P *binsm();
+
+/* P *binsc(P *p,char c);
+ * Insert character into buffer at P
+ */
+P *binsc();
+
+/* P *binss(P *p,char *s);
+ * Insert zero terminated string into buffer at P
+ */
+P *binss();
 
 /* B *bload(char *s);
  * Load a file into a new buffer
@@ -122,44 +173,46 @@ P *binss PARAMS((P *p, unsigned char *s));
  * -3 for seek error
  * -4 for open error
  */
-B *bload PARAMS((unsigned char *s));
-B *bread PARAMS((int fi, long int max));
-B *bfind PARAMS((unsigned char *s));
-B *borphan PARAMS((void));
+B *bread();
+B *bload();
+B *bfind();
+B *borphan();
 
-/* Save 'size' bytes beginning at 'p' into file with name in 's' */
-int bsave PARAMS((P *p, unsigned char *s, long int size,int flag));
-int bsavefd PARAMS((P *p, int fd, long int size));
+/* int bsave(P *p,char *s,long size);
+ * Save 'size' bytes beginning at 'p' into file with name in 's'
+ */
+int bsavefd();
+int bsave();
 
-unsigned char *parsens PARAMS((unsigned char *s, long int *skip, long int *amnt));
+char *parsens();
 
-/* Get byte at pointer or return NO_MORE_DATA if pointer is at end of buffer */
-int brc PARAMS((P *p));
+/* int brc(P *p);
+ * Get character at pointer or return MAXINT if pointer is at end of buffer
+ */
+int brc();
 
-/* Get character at pointer or return NO_MORE_DATA if pointer is at end of buffer */
-int brch PARAMS((P *p));
+/* char *brmem(P *p,char *blk,int size);
+ * Copy 'size' bytes from a buffer beginning at p into block 'blk'
+ */
+char *brmem();
 
-/* Copy 'size' bytes from a buffer beginning at p into block 'blk' */
-unsigned char *brmem PARAMS((P *p, unsigned char *blk, int size));
-
-/* Copy 'size' bytes from a buffer beginning at p into a zero-terminated
+/* char *brs(P *p,int size);
+ * Copy 'size' bytes from a buffer beginning at p into a zero-terminated
  * C-string in an malloc block.
  */
-unsigned char *brs PARAMS((P *p, int size));
+char *brs();
 
-/* Copy 'size' bytes from a buffer beginning at p into a variable length string. */
-unsigned char *brvs PARAMS((P *p, int size));
+/* char *brvs(P *p,int size);
+ * Copy 'size' bytes from a buffer beginning at p into a variable length
+ * string.
+ */
+char *brvs();
 
-/* Copy line into buffer.  Maximum of size bytes will be copied.  Buffer needs
-   to be one bigger for NIL */
-unsigned char *brzs PARAMS((P *p, unsigned char *buf, int size));
+B *bnext();
+B *bprev();
 
-B *bnext PARAMS((void));
-B *bprev PARAMS((void));
+extern int error;
 
-#define error berror
-extern int berror;
-
-unsigned char **getbufs PARAMS((void));
+char **getbufs();
 
 #endif

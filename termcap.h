@@ -1,15 +1,52 @@
-/*
- * 	TERMCAP/TERMINFO header file
- *	Copyright
- *		(C) 1992 Joseph H. Allen
- *
- *	This file is part of JOE (Joe's Own Editor)
- */ 
-#ifndef _JOE_TERMCAP_H
-#define _JOE_TERMCAP_H 1
- 
+/* TERMCAP/TERMINFO header file
+   Copyright (C) 1992 Joseph H. Allen
+
+This file is part of JOE (Joe's Own Editor)
+
+JOE is free software; you can redistribute it and/or modify it under the 
+terms of the GNU General Public License as published by the Free Software 
+Foundation; either version 1, or (at your option) any later version.  
+
+JOE is distributed in the hope that it will be useful, but WITHOUT ANY 
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
+FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more 
+details.  
+
+You should have received a copy of the GNU General Public License along with 
+JOE; see the file COPYING.  If not, write to the Free Software Foundation, 
+675 Mass Ave, Cambridge, MA 02139, USA.  */ 
+
+#ifndef _Itermcap
+#define _Itermcap 1
+
 #include "config.h"
-#include "types.h"
+
+typedef struct cap CAP;
+
+struct sortentry
+ {
+ char *name;
+ char *value;
+ };
+
+struct cap
+ {
+ char *tbuf;			/* Termcap entry loaded here */
+
+ struct sortentry *sort;	/* Pointers to each capability stored in here */
+ int sortlen;			/* Number of capabilities */
+
+ char *abuf;			/* For terminfo compatible version */
+ char *abufp;
+ 
+ int div;			/* tenths of MS per char */
+ int baud;			/* Baud rate */
+ char *pad;			/* Padding string or NULL to use NUL */
+ void (*out)();			/* Character output routine */
+ void *outptr;			/* First arg passed to output routine.  Second
+ 				   arg is character to write */
+ int dopadding;			/* Set if pad characters should be used */
+ };
 
 /* CAP *getcap(char *s,int baud,void (*out)(void *outptr,char c),void *outptr);
  *
@@ -48,13 +85,13 @@
  * done for self-refering 'tc=filename' links (so all of core will be
  * allocated if there are any).
  */
-CAP *getcap PARAMS((unsigned char *name, unsigned int baud, void (*out) (unsigned char *, unsigned char), void *outptr));
+CAP *getcap();
 
 /* CAP *setcap(CAP *cap,int baud,void (*out)(void *outptr,char c),void *outptr);
  *
  * Reset baud, out and outptr for a CAP
- */
-CAP *setcap PARAMS((CAP *cap, unsigned int baud, void (*out) (unsigned char *, unsigned char), void *outptr));
+ */ 
+CAP *setcap();
 
 /* char *jgetstr(CAP *cap,char *name);
  *
@@ -63,27 +100,27 @@ CAP *setcap PARAMS((CAP *cap, unsigned int baud, void (*out) (unsigned char *, u
  * the buffer used to load the termcap entry.  It should not be modified or
  * freed.
  */
-unsigned char *jgetstr PARAMS((CAP *cap, unsigned char *name));
+char *jgetstr();
 
 /* int getflag(CAP *cap,char *name);
  *
  * Return true if the named capability is found in 'cap'.  A fast binary
  * search is used to lookup the capability.
  */
-int getflag PARAMS((CAP *cap, unsigned char *name));
+int getflag();
 
 /* int getnum(CAP *cap,char *name);
  *
  * Return value of numeric capability or return -1 if it's not found.  A fast
  * binary search is used to lookup the capability.
  */
-int getnum PARAMS((CAP *cap, unsigned char *name));
+int getnum();
 
 /* void rmcap(CAP *cap);
  *
  * Eliminate a CAP entry.
  */
-void rmcap PARAMS((CAP *cap));
+void rmcap();
 
 /* void texec(CAP *cap,char *str,int l,int a0,int a1,int a2,int a3);
 
@@ -101,7 +138,7 @@ void rmcap PARAMS((CAP *cap));
 
    'a0' - 'a1' are the arguments for the string
 */
-void texec PARAMS((CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int a3));
+void texec();
 
 /* int tcost(CAP *cap,char *str, int l, int a0, int a1, int a2, int a3);
    Return cost in number of characters which need to be sent
@@ -119,7 +156,7 @@ void texec PARAMS((CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, in
 
    'a0' - 'a3' are arguements passed to the string
 */
-int tcost PARAMS((CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int a3));
+int tcost();
 
 /* char *tcompile(CAP *cap,char *str,int a0,int a1,int a2,int a3);
 
@@ -127,17 +164,17 @@ int tcost PARAMS((CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int
    string (see vs.h) containing the compiled string capability.
    Pad characters are not placed in the string.
 */
-unsigned char *tcompile PARAMS((CAP *cap, unsigned char *s, int a0, int a1, int a2, int a3));
+char *tcompile();
 
 /* Old termcap support */
 #ifdef junk
 int tgetent();
-unsigned char *tgetstr();
+char *tgetstr();
 int tgetflag();
 int tgetnum();
-unsigned char *tgoto();
+char *tgoto();
 void tputs();
 extern short ospeed;
-extern unsigned char PC, *UP, *BC;
+extern char PC, *UP, *BC;
 #endif
 #endif

@@ -1,20 +1,31 @@
-/*
- *	Simple hash table
- *	Copyright
- *		(C) 1992 Joseph H. Allen
- *
- *	This file is part of JOE (Joe's Own Editor)
- */
-#ifndef _JOE_HASH_H
-#define _JOE_HASH_H 1
+/* Simple hash table */
+
+#ifndef _Ihash
+#define _Ihash 1
 
 #include "config.h"
-#include "types.h"
 
-unsigned long hash PARAMS((unsigned char *s));
-HASH *htmk PARAMS((int len));
-void htrm PARAMS((HASH *ht));
-void *htadd PARAMS((HASH *ht, unsigned char *name, void *val));
-void *htfind PARAMS((HASH *ht, unsigned char *name));
+#define hnext(accu,c) (((accu)<<4)+((accu)>>28)+(c))
+
+typedef struct entry HENTRY;
+struct entry
+ {
+ char *name;
+ HENTRY *next;
+ void *val;
+ };
+
+typedef struct hash HASH;
+struct hash
+ {
+ int len;
+ HENTRY **tab;
+ };
+
+unsigned long hash();
+HASH *htmk();
+void htrm();
+void *htfind();
+void *htadd();
 
 #endif

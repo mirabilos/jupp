@@ -1,36 +1,41 @@
-/*
- * 	User file operations
- *	Copyright
- *	(C) 1992 Joseph H. Allen
- *
- *	This file is part of JOE (Joe's Own Editor)
- */
-#ifndef _JOE_UFILE_H
-#define _JOE_UFILE_H 1
+/* User file operations
+   Copyright (C) 1992 Joseph H. Allen
 
-#include "config.h"
-#include "types.h"
+This file is part of JOE (Joe's Own Editor)
+
+JOE is free software; you can redistribute it and/or modify it under the 
+terms of the GNU General Public License as published by the Free Software 
+Foundation; either version 1, or (at your option) any later version.  
+
+JOE is distributed in the hope that it will be useful, but WITHOUT ANY 
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
+FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more 
+details.  
+
+You should have received a copy of the GNU General Public License along with 
+JOE; see the file COPYING.  If not, write to the Free Software Foundation, 
+675 Mass Ave, Cambridge, MA 02139, USA.  */ 
+
+#ifndef _Iufile
+#define _Iufile 1
 
 extern int exask;
 
-void genexmsg PARAMS((BW *bw, int saved, unsigned char *name));
+#include "bw.h"
 
-int ublksave PARAMS((BW *bw));
-int ushell PARAMS((BW *bw));
-int usave PARAMS((BW *bw));
-int uedit PARAMS((BW *bw));
-int uswitch PARAMS((BW *bw));
-int uscratch PARAMS((BW *bw));
-int uinsf PARAMS((BW *bw));
-int uexsve PARAMS((BW *bw));
-int unbuf PARAMS((BW *bw));
-int upbuf PARAMS((BW *bw));
-int uask PARAMS((BW *bw));
-int ubufed PARAMS((BW *bw));
-int ulose PARAMS((BW *bw));
-int okrepl PARAMS((BW *bw));
-int doedit PARAMS((BW *bw, unsigned char *s, void *obj, int *notify));
-int uquerysave PARAMS((BW *bw));
-int ukilljoe PARAMS((BW *bw));
+void genexmsg();
+
+int ublksave();
+int ushell();
+int usave();
+int uedit();
+int uinsf();
+int uexsve();
+int unbuf();
+int upbuf();
+int uask();
+int ubufed();
+int ulose();
+int okrepl();
 
 #endif
