@@ -10,10 +10,6 @@
 
 #include "config.h"
 
-#if !defined(__GNUC__) && !defined(__attribute__)
-#define __attribute__(p) /* nothing */
-#endif
-
 unsigned char *joesep PARAMS((unsigned char *path));
 
 /* char *namprt(char *path);
@@ -25,8 +21,7 @@ unsigned char *joesep PARAMS((unsigned char *path));
  * The name part if "/" is ""
  */
 unsigned char *namprt PARAMS((unsigned char *path));
-unsigned char *namepart PARAMS((unsigned char *tmp, unsigned char *path))
-	__attribute__((__bounded__(__minbytes__,1,1024)));
+unsigned char *namepart PARAMS((unsigned char *tmp, unsigned char *path));
 
 /* char *dirprt(char *path);
  * Return directory and drive part of a path.  I.E., everything to the

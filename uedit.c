@@ -32,7 +32,7 @@ int pgamnt = -1;		/* No. of PgUp/PgDn lines to keep */
 
 /******** i don't like global var ******/
 
-/*
+/* 
  * Move cursor to beginning of line
  */
 int u_goto_bol(BW *bw)
@@ -50,7 +50,7 @@ int uhome(BW *bw)
 	P *p = pdup(bw->cursor);
 
 	if (bw->o.indentfirst) {
-		if ((bw->o.smarthome) && (piscol(p) > pisindent(p))) {
+		if ((bw->o.smarthome) && (piscol(p) > pisindent(p))) { 
 			p_goto_bol(p);
 			while (joe_isblank(p->b->o.charmap,brc(p)))
 				pgetc(p);
@@ -115,9 +115,10 @@ int u_goto_left(BW *bw)
 		} else if (prgetc(bw->cursor) != NO_MORE_DATA) {
 			bw->cursor->xcol = piscol(bw->cursor);
 			return 0;
+		} else {
+			return -1;
 		}
 	}
-	return -1;
 }
 
 /*
@@ -145,7 +146,7 @@ int u_goto_right(BW *bw)
 }
 
 /*
- * Move cursor to beginning of previous word or if there isn't
+ * Move cursor to beginning of previous word or if there isn't 
  * previous word then go to beginning of the file
  *
  * WORD is a sequence non-white-space characters
@@ -181,7 +182,7 @@ int u_goto_prev(BW *bw)
 }
 
 /*
- * Move cursor to end of next word or if there isn't
+ * Move cursor to end of next word or if there isn't 
  * next word then go to end of the file
  *
  * WORD is a sequence non-white-space characters
@@ -693,11 +694,13 @@ int ubacks(BW *bw, int k)
 {
 	/* Don't backspace when at beginning of line in prompt windows */
 	if (bw->parent->watom->what == TYPETW || !pisbol(bw->cursor)) {
+		P *p;
 		int c;
 		int indent;
 		int col;
 		int indwid;
 		int wid;
+		int pure = 1;
 
 		if (pisbof(bw->cursor))
 			return -1;
@@ -720,10 +723,11 @@ int ubacks(BW *bw, int k)
 		   is a multiple of indentation width, we're not at beginning of line,
 		   'smarthome' option is enabled, and indentation is purely made out of
 		   indent characters (or purify indents is enabled). */
-
+		
 		/* Ignore purify for backspace */
 		if (col == indent && (col%indwid)==0 && col!=0 && bw->o.smartbacks && bw->o.autoindent) {
 			P *p;
+			int x;
 
 			/* Delete all indentation */
 			p = pdup(bw->cursor);
@@ -758,7 +762,7 @@ int ubacks(BW *bw, int k)
 		return -1;
 }
 
-/*
+/* 
  * Delete sequence of characters (alphabetic, numeric) or (white-space)
  *	if cursor is on the white-space it will delete all white-spaces
  *		until alphanumeric character
@@ -908,12 +912,11 @@ int utypebw(BW *bw, int k)
 		int col = bw->cursor->xcol;		/* Current cursor column */
 		col = col + bw->o.tab - (col%bw->o.tab);/* Move to next tab stop */
 		pcol(bw->cursor,col);			/* Try to position cursor there */
-		if (!bw->o.picture && piseol(bw->cursor) && piscol(bw->cursor)<col) {	/* We moved past end of line, insert a tab (unless in picture mode) */
+		if (!bw->o.picture && piseol(bw->cursor) && piscol(bw->cursor)<col)	/* We moved past end of line, insert a tab (unless in picture mode) */
 			if (bw->o.spaces)
 				pfill(bw->cursor,col,' ');
 			else
 				pfill(bw->cursor,col,'\t');
-		}
 		bw->cursor->xcol = col;			/* Put cursor there even if we can't really go there */
 	} else if (k == '\t' && bw->o.smartbacks && bw->o.autoindent && pisindent(bw->cursor)>=piscol(bw->cursor)) {
 		P *p = pdup(bw->cursor);
@@ -985,7 +988,7 @@ int utypebw(BW *bw, int k)
 			to_utf8(locale_map,buf,k);
 			k = utf8_decode_string(buf);
 		}
-
+		
 		binsc(bw->cursor, k);
 
 		/* We need x position before we move cursor */
@@ -1011,7 +1014,9 @@ int utypebw(BW *bw, int k)
 		if (simple && bw->parent->t->t->sary[bw->y + bw->cursor->line - bw->top->line])
 			simple = 0;
 		if (simple && k != '\t' && k != '\n' && !curmacro) {
+			int a;
 			int atr = 0;
+			unsigned char c = k;
 			SCRN *t = bw->parent->t->t;
 			int y = bw->y + bw->cursor->line - bw->top->line;
 			int *screen = t->scrn + y * t->co;
@@ -1437,7 +1442,7 @@ static int domsg(BASE *b, unsigned char *s, void *object, int *notify)
 {
 	if (notify)
 		*notify = 1;
-	strlcpy((char *)msgbuf, (char *)s, JOE_MSGBUFSIZE);
+	strcpy((char *)msgbuf, (char *)s);
 	vsrm(s);
 	msgnw(b->parent, msgbuf);
 	return 0;

@@ -246,8 +246,8 @@ void bwdel(BW *w, long int l, long int n, int flg)
 /* Update a single line */
 
 static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long int scr, long int from, long int to,int st,BW *bw)
-
-
+        
+      
             			/* Screen line address */
       				/* Window */
      				/* Buffer pointer */
@@ -267,7 +267,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 
 	struct utf8_sm utf8_sm;
 
-        int *syn = NULL;
+        int *syn;
         P *tmp;
         int idx=0;
         int atr = 0;
@@ -362,7 +362,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 			} else if (bc == '\n')
 				goto eobl;
 			else {
-				int wid = 1;
+				int wid;
 				if (p->b->o.charmap->type) {
 					c = utf8_decode(&utf8_sm,bc);
 
@@ -378,6 +378,8 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 					}
 					else if(c== -3) /* Control character 128-191, 254, 255 */
 						wid = 1;
+				} else {
+					wid = 1;
 				}
 
 				if(wid>0) {
@@ -564,10 +566,9 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 
 /* Generate line into an array */
 
-#if 0
 static int lgena(SCRN *t, int y, int *screen, int x, int w, P *p, long int scr, long int from, long int to)
-
-
+        
+      
             			/* Screen line address */
       				/* Window */
      				/* Buffer pointer */
@@ -720,7 +721,6 @@ static int lgena(SCRN *t, int y, int *screen, int x, int w, P *p, long int scr, 
 	pnextl(p);
 	return 0;
 }
-#endif	/* 0 */
 
 static void gennum(BW *w, int *screen, int *attr, SCRN *t, int y, int *comp)
 {
@@ -731,7 +731,7 @@ static void gennum(BW *w, int *screen, int *attr, SCRN *t, int y, int *comp)
 	if (lin <= w->b->eof->line)
 		joe_snprintf_1((char *)buf, sizeof(buf), "%5ld ", w->top->line + y - w->y + 1);
 	else
-		strlcpy((char *)buf, "      ",12);
+		strcpy((char *)buf, "      ");
 	for (z = 0; buf[z]; ++z) {
 		outatr(w->b->o.charmap, t, screen + z, attr + z, z, y, buf[z], 0);
 		if (ifhave)

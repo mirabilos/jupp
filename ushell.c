@@ -24,8 +24,6 @@
 #include "pw.h"
 #include "qw.h"
 #include "tty.h"
-#include "uedit.h"
-#include "uerror.h"
 #include "ufile.h"
 #include "va.h"
 #include "vs.h"
@@ -197,15 +195,21 @@ B *buildhist = NULL;
 int ubuild(BW *bw)
 {
 	if (buildhist) {
-		if ((bw=wmkpw(bw->parent, US "Build command: ", &buildhist, dobuild, US "Run", NULL, NULL, NULL, NULL, locale_map))) {
+		if (bw=wmkpw(bw->parent, US "Build command: ", &buildhist, dobuild, US "Run", NULL, NULL, NULL, NULL, locale_map)) {
 			uuparw(bw);
 			u_goto_eol(bw);
 			bw->cursor->xcol = piscol(bw->cursor);
 			return 0;
+		} else {
+		return -1;
 		}
-	} else if (wmkpw(bw->parent, US "Enter build command (for example, 'make'): ", &buildhist, dobuild, US "Run", NULL, NULL, NULL, NULL, locale_map))
+	} else {
+		if (wmkpw(bw->parent, US "Enter build command (for example, 'make'): ", &buildhist, dobuild, US "Run", NULL, NULL, NULL, NULL, locale_map)) {
 			return 0;
-	return -1;
+		} else {
+		return -1;
+		}
+	}
 }
 
 /* Kill program */

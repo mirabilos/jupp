@@ -779,7 +779,7 @@ int prgetc(P *p)
 			p->valcol = 1;
 			p->col -= joe_wcwidth(1,d);
 		}
-
+		
 		return d;
 #endif
 	}
@@ -1896,7 +1896,7 @@ P *binsm(P *p, unsigned char *blk, int amnt)
 {
 	long nlines;
 	H *h = NULL;
-	int hdramnt = 0;
+	int hdramnt;
 	P *q;
 
 	if (!amnt)
@@ -2086,7 +2086,7 @@ B *bload(unsigned char *s)
 {
 	unsigned char buffer[SEGSIZ];
 	FILE *fi;
-	B *b = NULL;
+	B *b;
 	long skip, amnt;
 	unsigned char *n;
 	int nowrite = 0;

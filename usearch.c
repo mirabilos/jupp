@@ -57,7 +57,7 @@ unsigned char **get_word_list(B *b,int ignore)
 	P *p;
 	int c;
 	int idx;
-	int start = 0;
+	int start;
 
 	h = htmk(1024);
 
@@ -89,7 +89,7 @@ unsigned char **get_word_list(B *b,int ignore)
 		for (t = h->tab[idx];t;t=t->next)
 			list = vaadd(list, t->name);
 	if (list)
-		vasort(list,sLEN(list));
+		vasort(list,sLEN(list));	
 
 	htrm(h);
 
@@ -230,8 +230,17 @@ int ufinish(BW *bw)
 
 static int srch_cmplt(BW *bw)
 {
-	utypebw(bw, 9);
-	return 0;
+	if (word_list)
+		varm(word_list);
+
+	word_list = get_word_list(((BW *)bw->parent->win->object)->b, -1);
+
+	if (!word_list) {
+		ttputc(7);
+		return 0;
+	}
+
+	return simple_cmplt(bw,word_list);
 }
 
 /* Search forward.

@@ -413,7 +413,7 @@ int uformat(BW *bw)
 		indent = bw->o.lmargin;
 
 	/* Cut paragraph into new buffer */
-
+	
 	/* New buffer needs to inherit UTF-8 and CR-LF options */
 	buf = bcpy(p, bw->cursor);
 	buf->o.crlf = p->b->o.crlf;
@@ -474,10 +474,10 @@ int uformat(BW *bw)
 					f = 1;
 			}
 			prm(d);
-
+			
 			/* Skip past the whitespace.  Skip over indentations */
 		      loop:
-
+			
 			c = brch(b);
 			if (c == '\n') {
 				if (b->byte == curoff)

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-#include <stdio.h>
+#include <stdio.h> 
 
 #include "b.h"
 #include "utf8.h"
@@ -271,6 +271,7 @@ skip:
 
 int pmatch(unsigned char **pieces, unsigned char *regex, int len, P *p, int n, int icase)
 {
+        unsigned char buf[20];
 	int c, d;
 	P *q = pdup(p);
 	P *o = NULL;
@@ -372,7 +373,7 @@ int pmatch(unsigned char **pieces, unsigned char *regex, int len, P *p, int n, i
 
 					P *r = NULL;
 
-					int d = 0;
+					int d;
 
 					o = pdup(p);
 

@@ -1,4 +1,4 @@
-/*
+/* 
  *	Directory and path functions
  *	Copyright
  *		(C) 1992 Joseph H. Allen
@@ -112,7 +112,7 @@ unsigned char *namepart(unsigned char *tmp, unsigned char *path)
 	z = path + strlen((char *)path);
 	while ((z != path) && (z[-1] != '/'))
 		--z;
-	return (unsigned char *)strlcpy((char *)tmp, (char *)z, 1024);
+	return (unsigned char *)strcpy((char *)tmp, (char *)z);
 }
 /********************************************************************/
 unsigned char *dirprt(unsigned char *path)

@@ -23,10 +23,10 @@
 
 struct help *help_actual = NULL;			/* actual help screen */
 
-/*
+/* 
  * Process help file
  * Returns 0 if the help file was succefully processed
- *        -1 if the help file couldn't be opened
+ *        -1 if the help file couldn't be opened 
  *        NOT_ENOUGH_MEMORY if there is not enough memory
  */
 
@@ -81,7 +81,7 @@ int help_init(unsigned char *filename)
 					}
 					hlpbsz += bfl + 1024;
 				}
-				strlcpy((char *)(tmp->text + hlpsiz), (char *)buf, 1024);
+				strcpy((char *)(tmp->text + hlpsiz), (char *)buf);
 				hlpsiz += bfl;
 				++tmp->lines;
 			}
@@ -115,7 +115,7 @@ int help_init(unsigned char *filename)
 	fclose(fd);					/* close help file */
 
 	fprintf(stderr, "done\n");
-
+	
 	while (help_actual && help_actual->prev) {	/* move to first help screen */
 		help_actual = help_actual->prev;
 	}
@@ -251,7 +251,7 @@ void help_display(SCREEN *t)
 							++str;
 							--x;
 							continue;
-						case 0:
+						case 0:	
 							--x;
 							continue;
 						default:
@@ -260,7 +260,7 @@ void help_display(SCREEN *t)
 					} else {
 						c = *str++;
 					}
-					outatr(locale_map, t->t, t->t->scrn + x + y * t->w,
+					outatr(locale_map, t->t, t->t->scrn + x + y * t->w, 
 					             t->t->attr + x + y * t->w, x, y, c, atr);
 				}
 			}
@@ -276,7 +276,7 @@ void help_display(SCREEN *t)
 }
 
 /*
- * Show help screen
+ * Show help screen 
  */
 int help_on(SCREEN *t)
 {
