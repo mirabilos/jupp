@@ -1,4 +1,4 @@
-/**	$MirBSD: strlfun.c,v 1.1 2004/11/10 21:14:08 tg Exp $ */
+/**	$MirBSD: strlfun.c,v 1.2 2004/11/10 21:14:26 tg Exp $ */
 /*	$OpenBSD: strlcpy.c,v 1.8 2003/06/17 21:56:24 millert Exp $ */
 /*	$OpenBSD: strlcat.c,v 1.11 2003/06/17 21:56:24 millert Exp $ */
 
@@ -57,11 +57,10 @@
 #endif /* ! def HAVE_CONFIG_H */
 
 #ifndef __RCSID
-#define __RCSID(x)	static const char __rcsid[] \
-			__attribute__((section(".comment"))) = (x)
+#define __RCSID(x)	static const char __rcsid[] = (x)
 #endif
 
-__RCSID("$MirBSD: strlfun.c,v 1.1 2004/11/10 21:14:08 tg Exp $");
+__RCSID("$MirBSD: strlfun.c,v 1.2 2004/11/10 21:14:26 tg Exp $");
 
 
 #ifndef	HAVE_STRLCPY
