@@ -1,7 +1,7 @@
 #!/bin/ksh
-# $MirOS: contrib/code/jupp/autogen.sh,v 1.1 2005/02/05 02:42:20 tg Exp $
+# $MirOS: contrib/code/jupp/autogen.sh,v 1.2 2005/02/11 21:37:29 tg Exp $
 #-
-# Copyright (c) 2004
+# Copyright (c) 2004, 2005
 #	Thorsten "mirabile" Glaser <tg@66h.42h.de>
 #
 # Licensee is hereby permitted to deal in this work without restric-
@@ -31,14 +31,28 @@ fi
 
 export AUTOCONF_VERSION AUTOMAKE_VERSION
 
-[[ -e ChangeLog ]] || ln -s NEWS ChangeLog
+[[ -n $GNUSYSTEM_AUX_DIR ]] || GNUSYSTEM_AUX_DIR=/usr/src/gnu/share
+
+AM_FLAGS=--miros
+[[ $AUTOMAKE_VERSION = 1.4 ]] && AM_FLAGS=
+
+[[ -e /tmp/empty ]] || print -n >/tmp/empty
+for a in ChangeLog ltmain.sh; do
+	[[ -e $a ]] || ln -s /tmp/empty $a
+done
 
 set -e
 set -x
-aclocal --acdir=/usr/local/share/aclocal-1.9 -I .
+if [[ -d m4 ]]; then
+	aclocal --acdir=/usr/local/share/aclocal-$AUTOMAKE_VERSION -I m4
+elif [[ -d ../m4 ]]; then
+	aclocal --acdir=/usr/local/share/aclocal-$AUTOMAKE_VERSION -I ../m4
+else
+	aclocal --acdir=/usr/local/share/aclocal-$AUTOMAKE_VERSION -I .
+fi
 autoheader
 set +e
-automake --foreign -a --miros
+automake --foreign -a $AM_FLAGS
 autoconf && chmod 664 configure
 [[ -e autom4te.cache ]] && rm -rf autom4te.cache
 find . -type l -print0 | xargs -0 rm
