@@ -10,7 +10,7 @@
 # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.
 
-# $MirBSD: Makefile.in,v 1.3 2004/11/10 21:19:29 tg Exp $
+# $MirBSD: Makefile.in,v 1.4 2004/11/10 21:22:06 tg Exp $
 
 
 SHELL = @SHELL@
@@ -532,6 +532,7 @@ uninstall-local:
 
 distclean-local:
 	rm -f *~
+	rm -f stamp-h.in charmaps/klingon syntax/asm.jsf syntax/c.jsf syntax/conf.jsf syntax/csh.jsf syntax/diff.jsf syntax/fortran.jsf syntax/html.jsf syntax/java.jsf syntax/lisp.jsf syntax/mail.jsf syntax/mason.jsf syntax/pascal.jsf syntax/perl.jsf syntax/php.jsf syntax/python.jsf syntax/sh.jsf syntax/tcl.jsf syntax/verilog.jsf syntax/vhdl.jsf syntax/xml.jsf
 
 .PHONY: termcap
 
