@@ -2,6 +2,7 @@
  *	UTF-8 Utilities
  *	Copyright
  *		(C) 2004 Joseph H. Allen
+ *		(c) 2004 Thorsten Glaser
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
