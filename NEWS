@@ -1,3 +1,15 @@
+$MirBSD: NEWS,v 1.2 2004/11/10 21:57:08 tg Exp $
+
+JOE 3.1jupp1
+
+- Fixed string functions
+
+- Added "jupp" flavour
+
+- No tab completion in search and replace ask windows
+
+- UTF-8 works on LOCALE-less OSses (various BSDs)
+
 JOE 3.1
 
 - Regex and incremental search (jmacs ^S) now work for UTF-8
