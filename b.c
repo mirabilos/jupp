@@ -1896,7 +1896,7 @@ P *binsm(P *p, unsigned char *blk, int amnt)
 {
 	long nlines;
 	H *h = NULL;
-	int hdramnt;
+	int hdramnt = 0;
 	P *q;
 
 	if (!amnt)
@@ -2086,7 +2086,7 @@ B *bload(unsigned char *s)
 {
 	unsigned char buffer[SEGSIZ];
 	FILE *fi;
-	B *b;
+	B *b = NULL;
 	long skip, amnt;
 	unsigned char *n;
 	int nowrite = 0;
