@@ -1,5 +1,5 @@
- "jupp" Ressource for Joe's Own Editor 2.8, Copyright (c) 1997-2004
-	Thorsten "mirabile" Glaser <tg@66h.42h.de>
+ Joe's Own Editor 2.8/3.1 "jupp" ressource, Copyright (c) 1997-2005
+ 	Thorsten "mirabile" Glaser <tg@66h.42h.de>
  Licensee is hereby permitted to deal in this work without restric-
  tion, including unlimited rights to use, publicly perform, modify,
  merge, distribute, sell, give away or sublicence, provided all co-
@@ -13,9 +13,6 @@
  author or contributor be held liable for any damage, direct, indi-
  rect or other, however caused, arising in any way out of the usage
  of this work, even if advised of the possibility of such damage.
-
- Versions of joe newer than 2.8 have more features; some are shown,
- but not primarily used for joe 2.8 compatibility.
 
 -asis
 --autoindent
@@ -39,7 +36,7 @@
 -nobackups
 --nonotice
 --nosta
- --notite	Don't send terminal initialisation and termination strings.
+ --notite	Quell tty init/terminate strings
 -noxon
 --overwrite
 -pg 2
@@ -47,7 +44,7 @@
 -rmsg  R%r<%l C%c\u%o|%O\i\b%a|%A\b\i\u %u
 --spaces
 -tab 8
- --utf8		Set file encoding to utf-8 by default.
+ --utf8		Force file encoding to utf-8
 --wordwrap
 
 {Basic
@@ -117,11 +114,11 @@
 
 {Joe
 \i   Help Screen    turn off with ^J     prev. screen ^[,                        \i
-\i \i Historic joe 2.8 bug report contact: Joe H. Allen <jallen@avici.com>        \i \i
-\i \i Modern joe 3.x bug report contact:   http://sf.net/projects/joe-editor/     \i \i
-\i \i This ressource file by Thorsten "mirabile" Glaser <tg@66h.42h.de> for MirOS \i \i
-\i \i JUPP 2.8 for DOS by Th.Glaser, compiled by A.Totlis, packed with LHarc 2.13 \i \i
-\i \i @(#) jupprc $From: joe-3.1jupp2 MirOS $ with line ending type UNIX.         \i \i
+\i \i JUPP (Joe's Own Editor) from \uhttp://wiki.mirbsd.de/JuppEditor\u \d(GNU GPL v1)\d  \i \i
+\i \i based upon JOE 2.8/3.x (\uhttp://sf.net/projects/joe-editor/\u for bug reports) \i \i
+\i \i by \bJoe H. Allen\b; JUPP 2.8 for DOS (compiled by A. Totlis, packed with LHarc \i \i
+\i \i 2.13), JUPP 3.x for UNIX\d(R)\d by \bThorsten "mirabile" Glaser <\utg@66h.42h.de\u>\b   \i \i
+\i \i @(#) jupprc 2005-02-05; CR-LF set off; UTF-8 off (2.8) / via LC_CTYPE (3.1) \i \i
 }
 
 :windows
