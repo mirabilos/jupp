@@ -1,7 +1,7 @@
 AUTOMAKE_OPTIONS = foreign
 
 EXTRA_DIST = COPYING INFO LIST NEWS README README.cvs TODO docs/help-system.html \
-	joerc.in jmacsrc.in jstarrc.in rjoerc.in jpicorc.in \
+	joerc.in jmacsrc.in jstarrc.in rjoerc.in jpicorc.in jupprc \
 	joe.1.in dir.c syntax/c.jsf.in syntax/perl.jsf.in syntax/verilog.jsf.in \
 	syntax/conf.jsf.in syntax/python.jsf.in syntax/php.jsf.in syntax/sh.jsf.in \
 	syntax/pascal.jsf.in syntax/html.jsf.in syntax/vhdl.jsf.in syntax/fortran.jsf.in \
@@ -10,7 +10,7 @@ EXTRA_DIST = COPYING INFO LIST NEWS README README.cvs TODO docs/help-system.html
 	syntax/diff.jsf.in syntax/asm.jsf.in
 
 sysconf_joedir = $(sysconfdir)/joe
-sysconf_joe_DATA = joerc jmacsrc jstarrc rjoerc jpicorc
+sysconf_joe_DATA = joerc jmacsrc jstarrc rjoerc jpicorc jupprc
 
 sysconf_syntaxdir = $(sysconf_joedir)/syntax
 sysconf_syntax_DATA = syntax/c.jsf syntax/perl.jsf syntax/verilog.jsf \
@@ -45,11 +45,11 @@ joe_SOURCES = b.c blocks.c bw.c cmd.c hash.c help.c kbd.c macro.c main.c menu.c 
 termidx_SOURCES = termidx.c
 
 install-exec-hook:
-	rm -f $(DESTDIR)$(bindir)/jmacs $(DESTDIR)$(bindir)/jstar $(DESTDIR)$(bindir)/rjoe $(DESTDIR)$(bindir)/jpico
-	for i in jmacs jstar rjoe jpico ; do $(LN_S) joe $(DESTDIR)$(bindir)/$$i ; done
+	rm -f $(DESTDIR)$(bindir)/jmacs $(DESTDIR)$(bindir)/jstar $(DESTDIR)$(bindir)/rjoe $(DESTDIR)$(bindir)/jpico $(DESTDIR)$(bindir)/jupp
+	for i in jmacs jstar rjoe jpico jupp ; do $(LN_S) joe $(DESTDIR)$(bindir)/$$i ; done
 
 uninstall-local:
-	rm -f $(DESTDIR)$(bindir)/jmacs $(DESTDIR)$(bindir)/jstar $(DESTDIR)$(bindir)/rjoe $(DESTDIR)$(bindir)/jpico
+	rm -f $(DESTDIR)$(bindir)/jmacs $(DESTDIR)$(bindir)/jstar $(DESTDIR)$(bindir)/rjoe $(DESTDIR)$(bindir)/jpico $(DESTDIR)$(bindir)/jupp
 
 distclean-local:
 	rm -f *~
