@@ -1699,10 +1699,10 @@ char *s;
  if(!zcmp(n,"-")) fi=stdin;
  else
   {
-  fi=fopen(n,"r+");
+  fi=fopen(n,"rb+");
   if(!fi) nowrite=1;
   else fclose(fi);
-  fi=fopen(n,"r");
+  fi=fopen(n,"rb");
   if(!fi) nowrite=0;
   }
  joesep(n);
@@ -1891,7 +1891,7 @@ long size;
   }
  else
 #endif
- if(s[0]=='>' && s[1]=='>') f=fopen(s+2,"a");
+ if(s[0]=='>' && s[1]=='>') f=fopen(s+2,"ab");
  else if(!zcmp(s,"-"))
   {
   nescape(maint->t);
@@ -1899,8 +1899,8 @@ long size;
   f=stdout;
   }
  else
-  if(skip || amnt!=MAXLONG) f=fopen(s,"r+");
-  else f=fopen(s,"w");
+  if(skip || amnt!=MAXLONG) f=fopen(s,"rb+");
+  else f=fopen(s,"wb");
  joesep(s);
 
  if(!f)
@@ -1990,7 +1990,7 @@ void ttsig(sig)
  {
  long tim=time(0);
  B *b;
- FILE *f=fopen("DEADJOE","a");
+ FILE *f=fopen("DEADJOE","ab");
  fprintf(f,"\n*** Modified files in JOE when it aborted on %s",ctime(&tim));
  if(sig) fprintf(f,"*** JOE was aborted by signal %d\n",sig);
  else fprintf(f,"*** JOE was aborted because the terminal closed\n");
