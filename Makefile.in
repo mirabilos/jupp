@@ -76,7 +76,7 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno configure.status.lineno
-mkinstalldirs = $(SHELL) $(GNUSYSTEM_AUX_DIR)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = autoconf.h
 CONFIG_CLEAN_FILES = joe.1 joerc jmacsrc jstarrc rjoerc jpicorc \
 	syntax/c.jsf syntax/perl.jsf syntax/verilog.jsf syntax/sh.jsf \
@@ -109,7 +109,7 @@ am_termidx_OBJECTS = termidx.$(OBJEXT)
 termidx_OBJECTS = $(am_termidx_OBJECTS)
 termidx_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I.
-depcomp = $(SHELL) $(GNUSYSTEM_AUX_DIR)/depcomp
+depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
