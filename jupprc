@@ -207,6 +207,7 @@ delbol		^Q ^?
 delbol		^Q ^H
 delch		.kD
 delch		^G
+delch		^[ [ 3 ~
 deleol		^Q Y
 deleol		^Q ^Y
 deleol		^Q y
@@ -228,7 +229,9 @@ eol		.kH
 eol		^Q D
 eol		^Q ^D
 eol		^Q d
+eol		^[ [ 4 ~
 eol		^[ [ 8 ~
+eol		^[ [ F
 execmd		^[ -
 exsave		^K X
 exsave		^K ^X
