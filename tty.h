@@ -145,7 +145,7 @@ extern int leave;
  * It is called with 'n' set to the number of the caught signal or 0 if the
  * input closed.
  */
-void ttsig PARAMS((int sig));
+RETSIGTYPE ttsig PARAMS((int sig));
 
 /* void ttgtsz(int *x,int *y);  Get size of screen from ttsize/winsize
  * structure */

@@ -20,6 +20,7 @@
 #include "menu.h"
 #include "path.h"
 #include "pw.h"
+#include "regex.h"
 #include "tw.h"
 #include "uedit.h"
 #include "umath.h"
@@ -155,7 +156,7 @@ void lazy_opts(OPTIONS *o)
 	o->syntax = load_dfa(o->syntax_name);
 	o->charmap = find_charmap(o->map_name);
 	if (!o->charmap)
-		o->charmap = locale_map;
+		o->charmap = fdefault.charmap;
 }
 
 /* Set local options depending on file name and contents */
@@ -258,8 +259,8 @@ struct glopts {
 	{US "purify",	4, NULL, (unsigned char *) &fdefault.purify, US "Indentation clean up enabled", US "Indentation clean up disabled", US "  Clean up indents " },
 	{US "picture",	4, NULL, (unsigned char *) &fdefault.picture, US "Picture drawing mode enabled", US "Picture drawing mode disabled", US "Picture mode " },
 	{US "backpath",	2, (int *) &backpath, NULL, US "Backup files stored in (%s): ", 0, US "  Path to backup files " },
-	{US "syntax",	9, NULL, NULL, US "Select syntax (^C to abort): ", 0, US "Y Syntax" },
-	{US "encoding",13, NULL, NULL, US "Select file character set (^C to abort): ", 0, US "Encoding " },
+	{US "syntax",	9, NULL, NULL, US "Select syntax (%s; ^C to abort): ", 0, US "Y Syntax" },
+	{US "encoding",13, NULL, NULL, US "Select file character set (%s; ^C to abort): ", 0, US "Encoding " },
 	{US "nonotice",	0, &nonotice, NULL, 0, 0, 0 },
 	{US "noxon",	0, &noxon, NULL, 0, 0, 0 },
 	{US "orphan",	0, &orphan, NULL, 0, 0, 0 },
@@ -719,7 +720,8 @@ static int doopt(MENU *m, int x, void *object, int flg)
 			return -1;
 
 	case 9:
-		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, "");
+		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes,
+		    bw->b->o.syntax ? bw->b->o.syntax->name : US "(unset)");
 		m->parent->notify = 0;
 		wabort(m->parent);
 		if (wmkpw(bw->parent, buf, NULL, dosyntax, NULL, NULL, syntaxcmplt, NULL, notify, locale_map))
@@ -728,7 +730,8 @@ static int doopt(MENU *m, int x, void *object, int flg)
 			return -1;
 
 	case 13:
-		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, "");
+		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes,
+		    bw->b->o.charmap ? bw->b->o.charmap->name : US "(unset)");
 		m->parent->notify = 0;
 		wabort(m->parent);
 		if (wmkpw(bw->parent, buf, NULL, doencoding, NULL, NULL, encodingcmplt, NULL, notify, locale_map))
@@ -775,7 +778,7 @@ int umode(BW *bw)
 		case 2:
 		case 9:
 		case 13:
-			strcpy((char *)(s[x]), (char *)glopts[x].menu);
+			strlcpy((char *)(s[x]), (char *)glopts[x].menu, 80);
 			break;
 		case 4:
 			joe_snprintf_2((char *)(s[x]), OPT_BUF_SIZE, "%s%s", glopts[x].menu, *(int *) ((unsigned char *) &bw->o + glopts[x].ofst) ? "ON" : "OFF");
@@ -810,7 +813,7 @@ int procrc(CAP *cap, unsigned char *name)
 	int line = 0;		/* Line number */
 	int err = 0;		/* Set to 1 if there was a syntax error */
 
-	strcpy((char *)buf, (char *)name);
+	strlcpy((char *)buf, (char *)name, 1024);
 #ifdef __MSDOS__
 	fd = fopen((char *)buf, "rt");
 #else
