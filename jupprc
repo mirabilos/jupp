@@ -1,18 +1,18 @@
  "jupp" Ressource for Joe's Own Editor 2.8, Copyright (c) 1997-2004
- 	Thorsten "mirabile" Glaser <tg@66h.42h.de>
+	Thorsten "mirabile" Glaser <tg@66h.42h.de>
  Licensee is hereby permitted to deal in this work without restric-
- tion, including unlimited rights to use, publically perform, modi-
- fy, merge, distribute, sell, give away or sublicence, provided the
- above copyright notices, these terms and the disclaimer are retai-
- ned in all redistributions, or reproduced in accompanying documen-
- tation or other materials provided with binary redistributions.
+ tion, including unlimited rights to use, publicly perform, modify,
+ merge, distribute, sell, give away or sublicence, provided all co-
+ pyright notices above, these terms and the disclaimer are retained
+ in all redistributions or reproduced in accompanying documentation
+ or other materials provided with binary redistributions.
  Licensor hereby provides this work "AS IS" and WITHOUT WARRANTY of
  any kind, expressed or implied, to the maximum extent permitted by
  applicable law, but with the warranty of being written without ma-
  licious intent or gross negligence; in no event shall licensor, an
  author or contributor be held liable for any damage, direct, indi-
  rect or other, however caused, arising in any way out of the usage
- of covered work, even if advised of the possibility of such damage.
+ of this work, even if advised of the possibility of such damage.
 
  Versions of joe newer than 2.8 have more features; some are shown,
  but not primarily used for joe 2.8 compatibility.
@@ -58,7 +58,7 @@
 \i \i^A previous word ^QS beg. of line ^KY kill ^T  >word ^QL refresh  ^KZ shell  \i \i
 \i \i^F next word     ^QD end of line  ^K/ pipe ^QY >line ^O  options  \u\bFILE\b\u       \i \i
 \i \i\u\bSEARCH\b\u           ^QR top of file  ^KB begin          \u\bBUFFER\b\u       ^KE new    \i \i
-\i \i^QF find first   ^QC end of file  ^KK end            ^U undo      ^KR import \i \i
+\i \i^QF find first   ^QC end of file  ^KK end  ^K] space ^U undo      ^KR import \i \i
 \i \i^L  find next    ^QI to line No.  ^KD reformat       ^^ redo      ^KW export \i \i
 }
 
@@ -166,6 +166,7 @@ stop		^[ )
 
 :main
 :inherit windows
+bof,qrepl,"\\[	 ]\\+\\[	 ]\\$",rtn,rtn,rtn,"r",eof	^K ]
 edit,rtn,filt,query,parserr	^[ C
 edit,rtn,filt,query,parserr	^[ c
 backs		^?
