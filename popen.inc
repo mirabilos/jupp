@@ -30,7 +30,7 @@
  * SUCH DAMAGE.
  */
 
-#if defined(LIBC_SCCS) && !defined(lint)
+#if 0
 static char rcsid[] = "$OpenBSD: popen.c,v 1.15 2004/08/06 18:31:11 pedro Exp $";
 #endif /* LIBC_SCCS and not lint */
 
@@ -45,12 +45,14 @@ static char rcsid[] = "$OpenBSD: popen.c,v 1.15 2004/08/06 18:31:11 pedro Exp $"
 #include <string.h>
 #include <paths.h>
 
+__RCSID("$MirOS: contrib/code/jupp/popen.inc,v 1.2 2005/03/06 20:28:40 tg Exp $");
+
 static struct pid {
 	struct pid *next;
 	FILE *fp;
 	pid_t pid;
-} *pidlist; 
-	
+} *pidlist;
+
 FILE *
 popen(const char *program, const char *type)
 {
@@ -165,6 +167,6 @@ pclose(FILE *iop)
 	else
 		last->next = cur->next;
 	free(cur);
-		
+
 	return (pid == -1 ? -1 : pstat);
 }
