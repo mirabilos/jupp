@@ -1,5 +1,4 @@
- Joe's Own Editor 2.8/3.1 "jupp" ressource, Copyright (c) 1997-2005
- 	Thorsten "mirabile" Glaser <tg@66h.42h.de>
+ jupp ressource file for JOE 2.8/3.1 (c) 1997-2005 Th.Glaser
  Licensee is hereby permitted to deal in this work without restric-
  tion, including unlimited rights to use, publicly perform, modify,
  merge, distribute, sell, give away or sublicence, provided all co-
@@ -15,36 +14,24 @@
  of this work, even if advised of the possibility of such damage.
 
 -asis
---autoindent
---beep
---crlf
---csmode
+ -baud 9600
 -dopadding
---exask
 --force
--french
---help
--indentc 9
--istep 1
 -keepup
---lightoff
---linums
--lmargin 1
--lmsg \i%k%T%*\b%n\b%R
---marking
 -mid
 -nobackups
---nonotice
---nosta
- --notite	Quell tty init/terminate strings
 -noxon
---overwrite
 -pg 2
--rmargin 77
+-lmsg \i%k%T%*\b%n\b%R
 -rmsg  R%r<%l C%c\u%o|%O\i\b%a|%A\b\i\u %u
---spaces
+--crlf
+-french
+-indentc 9
+-istep 1
+--linums
+-lmargin 1
+-rmargin 73
 -tab 8
- --utf8		Force file encoding to utf-8
 --wordwrap
 
 {Basic
@@ -102,9 +89,8 @@
 
 {Names
 \i   Help Screen    turn off with ^J     prev. screen ^[,    next screen ^[.     \i
-\i \i Hit TAB at file name prompts to generate a menu of file names,              \i \i
-\i \i or use up/down keys to access history of previously entered names.          \i \i
-\i \i \bSpecial file names:\b                                                         \i \i
+\i \i At file name prompts use the cursor up/down keys to access a history of     \i \i
+\i \i recently used files or the tab key to complete them.  \bSpecial file names:\b   \i \i
 \i \i      !command                 Pipe in/out of a shell command                \i \i
 \i \i      >>filename               Append to a file                              \i \i
 \i \i      -                        Read/Write to/from standard I/O               \i \i
@@ -118,7 +104,7 @@
 \i \i based upon JOE 2.8/3.x (\uhttp://sf.net/projects/joe-editor/\u for bug reports) \i \i
 \i \i by \bJoe H. Allen\b; JUPP 2.8 for DOS (compiled by A. Totlis, packed with LHarc \i \i
 \i \i 2.13), JUPP 3.x for UNIX\d(R)\d by \bThorsten "mirabile" Glaser <\utg@66h.42h.de\u>\b   \i \i
-\i \i @(#) jupprc 2005-02-05; CR-LF set off; UTF-8 off (2.8) / via LC_CTYPE (3.1) \i \i
+\i \i @(#) jupprc 2005-02-12; CR-LF set off; UTF-8 off (2.8) / via LC_CTYPE (3.1) \i \i
 }
 
 :windows
@@ -368,7 +354,9 @@ bolmenu		.kh
 bolmenu		^Q S
 bolmenu		^Q ^S
 bolmenu		^Q s
+bolmenu		^[ [ 1 ~
 bolmenu		^[ [ 7 ~
+bolmenu		^[ [ H
 dnarwmenu	.kd
 dnarwmenu	^X
 dnarwmenu	^[ O B
