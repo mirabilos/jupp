@@ -1,4 +1,4 @@
-# $MirBSD: Makefile.am,v 1.5 2004/11/10 21:21:21 tg Exp $
+# $MirBSD: Makefile.am,v 1.6 2004/11/10 21:54:31 tg Exp $
 
 AUTOMAKE_OPTIONS = foreign
 
@@ -14,13 +14,20 @@ EXTRA_DIST = COPYING INFO LIST NEWS README README.cvs TODO docs/help-system.html
 sysconf_joedir = $(sysconfdir)/joe
 sysconf_joe_DATA = joerc jmacsrc jstarrc rjoerc jpicorc jupprc
 
-sysconf_syntaxdir = $(sysconf_joedir)/syntax
+# friskin' automake sorts by name of target, uh...
+sysconf_aaarealsyntaxdir = $(sysconf_joedir)/syntax
+sysconf_aaarealsyntax_DATA = # nothing, but...
+
+sysconf_syntaxdir = $(sysconf_joedir)
 sysconf_syntax_DATA = syntax/c.jsf syntax/perl.jsf syntax/verilog.jsf \
 	syntax/conf.jsf syntax/python.jsf syntax/php.jsf syntax/sh.jsf \
 	syntax/mail.jsf syntax/pascal.jsf syntax/html.jsf syntax/vhdl.jsf \
 	syntax/fortran.jsf syntax/java.jsf syntax/xml.jsf syntax/tcl.jsf \
 	syntax/lisp.jsf syntax/csh.jsf syntax/mason.jsf syntax/diff.jsf \
 	syntax/asm.jsf
+
+sysconf_aaarealcharmapsdir = $(sysconf_joedir)/charmaps
+sysconf_aaarealcharmaps_DATA = # nothing, but...
 
 sysconf_charmapsdir = $(sysconf_joedir)
 sysconf_charmaps_DATA = charmaps/klingon
