@@ -192,7 +192,9 @@ bol		.kh
 bol		^Q S
 bol		^Q ^S
 bol		^Q s
+bol		^[ [ 1 ~
 bol		^[ [ 7 ~
+bol		^[ [ H
 bos		^Q X
 bos		^Q ^X
 bos		^Q x
