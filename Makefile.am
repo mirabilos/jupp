@@ -1,4 +1,4 @@
-# $MirBSD: Makefile.am,v 1.3 2004/11/10 21:12:16 tg Exp $
+# $MirBSD: Makefile.am,v 1.4 2004/11/10 21:14:07 tg Exp $
 
 AUTOMAKE_OPTIONS = foreign
 
@@ -42,7 +42,7 @@ joe_SOURCES = b.c blocks.c bw.c cmd.c hash.c help.c kbd.c macro.c main.c menu.c 
 	path.c poshist.c pw.c queue.c qw.c rc.c regex.c scrn.c tab.c termcap.c \
 	tty.c tw.c ublock.c uedit.c uerror.c ufile.c uformat.c uisrch.c umath.c \
 	undo.c usearch.c ushell.c utag.c va.c vfile.c vs.c w.c utils.c syntax.c \
-	utf8.c selinux.c i18n.c charmap.c
+	utf8.c selinux.c i18n.c charmap.c strlfun.c
 
 termidx_SOURCES = termidx.c
 
