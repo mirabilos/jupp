@@ -1,150 +1,80 @@
-#! /bin/sh
-# mkinstalldirs --- make directory hierarchy
-
-scriptversion=2004-02-15.20
-
-# Original author: Noah Friedman <friedman@prep.ai.mit.edu>
-# Created: 1993-05-16
-# Public domain.
+#!/bin/ksh
+# $MirBSD: mkinstalldirs,v 1.3 2004/11/11 22:26:47 tg Exp $
+# _MirBSD: contrib/gnu/aux/mkinstalldirs,v 1.2 2004/11/11 22:23:21 tg Exp $
+#-
+# Copyright (c) 2004
+#	Thorsten "mirabile" Glaser <tg@66h.42h.de>
 #
-# This file is maintained in Automake, please report
-# bugs to <bug-automake@gnu.org> or send patches to
-# <automake-patches@gnu.org>.
+# Licensee is hereby permitted to deal in this work without restric-
+# tion, including unlimited rights to use, publically perform, modi-
+# fy, merge, distribute, sell, give away or sublicence, provided the
+# above copyright notices, these terms and the disclaimer are retai-
+# ned in all redistributions, or reproduced in accompanying documen-
+# tation or other materials provided with binary redistributions.
+#
+# Licensor hereby provides this work "AS IS" and WITHOUT WARRANTY of
+# any kind, expressed or implied, to the maximum extent permitted by
+# applicable law, but with the warranty of being written without ma-
+# licious intent or gross negligence; in no event shall licensor, an
+# author or contributor be held liable for any damage, direct, indi-
+# rect or other, however caused, arising in any way out of the usage
+# of covered work, even if advised of the possibility of such damage.
 
-errstatus=0
-dirmode=""
 
-usage="\
-Usage: mkinstalldirs [-h] [--help] [--version] [-m MODE] DIR ...
+# XXX how to check for ksh88?
+if [ -n "$BASH_VERSION" ]; then
+	shopt -s extglob
+	p=echo
+elif [ -n "$SH_VERSION" ]; then
+	case $SH_VERSION in
+	*KSH*)
+		set +o sh +o posix
+		p=print
+		;;
+	esac
+elif [[ -n $KSH_VERSION ]]; then
+	set +o sh +o posix
+	p=print
+fi
 
-Create each directory DIR (with mode MODE, if specified), including all
-leading file name components.
+if [ -z "$p" ]; then
+	echo "Shell not supported; go to http://wiki.mirbsd.de/MirbsdKsh"
+	exit 1
+fi
 
-Report bugs to <bug-automake@gnu.org>."
+usage()
+{
+	echo "$0 [-h] [-m mode] dir ..."
+	exit 1
+}
 
-# process command line arguments
-while test $# -gt 0 ; do
-  case $1 in
-    -h | --help | --h*)         # -h for help
-      echo "$usage"
-      exit 0
-      ;;
-    -m)                         # -m PERM arg
-      shift
-      test $# -eq 0 && { echo "$usage" 1>&2; exit 1; }
-      dirmode=$1
-      shift
-      ;;
-    --version)
-      echo "$0 $scriptversion"
-      exit 0
-      ;;
-    --)                         # stop option processing
-      shift
-      break
-      ;;
-    -*)                         # unknown option
-      echo "$usage" 1>&2
-      exit 1
-      ;;
-    *)                          # first non-opt arg
-      break
-      ;;
-  esac
+if [ -n "$BASH_VERSION" ]; then
+	typeset -i mode=8#17777
+else
+	typeset -i8 mode=8#17777
+fi
+
+allargs="$*"
+
+[[ $allargs = *@(--help)* || $allargs = *@(--version)* ]] && \
+	usage
+
+while getopts "hm:" opt; do
+	case $opt in
+	h)	usage ;;
+	m)	[[ -z $OPTARG ]] && usage
+		let mode="8#$OPTARG"
+		;;
+	esac
 done
+shift $((OPTIND - 1))
 
-for file
-do
-  if test -d "$file"; then
-    shift
-  else
-    break
-  fi
-done
-
-case $# in
-  0) exit 0 ;;
-esac
-
-# Solaris 8's mkdir -p isn't thread-safe.  If you mkdir -p a/b and
-# mkdir -p a/c at the same time, both will detect that a is missing,
-# one will create a, then the other will try to create a and die with
-# a "File exists" error.  This is a problem when calling mkinstalldirs
-# from a parallel make.  We use --version in the probe to restrict
-# ourselves to GNU mkdir, which is thread-safe.
-case $dirmode in
-  '')
-    if mkdir -p --version . >/dev/null 2>&1 && test ! -d ./--version; then
-      echo "mkdir -p -- $*"
-      exec mkdir -p -- "$@"
-    else
-      # On NextStep and OpenStep, the `mkdir' command does not
-      # recognize any option.  It will interpret all options as
-      # directories to create, and then abort because `.' already
-      # exists.
-      test -d ./-p && rmdir ./-p
-      test -d ./--version && rmdir ./--version
-    fi
-    ;;
-  *)
-    if mkdir -m "$dirmode" -p --version . >/dev/null 2>&1 &&
-       test ! -d ./--version; then
-      echo "mkdir -m $dirmode -p -- $*"
-      exec mkdir -m "$dirmode" -p -- "$@"
-    else
-      # Clean up after NextStep and OpenStep mkdir.
-      for d in ./-m ./-p ./--version "./$dirmode";
-      do
-        test -d $d && rmdir $d
-      done
-    fi
-    ;;
-esac
-
-for file
-do
-  set fnord `echo ":$file" | sed -ne 's/^:\//#/;s/^://;s/\// /g;s/^#/\//;p'`
-  shift
-
-  pathcomp=
-  for d
-  do
-    pathcomp="$pathcomp$d"
-    case $pathcomp in
-      -*) pathcomp=./$pathcomp ;;
-    esac
-
-    if test ! -d "$pathcomp"; then
-      echo "mkdir $pathcomp"
-
-      mkdir "$pathcomp" || lasterr=$?
-
-      if test ! -d "$pathcomp"; then
-	errstatus=$lasterr
-      else
-	if test ! -z "$dirmode"; then
-	  echo "chmod $dirmode $pathcomp"
-	  lasterr=""
-	  chmod "$dirmode" "$pathcomp" || lasterr=$?
-
-	  if test ! -z "$lasterr"; then
-	    errstatus=$lasterr
-	  fi
+if (( mode > 8#7777 )); then
+	exec /bin/mkdir -p -- "$@"
+else
+	if [ -n "$BASH_VERSION" ]; then
+		exec /bin/mkdir -p -m $(printf %o $mode) "$@"
+	else
+		exec /bin/mkdir -p -m ${mode#8#} "$@"
 	fi
-      fi
-    fi
-
-    pathcomp="$pathcomp/"
-  done
-done
-
-exit $errstatus
-
-# Local Variables:
-# mode: shell-script
-# sh-indentation: 2
-# eval: (add-hook 'write-file-hooks 'time-stamp)
-# time-stamp-start: "scriptversion="
-# time-stamp-format: "%:y-%02m-%02d.%02H"
-# time-stamp-end: "$"
-# End:
+fi

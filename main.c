@@ -159,7 +159,7 @@ extern int breakflg;
 
 unsigned char **mainenv;
 
-int main(int argc, unsigned char **argv, unsigned char **envv)
+int main(int argc, char **argv, char **envp)
 {
 	CAP *cap;
 	unsigned char *s;
@@ -175,7 +175,7 @@ int main(int argc, unsigned char **argv, unsigned char **envv)
 
 	joe_locale();
 
-	mainenv = envv;
+	mainenv = (unsigned char **)envp;
 
 #ifdef __MSDOS__
 	_fmode = O_BINARY;

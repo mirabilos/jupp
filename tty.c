@@ -12,10 +12,8 @@
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
 #endif
-#ifdef GWINSZ_IN_SYS_IOCTL
 #ifdef HAVE_SYS_IOCTL_H
 #include <sys/ioctl.h>
-#endif
 #endif
 #include <stdio.h>
 #ifdef HAVE_FCNTL_H
@@ -28,20 +26,12 @@
 #include <sys/param.h>
 #endif
 
-#ifdef HAVE_OPENPTY
-#ifdef HAVE_PTY_H
-#include <pty.h>
-#endif
-#endif
-
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
 
 int idleout = 1;
-
-#include "config.h"
 
 /* We use the defines in sys/ioctl to determine what type
  * tty interface the system uses and what type of system
@@ -57,6 +47,15 @@ int idleout = 1;
 #  else
 #    include <sgtty.h>
 #  endif
+#endif
+
+#ifdef HAVE_OPENPTY
+#ifdef HAVE_PTY_H
+#include <pty.h>
+#endif
+#ifdef HAVE_UTIL_H
+#include <util.h>
+#endif
 #endif
 
 #ifdef HAVE_SETITIMER
@@ -91,6 +90,7 @@ int idleout = 1;
 
 #include "main.h"
 #include "path.h"
+#include "scrn.h"
 #include "tty.h"
 #include "utils.h"
 
@@ -850,11 +850,10 @@ static unsigned char *getpty(int *ptyfd)
 #else
 #ifdef HAVE_OPENPTY
 
-/* BSD function, present in libc5 and glibc2 */
+/* BSD function, present in libc5 and glibc2, and the BSDs */
 
 static unsigned char *getpty(int *ptyfd)
 {
-	int fdm;
 	static unsigned char name[32];
 	int ttyfd;
 
@@ -900,23 +899,23 @@ static unsigned char *getpty(int *ptyfd)
 
 	if (ptys)
 		for (fd = 0; ptys[fd]; ++fd) {
-			strcpy((char *)ttyname, (char *)ptydir);
-			strcat((char *)ttyname, (char  *)(ptys[fd]));
+			strlcpy((char *)ttyname, (char *)ptydir, 32);
+			strlcat((char *)ttyname, (char  *)(ptys[fd]), 32);
 			if ((*ptyfd = open((char *)ttyname, O_RDWR)) >= 0) {
 				ptys[fd][0] = 't';
-				strcpy((char *)ttyname, (char *)ttydir);
-				strcat((char *)ttyname, (char *)(ptys[fd]));
+				strlcpy((char *)ttyname, (char *)ttydir, 32);
+				strlcat((char *)ttyname, (char *)(ptys[fd]), 32);
 				ptys[fd][0] = 'p';
 				x = open((char *)ttyname, O_RDWR);
 				if (x >= 0) {
 					close(x);
 					close(*ptyfd);
-					strcpy((char *)ttyname, (char *)ptydir);
-					strcat((char *)ttyname, (char *)(ptys[fd]));
+					strlcpy((char *)ttyname, (char *)ptydir, 32);
+					strlcat((char *)ttyname, (char *)(ptys[fd]), 32);
 					*ptyfd = open((char *)ttyname, O_RDWR);
 					ptys[fd][0] = 't';
-					strcpy((char *)ttyname, (char *)ttydir);
-					strcat((char *)ttyname, (char *)(ptys[fd]));
+					strlcpy((char *)ttyname, (char *)ttydir, 32);
+					strlcat((char *)ttyname, (char *)(ptys[fd]), 32);
 					ptys[fd][0] = 'p';
 					return ttyname;
 				} else
