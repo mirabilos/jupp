@@ -1,3 +1,5 @@
+# $MirBSD: Makefile.am,v 1.3 2004/11/10 21:12:16 tg Exp $
+
 AUTOMAKE_OPTIONS = foreign
 
 EXTRA_DIST = COPYING INFO LIST NEWS README README.cvs TODO docs/help-system.html \
@@ -20,7 +22,7 @@ sysconf_syntax_DATA = syntax/c.jsf syntax/perl.jsf syntax/verilog.jsf \
 	syntax/lisp.jsf syntax/csh.jsf syntax/mason.jsf syntax/diff.jsf \
 	syntax/asm.jsf
 
-sysconf_charmapsdir = $(sysconf_joedir)/charmaps
+sysconf_charmapsdir = $(sysconf_joedir)
 sysconf_charmaps_DATA = charmaps/klingon
 
 man_MANS = joe.1
