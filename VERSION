@@ -1,0 +1,149 @@
+** JOE 2.8
+
+- Fixed problem with TERMPATH string
+- Added stupid two-letter names to termcap file
+- Improved jmacs help and command set
+- Improved README file
+
+** JOE 2.7
+
+- putenv() was not portable
+- utime was not portable
+- special utime handling for NeXT
+- forgot to \\ the \s in the default termcap entry
+- changed some key defaults in jpicorc
+- add IXOFF in termio/termios list
+- left margin limit was incorrect
+- allow '.' and '/' in file names for error parsing
+- Needed ptem.h and stream.h for SCO_UNIX window size structure (?)
+- wordwrap no longer propogates indent prefix
+- paragraph format was broken for tab indented paragraphs
+- pipe through shell now goes through stderr too
+- added '-crlf' option
+- looks for termcap file in JOERC/termcap
+
+** JOE 2.6
+
+- Fixed stupid bug in termcap.c which prevented terminfo from working
+
+- ESC h was missing from jpicorc
+
+- Changes suggested by Dan Nelson:
+ - backup files now attempt to have same permissions and times as original
+ - Stat command now ands chars with 255 (don't know why this worked on my system
+   without this...)
+ - Maybe change shell invocation name- have to check this more
+
+** JOE 2.5
+
+- No longer use ^[ O, ^[ A, ^[ B, ^[ C, or ^[ D for anything because they
+  interfere with arrow keys.
+
+- Couldn't create new files because of bug in readonly setting
+
+- fwrdc/bkwdc were crashing the editor except when called from wordstar
+
+- 'tr' command was not called in a portable way in jmacs
+
+- 'tr' was causing problems with the spell-check macros as well
+
+- filter region was not working: had to add 'query' in ^[ | macro
+
+- Changed incremental search so that whatever key the command is bound to
+  can be used to repeat the search (used to only be able to use ^S)
+
+** JOE 2.4
+
+- Closing message was incorrect when exit macros (macros where the last
+  command is abortbuf) were used.
+
+- SuperPico rc file added
+
+- Write block now writes the entire file if no block is set
+
+- Added pico kill function for pico emulation
+  (tried to do this with 'psh,markk,blkdel' where blkdel deletes lines if
+   no block is set, but it didn't group the deletes right in the yank
+   buffer)
+
+- Filter block would leave the marks set
+
+- Fixed ^@ in joe mode
+
+- Fixed help screen glitches in wordstar mode
+
+- If joe can't make a backup file it now prompts for you to save anyway
+
+- Eliminated IDLEOUT compile option.  Now is the user gives - on the
+  command line, joe uses /dev/tty.
+
+- Added %o %O %a %A %X and %R status line messages
+
+- Starts out in read only mode if loaded file can not be written to
+
+- If joe can't find the termcap/terminfo entry, it instead uses the default
+
+- termcap routines are now included even if you use terminfo.  If your
+  terminal can't be found in the terminfo database, it will look in
+  the termcap database too.
+
+- The JOETERM environment variable can be used to bypass the TERM
+  environment variable setting.
+
+** JOE 2.3
+
+- Search & Replace bugs fixed
+   - replace would mess up the end mark of a marked block
+   - a search would trash ^KB if only ^KB was set
+   - regex problem with \*
+
+- Was using TCSANOW in posix driver.  Should have been using TCSADRAIN
+
+- Format paragraph now correctly formats quoted news articles
+
+- Attempted fix for SCO
+
+- Fix for coherent
+
+- Fix for old IRIX/SGI
+
+- Fixed bug where if you used search & replace in a macro, and exiting the
+  search & replace loop with right arrow key, then when you played the macro
+  you got an extra ^[ in the input queue
+
+- Added file hooks
+
+- Added function to insert current keyboard macro into current file
+
+- Added range checks to numeric option settings
+
+- Restricted joe rc file added
+
+- Added ':def' feature for rc files
+
+** JOE 2.2
+
+- First attempt at MS-DOS version of joe
+   - Direct screen write
+   - Modifications for dos file/drive names
+   - Use TEMP variable to figure out where to store temporary file
+   - Smaller virtual memory page size
+   - Backslashes in file name problem
+   - CR before an LF looks like an LF
+- Backward search ignore-case was not working
+- Scalable window height was not working fully
+- Spaces in file-names gave a problem with backup file creation
+- TILDE option is not available in all versions of BSD
+- Allow : as seperate for termcap filename list
+- Next error / Prev. error was not tracking right
+- tabs not displayed right in nxterr/prverr messages
+- Block moves where the cursor was to the right of the block was broken
+
+** JOE 2.1
+
+- rc file wasn't giving correct error messages for missing options
+- the '-nobackups' options was mispelled: '- nobackups'
+- editor was crashing because of problem in undo
+- update bypass in utype has a problem when wordwrapping and scrolling
+
+** JOE 2.0
