@@ -10,7 +10,7 @@
 # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.
 
-# $MirBSD: Makefile.in,v 1.4 2004/11/10 21:22:06 tg Exp $
+# $MirBSD: Makefile.in,v 1.5 2004/11/10 21:55:43 tg Exp $
 
 
 SHELL = @SHELL@
@@ -78,9 +78,16 @@ EXTRA_DIST = COPYING INFO LIST NEWS README README.cvs TODO docs/help-system.html
 sysconf_joedir = $(sysconfdir)/joe
 sysconf_joe_DATA = joerc jmacsrc jstarrc rjoerc jpicorc jupprc
 
-sysconf_syntaxdir = $(sysconf_joedir)/syntax
+# friskin' automake sorts by name of target, uh...
+sysconf_aaarealsyntaxdir = $(sysconf_joedir)/syntax
+sysconf_aaarealsyntax_DATA = # nothing, but...
+
+sysconf_syntaxdir = $(sysconf_joedir)
 sysconf_syntax_DATA = syntax/c.jsf syntax/perl.jsf syntax/verilog.jsf 	syntax/conf.jsf syntax/python.jsf syntax/php.jsf syntax/sh.jsf 	syntax/mail.jsf syntax/pascal.jsf syntax/html.jsf syntax/vhdl.jsf 	syntax/fortran.jsf syntax/java.jsf syntax/xml.jsf syntax/tcl.jsf 	syntax/lisp.jsf syntax/csh.jsf syntax/mason.jsf syntax/diff.jsf 	syntax/asm.jsf
 
+
+sysconf_aaarealcharmapsdir = $(sysconf_joedir)/charmaps
+sysconf_aaarealcharmaps_DATA = # nothing, but...
 
 sysconf_charmapsdir = $(sysconf_joedir)
 sysconf_charmaps_DATA = charmaps/klingon
@@ -129,8 +136,8 @@ man1dir = $(mandir)/man1
 MANS = $(man_MANS)
 
 NROFF = nroff
-DATA =  $(sysconf_charmaps_DATA) $(sysconf_joe_DATA) \
-$(sysconf_syntax_DATA)
+DATA =  $(sysconf_aaarealcharmaps_DATA) $(sysconf_aaarealsyntax_DATA) \
+$(sysconf_charmaps_DATA) $(sysconf_joe_DATA) $(sysconf_syntax_DATA)
 
 HEADERS =  $(noinst_HEADERS)
 
@@ -296,6 +303,44 @@ uninstall-man:
 	@$(NORMAL_UNINSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) uninstall-man1
 
+install-sysconf_aaarealcharmapsDATA: $(sysconf_aaarealcharmaps_DATA)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(sysconf_aaarealcharmapsdir)
+	@list='$(sysconf_aaarealcharmaps_DATA)'; for p in $$list; do \
+	  if test -f $(srcdir)/$$p; then \
+	    echo " $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(sysconf_aaarealcharmapsdir)/$$p"; \
+	    $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(sysconf_aaarealcharmapsdir)/$$p; \
+	  else if test -f $$p; then \
+	    echo " $(INSTALL_DATA) $$p $(DESTDIR)$(sysconf_aaarealcharmapsdir)/$$p"; \
+	    $(INSTALL_DATA) $$p $(DESTDIR)$(sysconf_aaarealcharmapsdir)/$$p; \
+	  fi; fi; \
+	done
+
+uninstall-sysconf_aaarealcharmapsDATA:
+	@$(NORMAL_UNINSTALL)
+	list='$(sysconf_aaarealcharmaps_DATA)'; for p in $$list; do \
+	  rm -f $(DESTDIR)$(sysconf_aaarealcharmapsdir)/$$p; \
+	done
+
+install-sysconf_aaarealsyntaxDATA: $(sysconf_aaarealsyntax_DATA)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(sysconf_aaarealsyntaxdir)
+	@list='$(sysconf_aaarealsyntax_DATA)'; for p in $$list; do \
+	  if test -f $(srcdir)/$$p; then \
+	    echo " $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(sysconf_aaarealsyntaxdir)/$$p"; \
+	    $(INSTALL_DATA) $(srcdir)/$$p $(DESTDIR)$(sysconf_aaarealsyntaxdir)/$$p; \
+	  else if test -f $$p; then \
+	    echo " $(INSTALL_DATA) $$p $(DESTDIR)$(sysconf_aaarealsyntaxdir)/$$p"; \
+	    $(INSTALL_DATA) $$p $(DESTDIR)$(sysconf_aaarealsyntaxdir)/$$p; \
+	  fi; fi; \
+	done
+
+uninstall-sysconf_aaarealsyntaxDATA:
+	@$(NORMAL_UNINSTALL)
+	list='$(sysconf_aaarealsyntax_DATA)'; for p in $$list; do \
+	  rm -f $(DESTDIR)$(sysconf_aaarealsyntaxdir)/$$p; \
+	done
+
 install-sysconf_charmapsDATA: $(sysconf_charmaps_DATA)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(sysconf_charmapsdir)
@@ -447,14 +492,18 @@ install-exec-am: install-binPROGRAMS
 	$(MAKE) $(AM_MAKEFLAGS) install-exec-hook
 install-exec: install-exec-am
 
-install-data-am: install-man install-sysconf_charmapsDATA \
-		install-sysconf_joeDATA install-sysconf_syntaxDATA
+install-data-am: install-man install-sysconf_aaarealcharmapsDATA \
+		install-sysconf_aaarealsyntaxDATA \
+		install-sysconf_charmapsDATA install-sysconf_joeDATA \
+		install-sysconf_syntaxDATA
 install-data: install-data-am
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 install: install-am
 uninstall-am: uninstall-binPROGRAMS uninstall-man \
+		uninstall-sysconf_aaarealcharmapsDATA \
+		uninstall-sysconf_aaarealsyntaxDATA \
 		uninstall-sysconf_charmapsDATA \
 		uninstall-sysconf_joeDATA uninstall-sysconf_syntaxDATA \
 		uninstall-local
@@ -465,6 +514,8 @@ install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
 installdirs:
 	$(mkinstalldirs)  $(DESTDIR)$(bindir) $(DESTDIR)$(mandir)/man1 \
+		$(DESTDIR)$(sysconf_aaarealcharmapsdir) \
+		$(DESTDIR)$(sysconf_aaarealsyntaxdir) \
 		$(DESTDIR)$(sysconf_charmapsdir) \
 		$(DESTDIR)$(sysconf_joedir) \
 		$(DESTDIR)$(sysconf_syntaxdir)
@@ -511,7 +562,9 @@ mostlyclean-binPROGRAMS distclean-binPROGRAMS clean-binPROGRAMS \
 maintainer-clean-binPROGRAMS uninstall-binPROGRAMS install-binPROGRAMS \
 mostlyclean-compile distclean-compile clean-compile \
 maintainer-clean-compile install-man1 uninstall-man1 install-man \
-uninstall-man uninstall-sysconf_charmapsDATA \
+uninstall-man uninstall-sysconf_aaarealcharmapsDATA \
+install-sysconf_aaarealcharmapsDATA uninstall-sysconf_aaarealsyntaxDATA \
+install-sysconf_aaarealsyntaxDATA uninstall-sysconf_charmapsDATA \
 install-sysconf_charmapsDATA uninstall-sysconf_joeDATA \
 install-sysconf_joeDATA uninstall-sysconf_syntaxDATA \
 install-sysconf_syntaxDATA tags mostlyclean-tags distclean-tags \
