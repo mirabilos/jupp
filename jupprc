@@ -1,4 +1,4 @@
- jupp ressource file for JOE 2.8/3.1 (c) 1997-2005 Th.Glaser
+ jupp ressource file for JOE 2.8/3.1  (c) 1997-2005 Thorsten Glaser
  Licensee is hereby permitted to deal in this work without restric-
  tion, including unlimited rights to use, publicly perform, modify,
  merge, distribute, sell, give away or sublicence, provided all co-
@@ -52,6 +52,8 @@
 \i \i^KG Make current window bigger       ^KT Make current window smaller         \i \i
 \i \i^KN Go to the window below           ^KP Go to the window above              \i \i
 \i \i^KQ Eliminate the current window     ^KI Show all windows / Show one window  \i \i
+\i \i\u\bSpecial help for XON/XOFF aware terminals\b\u                                    \i \i
+\i \i You can use \b^[q\b and \b^[s\b instead of \b^Q\b and \b^S\b to initiate a command.         \i \i
 }
 
 {Advanced
@@ -100,11 +102,11 @@
 
 {Joe
 \i   Help Screen    turn off with ^J     prev. screen ^[,                        \i
-\i \i JUPP (Joe's Own Editor) from \uhttp://wiki.mirbsd.de/JuppEditor\u \d(GNU GPL v1)\d  \i \i
-\i \i based upon JOE 2.8/3.x (\uhttp://sf.net/projects/joe-editor/\u for bug reports) \i \i
-\i \i by \bJoe H. Allen\b; JUPP 2.8 for DOS (compiled by A. Totlis, packed with LHarc \i \i
-\i \i 2.13), JUPP 3.x for UNIX\d(R)\d by \bThorsten "mirabile" Glaser <\utg@66h.42h.de\u>\b   \i \i
-\i \i @(#) jupprc 2005-02-12; CR-LF set off; UTF-8 off (2.8) / via LC_CTYPE (3.1) \i \i
+\i \i \bJUPP\b is based upon JOE (Joe's Own Editor) 2.8/3.x \d(GPL v1)\d by Joe H. Allen; \i \i
+\i \i go to \uhttp://sf.net/projects/joe-editor/\u for upstream bug reports. JUPP 2.8 \i \i
+\i \i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\d(R)\d \i \i
+\i \i by \bThorsten Glaser <\utg@66h.42h.de\u>\b at \uhttp://mirbsd.mirsolutions.de/?jupp\u \d&\d \i \i
+\i \i @(#) jupprc 2005-08-05; CR-LF off; UTF-8 off (2.8) / set via LC_CTYPE (3.x) \i \i
 }
 
 :windows
@@ -115,6 +117,7 @@ abort		^K q
 arg		^Q Q
 arg		^Q ^Q
 arg		^Q q
+arg		^[ q q
 explode		^K I
 explode		^K ^I
 explode		^K i
@@ -125,6 +128,7 @@ hprev		^[ ,
 math		^Q M
 math		^Q ^M
 math		^Q m
+math		^[ q m
 msg		^[ H
 msg		^[ h
 nextw		^K N
@@ -141,6 +145,7 @@ record		^[ (
 retype		^Q L
 retype		^Q ^L
 retype		^Q l
+retype		^[ q l
 rtn		^M
 shell		^K Z
 shell		^K ^Z
@@ -159,6 +164,7 @@ bknd		^K '
 bkwdc		^Q G ^@ TO ÿ
 bkwdc		^Q ^G ^@ TO ÿ
 bkwdc		^Q g ^@ TO ÿ
+bkwdc		^[ q g ^@ TO ÿ
 blkcpy		^K C
 blkcpy		^K ^C
 blkcpy		^K c
@@ -174,6 +180,8 @@ blksave		^K w
 bof		^Q R
 bof		^Q ^R
 bof		^Q r
+bof		^[ [ 1 ; 5 H
+bof		^[ q r
 bol		.kh
 bol		^Q S
 bol		^Q ^S
@@ -181,22 +189,29 @@ bol		^Q s
 bol		^[ [ 1 ~
 bol		^[ [ 7 ~
 bol		^[ [ H
+bol		^[ q s
 bos		^Q X
 bos		^Q ^X
 bos		^Q x
+bos		^[ q x
 center		^K A
 center		^K ^A
 center		^K a
 crawll		^Q ,
+crawll		^[ q ,
 crawlr		^Q .
+crawlr		^[ q .
 delbol		^Q ^?
 delbol		^Q ^H
+delbol		^[ q ^?
+delbol		^[ q ^H
 delch		.kD
 delch		^G
 delch		^[ [ 3 ~
 deleol		^Q Y
 deleol		^Q ^Y
 deleol		^Q y
+deleol		^[ q y
 dellin		^Y
 delw		^T
 dnarw		.kd
@@ -210,6 +225,8 @@ edit		^K e
 eof		^Q C
 eof		^Q ^C
 eof		^Q c
+eof		^[ [ 1 ; 5 F
+eof		^[ q c
 eol		.@7
 eol		.kH
 eol		^Q D
@@ -218,6 +235,7 @@ eol		^Q d
 eol		^[ [ 4 ~
 eol		^[ [ 8 ~
 eol		^[ [ F
+eol		^[ q d
 execmd		^[ -
 exsave		^K X
 exsave		^K ^X
@@ -225,6 +243,7 @@ exsave		^K x
 ffirst		^Q F
 ffirst		^Q ^F
 ffirst		^Q f
+ffirst		^[ q f
 filt		^K /
 fmtblk		^K D
 fmtblk		^K ^D
@@ -236,7 +255,9 @@ format		^B
 fwrdc		^Q H ^@ TO ÿ
 fwrdc		^Q ^H ^@ TO ÿ
 fwrdc		^Q h ^@ TO ÿ
+fwrdc		^[ q h ^@ TO ÿ
 gomark		^Q 0 TO 9
+gomark		^[ q 0 TO 9
 groww		^K G
 groww		^K ^G
 groww		^K g
@@ -249,10 +270,12 @@ lindent		^K ,
 line		^Q I
 line		^Q ^I
 line		^Q i
+line		^[ q i
 ltarw		.kl
 ltarw		^S
 ltarw		^[ O D
 ltarw		^[ [ D
+ltarw		^[ s
 macros		^[ D
 macros		^[ d
 markb		^K B
@@ -269,6 +292,7 @@ mode,"T"	.kI
 mode,"T"	^V
 nextpos		^K =
 nextword	^F
+nextword	^[ [ 1 ; 5 C
 nmark		^K H
 nmark		^K ^H
 nmark		^K h
@@ -287,12 +311,15 @@ play,"0"	^N
 prevpos		^Q P
 prevpos		^Q ^P
 prevpos		^Q p
+prevpos		^[ q p
 prevword	^A
+prevword	^[ [ 1 ; 5 D
 prverr		^[ N
 prverr		^[ n
 qrepl		^Q A
 qrepl		^Q ^A
 qrepl		^Q a
+qrepl		^[ q a
 redo		^^
 rindent		^K .
 rsrch		^[ R
@@ -314,19 +341,25 @@ splitw		^K ^O
 splitw		^K o
 splitw,tag	^K ;
 stat		^Q ?
+stat		^[ q ?
 tomarkb		^Q B
 tomarkb		^Q ^B
 tomarkb		^Q b
+tomarkb		^[ q b
 tomarkk		^Q K
 tomarkk		^Q ^K
 tomarkk		^Q k
+tomarkk		^[ q k
 tomatch		^Q [
 tomatch		^Q ]
 tomatch		^Q ^[
 tomatch		^Q ^]
+tomatch		^[ q [
+tomatch		^[ q ]
 tos		^Q E
 tos		^Q ^E
 tos		^Q e
+tos		^[ q e
 undo		^U
 undo		^_
 uparw		.ku
@@ -347,9 +380,11 @@ complete	^I
 abort		^[ ^[
 backsmenu	^?
 backsmenu	^H
-bofmenu		^K r
 bofmenu		^Q R
 bofmenu		^Q ^R
+bofmenu		^Q r
+bofmenu		^[ [ 1 ; 5 H
+bofmenu		^[ q r
 bolmenu		.kh
 bolmenu		^Q S
 bolmenu		^Q ^S
@@ -357,22 +392,30 @@ bolmenu		^Q s
 bolmenu		^[ [ 1 ~
 bolmenu		^[ [ 7 ~
 bolmenu		^[ [ H
+bolmenu		^[ q s
 dnarwmenu	.kd
 dnarwmenu	^X
 dnarwmenu	^[ O B
 dnarwmenu	^[ [ B
+eof		^[ [ 1 ; 5 F
 eofmenu		^Q C
 eofmenu		^Q ^C
 eofmenu		^Q c
+eofmenu		^[ q c
+eolmenu		.@7
 eolmenu		.kH
 eolmenu		^Q D
 eolmenu		^Q ^D
 eolmenu		^Q d
+eolmenu		^[ [ 4 ~
 eolmenu		^[ [ 8 ~
+eolmenu		^[ [ F
+eolmenu		^[ q d
 ltarwmenu	.kl
 ltarwmenu	^S
 ltarwmenu	^[ O D
 ltarwmenu	^[ [ D
+ltarwmenu	^[ s
 rtarwmenu	.kr
 rtarwmenu	^D
 rtarwmenu	^[ O C
