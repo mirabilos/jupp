@@ -273,7 +273,7 @@ int ubegin_marking(BW *bw)
 	if (marking)
 		/* We're marking now... don't stop */
 		return 0;
-	else if (markv(0) && bw->cursor->b==markb->b)
+	else if (markv(0) && bw->cursor->b==markb->b) {
 		/* Try to extend current block */
 		if (bw->cursor->byte==markb->byte) {
 			pset(markb,markk);
@@ -285,6 +285,7 @@ int ubegin_marking(BW *bw)
 			marking = 1;
 			return 0;
 		}
+	}
 	/* Start marking - no message */
 	prm(markb); markb=0;
 	prm(markk); markk=0;
@@ -697,7 +698,6 @@ int lindent_check(int c, int n)
 	else
 		indwid = n;
 	while (p->byte < markk->byte) {
-		int x;
 		p_goto_bol(p);
 		if (!piseol(p) && pisindent(p)<indwid) {
 			prm(p);

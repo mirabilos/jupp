@@ -1,3 +1,29 @@
+$MirOS: contrib/code/jupp/NEWS,v 1.4 2005/08/26 23:10:42 tg Exp $
+
+JOE 3.1jupp4
+
+- Keyboard fixes in "jupprc"
+
+- Add "ESC q" as alias for "^Q" in "jupprc"
+
+- Update some files from upstream
+
+JOE 3.1jupp3
+
+- Fixed using new GNU Autotools
+
+- Updated "jupprc"
+
+JOE 3.1jupp2
+
+- Fixed string functions
+
+- Added "jupp" flavour
+
+- No tab completion in search and replace ask windows
+
+- UTF-8 works on LOCALE-less OSses (various BSDs)
+
 JOE 3.1
 
 - Regex and incremental search (jmacs ^S) now work for UTF-8
@@ -107,13 +133,13 @@ Overview of Changes in JOE 2.9.7-pre2 (10 Oct 2001)
 - a lot of warnings of compiler were removed
 - SECURITY:: use mkstemp() for temporary files if available
 - code clean up
-    
+
 Overview of Changes in JOE 2.9.7pre1 (19 Jul 2001)
 - help system was slightly modified
 - a lot of warnings of compiler were removed
 - BUGFIX:: problem with freezing when save was solved (at least partially)
 - BUGFIX:: undo after save of file (again same patch)
-- FEATURE:: suffix of backup copy from SIMPLE_BACKUP_SUFFIX environment 
+- FEATURE:: suffix of backup copy from SIMPLE_BACKUP_SUFFIX environment
   variable
 
 Overview of Changes in JOE 2.9.7pre0 (02 Jul 2001)
@@ -151,15 +177,15 @@ Overview of Changes in JOE 2.9.6 (13 Apr 2001)
 Overview of Changes in JOE 2.9.5 (28 Mar 2001)
 
 - new BUG:: can't be compiled on non-GNU systems (is_blank()) fixed in v2.9.6
-- BUGFIX:: Fixed problem with resizing. 
+- BUGFIX:: Fixed problem with resizing.
 - SECURITY:: .[joe|rjoe|jpico|..]rc in actual directory is ignored
              because in this file can be defined which program run.
 
 Overview of Changes in JOE 2.9.4 (27 Mar 2001)
 
-- new BUG:: go to previous word; goes one character before this word 
+- new BUG:: go to previous word; goes one character before this word
             fixed in v2.9.6
-- FEATURE:: locale (LC_CTYPE) is accepted when skipping/deleting/... words	
+- FEATURE:: locale (LC_CTYPE) is accepted when skipping/deleting/... words
 
 Overview of Changes in JOE 2.9  (22 Mar 2001)
 
