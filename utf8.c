@@ -18,7 +18,10 @@
 #endif
 
 #ifdef __OpenBSD__
-/* OpenBSD, MirOS and ekkoBSD do not have real locale support */
+/*
+ * OpenBSD, MirOS and ekkoBSD do not have real locale support
+ * in older versions; even for recent versions, this is enough.
+ */
 #undef HAVE_SETLOCALE
 #endif
 
