@@ -1,5 +1,5 @@
 #!/bin/mksh
-# $MirOS: contrib/code/jupp/autogen.sh,v 1.5 2005/08/26 23:05:11 tg Exp $
+# $MirOS: contrib/code/jupp/autogen.sh,v 1.6 2005/08/26 23:41:14 tg Exp $
 #-
 # Copyright (c) 2004, 2005
 #	Thorsten "mirabile" Glaser <tg@66h.42h.de>
@@ -38,7 +38,7 @@ fi
 export AUTOCONF_VERSION AUTOMAKE_VERSION GNUSYSTEM_AUX_DIR
 
 #AM_FLAGS="--miros --ignore-deps"
-AM_FLAGS="--ignore-deps"
+AM_FLAGS=""
 [[ $AUTOMAKE_VERSION = 1.4 ]] && AM_FLAGS=
 [[ -n $flags ]] && AM_FLAGS="$flags"
 
