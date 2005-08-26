@@ -1,8 +1,8 @@
-#!/bin/ksh
-# $MirOS: contrib/code/jupp/install-sh,v 1.2 2005/02/11 21:37:30 tg Exp $
-# _MirOS: contrib/gnu/aux/install-sh,v 1.1.7.1 2005/02/05 01:54:29 tg Exp $
+#!/bin/mksh
+# $MirOS: contrib/code/jupp/install-sh,v 1.3 2005/08/26 23:05:11 tg Exp $
+# _MirOS: contrib/gnu/aux/install-sh,v 1.7 2005/08/26 22:55:56 tg Exp $
 #-
-# Copyright (c) 2004
+# Copyright (c) 2004, 2005
 #	Thorsten "mirabile" Glaser <tg@66h.42h.de>
 #
 # Licensee is hereby permitted to deal in this work without restric-
@@ -24,17 +24,40 @@
 # rect or other, however caused, arising in any way out of the usage
 # of this work, even if advised of the possibility of such damage.
 
+# XXX how to check for ksh88?
+if [ -n "$BASH_VERSION" ]; then
+	shopt -s extglob
+	p=echo
+elif [ -n "$SH_VERSION" ]; then
+	case $SH_VERSION in
+	*KSH*)
+		set +o sh +o posix
+		p=print
+		;;
+	esac
+elif [[ -n $KSH_VERSION ]]; then
+	p=print
+fi
 
-set +o sh +o posix
+if [ -z "$p" ]; then
+	echo "Shell not supported; go to http://mirbsd.mirsolutions.de/?mksh"
+	exit 1
+fi
 
 allargs="$*"
 
-if [[ $allargs != *@(-t=|-b=)* ]]; then
-	exec /usr/bin/install "$@"
+installprog=/usr/bin/install
+test -x /usr/ucb/install && installprog=/usr/ucb/install
+
+if [[ $allargs != *@(-t=|-b=)* && -z $SFUDIR ]]; then
+	exec $installprog "$@"
 fi
 
 args=
+parg=
+marg=
 d=0
+m=
 
 while getopts "B:b:Ccdf:g:m:o:pSst:" opt; do
 	case $opt in
@@ -44,9 +67,9 @@ while getopts "B:b:Ccdf:g:m:o:pSst:" opt; do
 	c)	args="$args -c"		;;
 	d)	d=1; args="$args -d"	;;
 	f)	args="$args -f $OPTARG"	;;
-	g)	args="$args -g $OPTARG"	;;
-	m)	args="$args -m $OPTARG"	;;
-	o)	args="$args -o $OPTARG"	;;
+	g)	parg="$parg -g $OPTARG"	;;
+	m)	marg="$marg -m $OPTARG"	;;
+	o)	parg="$parg -o $OPTARG"	;;
 	p)	args="$args -p"		;;
 	S)	args="$args -S"		;;
 	s)	args="$args -s"		;;
@@ -55,14 +78,21 @@ while getopts "B:b:Ccdf:g:m:o:pSst:" opt; do
 done
 shift $((OPTIND - 1))
 
-[[ $d = 1 ]] && exec /usr/bin/install $args "$@"
+# we ignore requests for setting UID/GID on Interix
+if [[ -n $SFUDIR ]]; then
+	# on Interix, install(1) cannot make directories
+	[[ $d = 1 ]] && exec /bin/mkdir -p $marg "$@"
+else
+	args="$args $parg"
+fi
+args="$args $marg"
 
 set -A sources -- "$@"
 let numsrcs=${#sources[@]}
 
 if (( numsrcs < 2 )); then
-	print "Syntax: $0 [-bCcdpSs] [-B suf] [-f flag]"
-	print "\t[-g grp] [-m mode] [-o owner] [-b=x -t=x] srcs ... dst"
+	$p "Syntax: $0 [-bCcdpSs] [-B suf] [-f flag]"
+	$p "\t[-g grp] [-m mode] [-o owner] [-b=x -t=x] srcs ... dst"
 	exit 1
 fi
 
@@ -88,8 +118,8 @@ while (( i < dstoff )); do
 		[[ -n $dsttmp ]] && dstfile="$dsttmp"
 	fi
 
-	/usr/bin/install $args "$src" "${dstdir}/${dstfile}" || exit 1
+	$installprog $args "$src" "${dstdir}/${dstfile}" || exit 1
 
-	let i+=1
+	let i++
 done
 exit 0

@@ -1,33 +1,11 @@
-/**	$MirOS: contrib/code/jupp/strlfun.c,v 1.1 2005/02/11 21:37:31 tg Exp $ */
-/**	$MirBSD: contrib/code/jupp/strlfun.c,v 1.2 2004/11/10 21:14:26 tg Exp $ */
+/**	$MirOS: contrib/code/jupp/strlfun.c,v 1.2 2005/08/26 23:05:11 tg Exp $ */
+/**	_MirOS: src/lib/libc/string/strlfun.c,v 1.4 2005/05/28 20:59:09 tg Exp $ */
 /*	$OpenBSD: strlcpy.c,v 1.8 2003/06/17 21:56:24 millert Exp $ */
 /*	$OpenBSD: strlcat.c,v 1.11 2003/06/17 21:56:24 millert Exp $ */
 
 /*-
- * Copyright (c) 2004
- *	Thorsten "mirabile" Glaser <tg@66h.42h.de>
- *
- * Licensee is hereby permitted to deal in this work without restric-
- * tion, including unlimited rights to use, publicly perform, modify,
- * merge, distribute, sell, give away or sublicence, provided all co-
- * pyright notices above, these terms and the disclaimer are retained
- * in all redistributions or reproduced in accompanying documentation
- * or other materials provided with binary redistributions.
- *
- * Licensor hereby provides this work "AS IS" and WITHOUT WARRANTY of
- * any kind, expressed or implied, to the maximum extent permitted by
- * applicable law, but with the warranty of being written without ma-
- * licious intent or gross negligence; in no event shall licensor, an
- * author or contributor be held liable for any damage, direct, indi-
- * rect or other, however caused, arising in any way out of the usage
- * of covered work, even if advised of the possibility of such damage.
- *-
- * Implementation for most of this code by myself.
- * Some optimizations idea from Bodo Eggert in d.a.s.r.
- * The rest of the code is covered by the terms below:
- */
-
-/*
+ * Copyright (c) 2004, 2005 Thorsten "mirabile" Glaser <tg@66h.42h.de>
+ * Some hints for optimisation from Bodo Eggert (via d.a.s.r)
  * Copyright (c) 1998 Todd C. Miller <Todd.Miller@courtesan.com>
  *
  * Permission to use, copy, modify, and distribute this software for any
@@ -43,26 +21,33 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-
-#include <sys/types.h>
-#include <string.h>
-
+#if !defined(_KERNEL) && !defined(_STANDALONE)
 #ifdef HAVE_CONFIG_H
-/* packaged with third-party software */
+/* usually when packaged with third-party software */
 #include "config.h"
 #define LIBC_SCCS
-#else /* ! def HAVE_CONFIG_H */
-/* integrated into MirOS C library */
-#undef HAVE_STRLCPY
-#undef HAVE_STRLCAT
-#endif /* ! def HAVE_CONFIG_H */
+#endif
+#include <sys/types.h>
+
+extern size_t strlen(const char *);
 
 #ifndef __RCSID
 #define __RCSID(x)	static const char __rcsid[] = (x)
 #endif
 
-__RCSID("$MirOS: contrib/code/jupp/strlfun.c,v 1.1 2005/02/11 21:37:31 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/strlfun.c,v 1.2 2005/08/26 23:05:11 tg Exp $");
+#else
+#include <lib/libkern/libkern.h>
+#undef HAVE_CONFIG_H
+#endif
 
+#ifndef HAVE_CONFIG_H
+#undef HAVE_STRLCPY
+#undef HAVE_STRLCAT
+#endif
+
+size_t strlcat(char *, const char *, size_t);
+size_t strlcpy(char *, const char *, size_t);
 
 #ifndef	HAVE_STRLCPY
 /*
@@ -85,14 +70,14 @@ strlcpy(char *dst, const char *src, size_t siz)
 	if (!siz) {
 		/* Save, since we've copied at max. (siz-1) characters */
 		*dst = '\0';	/* NUL-terminate dst */
-  traverse_src:
+traverse_src:
 		while (*s++)
 			;
 	}
 
 	return (s - src - 1);	/* count does not include NUL */
 }
-#endif	/* ndef HAVE_STRLCPY */
+#endif /* !HAVE_STRLCPY */
 
 #ifndef	HAVE_STRLCAT
 /*
@@ -106,13 +91,14 @@ size_t
 strlcat(char *dst, const char *src, size_t siz)
 {
 	char *d = dst;
-	size_t n = siz, dl;
+	size_t dl, n = siz;
 	const size_t sl = strlen(src);
 
 	while (n-- && (*d++ != '\0'))
 		;
 	if (!++n && (*d != '\0'))
 		return strlen(src);
+
 	dl = --d - dst;		/* original strlen(dst), max. siz-1 */
 	n = siz - dl;
 	dl += sl;
@@ -127,4 +113,4 @@ strlcat(char *dst, const char *src, size_t siz)
 	*d = '\0';		/* NUL-terminate dst */
 	return dl;
 }
-#endif	/* ndef HAVE_STRLCAT */
+#endif /* !HAVE_STRLCAT */
