@@ -1,3 +1,4 @@
+/*	$OpenBSD: popen.c,v 1.17 2005/08/08 08:05:34 espie Exp $ */
 /*
  * Copyright (c) 1988, 1993
  *	The Regents of the University of California.  All rights reserved.
@@ -30,10 +31,6 @@
  * SUCH DAMAGE.
  */
 
-#if 0
-static char rcsid[] = "$OpenBSD: popen.c,v 1.15 2004/08/06 18:31:11 pedro Exp $";
-#endif /* LIBC_SCCS and not lint */
-
 #include <sys/param.h>
 #include <sys/wait.h>
 
@@ -45,7 +42,7 @@ static char rcsid[] = "$OpenBSD: popen.c,v 1.15 2004/08/06 18:31:11 pedro Exp $"
 #include <string.h>
 #include <paths.h>
 
-__RCSID("$MirOS: contrib/code/jupp/popen.inc,v 1.2 2005/03/06 20:28:40 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/popen.inc,v 1.3 2005/09/22 20:40:00 tg Exp $");
 
 static struct pid {
 	struct pid *next;
@@ -143,7 +140,7 @@ popen(const char *program, const char *type)
 int
 pclose(FILE *iop)
 {
-	register struct pid *cur, *last;
+	struct pid *cur, *last;
 	int pstat;
 	pid_t pid;
 
