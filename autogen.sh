@@ -1,5 +1,5 @@
 #!/bin/mksh
-# $MirOS: contrib/code/jupp/autogen.sh,v 1.7 2005/12/17 05:46:08 tg Exp $
+# $MirOS: contrib/code/jupp/autogen.sh,v 1.8 2005/12/22 20:18:34 tg Exp $
 #-
 # Copyright (c) 2004, 2005
 #	Thorsten "mirabile" Glaser <tg@66h.42h.de>
@@ -24,6 +24,8 @@
 # other issues arising in any way out of its use, even if advised of
 # the possibility of such damage or existence of a nontrivial bug.
 
+self=$(readlink -f $(dirname $0))
+
 if [[ -z $AUTOCONF_VERSION ]]; then
 	AUTOCONF_VERSION=2.59
 	print Warning: AUTOCONF_VERSION unset!
@@ -34,14 +36,15 @@ if [[ -z $AUTOMAKE_VERSION ]]; then
 	print Warning: AUTOMAKE_VERSION unset!
 fi
 
+export AUTOCONF_VERSION AUTOMAKE_VERSION
+
 [[ -n $GNUSYSTEM_AUX_DIR ]] || GNUSYSTEM_AUX_DIR=/usr/src/gnu/share
+export GNUSYSTEM_AUX_DIR
 
-export AUTOCONF_VERSION AUTOMAKE_VERSION GNUSYSTEM_AUX_DIR
-
-#AM_FLAGS="--miros --ignore-deps"
-AM_FLAGS=""
+#AM_FLAGS=--miros
+AM_FLAGS=
 [[ $AUTOMAKE_VERSION = 1.4 ]] && AM_FLAGS=
-[[ -n $flags ]] && AM_FLAGS="$flags"
+[[ -n $flags ]] && AM_FLAGS=$flags
 
 [[ -e /tmp/empty ]] || print -n >/tmp/empty
 for a in $files ChangeLog ltmain.sh; do
@@ -50,20 +53,17 @@ done
 
 set -e
 set -x
-[[ ! -e acinclude.m4 ]] || if [[ -d m4 ]]; then
+if [[ -d m4 ]]; then
 	aclocal --acdir=/usr/local/share/aclocal-$AUTOMAKE_VERSION -I m4
 elif [[ -d ../m4 ]]; then
 	aclocal --acdir=/usr/local/share/aclocal-$AUTOMAKE_VERSION -I ../m4
 else
 	aclocal --acdir=/usr/local/share/aclocal-$AUTOMAKE_VERSION -I .
 fi
-f=configure.ac
-[[ ! -e $f ]] && f=configure.in
-fgrep -q -e AC_CONFIG_HEADER -e AM_CONFIG_HEADER $f && autoheader
+autoheader
 set +e
-let rv=0
-[[ ! -e Makefile.am ]] || automake --foreign -a $AM_FLAGS || let rv=$?
+automake --foreign -a $AM_FLAGS
 autoconf && chmod 664 configure
-rm -rf autom4te.cache
+[[ -e autom4te.cache ]] && rm -rf autom4te.cache
 find . -type l -print0 | xargs -0 rm
-exit $rv
+exit 0

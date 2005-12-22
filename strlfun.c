@@ -1,11 +1,10 @@
-/**	$MirOS: contrib/code/jupp/strlfun.c,v 1.2 2005/08/26 23:05:11 tg Exp $ */
-/**	_MirOS: src/lib/libc/string/strlfun.c,v 1.4 2005/05/28 20:59:09 tg Exp $ */
-/*	$OpenBSD: strlcpy.c,v 1.8 2003/06/17 21:56:24 millert Exp $ */
-/*	$OpenBSD: strlcat.c,v 1.11 2003/06/17 21:56:24 millert Exp $ */
+/* $MirOS: contrib/code/jupp/strlfun.c,v 1.3 2005/12/22 20:18:35 tg Exp $ */
+/* $OpenBSD: strlcpy.c,v 1.10 2005/08/08 08:05:37 espie Exp $ */
+/* $OpenBSD: strlcat.c,v 1.13 2005/08/08 08:05:37 espie Exp $ */
 
 /*-
  * Copyright (c) 2004, 2005 Thorsten "mirabile" Glaser <tg@66h.42h.de>
- * Some hints for optimisation from Bodo Eggert (via d.a.s.r)
+ * Thanks to Bodo Eggert for optimisation hints
  * Copyright (c) 1998 Todd C. Miller <Todd.Miller@courtesan.com>
  *
  * Permission to use, copy, modify, and distribute this software for any
@@ -25,7 +24,6 @@
 #ifdef HAVE_CONFIG_H
 /* usually when packaged with third-party software */
 #include "config.h"
-#define LIBC_SCCS
 #endif
 #include <sys/types.h>
 
@@ -35,13 +33,9 @@ extern size_t strlen(const char *);
 #define __RCSID(x)	static const char __rcsid[] = (x)
 #endif
 
-__RCSID("$MirOS: contrib/code/jupp/strlfun.c,v 1.2 2005/08/26 23:05:11 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/strlfun.c,v 1.3 2005/12/22 20:18:35 tg Exp $");
 #else
 #include <lib/libkern/libkern.h>
-#undef HAVE_CONFIG_H
-#endif
-
-#ifndef HAVE_CONFIG_H
 #undef HAVE_STRLCPY
 #undef HAVE_STRLCAT
 #endif
