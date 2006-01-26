@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.4 2006/01/13 03:49:28 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.5 2006/01/26 23:46:03 tg Exp $
 .TH JOE 1
 .SH Name
 joe \- Joe's Own Editor
@@ -39,7 +39,7 @@ Free Software Foundation.
 I have no plans for turning JOE into a commercial or share-ware product.
 JOE is available over the Internet from
 \fBwww.sourceforge.net/projects/joe-editor\fR.
-JUPP is available at \fBhttp://www.66h.42h.de/?jupp\fR.
+JUPP is available at \fBhttp://mirbsd.de/jupp\fR.
 
 .SH Usage
 
