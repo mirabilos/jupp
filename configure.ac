@@ -4,7 +4,7 @@
 AC_PREREQ(2.54)
 
 #### Here's the only place where to change version number ####
-AC_INIT(joe, 3.1)
+AC_INIT(joe, 3.1jupp5)
 AC_CONFIG_SRCDIR([b.c])
 
 AC_CANONICAL_BUILD
@@ -69,6 +69,7 @@ AC_CHECK_HEADERS([errno.h fcntl.h locale.h sgtty.h stdlib.h string.h])
 AC_CHECK_HEADERS([sys/ioctl.h sys/param.h sys/time.h unistd.h utime.h])
 AC_CHECK_HEADERS([sys/dirent.h time.h pwd.h paths.h pty.h])
 AC_CHECK_HEADERS([sys/types.h sys/stat.h sys/wait.h limits.h signal.h])
+AC_CHECK_HEADERS([util.h])
 
 AC_CHECK_HEADERS([selinux/selinux.h selinux/context.h])
 if test "$ac_cv_header_selinux_selinux_h" = "yes" -a "$ac_cv_header_selinux_context_h" = "yes" ; then
@@ -118,6 +119,7 @@ if test x"$ac_cv_func_isblank" = xyes; then
 fi
 AC_CHECK_FUNCS([alarm mkdir mkstemp putenv setlocale strchr strdup utime setpgid])
 AC_CHECK_FUNCS([setitimer sigaction sigvec siginterrupt sigprocmask])
+AC_CHECK_FUNCS([strlcpy strlcat])
 
 joe_REINSTALL_SIGHANDLERS
 
