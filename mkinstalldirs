@@ -1,9 +1,9 @@
 #!/bin/sh
-# $MirOS: contrib/code/jupp/mkinstalldirs,v 1.5 2006/01/13 03:49:29 tg Exp $
-# _MirOS: contrib/gnu/aux/mkinstalldirs,v 1.5 2005/12/17 05:46:10 tg Exp $
+# $MirOS: contrib/code/jupp/mkinstalldirs,v 1.6 2006/01/26 23:51:43 tg Exp $
+# _MirOS: contrib/gnu/aux/mkinstalldirs,v 1.7 2006/01/26 23:51:01 tg Exp $
 #-
-# Copyright (c) 2004, 2005
-#	Thorsten "mirabile" Glaser <tg@66h.42h.de>
+# Copyright (c) 2004, 2005, 2006
+#	Thorsten "mirabile" Glaser <tg@mirbsd.de>
 #
 # Licensee is hereby permitted to deal in this work without restric-
 # tion, including unlimited rights to use, publicly perform, modify,
@@ -32,6 +32,13 @@ if test x"$KSH_VERSION" = x; then
 	fi
 	if test -f $MKSH; then
 		SHELL=$MKSH
+	elif test x"`mksh -c 'echo foo'`" = xfoo; then
+		MKSH=mksh
+		SHELL=mksh
+	else
+		MKSH=
+	fi
+	if test -n "$MKSH"; then
 		export SHELL
 		case $# in
 		0)	exec $MKSH "$0" ;;
@@ -67,7 +74,7 @@ elif [[ -n $KSH_VERSION ]]; then
 fi
 
 if [ -z "$p" ]; then
-	echo "Shell not supported; go to http://www.66h.42h.de/?mksh"
+	echo "Shell not supported; go to http://mirbsd.de/mksh"
 	exit 1
 fi
 
