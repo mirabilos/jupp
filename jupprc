@@ -1,4 +1,4 @@
- jupp ressource file for JOE 2.8/3.1  (c) 1997-2005 Thorsten Glaser
+ "jupp" resource file for JOE 2.8/3.1 (c) 1997-2006 Thorsten Glaser
  Licensee is hereby permitted to deal in this work without restric-
  tion, including unlimited rights to use, publicly perform, modify,
  merge, distribute, sell, give away or sublicence, provided all co-
@@ -106,7 +106,7 @@
 \i \i \bJUPP\b is based upon JOE (Joe's Own Editor) 2.8/3.x \d(GPL v1)\d by Joe H. Allen; \i \i
 \i \i go to \uhttp://sf.net/projects/joe-editor/\u for upstream bug reports. JUPP 2.8 \i \i
 \i \i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\d(R)\d \i \i
-\i \i by \bThorsten Glaser <\utg@66h.42h.de\u>\b at         \uhttp://www.66h.42h.de/?jupp\u \d&\d \i \i
+\i \i at \uhttp://mirbsd.de/jupp\u and by \bThorsten "\dmirabilos\d" Glaser <\utg@66h.42h.de\u>\b \i \i
 \i \i @(#) jupprc 2005-08-05; CR-LF off; UTF-8 off (2.8) / set via LC_CTYPE (3.x) \i \i
 }
 
