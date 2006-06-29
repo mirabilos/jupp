@@ -1,5 +1,5 @@
 #!/bin/mksh
-# $MirOS: contrib/code/jupp/autogen.sh,v 1.9 2005/12/22 20:27:46 tg Exp $
+# $MirOS: contrib/code/jupp/autogen.sh,v 1.10 2006/06/29 22:17:24 tg Exp $
 #-
 # Copyright (c) 2004, 2005
 #	Thorsten "mirabile" Glaser <tg@mirbsd.de>
@@ -25,7 +25,7 @@
 # the possibility of such damage or existence of a nontrivial bug.
 
 if [[ -z $AUTOCONF_VERSION ]]; then
-	AUTOCONF_VERSION=2.59
+	AUTOCONF_VERSION=2.60
 	print Warning: AUTOCONF_VERSION unset!
 fi
 
