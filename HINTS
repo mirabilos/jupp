@@ -1,6 +1,12 @@
 This documentation should go elsewhere, but I haven't gotten around to it
 yet.
 
+GCC
+---
+
+Using -fomit-frame-pointer may miscompile code at least in gcc 3.4.6, see
+http://article.gmane.org/gmane.os.miros.cvs/11607 for details.
+
 UTF-8
 -----
 
