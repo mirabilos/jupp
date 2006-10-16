@@ -32,4 +32,6 @@ int glopt PARAMS((unsigned char *s, unsigned char *arg, OPTIONS *options, int se
 
 int umode PARAMS((BW *bw));
 
+void lazy_opts PARAMS((OPTIONS *o));
+
 #endif
