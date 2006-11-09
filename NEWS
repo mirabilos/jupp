@@ -1,4 +1,8 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.5 2006/10/16 18:49:42 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.6 2006/11/09 15:16:37 tg Exp $
+
+JOE 3.1jupp7
+
+- Bugfix in bundled strlcat() implementation
 
 JOE 3.1jupp6
 
