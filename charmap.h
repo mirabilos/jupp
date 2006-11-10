@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/charmap.h,v 1.3 2006/11/10 23:23:30 tg Exp $ */
 /*
  *	Character sets
  *	Copyright
@@ -50,7 +51,7 @@ struct charmap {
 	unsigned char lower_map[256];	/* Convert to lower case */
 	unsigned char upper_map[256];
 
-	struct pair from_map[256];	/* Convert from unicode to byte */
+	struct pair from_map[256 + 2];	/* Convert from unicode to byte */
 
 	int from_size;			/* No. paris in from_map */
 

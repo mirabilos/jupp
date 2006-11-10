@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/rc.c,v 1.3 2006/11/10 23:23:30 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
@@ -108,6 +109,7 @@ OPTIONS pdefault = {
 	NULL,		/* macro to execute for existing files */
 	NULL,		/* macro to execute before saving new files */
 	NULL,		/* macro to execute before saving existing files */
+	0		/* visible spaces */
 };
 
 /* Default options for file windows */
@@ -146,7 +148,8 @@ OPTIONS fdefault = {
 	0,		/* Smart backspace key */
 	0,		/* Purity indentation */
 	0,		/* Picture mode */
-	NULL, NULL, NULL, NULL	/* macros (see above) */
+	NULL, NULL, NULL, NULL,	/* macros (see above) */
+	0		/* visible spaces */
 };
 
 /* Update options */
@@ -220,6 +223,8 @@ struct glopts {
 	int low;		/* Low limit for numeric options */
 	int high;		/* High limit for numeric options */
 } glopts[] = {
+	{US "noxon",	0, &noxon, NULL, US "XON/XOFF processing disabled", US "XON/XOFF processing enabled", US "  XON/XOFF mode " },
+	{US "keepup",	0, &keepup, NULL, US "Status line updated constantly", US "Status line updated once/sec", US "  Fast status line " },
 	{US "overwrite",4, NULL, (unsigned char *) &fdefault.overtype, US "Overtype mode", US "Insert mode", US "T Overtype " },
 	{US "autoindent",	4, NULL, (unsigned char *) &fdefault.autoindent, US "Autoindent enabled", US "Autindent disabled", US "I Autoindent " },
 	{US "wordwrap",	4, NULL, (unsigned char *) &fdefault.wordwrap, US "Wordwrap enabled", US "Wordwrap disabled", US "Word wrap " },
@@ -249,7 +254,6 @@ struct glopts {
 	{US "exask",	0, &exask, NULL, US "Prompt for filename in save & exit command", US "Don't prompt for filename in save & exit command", US "  Exit ask " },
 	{US "beep",	0, &beep, NULL, US "Warning bell enabled", US "Warning bell disabled", US "Beeps " },
 	{US "nosta",	0, &staen, NULL, US "Top-most status line disabled", US "Top-most status line enabled", US "  Disable status line " },
-	{US "keepup",	0, &keepup, NULL, US "Status line updated constantly", US "Status line updated once/sec", US "  Fast status line " },
 	{US "pg",		1, &pgamnt, NULL, US "Lines to keep for PgUp/PgDn or -1 for 1/2 window (%d): ", 0, US "  No. PgUp/PgDn lines ", 0, -1, 64 },
 	{US "csmode",	0, &csmode, NULL, US "Start search after a search repeats previous search", US "Start search always starts a new search", US "Continued search " },
 	{US "rdonly",	4, NULL, (unsigned char *) &fdefault.readonly, US "Read only", US "Full editing", US "O Read only " },
@@ -259,10 +263,10 @@ struct glopts {
 	{US "purify",	4, NULL, (unsigned char *) &fdefault.purify, US "Indentation clean up enabled", US "Indentation clean up disabled", US "  Clean up indents " },
 	{US "picture",	4, NULL, (unsigned char *) &fdefault.picture, US "Picture drawing mode enabled", US "Picture drawing mode disabled", US "Picture mode " },
 	{US "backpath",	2, (int *) &backpath, NULL, US "Backup files stored in (%s): ", 0, US "  Path to backup files " },
+	{US "vispace",	4, NULL, (unsigned char *) &fdefault.vispace, US "Spaces visible", US "Spaces invisible", US "Visible spaces " },
 	{US "syntax",	9, NULL, NULL, US "Select syntax (%s; ^C to abort): ", 0, US "Y Syntax" },
 	{US "encoding",13, NULL, NULL, US "Select file character set (%s; ^C to abort): ", 0, US "Encoding " },
 	{US "nonotice",	0, &nonotice, NULL, 0, 0, 0 },
-	{US "noxon",	0, &noxon, NULL, 0, 0, 0 },
 	{US "orphan",	0, &orphan, NULL, 0, 0, 0 },
 	{US "help",	0, &help, NULL, 0, 0, 0 },
 	{US "dopadding",	0, &dopadding, NULL, 0, 0, 0 },
@@ -767,7 +771,7 @@ int umode(BW *bw)
 	s = (unsigned char **) joe_malloc(sizeof(unsigned char *) * (size + 1));
 
 	for (x = 0; x != size; ++x) {
-		s[x] = (unsigned char *) joe_malloc(80);		/* FIXME: why 40 ??? */
+		s[x] = (unsigned char *) joe_malloc(OPT_BUF_SIZE);
 		switch (glopts[x].type) {
 		case 0:
 			joe_snprintf_2((char *)(s[x]), OPT_BUF_SIZE, "%s%s", glopts[x].menu, *glopts[x].set ? "ON" : "OFF");
@@ -778,7 +782,7 @@ int umode(BW *bw)
 		case 2:
 		case 9:
 		case 13:
-			strlcpy((char *)(s[x]), (char *)glopts[x].menu, 80);
+			strlcpy((char *)(s[x]), (char *)glopts[x].menu, OPT_BUF_SIZE);
 			break;
 		case 4:
 			joe_snprintf_2((char *)(s[x]), OPT_BUF_SIZE, "%s%s", glopts[x].menu, *(int *) ((unsigned char *) &bw->o + glopts[x].ofst) ? "ON" : "OFF");

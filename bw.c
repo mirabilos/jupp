@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/bw.c,v 1.4 2006/11/10 23:23:30 tg Exp $ */
 /*
  *	Edit buffer window generation
  *	Copyright
@@ -255,7 +256,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
               			/* Range for marked block */
 {
 	int ox = x;
-	int tach;
+	int tach, tach1;
 	int done = 1;
 	long col = 0;
 	long byte = p->byte;
@@ -352,7 +353,9 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 				ta = p->b->o.tab - col % p->b->o.tab;
 				if (ta + col > scr) {
 					ta -= scr - col;
-					tach = ' ';
+					tach1 = tach = ' ';
+					if (bw->o.vispace)
+						tach = from_uni(locale_map, 0x2192);
 					goto dota;
 				}
 				if ((col += ta) == scr) {
@@ -387,7 +390,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 						goto loop;
 					} else if (col > scr) {
 						ta = col - scr;
-						tach = '<';
+						tach1 = tach = '<';
 						goto dota;
 					}
 				} else
@@ -464,10 +467,13 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 			++byte;
 			if (bc == '\t') {
 				ta = p->b->o.tab - ((x - ox + scr) % p->b->o.tab);
-				tach = ' ';
+				tach1 = tach = ' ';
+				if (bw->o.vispace)
+					tach = from_uni(locale_map, 0x2192);
 			      dota:
 				do {
 					outatr(bw->b->o.charmap, t, screen + x, attr + x, x, y, tach, c1|atr);
+					tach = tach1;
 					if (ifhave)
 						goto bye;
 					if (++x == w)
@@ -510,6 +516,8 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 							x++;
 						}
 					} else {
+						if (bw->o.vispace && (utf8_char == 0x20))
+							utf8_char = from_uni(locale_map, 0xB7);
 						outatr(bw->b->o.charmap, t, screen + x, attr + x, x, y, utf8_char, c1|atr);
 						x += wid;
 					}
