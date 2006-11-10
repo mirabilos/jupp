@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/bw.c,v 1.4 2006/11/10 23:23:30 tg Exp $ */
+/* $MirOS: contrib/code/jupp/bw.c,v 1.5 2006/11/10 23:46:44 tg Exp $ */
 /*
  *	Edit buffer window generation
  *	Copyright
@@ -246,6 +246,8 @@ void bwdel(BW *w, long int l, long int n, int flg)
 
 /* Update a single line */
 
+#define maybe_from_uni(map,ch) ((bw->b->o.charmap->type) ? (ch) : from_uni(map, ch))
+
 static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long int scr, long int from, long int to,int st,BW *bw)
         
       
@@ -355,7 +357,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 					ta -= scr - col;
 					tach1 = tach = ' ';
 					if (bw->o.vispace)
-						tach = from_uni(locale_map, 0x2192);
+						tach = maybe_from_uni(locale_map, 0x2192);
 					goto dota;
 				}
 				if ((col += ta) == scr) {
@@ -469,7 +471,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 				ta = p->b->o.tab - ((x - ox + scr) % p->b->o.tab);
 				tach1 = tach = ' ';
 				if (bw->o.vispace)
-					tach = from_uni(locale_map, 0x2192);
+					tach = maybe_from_uni(locale_map, 0x2192);
 			      dota:
 				do {
 					outatr(bw->b->o.charmap, t, screen + x, attr + x, x, y, tach, c1|atr);
@@ -517,7 +519,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 						}
 					} else {
 						if (bw->o.vispace && (utf8_char == 0x20))
-							utf8_char = from_uni(locale_map, 0xB7);
+							utf8_char = maybe_from_uni(locale_map, 0xB7);
 						outatr(bw->b->o.charmap, t, screen + x, attr + x, x, y, utf8_char, c1|atr);
 						x += wid;
 					}
