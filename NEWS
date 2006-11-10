@@ -1,8 +1,9 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.6 2006/11/09 15:16:37 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.7 2006/11/10 23:14:13 tg Exp $
 
 JOE 3.1jupp7
 
 - Bugfix in bundled strlcat() implementation
+- Bugfix (off-by-one array bounds) in from_uni()
 
 JOE 3.1jupp6
 
