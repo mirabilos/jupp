@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/menu.c,v 1.3 2006/11/10 23:38:40 tg Exp $ */
 /*
  *	Menu selection window
  *	Copyright
@@ -333,6 +334,8 @@ static int umkey(MENU *m, int c)
 		else
 			return -1;
 	}
+	if (!(((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z'))))
+		return -1;
 	c &= 0x1F;
 	for (x = 0; x != m->nitems; ++x)
 		if ((m->list[x][0] & 0x1F) == c)
