@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.5 2006/01/26 23:46:03 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.6 2006/11/11 01:51:20 tg Exp $
 .TH JOE 1
 .SH Name
 joe \- Joe's Own Editor
@@ -33,10 +33,11 @@ executable, but one with six different names.  The name of the editor with
 an "rc" appended gives the name of JOE's initialization file, which
 determines the personality of the editor.
 
-JOE is free software;  you can distribute it and/or modify it under the
+JUPP is free software; you can distribute it and/or modify it under the
 terms of the GNU General Public License, Version 1, as published by the
 Free Software Foundation.
 I have no plans for turning JOE into a commercial or share-ware product.
+See the source code for exact authorship and licencing information.
 JOE is available over the Internet from
 \fBwww.sourceforge.net/projects/joe-editor\fR.
 JUPP is available at \fBhttp://mirbsd.de/jupp\fR.
