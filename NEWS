@@ -1,9 +1,15 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.7 2006/11/10 23:14:13 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.8 2006/11/11 00:24:55 tg Exp $
 
 JOE 3.1jupp7
 
 - Bugfix in bundled strlcat() implementation
 - Bugfix (off-by-one array bounds) in from_uni()
+- New option "vispace" to make spaces and tabs visible, like in
+  Microsoft® Works®. Works best with Unicode.
+- "noxon" and "baud" are now menu entries; these two and
+  "keepup" have been moved to the top so they can be switched
+  quickly if you're in an ssh situation
+- Disable funny behaviour of keys in menus, fixes POLS
 
 JOE 3.1jupp6
 
