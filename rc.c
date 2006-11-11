@@ -1,9 +1,19 @@
+/* $MirOS: contrib/code/jupp/rc.c,v 1.5 2006/11/11 01:20:35 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
  *		(C) 1992 Joseph H. Allen; 
  *
  *	This file is part of JOE (Joe's Own Editor)
+ *
+ * Licensor offers the work "AS IS" and WITHOUT WARRANTY of any kind,
+ * express, or implied, to the maximum extent permitted by applicable
+ * law, without malicious intent or gross negligence; in no event may
+ * licensor, an author or contributor be held liable for any indirect
+ * or other damage, or direct damage except proven a consequence of a
+ * direct error of said person and intended use of this work, loss or
+ * other issues arising in any way out of its use, even if advised of
+ * the possibility of such damage or existence of a defect.
  */
 #include "config.h"
 #include "types.h"
@@ -20,6 +30,7 @@
 #include "menu.h"
 #include "path.h"
 #include "pw.h"
+#include "regex.h"
 #include "tw.h"
 #include "uedit.h"
 #include "umath.h"
@@ -32,7 +43,7 @@
 #include "charmap.h"
 #include "w.h"
 
-#define OPT_BUF_SIZE 300
+#define OPT_BUF_SIZE	60
 
 static struct context {
 	struct context *next;
@@ -107,6 +118,7 @@ OPTIONS pdefault = {
 	NULL,		/* macro to execute for existing files */
 	NULL,		/* macro to execute before saving new files */
 	NULL,		/* macro to execute before saving existing files */
+	0		/* visible spaces */
 };
 
 /* Default options for file windows */
@@ -145,7 +157,8 @@ OPTIONS fdefault = {
 	0,		/* Smart backspace key */
 	0,		/* Purity indentation */
 	0,		/* Picture mode */
-	NULL, NULL, NULL, NULL	/* macros (see above) */
+	NULL, NULL, NULL, NULL,	/* macros (see above) */
+	0		/* visible spaces */
 };
 
 /* Update options */
@@ -155,7 +168,7 @@ void lazy_opts(OPTIONS *o)
 	o->syntax = load_dfa(o->syntax_name);
 	o->charmap = find_charmap(o->map_name);
 	if (!o->charmap)
-		o->charmap = locale_map;
+		o->charmap = fdefault.charmap;
 }
 
 /* Set local options depending on file name and contents */
@@ -219,22 +232,25 @@ struct glopts {
 	int low;		/* Low limit for numeric options */
 	int high;		/* High limit for numeric options */
 } glopts[] = {
+	{US "noxon",	0, &noxon, NULL, US "XON/XOFF processing disabled", US "XON/XOFF processing enabled", US "  XON/XOFF usable " },
+	{US "keepup",	0, &keepup, NULL, US "Status line updated constantly", US "Status line updated once/sec", US "  Fast status line " },
+	{US "baud",	1, &Baud, NULL, US "Terminal baud rate (%d): ", 0, US "  Baud rate ", 0, 0, 38400 },
 	{US "overwrite",4, NULL, (unsigned char *) &fdefault.overtype, US "Overtype mode", US "Insert mode", US "T Overtype " },
-	{US "autoindent",	4, NULL, (unsigned char *) &fdefault.autoindent, US "Autoindent enabled", US "Autindent disabled", US "I Autoindent " },
+	{US "autoindent",	4, NULL, (unsigned char *) &fdefault.autoindent, US "Autoindent enabled", US "Autoindent disabled", US "I Autoindent " },
 	{US "wordwrap",	4, NULL, (unsigned char *) &fdefault.wordwrap, US "Wordwrap enabled", US "Wordwrap disabled", US "Word wrap " },
 	{US "tab",	5, NULL, (unsigned char *) &fdefault.tab, US "Tab width (%d): ", 0, US "D Tab width ", 0, 1, 64 },
 	{US "lmargin",	7, NULL, (unsigned char *) &fdefault.lmargin, US "Left margin (%d): ", 0, US "Left margin ", 0, 0, 63 },
 	{US "rmargin",	7, NULL, (unsigned char *) &fdefault.rmargin, US "Right margin (%d): ", 0, US "Right margin ", 0, 7, 255 },
 	{US "square",	0, &square, NULL, US "Rectangle mode", US "Text-stream mode", US "X Rectangle mode " },
-	{US "icase",	0, &icase, NULL, US "Ignore case by default", US "Case sensitive by default", US "  Case insensitivity " },
+	{US "icase",	0, &icase, NULL, US "Ignore case by default", US "Case sensitive by default", US "  Case insensitive " },
 	{US "wrap",	0, &wrap, NULL, US "Search wraps", US "Search doesn't wrap", US "  Search wraps " },
 	{US "menu_explorer",	0, &menu_explorer, NULL, US "Menu explorer mode", US "  Simple completion", US "  Menu explorer " },
 	{US "autoswap",	0, &autoswap, NULL, US "Autoswap ^KB and ^KK", US "  Autoswap off ", US "  Autoswap mode " },
 	{US "indentc",	5, NULL, (unsigned char *) &fdefault.indentc, US "Indent char %d (SPACE=32, TAB=9, ^C to abort): ", 0, US "  Indent char ", 0, 0, 255 },
 	{US "istep",	5, NULL, (unsigned char *) &fdefault.istep, US "Indent step %d (^C to abort): ", 0, US "  Indent step ", 0, 1, 64 },
-	{US "french",	4, NULL, (unsigned char *) &fdefault.french, US "One space after periods for paragraph reformat", US "Two spaces after periods for paragraph reformat", US "  french spacing " },
+	{US "french",	4, NULL, (unsigned char *) &fdefault.french, US "One space after periods for paragraph reformat", US "Two spaces after periods for paragraph reformat", US "  French spacing " },
 	{US "highlight",	4, NULL, (unsigned char *) &fdefault.highlight, US "Highlighting enabled", US "Highlighting disabled", US "Highlighting " },
-	{US "spaces",	4, NULL, (unsigned char *) &fdefault.spaces, US "Inserting spaces when tab key is hit", US "Inserting tabs when tab key is hit", US "  no tabs " },
+	{US "spaces",	4, NULL, (unsigned char *) &fdefault.spaces, US "Inserting spaces when tab key is hit", US "Inserting tabs when tab key is hit", US "  Disable tabs " },
 	{US "mid",	0, &mid, NULL, US "Cursor will be recentered on scrolls", US "Cursor will not be recentered on scroll", US "Center on scroll " },
 	{US "guess_crlf",0, &guesscrlf, NULL, US "Automatically detect MS-DOS files", US "Do not automatically detect MS-DOS files", US "  Auto detect CR-LF " },
 	{US "guess_indent",0, &guessindent, NULL, US "Automatically detect indentation", US "Do not automatically detect indentation", US "  Guess indent " },
@@ -247,9 +263,8 @@ struct glopts {
 	{US "lightoff",	0, &lightoff, NULL, US "Highlighting turned off after block operations", US "Highlighting not turned off after block operations", US "Auto unmark " },
 	{US "exask",	0, &exask, NULL, US "Prompt for filename in save & exit command", US "Don't prompt for filename in save & exit command", US "  Exit ask " },
 	{US "beep",	0, &beep, NULL, US "Warning bell enabled", US "Warning bell disabled", US "Beeps " },
-	{US "nosta",	0, &staen, NULL, US "Top-most status line disabled", US "Top-most status line enabled", US "  Disable status line " },
-	{US "keepup",	0, &keepup, NULL, US "Status line updated constantly", US "Status line updated once/sec", US "  Fast status line " },
-	{US "pg",		1, &pgamnt, NULL, US "Lines to keep for PgUp/PgDn or -1 for 1/2 window (%d): ", 0, US "  No. PgUp/PgDn lines ", 0, -1, 64 },
+	{US "nosta",	0, &staen, NULL, US "Top-most status line disabled", US "Top-most status line enabled", US "  Disable status " },
+	{US "pg",		1, &pgamnt, NULL, US "Lines to keep for PgUp/PgDn or -1 for 1/2 window (%d): ", 0, US "  # PgUp/PgDn lines ", 0, -1, 64 },
 	{US "csmode",	0, &csmode, NULL, US "Start search after a search repeats previous search", US "Start search always starts a new search", US "Continued search " },
 	{US "rdonly",	4, NULL, (unsigned char *) &fdefault.readonly, US "Read only", US "Full editing", US "O Read only " },
 	{US "smarthome",	4, NULL, (unsigned char *) &fdefault.smarthome, US "Smart home key enabled", US "Smart home key disabled", US "  Smart home key " },
@@ -257,16 +272,15 @@ struct glopts {
 	{US "smartbacks",	4, NULL, (unsigned char *) &fdefault.smartbacks, US "Smart backspace key enabled", US "Smart backspace key disabled", US "  Smart backspace " },
 	{US "purify",	4, NULL, (unsigned char *) &fdefault.purify, US "Indentation clean up enabled", US "Indentation clean up disabled", US "  Clean up indents " },
 	{US "picture",	4, NULL, (unsigned char *) &fdefault.picture, US "Picture drawing mode enabled", US "Picture drawing mode disabled", US "Picture mode " },
-	{US "backpath",	2, (int *) &backpath, NULL, US "Backup files stored in (%s): ", 0, US "  Path to backup files " },
-	{US "syntax",	9, NULL, NULL, US "Select syntax (^C to abort): ", 0, US "Y Syntax" },
-	{US "encoding",13, NULL, NULL, US "Select file character set (^C to abort): ", 0, US "Encoding " },
+	{US "backpath",	2, (int *) &backpath, NULL, US "Backup files stored in (%s): ", 0, US "  Backup file path " },
+	{US "vispace",	4, NULL, (unsigned char *) &fdefault.vispace, US "Spaces visible", US "Spaces invisible", US "Visible spaces " },
+	{US "syntax",	9, NULL, NULL, US "Select syntax (%s; ^C to abort): ", 0, US "Y Syntax" },
+	{US "encoding",13, NULL, NULL, US "Select file character set (%s; ^C to abort): ", 0, US "Encoding " },
 	{US "nonotice",	0, &nonotice, NULL, 0, 0, 0 },
-	{US "noxon",	0, &noxon, NULL, 0, 0, 0 },
 	{US "orphan",	0, &orphan, NULL, 0, 0, 0 },
 	{US "help",	0, &help, NULL, 0, 0, 0 },
 	{US "dopadding",	0, &dopadding, NULL, 0, 0, 0 },
 	{US "lines",	1, &lines, NULL, 0, 0, 0, 0, 2, 1024 },
-	{US "baud",	1, &Baud, NULL, 0, 0, 0, 0, 50, 32767 },
 	{US "columns",	1, &columns, NULL, 0, 0, 0, 0, 2, 1024 },
 	{US "skiptop",	1, &skiptop, NULL, 0, 0, 0, 0, 0, 64 },
 	{US "notite",	0, &notite, NULL, 0, 0, 0 },
@@ -490,6 +504,10 @@ static int doopt1(BW *bw, unsigned char *s, int *xx, int *notify)
 	joe_free(xx);
 	switch (glopts[x].type) {
 	case 1:
+		if (!*s) {
+			ret = -1;
+			break;
+		}
 		v = calc(bw, s);
 		if (merr) {
 			msgnw(bw->parent, merr);
@@ -506,6 +524,10 @@ static int doopt1(BW *bw, unsigned char *s, int *xx, int *notify)
 			*(unsigned char **) glopts[x].set = (unsigned char *)strdup((char *)s);
 		break;
 	case 5:
+		if (!*s) {
+			ret = -1;
+			break;
+		}
 		v = calc(bw, s);
 		if (merr) {
 			msgnw(bw->parent, merr);
@@ -518,6 +540,10 @@ static int doopt1(BW *bw, unsigned char *s, int *xx, int *notify)
 		}
 		break;
 	case 7:
+		if (!*s) {
+			ret = -1;
+			break;
+		}
 		v = calc(bw, s) - 1.0;
 		if (merr) {
 			msgnw(bw->parent, merr);
@@ -544,12 +570,13 @@ static int dosyntax(BW *bw, unsigned char *s, int *xx, int *notify)
 	int ret = 0;
 	struct high_syntax *syn;
 
-	syn = load_dfa(s);
-
-	if (syn)
-		bw->o.syntax = syn;
-	else
-		msgnw(bw->parent, US "Syntax definition file not found");
+	if (*s) {
+		if (syn = load_dfa(s))
+			bw->o.syntax = syn;
+		else
+			msgnw(bw->parent, US "Syntax definition file not found");
+	} else
+		bw->o.syntax = NULL;
 
 	vsrm(s);
 	bw->b->o = bw->o;
@@ -619,8 +646,10 @@ static int doencoding(BW *bw, unsigned char *s, int *xx, int *notify)
 	int ret = 0;
 	struct charmap *map;
 
-
-	map = find_charmap(s);
+	if (*s)
+		map = find_charmap(s);
+	else
+		map = fdefault.charmap;
 
 	if (map) {
 		bw->o.charmap = map;
@@ -665,6 +694,8 @@ static int doopt(MENU *m, int x, void *object, int flg)
 			*glopts[x].set = 0;
 		wabort(m->parent);
 		msgnw(bw->parent, *glopts[x].set ? glopts[x].yes : glopts[x].no);
+		if (glopts[x].set == &noxon)
+			tty_xonoffbaudrst();
 		break;
 	case 4:
 		if (!flg)
@@ -685,9 +716,11 @@ static int doopt(MENU *m, int x, void *object, int flg)
 		*xx = x;
 		m->parent->notify = 0;
 		wabort(m->parent);
-		if (wmkpw(bw->parent, buf, NULL, doopt1, NULL, doabrt1, utypebw, xx, notify, locale_map))
+		if (wmkpw(bw->parent, buf, NULL, doopt1, NULL, doabrt1, utypebw, xx, notify, locale_map)) {
+			if (glopts[x].set == &Baud)
+				tty_xonoffbaudrst();
 			return 0;
-		else
+		} else
 			return -1;
 	case 2:
 		if (*(unsigned char **) glopts[x].set)
@@ -719,7 +752,8 @@ static int doopt(MENU *m, int x, void *object, int flg)
 			return -1;
 
 	case 9:
-		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, "");
+		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes,
+		    bw->b->o.syntax ? bw->b->o.syntax->name : US "(unset)");
 		m->parent->notify = 0;
 		wabort(m->parent);
 		if (wmkpw(bw->parent, buf, NULL, dosyntax, NULL, NULL, syntaxcmplt, NULL, notify, locale_map))
@@ -728,7 +762,8 @@ static int doopt(MENU *m, int x, void *object, int flg)
 			return -1;
 
 	case 13:
-		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, "");
+		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes,
+		    bw->b->o.charmap ? bw->b->o.charmap->name : US "(unset)");
 		m->parent->notify = 0;
 		wabort(m->parent);
 		if (wmkpw(bw->parent, buf, NULL, doencoding, NULL, NULL, encodingcmplt, NULL, notify, locale_map))
@@ -757,35 +792,65 @@ int umode(BW *bw)
 {
 	int size;
 	unsigned char **s;
-	int x;
+	size_t x, len;
 
 	bw->b->o.readonly = bw->o.readonly = bw->b->rdonly;
 	for (size = 0; glopts[size].menu; ++size) ;
 	s = (unsigned char **) joe_malloc(sizeof(unsigned char *) * (size + 1));
+	len = 0;
+	for (x = 0; x < size; ++x) {
+		s[x] = (unsigned char *) joe_malloc(OPT_BUF_SIZE);
+		if (glopts[x].menu[0] == ' ' || glopts[x].menu[1] == ' ')
+			strlcpy(s[x], glopts[x].menu, OPT_BUF_SIZE);
+		else {
+			strlcpy(s[x] + 2, glopts[x].menu, OPT_BUF_SIZE);
+			s[x][0] = s[x][2];
+			s[x][1] = ' ';
+		}
+		if (strlen(s[x]) > len)
+			len = strlen(s[x]);
+	}
+	for (x = 0; x < size; ++x) {
+		size_t n = strlen(s[x]);
 
-	for (x = 0; x != size; ++x) {
-		s[x] = (unsigned char *) joe_malloc(80);		/* FIXME: why 40 ??? */
+		while (len - n)
+			s[x][n++] = ' ';
 		switch (glopts[x].type) {
 		case 0:
-			joe_snprintf_2((char *)(s[x]), OPT_BUF_SIZE, "%s%s", glopts[x].menu, *glopts[x].set ? "ON" : "OFF");
+			joe_snprintf_1(s[x] + n, OPT_BUF_SIZE - n,
+			    "%s", *glopts[x].set ? "ON" : "OFF");
 			break;
 		case 1:
-			joe_snprintf_2((char *)(s[x]), OPT_BUF_SIZE, "%s%d", glopts[x].menu, *glopts[x].set);
+			joe_snprintf_1(s[x] + n, OPT_BUF_SIZE - n,
+			    "%d", *glopts[x].set);
 			break;
 		case 2:
-		case 9:
-		case 13:
-			strcpy((char *)(s[x]), (char *)glopts[x].menu);
+			strlcpy(s[x] + n, "...", OPT_BUF_SIZE - n);
 			break;
 		case 4:
-			joe_snprintf_2((char *)(s[x]), OPT_BUF_SIZE, "%s%s", glopts[x].menu, *(int *) ((unsigned char *) &bw->o + glopts[x].ofst) ? "ON" : "OFF");
+			joe_snprintf_1(s[x] + n, OPT_BUF_SIZE - n,
+			    "%s", *(int *) ((unsigned char *) &bw->o + glopts[x].ofst) ? "ON" : "OFF");
 			break;
 		case 5:
-			joe_snprintf_2((char *)(s[x]), OPT_BUF_SIZE, "%s%d", glopts[x].menu, *(int *) ((unsigned char *) &bw->o + glopts[x].ofst));
+			joe_snprintf_1(s[x] + n, OPT_BUF_SIZE - n,
+			    "%d", *(int *) ((unsigned char *) &bw->o + glopts[x].ofst));
 			break;
 		case 7:
-			joe_snprintf_2((char *)(s[x]), OPT_BUF_SIZE, "%s%d", glopts[x].menu, *(int *) ((unsigned char *) &bw->o + glopts[x].ofst) + 1);
+			joe_snprintf_1(s[x] + n, OPT_BUF_SIZE - n,
+			    "%d", *(int *) ((unsigned char *) &bw->o + glopts[x].ofst) + 1);
 			break;
+		case 9:
+			/* XXX aligns differently so it doesn't get too large */
+			joe_snprintf_2(s[x] + 12, OPT_BUF_SIZE - 12, "%*s", (int)n - 9,
+			    bw->b->o.syntax ? bw->b->o.syntax->name : US "(unset)");
+			break;
+		case 13:
+			/* XXX aligns differently so it doesn't get too large */
+			joe_snprintf_2(s[x] + 12, OPT_BUF_SIZE - 12, "%*s", (int)n - 9,
+			    bw->b->o.charmap ? bw->b->o.charmap->name : US "(unset)");
+			break;
+		default:
+			s[x][n] = '\0';
 		}
 	}
 	s[x] = 0;
@@ -810,7 +875,7 @@ int procrc(CAP *cap, unsigned char *name)
 	int line = 0;		/* Line number */
 	int err = 0;		/* Set to 1 if there was a syntax error */
 
-	strcpy((char *)buf, (char *)name);
+	strlcpy((char *)buf, (char *)name, 1024);
 #ifdef __MSDOS__
 	fd = fopen((char *)buf, "rt");
 #else
@@ -875,7 +940,7 @@ int procrc(CAP *cap, unsigned char *name)
 			break;
 		case '{':	/* Ignore help text */
 			{
-				while ((fgets((char *)buf, 256, fd)) && (buf[0] != '}'))
+				while ((fgets((char *)buf, 256, fd)) && (buf[0] != /*{*/ '}'))
 					/* do nothing */;
 				if (buf[0] != '}') {
 					err = 1;

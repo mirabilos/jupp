@@ -129,15 +129,11 @@ int tcost PARAMS((CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int
 */
 unsigned char *tcompile PARAMS((CAP *cap, unsigned char *s, int a0, int a1, int a2, int a3));
 
-/* Old termcap support */
-#ifdef junk
-int tgetent();
-unsigned char *tgetstr();
-int tgetflag();
-int tgetnum();
-unsigned char *tgoto();
-void tputs();
-extern short ospeed;
-extern unsigned char PC, *UP, *BC;
-#endif
+int tgetent PARAMS((char *, const char *));
+int tgetflag PARAMS((char *));
+int tgetnum PARAMS((char *));
+int tputs PARAMS((const char *, int, int (*)(int)));
+char *tgetstr PARAMS((char *, char **));
+char *tgoto PARAMS((const char *, int, int));
+
 #endif
