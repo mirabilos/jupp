@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/charmap.c,v 1.4 2006/11/10 23:23:30 tg Exp $ */
+/* $MirOS: contrib/code/jupp/charmap.c,v 1.5 2006/11/11 01:43:43 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 conversion utilities
  *	Copyright
@@ -55,6 +55,7 @@ static struct {
 } alias_table[] = {
 	{ US "c", US "ascii" },
 	{ US "posix", US "ascii" },
+	{ US "iso_646", US "ascii" },
 	{ US "8859-1", US "iso-8859-1" },
 	{ US "8859-2", US "iso-8859-2" },
 	{ US "8859-3", US "iso-8859-3" },

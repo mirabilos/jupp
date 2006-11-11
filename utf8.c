@@ -2,7 +2,7 @@
  *	UTF-8 Utilities
  *	Copyright
  *		(C) 2004 Joseph H. Allen
- *		(c) 2004 Thorsten Glaser
+ *		(c) 2004, 2006 Thorsten Glaser
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
@@ -17,11 +17,12 @@
 #include <stdlib.h>
 #endif
 
-#ifdef __OpenBSD__
-/*
- * OpenBSD, MirOS and ekkoBSD do not have real locale support
- * in older versions; even for recent versions, this is enough.
- */
+#ifdef __MirBSD__
+#include <sys/param.h>
+#endif
+
+/* OpenBSD, ekkoBSD and old MirOS do not have real locale support */
+#if defined(__OpenBSD__) && (!defined(MirBSD) || (MirBSD < 0x09A0))
 #undef HAVE_SETLOCALE
 #endif
 
@@ -200,14 +201,17 @@ int utf8_decode_fwrd(unsigned char **p,int *plen)
 
 unsigned char *codeset;	/* Codeset of terminal */
 
-unsigned char *non_utf8_codeset = US "ascii";
+#ifdef junk
+unsigned char *non_utf8_codeset;
 			/* Codeset of local language non-UTF-8 */
+#endif
 
 struct charmap *locale_map;
 			/* Character map of terminal */
 
 void joe_locale()
 {
+#if !defined(HAVE_SETLOCALE) || defined(junk)
 	unsigned char *s, *t;
 
 
@@ -218,8 +222,10 @@ void joe_locale()
 			s=(unsigned char *)getenv("LANG");
 		}
 	}
+#endif
 
 #ifdef HAVE_SETLOCALE
+#ifdef junk
 	if (s)
 		s=(unsigned char *)strdup((char *)s);
 	else
@@ -230,6 +236,7 @@ void joe_locale()
 
 	setlocale(LC_ALL,(char *)s);
 	non_utf8_codeset = (unsigned char *)strdup(nl_langinfo(CODESET));
+#endif
 
 	setlocale(LC_ALL,"");
 	codeset = (unsigned char *)strdup(nl_langinfo(CODESET));
@@ -248,29 +255,13 @@ void joe_locale()
 	if (!locale_map)
 		locale_map = find_charmap(US "ascii");
 
-	/* For files, the default map should be:
-	 * > the result of nl_langinfo
-	 *   -> on systems which have it only
-	 * > ascii
-	 *   -> for technical reasons
-	 * > iso-8859-1
-	 *   -> to unify. Well, cp437. Well, windows-1252. You see?
-	 * > utf-8
-	 *   -> because that is what the user expects.
-	 *
-	 * We are going with the dumb way and are setting the
-	 * default file encoding to utf-8 as well if we are run
-	 * in an uxterm on a non-locale-aware operating system
-	 * such as MirOS; users should be careful as to avoid
-	 * sending utf-8 in accident instead of iso-8859-1.
-	 */
 	fdefault.charmap = locale_map;
 	pdefault.charmap = locale_map;
 
 /*
 	printf("Character set is %s\n",locale_map->name);
 
-	for(x=0;x!=128;++x)
+	for(int x=0;x!=128;++x)
 		printf("%x	space=%d blank=%d alpha=%d alnum=%d punct=%d print=%d\n",
 		       x,joe_isspace(locale_map,x), joe_isblank(locale_map,x), joe_isalpha_(locale_map,x),
 		       joe_isalnum_(locale_map,x), joe_ispunct(locale_map,x), joe_isprint(locale_map,x));
