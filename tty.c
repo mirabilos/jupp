@@ -280,9 +280,11 @@ void tickon(void)
 
 /* Open terminal */
 
+static void baud_reset(int);
+
 void ttopnn(void)
 {
-	int x, bbaud;
+	int bbaud;
 
 #ifdef HAVE_POSIX_TERMIOS
 	struct termios newterm;
@@ -367,6 +369,13 @@ void ttopnn(void)
 	bbaud = arg.sg_ospeed;
 #endif
 #endif
+	baud_reset(bbaud);
+}
+
+static void
+baud_reset(int bbaud)
+{
+	int x;
 
 	baud = 9600;
 	upc = 0;
@@ -375,8 +384,10 @@ void ttopnn(void)
 			baud = speeds[x + 1];
 			break;
 		}
-	if (Baud)
+	if (Baud >= 50)
 		baud = Baud;
+	else
+		Baud = baud;
 	upc = DIVIDEND / baud;
 	if (obuf)
 		joe_free(obuf);
@@ -1181,4 +1192,51 @@ void mpxdied(MPX *m)
 		m->die(m->dieobj);
 	m->func = NULL;
 	edupd(1);
+}
+
+void
+tty_xonoffbaudrst(void)
+{
+#ifdef HAVE_POSIX_TERMIOS
+	struct termios newterm;
+#else
+#ifdef HAVE_SYSV_TERMIO
+	struct termio newterm;
+#else
+	struct sgttyb arg;
+	struct tchars targ;
+#endif
+#endif
+
+#ifdef HAVE_POSIX_TERMIOS
+	tcgetattr(fileno(termin), &newterm);
+	if (noxon)
+		newterm.c_iflag &= ~(IXON | IXOFF);
+	else
+		newterm.c_iflag |= (IXON | IXOFF);
+	tcsetattr(fileno(termin), TCSADRAIN, &newterm);
+	baud_reset(cfgetospeed(&newterm));
+#else
+#ifdef HAVE_SYSV_TERMIO
+	ioctl(fileno(termin), TCGETA, &newterm);
+	if (noxon)
+		newterm.c_iflag &= ~(IXON | IXOFF);
+	else
+		newterm.c_iflag |= (IXON | IXOFF);
+	ioctl(fileno(termin), TCSETAW, &newterm);
+	baud_reset(newterm.c_cflag & CBAUD);
+#else
+	ioctl(fileno(termin), TIOCGETP, &arg);
+	ioctl(fileno(termin), TIOCGETC, &targ);
+	if (noxon) {
+		targ.t_startc = -1;
+		targ.t_stopc = -1;
+	} else {
+		targ.t_startc = otarg.t_startc;
+		targ.t_stopc = otarg.t_stopc;
+	}
+	ioctl(fileno(termin), TIOCSETC, &targ);
+	baud_reset(arg.sg_ospeed);
+#endif
+#endif
 }

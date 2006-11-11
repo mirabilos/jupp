@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/rc.c,v 1.3 2006/11/10 23:23:30 tg Exp $ */
+/* $MirOS: contrib/code/jupp/rc.c,v 1.4 2006/11/11 00:22:18 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
@@ -223,8 +223,9 @@ struct glopts {
 	int low;		/* Low limit for numeric options */
 	int high;		/* High limit for numeric options */
 } glopts[] = {
-	{US "noxon",	0, &noxon, NULL, US "XON/XOFF processing disabled", US "XON/XOFF processing enabled", US "  XON/XOFF mode " },
+	{US "noxon",	0, &noxon, NULL, US "XON/XOFF processing disabled", US "XON/XOFF processing enabled", US "  XON/XOFF usable " },
 	{US "keepup",	0, &keepup, NULL, US "Status line updated constantly", US "Status line updated once/sec", US "  Fast status line " },
+	{US "baud",	1, &Baud, NULL, US "Terminal baud rate (%d): ", 0, US "  Baud rate ", 0, 0, 38400 },
 	{US "overwrite",4, NULL, (unsigned char *) &fdefault.overtype, US "Overtype mode", US "Insert mode", US "T Overtype " },
 	{US "autoindent",	4, NULL, (unsigned char *) &fdefault.autoindent, US "Autoindent enabled", US "Autindent disabled", US "I Autoindent " },
 	{US "wordwrap",	4, NULL, (unsigned char *) &fdefault.wordwrap, US "Wordwrap enabled", US "Wordwrap disabled", US "Word wrap " },
@@ -271,7 +272,6 @@ struct glopts {
 	{US "help",	0, &help, NULL, 0, 0, 0 },
 	{US "dopadding",	0, &dopadding, NULL, 0, 0, 0 },
 	{US "lines",	1, &lines, NULL, 0, 0, 0, 0, 2, 1024 },
-	{US "baud",	1, &Baud, NULL, 0, 0, 0, 0, 50, 32767 },
 	{US "columns",	1, &columns, NULL, 0, 0, 0, 0, 2, 1024 },
 	{US "skiptop",	1, &skiptop, NULL, 0, 0, 0, 0, 0, 64 },
 	{US "notite",	0, &notite, NULL, 0, 0, 0 },
@@ -670,6 +670,8 @@ static int doopt(MENU *m, int x, void *object, int flg)
 			*glopts[x].set = 0;
 		wabort(m->parent);
 		msgnw(bw->parent, *glopts[x].set ? glopts[x].yes : glopts[x].no);
+		if (glopts[x].set == &noxon)
+			tty_xonoffbaudrst();
 		break;
 	case 4:
 		if (!flg)
@@ -690,6 +692,8 @@ static int doopt(MENU *m, int x, void *object, int flg)
 		*xx = x;
 		m->parent->notify = 0;
 		wabort(m->parent);
+		if (glopts[x].set == &Baud)
+			tty_xonoffbaudrst();
 		if (wmkpw(bw->parent, buf, NULL, doopt1, NULL, doabrt1, utypebw, xx, notify, locale_map))
 			return 0;
 		else
@@ -882,7 +886,7 @@ int procrc(CAP *cap, unsigned char *name)
 			break;
 		case '{':	/* Ignore help text */
 			{
-				while ((fgets((char *)buf, 256, fd)) && (buf[0] != '}'))
+				while ((fgets((char *)buf, 256, fd)) && (buf[0] != /*{*/ '}'))
 					/* do nothing */;
 				if (buf[0] != '}') {
 					err = 1;
