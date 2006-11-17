@@ -255,7 +255,11 @@ void joe_locale()
 	if (!locale_map)
 		locale_map = find_charmap(US "ascii");
 
+#ifdef defutf8
+	fdefault.charmap = find_charmap(US "utf-8");
+#else
 	fdefault.charmap = locale_map;
+#endif
 	pdefault.charmap = locale_map;
 
 /*
