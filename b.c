@@ -591,7 +591,7 @@ int pgetc(P *p)
 			n = 0;
 		} else { /* 128-191, 254, 255: Not a valid UTF-8 start character */
 			n = 0;
-			c = 'X';
+			c = 0xFFFD;
 			/* c -= 384; */
 		}
 
@@ -610,7 +610,7 @@ int pgetc(P *p)
 				/* How to represent this? */
 				/* pbkwd(p,m-n);
 				c = oc - 384; */
-				c = 'X';
+				c = 0xFFFD;
 				wid = 1;
 			} else if (val)
 				wid = joe_wcwidth(1,c);

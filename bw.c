@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/bw.c,v 1.5 2006/11/10 23:46:44 tg Exp $ */
+/* $MirOS: contrib/code/jupp/bw.c,v 1.6 2007/02/18 21:35:02 tg Exp $ */
 /*
  *	Edit buffer window generation
  *	Copyright
@@ -498,12 +498,12 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 						ungetit = bc;
 						++amnt;
 						--byte;
-						utf8_char = 'X';
+						utf8_char = 0xFFFD;
 						wid = 1;
 					} else if(utf8_char== -3) { /* Invalid UTF-8 start character 128-191, 254, 255 */
 						/* Show as control character */
 						wid = 1;
-						utf8_char = 'X';
+						utf8_char = 0xFFFD;
 					}
 				} else { /* Regular */
 					utf8_char = bc;
