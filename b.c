@@ -611,7 +611,7 @@ int pgetc(P *p)
 				/* pbkwd(p,m-n);
 				c = oc - 384; */
 				c = 0xFFFD;
-				wid = 1;
+				wid = m - n + 1;
 			} else if (val)
 				wid = joe_wcwidth(1,c);
 		} else {
