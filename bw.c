@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/bw.c,v 1.8 2007/02/18 22:34:08 tg Exp $ */
 /*
  *	Edit buffer window generation
  *	Copyright
@@ -245,6 +246,8 @@ void bwdel(BW *w, long int l, long int n, int flg)
 
 /* Update a single line */
 
+#define maybe_from_uni(map,ch) ((bw->b->o.charmap->type) ? (ch) : from_uni(map, ch))
+
 static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long int scr, long int from, long int to,int st,BW *bw)
         
       
@@ -255,7 +258,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
               			/* Range for marked block */
 {
 	int ox = x;
-	int tach;
+	int tach, tach1;
 	int done = 1;
 	long col = 0;
 	long byte = p->byte;
@@ -267,7 +270,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 
 	struct utf8_sm utf8_sm;
 
-        int *syn;
+        int *syn = NULL;
         P *tmp;
         int idx=0;
         int atr = 0;
@@ -352,7 +355,9 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 				ta = p->b->o.tab - col % p->b->o.tab;
 				if (ta + col > scr) {
 					ta -= scr - col;
-					tach = ' ';
+					tach1 = tach = ' ';
+					if (bw->o.vispace)
+						tach = maybe_from_uni(locale_map, 0x2192);
 					goto dota;
 				}
 				if ((col += ta) == scr) {
@@ -362,7 +367,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 			} else if (bc == '\n')
 				goto eobl;
 			else {
-				int wid;
+				int wid = 1;
 				if (p->b->o.charmap->type) {
 					c = utf8_decode(&utf8_sm,bc);
 
@@ -378,8 +383,6 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 					}
 					else if(c== -3) /* Control character 128-191, 254, 255 */
 						wid = 1;
-				} else {
-					wid = 1;
 				}
 
 				if(wid>0) {
@@ -389,7 +392,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 						goto loop;
 					} else if (col > scr) {
 						ta = col - scr;
-						tach = '<';
+						tach1 = tach = '<';
 						goto dota;
 					}
 				} else
@@ -466,10 +469,13 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 			++byte;
 			if (bc == '\t') {
 				ta = p->b->o.tab - ((x - ox + scr) % p->b->o.tab);
-				tach = ' ';
+				tach1 = tach = ' ';
+				if (bw->o.vispace)
+					tach = maybe_from_uni(locale_map, 0x2192);
 			      dota:
 				do {
 					outatr(bw->b->o.charmap, t, screen + x, attr + x, x, y, tach, c1|atr);
+					tach = tach1;
 					if (ifhave)
 						goto bye;
 					if (++x == w)
@@ -492,12 +498,12 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 						ungetit = bc;
 						++amnt;
 						--byte;
-						utf8_char = 'X';
-						wid = 1;
+						utf8_char = 0x1000FFFE;
+						wid = utf8_sm.ptr;
 					} else if(utf8_char== -3) { /* Invalid UTF-8 start character 128-191, 254, 255 */
 						/* Show as control character */
 						wid = 1;
-						utf8_char = 'X';
+						utf8_char = 0x1000FFFE;
 					}
 				} else { /* Regular */
 					utf8_char = bc;
@@ -511,7 +517,12 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 							outatr(bw->b->o.charmap, t, screen + x, attr + x, x, y, '>', c1|atr);
 							x++;
 						}
+					} else if (utf8_char == 0x1000FFFE) while (wid--) {
+						outatr(bw->b->o.charmap, t, screen + x, attr + x, x, y, 0xFFFD, (c1|atr|UNDERLINE)^INVERSE);
+						x++;
 					} else {
+						if (bw->o.vispace && (utf8_char == 0x20))
+							utf8_char = maybe_from_uni(locale_map, 0xB7);
 						outatr(bw->b->o.charmap, t, screen + x, attr + x, x, y, utf8_char, c1|atr);
 						x += wid;
 					}
@@ -564,164 +575,6 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 	return 0;
 }
 
-/* Generate line into an array */
-
-static int lgena(SCRN *t, int y, int *screen, int x, int w, P *p, long int scr, long int from, long int to)
-        
-      
-            			/* Screen line address */
-      				/* Window */
-     				/* Buffer pointer */
-         			/* Starting column to display */
-              			/* Range for marked block */
-{
-	int ox = x;
-	int done = 1;
-	long col = 0;
-	long byte = p->byte;
-	unsigned char *bp;	/* Buffer pointer, 0 if not set */
-	int amnt;		/* Amount left in this segment of the buffer */
-	int c, ta, c1;
-	unsigned char bc;
-
-/* Initialize bp and amnt from p */
-	if (p->ofst >= p->hdr->hole) {
-		bp = p->ptr + p->hdr->ehole + p->ofst - p->hdr->hole;
-		amnt = SEGSIZ - p->hdr->ehole - (p->ofst - p->hdr->hole);
-	} else {
-		bp = p->ptr + p->ofst;
-		amnt = p->hdr->hole - p->ofst;
-	}
-
-	if (col == scr)
-		goto loop;
-      lp:			/* Display next character */
-	if (amnt)
-		do {
-			bc = *bp++;
-			if (square)
-				if (bc == '\t') {
-					long tcol = col + p->b->o.tab - col % p->b->o.tab;
-
-					if (tcol > from && tcol <= to)
-						c1 = INVERSE;
-					else
-						c1 = 0;
-				} else if (col >= from && col < to)
-					c1 = INVERSE;
-				else
-					c1 = 0;
-			else if (byte >= from && byte < to)
-				c1 = INVERSE;
-			else
-				c1 = 0;
-			++byte;
-			if (bc == '\t') {
-				ta = p->b->o.tab - col % p->b->o.tab;
-				if (ta + col > scr) {
-					ta -= scr - col;
-					goto dota;
-				}
-				if ((col += ta) == scr) {
-					--amnt;
-					goto loop;
-				}
-			} else if (bc == '\n')
-				goto eobl;
-			else if (++col == scr) {
-				--amnt;
-				goto loop;
-			}
-		} while (--amnt);
-	if (bp == p->ptr + SEGSIZ) {
-		if (pnext(p)) {
-			bp = p->ptr;
-			amnt = p->hdr->hole;
-			goto lp;
-		}
-	} else {
-		bp = p->ptr + p->hdr->ehole;
-		amnt = SEGSIZ - p->hdr->ehole;
-		goto lp;
-	}
-	goto eobl;
-
-      loop:			/* Display next character */
-	if (amnt)
-		do {
-			bc = *bp++;
-			if (square)
-				if (bc == '\t') {
-					long tcol = scr + x - ox + p->b->o.tab - (scr + x - ox) % p->b->o.tab;
-
-					if (tcol > from && tcol <= to)
-						c1 = INVERSE;
-					else
-						c1 = 0;
-				} else if (scr + x - ox >= from && scr + x - ox < to)
-					c1 = INVERSE;
-				else
-					c1 = 0;
-			else if (byte >= from && byte < to)
-				c1 = INVERSE;
-			else
-				c1 = 0;
-			++byte;
-			if (bc == '\t') {
-				ta = p->b->o.tab - ((x - ox + scr) % p->b->o.tab);
-			      dota:
-				do {
-					screen[x] = ' ' + c1;
-					if (++x == w)
-						goto eosl;
-				} while (--ta);
-			} else if (bc == '\n')
-				goto eobl;
-			else {
-				/* xlat(&c, &bc);*/
-				c ^= c1;
-				screen[x] = c + bc;
-				if (++x == w)
-					goto eosl;
-			}
-		} while (--amnt);
-	if (bp == p->ptr + SEGSIZ) {
-		if (pnext(p)) {
-			bp = p->ptr;
-			amnt = p->hdr->hole;
-			goto loop;
-		}
-	} else {
-		bp = p->ptr + p->hdr->ehole;
-		amnt = SEGSIZ - p->hdr->ehole;
-		goto loop;
-	}
-	goto eof;
-      eobl:			/* End of buffer line found.  Erase to end of screen line */
-	++p->line;
-      eof:
-	while (x != w)
-		screen[x++] = ' ';
-	done = 0;
-
-/* Set p to bp/amnt */
-	if (bp - p->ptr <= p->hdr->hole)
-		p->ofst = bp - p->ptr;
-	else
-		p->ofst = bp - p->ptr - (p->hdr->ehole - p->hdr->hole);
-	p->byte = byte;
-	return done;
-
-      eosl:
-	if (bp - p->ptr <= p->hdr->hole)
-		p->ofst = bp - p->ptr;
-	else
-		p->ofst = bp - p->ptr - (p->hdr->ehole - p->hdr->hole);
-	p->byte = byte;
-	pnextl(p);
-	return 0;
-}
-
 static void gennum(BW *w, int *screen, int *attr, SCRN *t, int y, int *comp)
 {
 	unsigned char buf[12];
@@ -731,7 +584,7 @@ static void gennum(BW *w, int *screen, int *attr, SCRN *t, int y, int *comp)
 	if (lin <= w->b->eof->line)
 		joe_snprintf_1((char *)buf, sizeof(buf), "%5ld ", w->top->line + y - w->y + 1);
 	else
-		strcpy((char *)buf, "      ");
+		strlcpy((char *)buf, "      ",12);
 	for (z = 0; buf[z]; ++z) {
 		outatr(w->b->o.charmap, t, screen + z, attr + z, z, y, buf[z], 0);
 		if (ifhave)

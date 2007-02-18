@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/tw.c,v 1.4 2007/02/18 22:34:08 tg Exp $ */
 /* 
  *	Text editing windows
  *	Copyright
@@ -25,6 +26,7 @@
 #include "utils.h"
 #include "vs.h"
 #include "syntax.h"
+#include "charmap.h"
 #include "w.h"
 
 extern unsigned char *exmsg;
@@ -98,19 +100,21 @@ unsigned char *get_context(BW *bw)
 	do {
 		p_goto_bol(p);
 		if (!pisindent(p) && !pisblank(p)) {
+			/* Uncomment to get the last line instead of the first line (see above)
 			next:
+			*/
 			brzs(p,stdbuf,stdsiz-1);
 			/* Ignore comment and block structuring lines */
 			if (!(stdbuf[0]=='{' ||
-			    stdbuf[0]=='/' && stdbuf[1]=='*' ||
-			    stdbuf[0]=='\f' ||
-			    stdbuf[0]=='/' && stdbuf[1]=='/' ||
-			    stdbuf[0]=='#' ||
-			    stdbuf[0]=='b' && stdbuf[1]=='e' && stdbuf[2]=='g' && stdbuf[3]=='i' && stdbuf[4]=='n' ||
-			    stdbuf[0]=='B' && stdbuf[1]=='E' && stdbuf[2]=='G' && stdbuf[3]=='I' && stdbuf[4]=='N' ||
-			    stdbuf[0]=='-' && stdbuf[1]=='-' ||
+			    (stdbuf[0]=='/' && stdbuf[1]=='*') ||
+			    (stdbuf[0]=='\f') ||
+			    (stdbuf[0]=='/' && stdbuf[1]=='/') ||
+			    (stdbuf[0]=='#') ||
+			    (stdbuf[0]=='b' && stdbuf[1]=='e' && stdbuf[2]=='g' && stdbuf[3]=='i' && stdbuf[4]=='n') ||
+			    (stdbuf[0]=='B' && stdbuf[1]=='E' && stdbuf[2]=='G' && stdbuf[3]=='I' && stdbuf[4]=='N') ||
+			    (stdbuf[0]=='-' && stdbuf[1]=='-') ||
 			    stdbuf[0]==';')) {
-			    	strcpy(buf1,stdbuf);
+			    	strlcpy(buf1,stdbuf,stdsiz);
 				/* Uncomment to get the last line instead of the first line (see above)
 			    	if (pprevl(p)) {
 			    		p_goto_bol(p);
@@ -134,6 +138,30 @@ static unsigned char *stagen(unsigned char *stalin, BW *bw, unsigned char *s, in
 	unsigned char buf[80];
 	int x;
 	W *w = bw->parent;
+	int special_aA = 0;
+
+	{
+		unsigned char *cp = s, *cp2;
+
+		while ((cp2 = strstr(cp, "%a")) != NULL) {
+			cp2 += /* %a */ 2;
+			if (cp2[1] == '%')
+				++cp2;
+			if (cp2[0] == '%' && cp2[1] == 'A') {
+				special_aA = 1;
+				break;
+			}
+		}
+		if (!special_aA) while ((cp2 = strstr(cp, "%A")) != NULL) {
+			cp2 += /* %A */ 2;
+			if (cp2[1] == '%')
+				++cp2;
+			if (cp2[0] == '%' && cp2[1] == 'a') {
+				special_aA = 1;
+				break;
+			}
+		}
+	}
 
 	stalin = vstrunc(stalin, 0);
 	while (*s) {
@@ -243,20 +271,40 @@ static unsigned char *stagen(unsigned char *stalin, BW *bw, unsigned char *s, in
 				stalin = vsncpy(sv(stalin), sz(buf));
 				break;
 			case 'a':
-				if (!piseof(bw->cursor))
-					joe_snprintf_1((char *)buf, sizeof(buf), "%3d", 255 & brc(bw->cursor));
-				else
-					joe_snprintf_0((char *)buf, sizeof(buf), "   ");
-				for (x = 0; buf[x]; ++x)
-					if (buf[x] == ' ')
-						buf[x] = fill;
+				if (bw->b->o.charmap->type && !(special_aA && brch(bw->cursor) == 0x1000FFFE)) {
+					/* UTF-8: don't display decimal value */
+					buf[0] = 'u';
+					buf[1] = 0;
+				} else {
+					if (!piseof(bw->cursor))
+						joe_snprintf_1((char *)buf, sizeof(buf), "%3d", 255 & brc(bw->cursor));
+					else
+						joe_snprintf_0((char *)buf, sizeof(buf), "   ");
+					for (x = 0; buf[x]; ++x)
+						if (buf[x] == ' ')
+							buf[x] = fill;
+				}
 				stalin = vsncpy(sv(stalin), sz(buf));
 				break;
 			case 'A':
-				if (!piseof(bw->cursor))
-					joe_snprintf_1((char *)buf, sizeof(buf), "%2.2X", 255 & brc(bw->cursor));
-				else
-					joe_snprintf_0((char *)buf, sizeof(buf), "  ");
+				if (bw->b->o.charmap->type) {
+					/* UTF-8, display UCS-2 value */
+					if (!piseof(bw->cursor)) {
+						int uch = brch(bw->cursor);
+						if (uch == 0x1000FFFE)
+							joe_snprintf_1((char *)buf, sizeof(buf), special_aA ? "%02X" : "  %02X", 255 & brc(bw->cursor));
+						else if (uch == 0x1000FFFF)
+							joe_snprintf_0((char *)buf, sizeof(buf), "<-2>");
+						else
+							joe_snprintf_1((char *)buf, sizeof(buf), "%04X", uch);
+					} else
+						joe_snprintf_0((char *)buf, sizeof(buf), "    ");
+				} else {
+					if (!piseof(bw->cursor))
+						joe_snprintf_1((char *)buf, sizeof(buf), "%2.2X", 255 & brc(bw->cursor));
+					else
+						joe_snprintf_0((char *)buf, sizeof(buf), "  ");
+				}
 				for (x = 0; buf[x]; ++x)
 					if (buf[x] == ' ')
 						buf[x] = fill;

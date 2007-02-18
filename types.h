@@ -1,3 +1,23 @@
+/* $MirOS: contrib/code/jupp/types.h,v 1.4 2006/12/11 23:54:50 tg Exp $ */
+
+/*-
+ * This file is part of JUPP, a variant of Joe's Own Editor.
+ *
+ * JUPP is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 1 (February 1989), as shown
+ * in the file COPYING in the JUPP source distribution.
+ *
+ * This work is provided "AS IS" and WITHOUT WARRANTY of any kind, to
+ * the utmost extent permitted by applicable law, neither express nor
+ * implied; without malicious intent or gross negligence. In no event
+ * may a licensor, author or contributor be held liable for indirect,
+ * direct, other damage, loss, or other issues arising in any way out
+ * of dealing in the work, even if advised of the possibility of such
+ * damage or existence of a defect, except proven that it results out
+ * of said person's immediate fault when using the work as intended.
+ */
+
 #ifndef _JOE_TYPES_H
 #define _JOE_TYPES_H
 
@@ -128,6 +148,7 @@ struct options {
 	MACRO	*mold;		/* Macro to execute for existing files */
 	MACRO	*msnew;		/* Macro to execute before saving new files */
 	MACRO	*msold;		/* Macro to execute before saving existing files */
+	int	vispace;	/* Set to make spaces visible */
 };
 
 struct macro {

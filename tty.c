@@ -12,10 +12,8 @@
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
 #endif
-#ifdef GWINSZ_IN_SYS_IOCTL
 #ifdef HAVE_SYS_IOCTL_H
 #include <sys/ioctl.h>
-#endif
 #endif
 #include <stdio.h>
 #ifdef HAVE_FCNTL_H
@@ -28,20 +26,12 @@
 #include <sys/param.h>
 #endif
 
-#ifdef HAVE_OPENPTY
-#ifdef HAVE_PTY_H
-#include <pty.h>
-#endif
-#endif
-
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
 
 int idleout = 1;
-
-#include "config.h"
 
 /* We use the defines in sys/ioctl to determine what type
  * tty interface the system uses and what type of system
@@ -57,6 +47,15 @@ int idleout = 1;
 #  else
 #    include <sgtty.h>
 #  endif
+#endif
+
+#ifdef HAVE_OPENPTY
+#ifdef HAVE_PTY_H
+#include <pty.h>
+#endif
+#ifdef HAVE_UTIL_H
+#include <util.h>
+#endif
 #endif
 
 #ifdef HAVE_SETITIMER
@@ -91,6 +90,7 @@ int idleout = 1;
 
 #include "main.h"
 #include "path.h"
+#include "scrn.h"
 #include "tty.h"
 #include "utils.h"
 
@@ -280,9 +280,11 @@ void tickon(void)
 
 /* Open terminal */
 
+static void baud_reset(int);
+
 void ttopnn(void)
 {
-	int x, bbaud;
+	int bbaud;
 
 #ifdef HAVE_POSIX_TERMIOS
 	struct termios newterm;
@@ -367,6 +369,13 @@ void ttopnn(void)
 	bbaud = arg.sg_ospeed;
 #endif
 #endif
+	baud_reset(bbaud);
+}
+
+static void
+baud_reset(int bbaud)
+{
+	int x;
 
 	baud = 9600;
 	upc = 0;
@@ -375,8 +384,10 @@ void ttopnn(void)
 			baud = speeds[x + 1];
 			break;
 		}
-	if (Baud)
+	if (Baud >= 50)
 		baud = Baud;
+	else
+		Baud = baud;
 	upc = DIVIDEND / baud;
 	if (obuf)
 		joe_free(obuf);
@@ -850,11 +861,10 @@ static unsigned char *getpty(int *ptyfd)
 #else
 #ifdef HAVE_OPENPTY
 
-/* BSD function, present in libc5 and glibc2 */
+/* BSD function, present in libc5 and glibc2 and (duh) the BSDs */
 
 static unsigned char *getpty(int *ptyfd)
 {
-	int fdm;
 	static unsigned char name[32];
 	int ttyfd;
 
@@ -900,23 +910,23 @@ static unsigned char *getpty(int *ptyfd)
 
 	if (ptys)
 		for (fd = 0; ptys[fd]; ++fd) {
-			strcpy((char *)ttyname, (char *)ptydir);
-			strcat((char *)ttyname, (char  *)(ptys[fd]));
+			strlcpy((char *)ttyname, (char *)ptydir, 32);
+			strlcat((char *)ttyname, (char  *)(ptys[fd]), 32);
 			if ((*ptyfd = open((char *)ttyname, O_RDWR)) >= 0) {
 				ptys[fd][0] = 't';
-				strcpy((char *)ttyname, (char *)ttydir);
-				strcat((char *)ttyname, (char *)(ptys[fd]));
+				strlcpy((char *)ttyname, (char *)ttydir, 32);
+				strlcat((char *)ttyname, (char *)(ptys[fd]), 32);
 				ptys[fd][0] = 'p';
 				x = open((char *)ttyname, O_RDWR);
 				if (x >= 0) {
 					close(x);
 					close(*ptyfd);
-					strcpy((char *)ttyname, (char *)ptydir);
-					strcat((char *)ttyname, (char *)(ptys[fd]));
+					strlcpy((char *)ttyname, (char *)ptydir, 32);
+					strlcat((char *)ttyname, (char *)(ptys[fd]), 32);
 					*ptyfd = open((char *)ttyname, O_RDWR);
 					ptys[fd][0] = 't';
-					strcpy((char *)ttyname, (char *)ttydir);
-					strcat((char *)ttyname, (char *)(ptys[fd]));
+					strlcpy((char *)ttyname, (char *)ttydir, 32);
+					strlcat((char *)ttyname, (char *)(ptys[fd]), 32);
 					ptys[fd][0] = 'p';
 					return ttyname;
 				} else
@@ -1182,4 +1192,51 @@ void mpxdied(MPX *m)
 		m->die(m->dieobj);
 	m->func = NULL;
 	edupd(1);
+}
+
+void
+tty_xonoffbaudrst(void)
+{
+#ifdef HAVE_POSIX_TERMIOS
+	struct termios newterm;
+#else
+#ifdef HAVE_SYSV_TERMIO
+	struct termio newterm;
+#else
+	struct sgttyb arg;
+	struct tchars targ;
+#endif
+#endif
+
+#ifdef HAVE_POSIX_TERMIOS
+	tcgetattr(fileno(termin), &newterm);
+	if (noxon)
+		newterm.c_iflag &= ~(IXON | IXOFF);
+	else
+		newterm.c_iflag |= (IXON | IXOFF);
+	tcsetattr(fileno(termin), TCSADRAIN, &newterm);
+	baud_reset(cfgetospeed(&newterm));
+#else
+#ifdef HAVE_SYSV_TERMIO
+	ioctl(fileno(termin), TCGETA, &newterm);
+	if (noxon)
+		newterm.c_iflag &= ~(IXON | IXOFF);
+	else
+		newterm.c_iflag |= (IXON | IXOFF);
+	ioctl(fileno(termin), TCSETAW, &newterm);
+	baud_reset(newterm.c_cflag & CBAUD);
+#else
+	ioctl(fileno(termin), TIOCGETP, &arg);
+	ioctl(fileno(termin), TIOCGETC, &targ);
+	if (noxon) {
+		targ.t_startc = -1;
+		targ.t_stopc = -1;
+	} else {
+		targ.t_startc = otarg.t_startc;
+		targ.t_stopc = otarg.t_stopc;
+	}
+	ioctl(fileno(termin), TIOCSETC, &targ);
+	baud_reset(arg.sg_ospeed);
+#endif
+#endif
 }

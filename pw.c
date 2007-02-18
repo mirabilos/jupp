@@ -14,6 +14,7 @@
 #include "bw.h"
 #include "help.h"
 #include "kbd.h"
+#include "path.h"
 #include "pw.h"
 #include "scrn.h"
 #include "tab.h"

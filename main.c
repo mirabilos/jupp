@@ -159,7 +159,7 @@ extern int breakflg;
 
 unsigned char **mainenv;
 
-int main(int argc, unsigned char **argv, unsigned char **envv)
+int main(int argc, char **argv, char **envp)
 {
 	CAP *cap;
 	unsigned char *s;
@@ -175,7 +175,7 @@ int main(int argc, unsigned char **argv, unsigned char **envv)
 
 	joe_locale();
 
-	mainenv = envv;
+	mainenv = (unsigned char **)envp;
 
 #ifdef __MSDOS__
 	_fmode = O_BINARY;
@@ -384,9 +384,9 @@ int main(int argc, unsigned char **argv, unsigned char **envv)
 	}
 	if (!nonotice) {
 		if (locale_map->type)
-			joe_snprintf_1((char *)msgbuf,JOE_MSGBUFSIZE,"\\i** Joe's Own Editor v" VERSION " ** (%s) ** Copyright © 2004 **\\i",locale_map->name);
+			joe_snprintf_1((char *)msgbuf,JOE_MSGBUFSIZE,"\\i** Joe's Own Editor v" VERSION " ** (%s) ** Copyright © 2005 **\\i",locale_map->name);
 		else
-			joe_snprintf_1((char *)msgbuf,JOE_MSGBUFSIZE,"\\i** Joe's Own Editor v" VERSION " ** (%s) ** Copyright (C) 2004 **\\i",locale_map->name);
+			joe_snprintf_1((char *)msgbuf,JOE_MSGBUFSIZE,"\\i** Joe's Own Editor v" VERSION " ** (%s) ** Copyright (C) 2005 **\\i",locale_map->name);
 
 		msgnw(((BASE *)lastw(maint)->object)->parent, msgbuf);
 	}

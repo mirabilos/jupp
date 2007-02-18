@@ -60,4 +60,6 @@ int parse_int PARAMS((unsigned char **p,int *buf));
 int parse_string PARAMS((unsigned char **p,unsigned char *buf,int len));
 int parse_range PARAMS((unsigned char **p,int *first,int *second));
 
+void tty_xonoffbaudrst(void);
+
 #endif

@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/menu.c,v 1.3 2006/11/10 23:38:40 tg Exp $ */
 /*
  *	Menu selection window
  *	Copyright
@@ -41,7 +42,7 @@ static void menudisp(MENU *m)
 	for (y = 0; y != m->h; ++y) {
 		col = 0;
 		for (x = 0; x != m->perline && y*m->perline+x+m->top<m->nitems; ++x) {
-			int atr, z, lcol;
+			int atr;
 	
 			if (x + y*m->perline + m->top == m->cursor)
 				atr = INVERSE;
@@ -333,6 +334,8 @@ static int umkey(MENU *m, int c)
 		else
 			return -1;
 	}
+	if (!(((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z'))))
+		return -1;
 	c &= 0x1F;
 	for (x = 0; x != m->nitems; ++x)
 		if ((m->list[x][0] & 0x1F) == c)
