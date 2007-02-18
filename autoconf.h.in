@@ -1,4 +1,4 @@
-/* autoconf.h.in.  Generated from configure.ac by autoheader 2.60-MirPorts-2.  */
+/* autoconf.h.in.  Generated from configure.ac by autoheader 2.60-MirPorts-3.  */
 
 /* Define to 1 if `TIOCGWINSZ' requires <sys/ioctl.h>. */
 #undef GWINSZ_IN_SYS_IOCTL

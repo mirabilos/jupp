@@ -3,6 +3,8 @@ Wed Nov 10 2004  Thorsten Glaser <tg@66h.42h.de>
 	Use anonCVS or CVSweb by the MirOS Project to retrieve changes
 	for MirJupp. I don't closely follow GNU coding standards.
 
+	cf. http://cvs.mirbsd.de/src/share/doc/legal/LICENCE-GNU?rev=HEAD
+
 Sat May 29 2004  Joe Allen <jhallen@world.std.com>
 
 	Use 'aspell' if it exists.

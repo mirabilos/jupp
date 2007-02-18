@@ -1,4 +1,18 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.10 2006/11/11 01:43:42 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.11 2007/02/18 22:55:47 tg Exp $
+
+JOE 3.1jupp8
+
+- Bugfix (maybe) for backspace deleting more than it should
+  when smart backspaces or auto-indent are off
+- In UTF-8 mode, display illegal characters as reversed (inverse)
+  underlined U+FFFD REPLACEMENT CHARACTER, one per octet (if these
+  form a valid part of an invalid multibyte sequence, the first
+  valid octets are not necessarily individually selectable)
+- In UTF-8 mode, don't display the decimal ASCII value of a wide
+  character; display the correct UCS-2 hex value (or <-2> for an
+  invalid sequence or the 8-bit hex value of the octet for an
+  invalid octet or invalid one-octet multibyte sequence) instead
+- Upgrade to latest MirOS licence template
 
 JOE 3.1jupp7
 
