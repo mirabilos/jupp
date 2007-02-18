@@ -1,4 +1,5 @@
- /*
+/* $MirOS: contrib/code/jupp/b.c,v 1.5 2007/02/18 22:23:54 tg Exp $ */
+/*
  *	Editor engine
  *	Copyright
  *		(C) 1992 Joseph H. Allen
@@ -591,7 +592,7 @@ int pgetc(P *p)
 			n = 0;
 		} else { /* 128-191, 254, 255: Not a valid UTF-8 start character */
 			n = 0;
-			c = 0xFFFD;
+			c = 0xFFFE;
 			/* c -= 384; */
 		}
 
@@ -610,8 +611,8 @@ int pgetc(P *p)
 				/* How to represent this? */
 				/* pbkwd(p,m-n);
 				c = oc - 384; */
-				c = 0xFFFD;
 				wid = m - n + 1;
+				c = wid == 1 ? 0xFFFE : 0xFFFF;
 			} else if (val)
 				wid = joe_wcwidth(1,c);
 		} else {
