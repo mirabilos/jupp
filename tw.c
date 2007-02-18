@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tw.c,v 1.3 2007/02/18 22:23:55 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tw.c,v 1.4 2007/02/18 22:34:08 tg Exp $ */
 /* 
  *	Text editing windows
  *	Copyright
@@ -271,7 +271,7 @@ static unsigned char *stagen(unsigned char *stalin, BW *bw, unsigned char *s, in
 				stalin = vsncpy(sv(stalin), sz(buf));
 				break;
 			case 'a':
-				if (bw->b->o.charmap->type && !(special_aA && brch(bw->cursor) == 0xFFFE)) {
+				if (bw->b->o.charmap->type && !(special_aA && brch(bw->cursor) == 0x1000FFFE)) {
 					/* UTF-8: don't display decimal value */
 					buf[0] = 'u';
 					buf[1] = 0;
@@ -291,9 +291,9 @@ static unsigned char *stagen(unsigned char *stalin, BW *bw, unsigned char *s, in
 					/* UTF-8, display UCS-2 value */
 					if (!piseof(bw->cursor)) {
 						int uch = brch(bw->cursor);
-						if (uch == 0xFFFE)
+						if (uch == 0x1000FFFE)
 							joe_snprintf_1((char *)buf, sizeof(buf), special_aA ? "%02X" : "  %02X", 255 & brc(bw->cursor));
-						else if (uch == 0xFFFF)
+						else if (uch == 0x1000FFFF)
 							joe_snprintf_0((char *)buf, sizeof(buf), "<-2>");
 						else
 							joe_snprintf_1((char *)buf, sizeof(buf), "%04X", uch);

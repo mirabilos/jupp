@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/b.c,v 1.5 2007/02/18 22:23:54 tg Exp $ */
+/* $MirOS: contrib/code/jupp/b.c,v 1.6 2007/02/18 22:34:07 tg Exp $ */
 /*
  *	Editor engine
  *	Copyright
@@ -592,7 +592,7 @@ int pgetc(P *p)
 			n = 0;
 		} else { /* 128-191, 254, 255: Not a valid UTF-8 start character */
 			n = 0;
-			c = 0xFFFE;
+			c = 0x1000FFFE;
 			/* c -= 384; */
 		}
 
@@ -612,7 +612,7 @@ int pgetc(P *p)
 				/* pbkwd(p,m-n);
 				c = oc - 384; */
 				wid = m - n + 1;
-				c = wid == 1 ? 0xFFFE : 0xFFFF;
+				c = wid == 1 ? 0x1000FFFE : 0x1000FFFF;
 			} else if (val)
 				wid = joe_wcwidth(1,c);
 		} else {
