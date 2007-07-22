@@ -27,7 +27,7 @@ struct isrch *lastisrch = NULL;	/* Previous search */
 
 unsigned char *lastpat = NULL;	/* Previous pattern */
 
-SRCH *globalsrch;		/* Existing SRCH structure */
+extern SRCH *globalsrch;	/* Existing SRCH structure */
 
 IREC fri = { {&fri, &fri} };	/* Free-list of irecs */
 
