@@ -1,4 +1,4 @@
- "jupp" resource file for JOE 2.8/3.1 (c) 1997-2006 Thorsten Glaser
+ "jupp" resource file for JOE 2.8/3.1 (c) 1997-2008 Thorsten Glaser
  Provided that these terms and disclaimer and all copyright notices
  are retained or reproduced in an accompanying document, permission
  is granted to deal in this work without restriction, including un-
@@ -154,7 +154,7 @@ stop		^[ )
 
 :main
 :inherit windows
-bof,qrepl,"\\[	 ]\\+\\[	 ]\\$",rtn,rtn,rtn,"r",eof	^K ]
+bof,qrepl,"\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\+\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\$",rtn,rtn,rtn,"r",eof	^K ]
 edit,rtn,filt,query,parserr	^[ C
 edit,rtn,filt,query,parserr	^[ c
 backs		^?
