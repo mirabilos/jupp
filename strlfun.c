@@ -1,31 +1,36 @@
-/* $MirOS: contrib/code/jupp/strlfun.c,v 1.4 2006/11/09 15:06:18 tg Exp $ */
-/* _MirOS: src/lib/libc/string/strlfun.c,v 1.10 2006/11/08 23:18:04 tg Exp $ */
-
 /*-
  * Copyright (c) 2006
  *	Thorsten Glaser <tg@mirbsd.de>
  *
- * Licensee is hereby permitted to deal in this work without restric-
- * tion, including unlimited rights to use, publicly perform, modify,
- * merge, distribute, sell, give away or sublicence, provided all co-
- * pyright notices above, these terms and the disclaimer are retained
- * in all redistributions or reproduced in accompanying documentation
- * or other materials provided with binary redistributions.
+ * Provided that these terms and disclaimer and all copyright notices
+ * are retained or reproduced in an accompanying document, permission
+ * is granted to deal in this work without restriction, including un-
+ * limited rights to use, publicly perform, distribute, sell, modify,
+ * merge, give away, or sublicence.
  *
- * Licensor offers the work "AS IS" and WITHOUT WARRANTY of any kind,
- * express, or implied, to the maximum extent permitted by applicable
- * law, without malicious intent or gross negligence; in no event may
- * licensor, an author or contributor be held liable for any indirect
- * or other damage, or direct damage except proven a consequence of a
- * direct error of said person and intended use of this work, loss or
- * other issues arising in any way out of its use, even if advised of
- * the possibility of such damage or existence of a defect.
+ * This work is provided "AS IS" and WITHOUT WARRANTY of any kind, to
+ * the utmost extent permitted by applicable law, neither express nor
+ * implied; without malicious intent or gross negligence. In no event
+ * may a licensor, author or contributor be held liable for indirect,
+ * direct, other damage, loss, or other issues arising in any way out
+ * of dealing in the work, even if advised of the possibility of such
+ * damage or existence of a defect, except proven that it results out
+ * of said person's immediate fault when using the work as intended.
  *-
  * The strlcat() code below has been written by Thorsten Glaser. Bodo
  * Eggert suggested optimising the strlcpy() code, originally written
  * by Todd C. Miller (see below), which was carried out by Th. Glaser
- * as well as writing wcslcat() and wcslcpy() equivalents.
+ * as well as merging this code with strxfrm() for ISO-10646-only sy-
+ * stems and writing wcslcat(), wcslcpy() and wcsxfrm() equivalents.
  */
+
+#ifdef STRXFRM
+#undef HAVE_STRLCPY
+#undef HAVE_STRLCAT
+#define HAVE_STRLCPY	0
+#define HAVE_STRLCAT	1
+#define strlcpy		strxfrm
+#endif
 
 #include <sys/types.h>
 #if defined(_KERNEL) || defined(_STANDALONE)
@@ -71,7 +76,10 @@ extern size_t strlen(const char *);
 #define __predict_false(exp)	((exp) != 0)
 #endif
 
-__RCSID("$MirOS: contrib/code/jupp/strlfun.c,v 1.4 2006/11/09 15:06:18 tg Exp $");
+#if !defined(_KERNEL) && !defined(_STANDALONE)
+__RCSID("$MirOS: contrib/code/jupp/strlfun.c,v 1.5 2008/05/03 22:54:02 tg Exp $");
+__RCSID("$miros: src/lib/libc/string/strlfun.c,v 1.15 2008/05/03 22:53:43 tg Exp $");
+#endif
 
 size_t strlcat(char *, const char *, size_t);
 size_t strlcpy(char *, const char *, size_t);
@@ -103,6 +111,7 @@ strlcat(char *dst, const char *src, size_t dlen)
 }
 #endif /* !HAVE_STRLCAT */
 
+#if !defined(HAVE_STRLCPY) || (HAVE_STRLCPY == 0)
 /* $OpenBSD: strlcpy.c,v 1.10 2005/08/08 08:05:37 espie Exp $ */
 
 /*-
@@ -113,7 +122,6 @@ strlcat(char *dst, const char *src, size_t dlen)
  * copyright notice and this permission notice appear in all copies.
  */
 
-#if !defined(HAVE_STRLCPY) || (HAVE_STRLCPY == 0)
 /*
  * Copy src to string dst of size siz.  At most siz-1 characters
  * will be copied.  Always NUL terminates (unless siz == 0).
