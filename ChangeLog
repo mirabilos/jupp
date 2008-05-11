@@ -1,4 +1,4 @@
-Wed Nov 10 2004  Thorsten Glaser <tg@66h.42h.de>
+Wed Nov 10 2004  Thorsten Glaser <tg@mirbsd.org>
 
 	Use anonCVS or CVSweb by the MirOS Project to retrieve changes
 	for MirJupp. I don't closely follow GNU coding standards.
