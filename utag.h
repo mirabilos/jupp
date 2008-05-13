@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/utag.h,v 1.2 2008/05/13 13:08:30 tg Exp $ */
 /* 
  *	tags file symbol lookup
  *	Copyright

@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/scrn.c,v 1.3 2008/05/13 13:08:25 tg Exp $ */
 /*
  *	Device independant TTY interface for JOE
  *	Copyright
@@ -676,7 +677,7 @@ SCRN *nopen(CAP *cap)
 	ttclose();
 	signrm();
 #ifdef	DEBUG
-	/* these are strings, but I do not know if %s is appropriate -mirabile */
+	/* these are strings, but I do not know if %s is appropriate -mirabilos */
         fprintf(stderr,"cm=%d ch=%d cv=%d ho=%d lf=%d DO=%d ll=%d up=%d UP=%d cr=%d\n",
                        t->cm, t->ch, t->cv, t->ho, t->lf, t->DO, t->ll, t->up, t->UP, t->cr);
 #endif

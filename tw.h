@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/tw.h,v 1.2 2008/05/13 13:08:27 tg Exp $ */
 /*
  *	Text editing windows
  *	Copyright

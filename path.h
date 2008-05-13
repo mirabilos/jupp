@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/path.h,v 1.3 2008/05/13 13:08:24 tg Exp $ */
 /*
  *	Directory and path functions
  *	Copyright

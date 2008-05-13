@@ -1,3 +1,5 @@
+/* $MirOS: contrib/code/jupp/config.h,v 1.2 2008/05/13 13:08:21 tg Exp $ */
+
 #ifndef _JOE_CONFIG_H
 #define _JOE_CONFIG_H
 

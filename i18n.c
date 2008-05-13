@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/i18n.c,v 1.3 2008/05/13 13:08:22 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 functions for JOE
  *	Copyright

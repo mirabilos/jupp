@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/dir.c,v 1.2 2008/05/13 13:08:21 tg Exp $ */
 /*
  *	Directory package for older UNIXs
  *	Copyright

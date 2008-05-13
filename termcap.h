@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/termcap.h,v 1.3 2008/05/13 13:08:26 tg Exp $ */
 /*
  * 	TERMCAP/TERMINFO header file
  *	Copyright

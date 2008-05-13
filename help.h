@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/help.h,v 1.2 2008/05/13 13:08:22 tg Exp $ */
 /*
  *	Help system
  *	Copyright

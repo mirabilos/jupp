@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/ufile.h,v 1.2 2008/05/13 13:08:28 tg Exp $ */
 /*
  * 	User file operations
  *	Copyright

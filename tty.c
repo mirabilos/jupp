@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/tty.c,v 1.5 2008/05/13 13:08:26 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright

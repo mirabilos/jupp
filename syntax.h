@@ -1,3 +1,5 @@
+/* $MirOS: contrib/code/jupp/syntax.h,v 1.2 2008/05/13 13:08:26 tg Exp $ */
+
 #ifndef _Isyntax
 #define _Isyntax 1
 

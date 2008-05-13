@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/umath.h,v 1.2 2008/05/13 13:08:28 tg Exp $ */
 /*
  *	Math
  *	Copyright

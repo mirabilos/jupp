@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/tab.c,v 1.2 2008/05/13 13:08:26 tg Exp $ */
 /*
  *	File selection menu
  *	Copyright

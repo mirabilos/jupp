@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/syntax.c,v 1.3 2008/05/13 13:08:26 tg Exp $ */
 /*
  *	Syntax highlighting DFA interpreter
  *	Copyright

@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/utils.h,v 1.3 2008/05/13 13:08:31 tg Exp $ */
 /*
  *	Various utilities
  *	

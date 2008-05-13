@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/main.c,v 1.4 2008/05/13 13:08:23 tg Exp $ */
 /*
  *	Editor startup and main edit loop
  *	Copyright

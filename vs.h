@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/vs.h,v 1.2 2008/05/13 13:08:32 tg Exp $ */
 /*
  *	Dynamic string library
  *	Copyright

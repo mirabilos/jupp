@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/tty.h,v 1.3 2008/05/13 13:08:27 tg Exp $ */
 /*
  *	TTY interface header file
  *	Copyright

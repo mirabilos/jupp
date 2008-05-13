@@ -1,3 +1,5 @@
+/* $MirOS: contrib/code/jupp/i18n.h,v 1.2 2008/05/13 13:08:22 tg Exp $ */
+
 #ifndef _Ii18n
 #define _Ii18n 1
 

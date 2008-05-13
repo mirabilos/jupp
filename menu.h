@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/menu.h,v 1.2 2008/05/13 13:08:23 tg Exp $ */
 /*
  *	Menu selection window
  *	Copyright

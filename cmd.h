@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/cmd.h,v 1.2 2008/05/13 13:08:21 tg Exp $ */
 /*
  *	Command execution
  *	Copyright

@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/uformat.h,v 1.2 2008/05/13 13:08:28 tg Exp $ */
 /*
  * 	User text formatting functions
  * 	Copyright

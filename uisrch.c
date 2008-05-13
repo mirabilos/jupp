@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/uisrch.c,v 1.4 2008/05/13 13:08:28 tg Exp $ */
 /*
  *	Incremental search
  *	Copyright

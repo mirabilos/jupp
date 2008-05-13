@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/scrn.h,v 1.2 2008/05/13 13:08:25 tg Exp $ */
 /*
  *	Device independant tty interface for JOE
  *	Copyright

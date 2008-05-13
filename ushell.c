@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/ushell.c,v 1.3 2008/05/13 13:08:29 tg Exp $ */
 /*
  *	Shell-window functions
  *	Copyright

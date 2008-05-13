@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/macro.h,v 1.2 2008/05/13 13:08:23 tg Exp $ */
 /*
  *	Keyboard macros
  *	Copyright

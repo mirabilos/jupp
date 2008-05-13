@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/selinux.c,v 1.2 2008/05/13 13:08:25 tg Exp $ */
 /*
  * Example code to show how to copy the security context from one file to
  * another.

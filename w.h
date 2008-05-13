@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/w.h,v 1.2 2008/05/13 13:08:33 tg Exp $ */
 /*
  *	Window management
  *	Copyright

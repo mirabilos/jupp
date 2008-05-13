@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/utf8.h,v 1.2 2008/05/13 13:08:30 tg Exp $ */
 /*
  *	UTF-8 Utilities
  *	Copyright

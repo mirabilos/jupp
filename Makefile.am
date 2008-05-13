@@ -1,3 +1,5 @@
+# $MirOS: contrib/code/jupp/Makefile.am,v 1.3 2008/05/13 13:08:20 tg Exp $
+
 AUTOMAKE_OPTIONS = foreign
 
 EXTRA_DIST = COPYING INFO LIST NEWS README README.cvs TODO docs/help-system.html \

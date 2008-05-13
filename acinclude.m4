@@ -1,3 +1,5 @@
+dnl $MirOS: contrib/code/jupp/acinclude.m4,v 1.3 2008/05/13 13:08:20 tg Exp $
+dnl
 dnl ------------------
 dnl Check for properly working isblank()
 dnl ------------------

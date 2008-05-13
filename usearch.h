@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/usearch.h,v 1.2 2008/05/13 13:08:29 tg Exp $ */
 /*
  *	Search & Replace system
  *	Copyright

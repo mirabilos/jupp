@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/poshist.h,v 1.2 2008/05/13 13:08:24 tg Exp $ */
 /*
  *	Position history
  *	Copyright

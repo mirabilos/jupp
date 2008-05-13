@@ -1,10 +1,12 @@
+# $MirOS: contrib/code/jupp/configure.ac,v 1.9 2008/05/13 13:08:21 tg Exp $
+#-
 # Process this file with autoconf to produce a configure script.
 
 # We need AC_PROG_EGREP
 AC_PREREQ(2.54)
 
 #### Here's the only place where to change version number ####
-AC_INIT(joe, 3.1jupp8)
+AC_INIT(joe, 3.1jupp9)
 AC_CONFIG_SRCDIR([b.c])
 
 AC_CANONICAL_BUILD

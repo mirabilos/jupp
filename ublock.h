@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/ublock.h,v 1.2 2008/05/13 13:08:27 tg Exp $ */
 /*
  * 	Highlighted block functions
  *	Copyright

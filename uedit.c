@@ -1,3 +1,4 @@
+/* $MirOS: contrib/code/jupp/uedit.c,v 1.4 2008/05/13 13:08:27 tg Exp $ */
 /*
  *	Basic user edit functions
  *	Copyright
