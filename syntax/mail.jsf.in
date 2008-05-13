@@ -1,3 +1,5 @@
+# $MirOS: contrib/code/jupp/syntax/mail.jsf.in,v 1.2 2008/05/13 16:17:44 tg Exp $
+#-
 # JOE syntax highlight file for typical UNIX mail files
 # 2004-04-25 Tomas Szepe <szepe@pinerecords.com>
 

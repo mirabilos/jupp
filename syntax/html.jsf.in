@@ -1,3 +1,5 @@
+# $MirOS: contrib/code/jupp/syntax/html.jsf.in,v 1.2 2008/05/13 16:17:44 tg Exp $
+#-
 # JOE syntax highlight file for HTML
 # This needs lots of work...
 

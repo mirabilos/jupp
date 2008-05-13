@@ -1,3 +1,5 @@
+# $MirOS: contrib/code/jupp/syntax/c.jsf.in,v 1.2 2008/05/13 16:17:44 tg Exp $
+#-
 # JOE syntax highlight file for C and C++
 
 # A (deterministic) state machine which performs lexical analysis of C.

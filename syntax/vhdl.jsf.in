@@ -1,3 +1,5 @@
+# $MirOS: contrib/code/jupp/syntax/vhdl.jsf.in,v 1.2 2008/05/13 16:17:46 tg Exp $
+#-
 # JOE syntax highlight file for VHDL
 
 # Define colors

@@ -1,3 +1,5 @@
+# $MirOS: contrib/code/jupp/syntax/pascal.jsf.in,v 1.2 2008/05/13 16:17:45 tg Exp $
+#-
 # PASCAL highlighter for JOE
 
 =Idle

@@ -1448,3 +1448,6 @@ Wed Jul 02 2001  Marek 'Marx' Grac <xgrac@fi.muni.cz>
 	applied almost all patches which are mentioned in NEWS file. Problem
 	with ${sysconfdir}/joerc is probably still actual, because I was not
 	able to find patch :(
+
+______________________________________________________________________
+$MirOS: contrib/code/jupp/ChangeLog,v 1.6 2008/05/13 16:17:41 tg Exp $

@@ -1,3 +1,5 @@
+# $MirOS: contrib/code/jupp/syntax/xml.jsf.in,v 1.2 2008/05/13 16:17:46 tg Exp $
+#-
 # Improved XML highlighter by: Brian Candler <B.Candler@pobox.com>
 
 # Define no. sync lines

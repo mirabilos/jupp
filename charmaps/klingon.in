@@ -1,6 +1,8 @@
 <code_set_name> Klingon-ASCII
 <comment_char> %
 <escape_char> /
+% $MirOS: contrib/code/jupp/charmaps/klingon.in,v 1.2 2008/05/13 16:17:43 tg Exp $
+% -
 % version: 1.0
 %   An 8-bit character set with Klingon characters in range 0xD0 - 0xFF and
 %   KOI8-R (ASCII w/ line drawing) for the rest.
