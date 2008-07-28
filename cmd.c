@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/cmd.c,v 1.3 2008/05/13 13:08:21 tg Exp $ */
+/* $MirOS: contrib/code/jupp/cmd.c,v 1.4 2008/07/28 00:12:06 tg Exp $ */
 /*
  *	Command execution
  *	Copyright
@@ -44,7 +44,7 @@
 
 extern int marking;
 extern int smode;
-int beep = 0;
+int dobeep = 0;
 int uexecmd(BW *bw);
 
 /* Command table */
@@ -245,7 +245,7 @@ int execmd(CMD *cmd, int k)
 
 	if ((maint->curwin->watom->what & TYPETW) && bw->b->rdonly && (cmd->flag & EMOD)) {
 		msgnw(bw->parent, US "Read only");
-		if (beep)
+		if (dobeep)
 			ttputc(7);
 		goto skip;
 	}
@@ -294,7 +294,7 @@ int execmd(CMD *cmd, int k)
 		mid = omid;
 	}
 
-	if (beep && ret)
+	if (dobeep && ret)
 		ttputc(7);
 	return ret;
 }

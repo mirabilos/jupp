@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tab.c,v 1.2 2008/05/13 13:08:26 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tab.c,v 1.3 2008/07/28 00:12:07 tg Exp $ */
 /*
  *	File selection menu
  *	Copyright
@@ -28,7 +28,7 @@
 typedef struct tab TAB;
 
 extern int smode;		/* ??? */
-extern int beep;
+extern int dobeep;
 int menu_explorer = 0;		/* Stay in menu system when directory selected */
 
 struct tab {
@@ -357,12 +357,12 @@ int cmplt(BW *bw)
 			tab->orgnam = com;
 			wabort(new->parent);
 			smode = 2;
-			/* if(beep) */
+			/* if(dobeep) */
 				ttputc(7);
 			return 0;
 		}
 	} else {
-		/* if(beep) */
+		/* if(dobeep) */
 			ttputc(7);
 		rmtab(tab);
 		return -1;

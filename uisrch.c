@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/uisrch.c,v 1.4 2008/05/13 13:08:28 tg Exp $ */
+/* $MirOS: contrib/code/jupp/uisrch.c,v 1.5 2008/07/28 00:12:07 tg Exp $ */
 /*
  *	Incremental search
  *	Copyright
@@ -22,7 +22,7 @@
 #include "vs.h"
 
 extern int smode;
-extern int beep;
+extern int dobeep;
 extern int icase;
 struct isrch *lastisrch = NULL;	/* Previous search */
 
@@ -95,7 +95,7 @@ static void iappend(BW *bw, struct isrch *isrch, unsigned char *s, int len)
 	srch->backwards = isrch->dir;
 
 	if (dopfnext(bw, srch, NULL)) {
-		if(beep)
+		if(dobeep)
 			ttputc(7);
 	}
 	enqueb(IREC, link, &isrch->irecs, i);
@@ -123,7 +123,7 @@ static int itype(BW *bw, int c, struct isrch *isrch, int *notify)
 			isrch->pattern = vstrunc(isrch->pattern, sLEN(isrch->pattern) - i->what);
 			frirec(deque_f(IREC, link, i));
 		} else {
-			if(beep)
+			if(dobeep)
 				ttputc(7);
 		}
 	} else if (c == 'Q' - '@' || c == '`') {
@@ -168,7 +168,7 @@ static int itype(BW *bw, int c, struct isrch *isrch, int *notify)
 			srch->backwards = isrch->dir;
 
 			if (dopfnext(bw, srch, NULL)) {
-				if(beep)
+				if(dobeep)
 					ttputc(7);
 				frirec(i);
 			} else {

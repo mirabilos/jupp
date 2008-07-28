@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/cmd.h,v 1.2 2008/05/13 13:08:21 tg Exp $ */
+/* $MirOS: contrib/code/jupp/cmd.h,v 1.3 2008/07/28 00:12:06 tg Exp $ */
 /*
  *	Command execution
  *	Copyright
@@ -13,7 +13,7 @@
 #include "types.h"
 
 extern CMD cmds[];		/* Built-in commands */
-extern int beep;
+extern int dobeep;
 
 /* Command execution flags */
 

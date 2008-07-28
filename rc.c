@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/rc.c,v 1.6 2006/12/11 23:54:50 tg Exp $ */
+/* $MirOS: contrib/code/jupp/rc.c,v 1.7 2008/07/28 00:12:06 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
@@ -74,7 +74,7 @@ OPTIONS *options = NULL;
 
 /* Global variable options */
 extern int mid, dspasis, dspctrl, force, help, pgamnt, square, csmode, nobackups, lightoff, exask, skiptop;
-extern int noxon, lines, staen, columns, Baud, dopadding, orphan, marking, beep, keepup, nonotice;
+extern int noxon, lines, staen, columns, Baud, dopadding, orphan, marking, dobeep, keepup, nonotice;
 extern int notite, usetabs, assume_color, guesscrlf, guessindent, menu_explorer, icase, wrap, autoswap;
 extern unsigned char *backpath;
 
@@ -262,7 +262,7 @@ struct glopts {
 	{US "nobackups",	0, &nobackups, NULL, US "Backup files will not be made", US "Backup files will be made", US "  Disable backups " },
 	{US "lightoff",	0, &lightoff, NULL, US "Highlighting turned off after block operations", US "Highlighting not turned off after block operations", US "Auto unmark " },
 	{US "exask",	0, &exask, NULL, US "Prompt for filename in save & exit command", US "Don't prompt for filename in save & exit command", US "  Exit ask " },
-	{US "beep",	0, &beep, NULL, US "Warning bell enabled", US "Warning bell disabled", US "Beeps " },
+	{US "beep",	0, &dobeep, NULL, US "Warning bell enabled", US "Warning bell disabled", US "Beeps " },
 	{US "nosta",	0, &staen, NULL, US "Top-most status line disabled", US "Top-most status line enabled", US "  Disable status " },
 	{US "pg",		1, &pgamnt, NULL, US "Lines to keep for PgUp/PgDn or -1 for 1/2 window (%d): ", 0, US "  # PgUp/PgDn lines ", 0, -1, 64 },
 	{US "csmode",	0, &csmode, NULL, US "Start search after a search repeats previous search", US "Start search always starts a new search", US "Continued search " },
