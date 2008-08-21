@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/uedit.c,v 1.4 2008/05/13 13:08:27 tg Exp $ */
+/* $MirOS: contrib/code/jupp/uedit.c,v 1.5 2008/08/21 12:45:33 tg Exp $ */
 /*
  *	Basic user edit functions
  *	Copyright
@@ -723,7 +723,7 @@ int ubacks(BW *bw, int k)
 		   indent characters (or purify indents is enabled). */
 		
 		/* Ignore purify for backspace */
-		if (col == indent && (col%indwid)==0 && col!=0 && bw->o.smartbacks && bw->o.autoindent) {
+		if (col == indent && (col%indwid)==0 && col!=0 && bw->o.smartbacks) {
 			P *p;
 
 			/* Delete all indentation */
@@ -734,7 +734,7 @@ int ubacks(BW *bw, int k)
 
 			/* Indent to new position */
 			pfill(bw->cursor,col-indwid,bw->o.indentc);
-		} else if (col<indent && !pisbol(bw->cursor) && bw->o.smartbacks && bw->o.autoindent) {
+		} else if (col<indent && !pisbol(bw->cursor) && bw->o.smartbacks) {
 			/* We're before indent point: delete indwid worth of space but do not
 			   cross line boundary.  We could probably replace the above with this. */
 			int cw=0;
