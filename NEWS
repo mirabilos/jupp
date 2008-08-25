@@ -1,8 +1,9 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.13 2008/08/01 12:30:15 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.14 2008/08/25 13:44:39 tg Exp $
 
-…
+JOE 3.1jupp10
 
 - Build fixes for Darwin
+- Fix: smartbacks could not be used without autoindent
 
 JOE 3.1jupp9
 
