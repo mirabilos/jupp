@@ -46,29 +46,29 @@
  === Python
 *
 +#!\+\[	 ]\+\[a-z/]/python
+-encoding utf8
 -syntax python
 -tab 4
 -indentc 32
 -istep 4
 -spaces
--utf8
 
 *
 +#!\+\[	 ]\+\[a-z/]/env\+\[	 ]python
+-encoding utf8
 -syntax python
 -tab 4
 -indentc 32
 -istep 4
 -spaces
--utf8
 
 *.py
+-encoding utf8
 -syntax python
 -tab 4
 -indentc 32
 -istep 4
 -spaces
--utf8
 
 
 {Basic
