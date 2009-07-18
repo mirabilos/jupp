@@ -63,9 +63,10 @@ joe: $(OBJS)
 	rm -f jmacs jstar rjoe jpico
 	$(CC) $(CFLAGS) -o joe $(OBJS) $(EXTRALIBS)
 	ln joe jmacs
-	ln joe jstar
-	ln joe rjoe
 	ln joe jpico
+	ln joe jstar
+	ln joe jupp
+	ln joe rjoe
 
 # All object files depend on config.h
 
@@ -88,31 +89,38 @@ install: joe termidx
 	strip joe
 	strip termidx
 	if [ ! -d $(WHEREJOE) ]; then mkdir $(WHEREJOE); chmod a+rx $(WHEREJOE); fi
-	rm -f $(WHEREJOE)/joe $(WHEREJOE)/jmacs $(WHEREJOE)/jstar $(WHEREJOE)/jpico $(WHEREJOE)/rjoe $(WHEREJOE)/termidx
+	rm -f $(WHEREJOE)/joe $(WHEREJOE)/jmacs $(WHEREJOE)/jstar $(WHEREJOE)/jpico $(WHEREJOE)/jupp $(WHEREJOE)/rjoe $(WHEREJOE)/termidx
 	mv joe $(WHEREJOE)
 	ln $(WHEREJOE)/joe $(WHEREJOE)/jmacs
-	ln $(WHEREJOE)/joe $(WHEREJOE)/jstar
-	ln $(WHEREJOE)/joe $(WHEREJOE)/rjoe
 	ln $(WHEREJOE)/joe $(WHEREJOE)/jpico
+	ln $(WHEREJOE)/joe $(WHEREJOE)/jstar
+	ln $(WHEREJOE)/joe $(WHEREJOE)/jupp
+	ln $(WHEREJOE)/joe $(WHEREJOE)/rjoe
 	mv termidx $(WHEREJOE)
 	if [ ! -d $(WHERERC) ]; then mkdir $(WHERERC); chmod a+rx $(WHERERC); fi
-	rm -f $(WHERERC)/joerc $(WHERERC)/jmacsrc $(WHERERC)/jstarrc $(WHERERC)/jpicorc $(WHERERC)/rjoerc $(WHEREMAN)/joe.1
-	cp joerc $(WHERERC)
+	rm -f $(WHERERC)/joerc $(WHERERC)/jmacsrc $(WHERERC)/jstarrc $(WHERERC)/jpicorc $(WHERERC)/jupprc $(WHERERC)/rjoerc $(WHEREMAN)/joe.1
 	cp jmacsrc $(WHERERC)
-	cp jstarrc $(WHERERC)
-	cp rjoerc $(WHERERC)
+	cp joerc $(WHERERC)
 	cp jpicorc $(WHERERC)
+	cp jstarrc $(WHERERC)
+	sed -e 's!/DOS!*nix!g' \
+	    -e 's/^-crlf/-&/g' \
+	    -e 's/CR-LF on;  \(.*\)16-bit DOS/CR-LF off; \1antiq Unix/g' \
+	    <jupprc >$(WHERERC)/jupprc
+	cp rjoerc $(WHERERC)
 	cp joe.1 $(WHEREMAN)
 	chmod a+x $(WHEREJOE)/joe
 	chmod a+x $(WHEREJOE)/jmacs
-	chmod a+x $(WHEREJOE)/jstar
-	chmod a+x $(WHEREJOE)/rjoe
 	chmod a+x $(WHEREJOE)/jpico
+	chmod a+x $(WHEREJOE)/jstar
+	chmod a+x $(WHEREJOE)/jupp
+	chmod a+x $(WHEREJOE)/rjoe
 	chmod a+r $(WHERERC)/joerc
 	chmod a+r $(WHERERC)/jmacsrc
-	chmod a+r $(WHERERC)/jstarrc
-	chmod a+r $(WHERERC)/rjoerc
 	chmod a+r $(WHERERC)/jpicorc
+	chmod a+r $(WHERERC)/jstarrc
+	chmod a+r $(WHERERC)/jupprc
+	chmod a+r $(WHERERC)/rjoerc
 	chmod a+r $(WHEREMAN)/joe.1
 	chmod a+x $(WHEREJOE)/termidx
 	rm -f $(WHERERC)/termcap

@@ -55,6 +55,7 @@ joe: $(OBJS)
 	copy joe.exe jmacs.exe
 	copy joe.exe jstar.exe
 	copy joe.exe jpico.exe
+	copy joe.exe jupp.exe
 	copy joe.exe rjoe.exe
 
 # $(OBJS): config.h
