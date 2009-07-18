@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.7 2008/05/13 13:08:22 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.8 2009/07/18 18:54:19 tg Exp $
 .\"-
 .TH JOE 1
 .SH Name
@@ -39,8 +39,7 @@ terms of the GNU General Public License, Version 1, as published by the
 Free Software Foundation.
 I have no plans for turning JOE into a commercial or share-ware product.
 See the source code for exact authorship and licencing information.
-JOE is available over the Internet from
-\fBwww.sourceforge.net/projects/joe-editor\fR.
+JOE is available over the Internet from \fBhttp://joe-editor.sf.net/\fR.
 JUPP is available at \fBhttp://mirbsd.de/jupp\fR.
 
 .SH Usage
