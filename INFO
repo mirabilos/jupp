@@ -1,11 +1,15 @@
+$MirOS: contrib/code/jupp/INFO,v 1.1.21.1.2.1 2009/07/18 14:51:03 tg Exp $
+--------------------------------------------------------------------------
 
-
+                                    Jupp
                             Joe's Own Editor 2.8
 
                   A Free ASCII-Text Screen Editor for UNIX
                                by Joseph Allen
+                 by Thorsten "mirabilos" Glaser (jupp mods)
 
-
+Get it from:
+	http://mirbsd.de/jupp
 Get it by anonymous ftp
 from: 'ftp.std.com', file '/src/editors/joe2.8.tar.Z'
 
@@ -39,6 +43,8 @@ the basic "joerc", which allow it to emulate these editors:
 
 	JMACS	- A GNU-EMACS immitation which is about one order of
 		  magnitude smaller than real GNU-EMACS.
+
+	JUPP	- A modern editor for programmers with WordStar-like bindings
 
 Features:
 

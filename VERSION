@@ -1,3 +1,8 @@
+** JOE 2.8jupp1
+
+- integration of jupp modifications from JOE 3.1jupp10
+- switch focus to MS-DOS(R) because Unix can use jupp 3.x
+
 ** JOE 2.8
 
 - Fixed problem with TERMPATH string
