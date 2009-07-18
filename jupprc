@@ -1,4 +1,4 @@
- "jupp" resource file for JOE 2.8/3.1 (c) 1997-2008 Thorsten Glaser
+ "jupp" resource file for JOE 3.1*nix (c) 1997-2009 Thorsten Glaser
  Provided that these terms and disclaimer and all copyright notices
  are retained or reproduced in an accompanying document, permission
  is granted to deal in this work without restriction, including un-
@@ -14,6 +14,7 @@
  of said person's immediate fault when using the work as intended.
 
 -asis
+-assume_color
  -baud 9600
 -dopadding
 --force
@@ -24,13 +25,21 @@
 -pg 2
 -lmsg \i%k%T%*\b%n\b%R
 -rmsg  R%r<%l C%c\u%o|%O\i\b%a|%A\b\i\u %u
---crlf
+ --crlf
+-guess_crlf
 -french
 -indentc 9
 -istep 1
+-guess_indent
+--autoindent
+-purify
+-highlight
 --linums
 -lmargin 1
 -rmargin 73
+--smarthome
+--indentfirst
+-smartbacks
 -tab 8
 --wordwrap
 
