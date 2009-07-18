@@ -423,7 +423,7 @@
 \i \i go to \uhttp://sf.net/projects/joe-editor/\u for upstream bug reports. JUPP 2.8 \i \i
 \i \i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\d(R)\d \i \i
 \i \i at \uhttp://mirbsd.de/jupp\u and by \bThorsten "\dmirabilos\d" Glaser <\utg@mirbsd.org\u>\b \i \i
-\i \i @(#) jupprc 2009-07-18; CR-LF off; UTF-8 tty by LC_CTYPE; per-file encoding \i \i
+\i \i @(#) jupprc 2009-07-18; autoCR-LF; UTF-8 tty by LC_CTYPE; per-file encoding \i \i
 }
 
 :windows
