@@ -48,7 +48,6 @@ Description
      src/editors/joe*.tar.Z. JUPP is available at
      http://mirbsd.de/jupp.
 
-
 Usage
      To start the editor, type joe followed by zero or more names
      of files you want to edit.  Each file name may be preceded
@@ -109,11 +108,9 @@ Usage
      screen is not updating as you think it should.  See the sec-
      tion Environment variables below.
 
-
 Command Line Options
      The following global options may be specified on the command
      line:
-
 
      -asis
           Characters with codes above 127 will be sent to the
@@ -121,12 +118,10 @@ Command Line Options
           corresponding character below 128.  If this does not
           work, check your terminal server.
 
-
      -backpath path
           If this option is given, backup files will be stored in
           the specified directory instead of in each file's ori-
           ginal directory.
-
 
      -baud nnn
           Set the baud rate for the purposes of terminal screen
@@ -137,15 +132,12 @@ Command Line Options
           X-terms and other console ttys which really aren't
           going over a serial line.
 
-
      -beep
           Joe will beep on command errors and when the cursor
           goes past extremes.
 
-
      -columns nnn
           Sets the number of screen columns.
-
 
      -csmode
           Continued search mode: a search immediately following a
@@ -154,7 +146,6 @@ Command Line Options
           ^[S and ^[R commands and for when joe is trying to be
           emacs.
 
-
      -dopadding
           Joe usually assumes that there is some kind of flow
           control between it and the tty.  If there isn't, this
@@ -162,21 +153,17 @@ Command Line Options
           specified by the termcap entry.  The extra ^@s allow
           the terminal to catch up after long terminal commands.
 
-
      -exask
           This option makes ^KX verify the file name that it's
           about to write.
-
 
      -force
           This option makes sure that the last line of the file
           has a line-feed which it's saved.
 
-
      -help
           The editor will start with the help screen on if this
           option is given.
-
 
      -keepup
           Normally the column number and control-key prefix
@@ -184,47 +171,38 @@ Command Line Options
           reduce CPU consumption, but with this option they are
           updated after each key-stroke.
 
-
      -lightoff
           The block highlighting will go away after any block
           command if this option is given.
 
-
      -lines nnn
           Sets the number of screen lines.
-
 
      -marking
           Text between ^KB and the cursor is highlighted (use
           with -lightoff and a modified joerc file to have drop-
           anchor style block selection).
 
-
      -mid If this option is set and the cursor moves off the win-
           dow, the window will be scrolled so that the cursor is
           in the center.  This option is forced on slow terminals
           which don't have scrolling commands.
 
-
      -nobackups
           This option prevents backup files.
-
 
      -nonotice
           This option prevent the copyright notice from being
           displayed when the editor starts.
-
 
      -nosta
           This option eliminates the top-most status line.  It's
           nice for when you only want to see your text on the
           screen or if you're using a vt52.
 
-
      -noxon
           Attempt to turn off ^S/^Q processing.  This is useful
           for when joe is trying to be WordStar or EMACS.
-
 
      -orphan
           When this option is active, extra files on the command
@@ -232,17 +210,14 @@ Command Line Options
           extra windows.  This is useful for when joe is trying
           to be emacs.
 
-
      -pg nnn
           This specifies the number of lines to keep after
           PgUp/PgDn (^U/^V).  If -1 is given, half the window is
           kept.
 
-
      -skiptop nnn
           Don't use the top nnn lines of the screen.  Useful for
           when joe is used as a BBS editor.
-
 
      Each of these options may be specified in the joerc file as
      well.  In addition, the NOXON, BAUD, LINES, COLUMNS and
@@ -256,70 +231,55 @@ Command Line Options
      The following options may be specified before each filename
      on the command line:
 
-
      +nnn The cursor starts on the specified line.
-
 
      -crlf
           Joe uses CR-LF as the end of line sequence instead of
           just LF.  This is for editing MS-DOS or VMS files.
 
-
      -wordwrap
           Joe wraps the previous word when you type past the
           right margin.
-
 
      -autoindent
           When you hit Return on an indented line, the indenta-
           tion is duplicated onto the new line.
 
-
      -overwrite
           Typing overwrites existing characters instead of
           inserting before them.
 
-
      -lmargin nnn
           Sets the left margin.
-
 
      -rmargin nnn
           Sets the right margin.
 
-
      -tab nnn
           Sets the tab width.
-
 
      -indentc nnn
           Sets the indentation character for ^K, and ^K. (32 for
           SPACE, 9 for TAB).
 
-
      -istep nnn
           Sets the indentation step for ^K, and ^K..
-
 
      -linums
           Line numbers are displayed before each line.
 
-
      -rdonly
           The file is read only.
-
 
      -keymap name
           Use an alternate section of the joerc file for the key
           sequence bindings.
-
 
      These options can also be specified in the joerc file.  They
      can be set depending on the file-name extension.  Programs
      (.c, .h or .p extension) usually have autoindent enabled.
      Wordwrap is enabled on other files, but rc files have it
      disabled.
-
 
 Editing Tasks
      Basic Editing
@@ -494,6 +454,7 @@ Editing Tasks
 
 
      Prompts
+
      If you hit TAB at any file name prompt, joe will attempt to
      complete the name you entered as much as possible.  If it
      couldn't complete the entire name, because there are more
@@ -548,16 +509,6 @@ Editing Tasks
      ing, use ^K R to insert it.
 
 
-     Temporarily suspending the editor
-
-     If you need to temporarily stop the editor and go back to
-     the shell, hit ^K Z.  You might want to do this to stop
-     whatever you're editing and answer an e-mail message or read
-     this man page, for example.  You have to type fg or exit
-     (you'll be told which when you hit ^K Z) to return to the
-     editor.
-
-
      Searching for text
 
      Hit ^K F to have the editor search forwards or backwards for
@@ -567,20 +518,16 @@ Editing Tasks
      have the editor immediately search forwards for the text, or
      you can enter one or more of these options:
 
-
      b    Search backwards instead of forwards.
-
 
      i    Treat uppercase and lower case letters as the same when
           searching.  Normally uppercase and lowercase letters
           are considered to be different.
 
-
      nnn  (where nnn is a number) If you enter a number, JOE
           searches for the Nth occurrence of the text.  This is
           useful for going to specific places in files structured
           in some regular manner.
-
 
      r    Replace text.  If you enter the r option, then you will
           be further prompted for replacement text.  Each time
@@ -595,7 +542,6 @@ Editing Tasks
           nnn option above), or ^C to stop searching and replac-
           ing.
 
-
      You can hit ^L to repeat the previous search.
 
 
@@ -604,28 +550,23 @@ Editing Tasks
      A number of special character sequences may be entered as
      search text:
 
-
      \*   This finds zero or more characters.  For example, if
           you give A\*B as the search text, JOE will try to find
           an A followed by any number of characters and then a B.
 
-
      \?   This finds exactly one character.  For example, if you
           give A\?B as the search text, JOE will find AXB, but
           not AB or AXXB.
-
 
      \^ \$
           These match the beginning and end of a line.  For exam-
           ple, if you give \^test\$, then JOE with find test on a
           line by itself.
 
-
      \< \>
           These match the beginning and end of a word.  For exam-
           ple, if you give \<\*is\*\>, then joe will find whole
           words which have the sub-string is within them.
-
 
      \[...]
           This matches any single character which appears within
@@ -637,48 +578,38 @@ Editing Tasks
           JOE tries to find any character not given in the the
           brackets.
 
-
      \c   This works like \*, but matches a balanced C-language
           expression. For example, if you search for malloc(\c),
           then JOE will find all function calls to malloc, even
           if there was a ) within the parenthesis.
-
 
      \+   This finds zero or more of the character which immedi-
           ately follows the \+.  For example, if you give \[
           ]\+\[ ], where the characters within the brackets are
           both SPACE and TAB, then JOE will find whitespace.
 
-
      \\   Matches a single \.
-
 
      \n   This finds the special end-of-line or line-break char-
           acter.
 
-
      A number of special character sequences may also be given in
      the replacement string:
-
 
      \&   This gets replaced by the text which matched the search
           string.  For example, if the search string was \<\*\>,
           which matches words, and you give "\&", then joe will
           put quote marks around words.
 
-
      \0 - \9
           These get replaced with the text which matched the Nth
           \*, \?, \+, \c, \+, or \[...] in the search string.
 
-
      \\   Use this if you need to put a \ in the replacement
           string.
 
-
      \n   Use this if you need to put a line-break in the
           replacement string.
-
 
      Some examples:
 
@@ -707,7 +638,6 @@ Editing Tasks
      would be changed to:
 
      Address: England, London, S. Holmes, 221b Baker St.
-
 
 
      Blocks
@@ -741,6 +671,7 @@ Editing Tasks
 
 
      Indenting program blocks
+
      Auto-indent mode toggled with the ^T I command.  The joerc
      is normally set up so that files with names ending with .p,
      .c or .h have auto-indent mode enabled.  When auto-indent
@@ -757,6 +688,7 @@ Editing Tasks
 
 
      Windows
+
      You can edit more than one file at the same time or edit two
      or more different places of the same file.  To do this, hit
      ^K O, to split the screen into two windows.  Use ^K P or ^K
@@ -814,8 +746,8 @@ Editing Tasks
      from within new macros.
 
 
-
      Repeat
+
      You can use the repeat command, ^K \, to repeat a macro, or
      any other edit command or even a normal character, a speci-
      fied number of times.  Hit ^K \, type in the number of times
@@ -828,6 +760,7 @@ Editing Tasks
 
 
      Rectangle mode
+
      Type ^T X to have ^K B and ^K K select rectangular blocks
      instead of stream-of-text blocks.  This mode is useful for
      moving, copying, deleting or saving columns of text.  You
@@ -846,6 +779,7 @@ Editing Tasks
 
 
      Tag search
+
      If you are editing a large C program with many source files,
      you can use the ctags program to generate a tags file.  This
      file contains a list of program symbols and the files and
@@ -861,6 +795,7 @@ Editing Tasks
 
 
      Shell windows
+
      Hit ^K ' to run a command shell in one of JOE's windows.
      When the cursor is at the end of a shell window (use ^K V if
      it's not), whatever you type is passed to the shell instead
@@ -876,7 +811,6 @@ Editing Tasks
      recording shell output.  If you press ^C in a shell window,
      when the cursor is not at the end of the window, the shell
      is killed.
-
 
 Environment variables
      For JOE to operate correctly, a number of other environment
@@ -923,12 +857,10 @@ Environment variables
      interspersing PAD characters between the terminal screen
      update sequences.
 
-
 Filenames
      Wherever JOE expects you to enter a file name, whether on
      the command line or in prompts within the editor, you may
      also type:
-
 
      !command
           Read or write data to or from a shell command.  For
@@ -937,11 +869,9 @@ Filenames
           !mail jhallen@world.std.com to send the file being
           edited to me.
 
-
      >>filename
           Use this to have JOE append the edited text to the end
           of the file "filename."
-
 
      filename,START,SIZE
           Use this to access a fixed section of a file or device.
@@ -950,14 +880,11 @@ Filenames
           example, use joe /dev/fd0,508,2 to edit bytes 508 and
           509 of the first floppy drive in Linux.
 
-
      -    Use this to get input from the standard input or to
           write output to the standard output.  For example, you
           can put joe in a pipe of commands: quota -v | joe - |
           mail root, if you want to complain about your low
           quota.
-
-
 
 The joerc file
      ^T options, the help screens and the key-sequence to editor
@@ -967,7 +894,6 @@ The joerc file
      ize these setting to your liking.  The syntax of the ini-
      tialization file should be fairly obvious and there are
      further instruction in it.
-
 
 Acknowledgments
      JOE was written by Joseph H. Allen.  If you have bug reports
