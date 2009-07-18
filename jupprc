@@ -43,7 +43,222 @@
 -tab 8
 --wordwrap
 
+ === Assembly
+*.asm
+-syntax asm
+
+*.S
+-syntax asm
+
+*.s
+-syntax asm
+
+ === C, C++, Objective-C
+*.C
+-syntax c
+
+*.c
+-syntax c
+
+*.cc
+-syntax c
+
+*.cpp
+-syntax c
+
+*.cxx
+-syntax c
+
+*.c++
+-syntax c
+
+*.h
+-syntax c
+
+*.hh
+-syntax c
+
+*.hpp
+-syntax c
+
+*.h++
+-syntax c
+
+*.m
+-syntax c
+
+ === C Shell
+*.csh
+-syntax csh
+
+*.login
+-syntax csh
+
+*.logout
+-syntax csh
+
+*.tcsh
+-syntax csh
+
+*.tcshrc
+-syntax csh
+
+*
++#!\+\[	 ]\+\[a-z/]/csh\>
+-syntax csh
+
+*
++#!\+\[	 ]\+\[a-z/]/env\+\[	 ]csh\>
+-syntax csh
+
+*
++#!\+\[	 ]\+\[a-z/]/tcsh\>
+-syntax csh
+
+*
++#!\+\[	 ]\+\[a-z/]/env\+\[	 ]tcsh\>
+-syntax csh
+
+ === Diff
+*.diff
+-syntax diff
+
+*.patch
+-syntax diff
+
+*
++--- 
+-syntax diff
+
+*
++*** 
+-syntax diff
+
+*
++\[1-9]\+\[0-9]\[cda]
+-syntax diff
+
+ === eMail
+*tmp/mutt-*
+-syntax mail
+
+*/mail/*
+-syntax mail
+
+*.eml
+-syntax mail
+
+ === FORTRAN
+*.f
+-syntax fortran
+
+*.for
+-syntax fortran
+
+*.FOR
+-syntax fortran
+
+*.f77
+-syntax fortran
+
+*.F77
+-syntax fortran
+
+*.f90
+-syntax fortran
+
+*.F90
+-syntax fortran
+
+ === GNU autoconf
+*.ac
+-syntax conf
+
+*.am
+-syntax conf
+
+ === HTML
+*.htm
+-encoding utf8
+-syntax html
+
+*.html
+-encoding utf8
+-syntax html
+
+ === Java
+*.java
+-encoding utf8
+-syntax java
+
+ === Joe Syntax File
+*.jsf
+-syntax conf
+
+ === flex
+*.l
+-syntax lex
+
+ === LISP
+*.lisp
+-syntax lisp
+
+*.lsp
+-syntax lisp
+
+*.el
+-syntax lisp
+
+ === M4
+*.m4
+-syntax m4
+
+ === Make
+*akefile
+-syntax conf
+
+*AKEFILE
+-syntax conf
+
+ === Mason
+*.mas
+-syntax mason
+
+ === Pascal
+*.p
+-syntax pascal
+
+*.pas
+-syntax pascal
+
+ === Perl
+*.pl
+-syntax perl
+
+*.pm
+-syntax perl
+
+*
++#!\+\[	 ]\+\[a-z/]/perl
+-syntax perl
+
+*
++#!\+\[	 ]\+\[a-z/]/env\+\[	 ]perl
+-syntax perl
+
+ === PHP
+*.php
+-syntax php
+
  === Python
+*.py
+-encoding utf8
+-syntax python
+-tab 4
+-indentc 32
+-istep 4
+-spaces
+
 *
 +#!\+\[	 ]\+\[a-z/]/python
 -encoding utf8
@@ -62,13 +277,78 @@
 -istep 4
 -spaces
 
-*.py
+ === Bourne, Korn, POSIX Shell
+*.sh
+-syntax sh
+
+*.ksh
+-syntax sh
+
+*.mksh
+-syntax sh
+
+*.bash
+-syntax sh
+
+*.bash_login
+-syntax sh
+
+*.bash_logout
+-syntax sh
+
+*profile
+-syntax sh
+
+*
++#!\+\[	 ]\+\[a-z/]/sh\>
+-syntax sh
+
+*
++#!\+\[	 ]\+\[a-z/]/env\+\[	 ]sh\>
+-syntax sh
+
+*
++#!\+\[	 ]\+\[a-z/]/ksh\>
+-syntax sh
+
+*
++#!\+\[	 ]\+\[a-z/]/env\+\[	 ]ksh\>
+-syntax sh
+
+*
++#!\+\[	 ]\+\[a-z/]/\[bm]\[ak]sh\+\[0-9.]\>
+-syntax sh
+
+*
++#!\+\[	 ]\+\[a-z/]/env\+\[	 ]\[bm]\[ak]sh\+\[0-9.]\>
+-syntax sh
+
+ === TCL
+*.tcl
+-syntax tcl
+
+ === Verilog
+*.v
+-syntax verilog
+-istep 2
+
+*.vh
+-syntax verilog
+-istep 2
+
+ === VHDL
+*.vhd
+-syntax vhdl
+-istep 2
+
+ === XML
+*.xml
 -encoding utf8
--syntax python
--tab 4
--indentc 32
--istep 4
--spaces
+-syntax xml
+
+ === yacc
+*.y
+-syntax yacc
 
 
 {Basic
@@ -143,7 +423,7 @@
 \i \i go to \uhttp://sf.net/projects/joe-editor/\u for upstream bug reports. JUPP 2.8 \i \i
 \i \i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\d(R)\d \i \i
 \i \i at \uhttp://mirbsd.de/jupp\u and by \bThorsten "\dmirabilos\d" Glaser <\utg@mirbsd.org\u>\b \i \i
-\i \i @(#) jupprc 2008-05-11; CR-LF off; UTF-8 off (2.8) / set via LC_CTYPE (3.x) \i \i
+\i \i @(#) jupprc 2009-07-18; CR-LF off; UTF-8 tty by LC_CTYPE; per-file encoding \i \i
 }
 
 :windows
