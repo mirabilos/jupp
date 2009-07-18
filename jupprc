@@ -43,6 +43,34 @@
 -tab 8
 --wordwrap
 
+ === Python
+*
++#!\+\[	 ]\+\[a-z/]/python
+-syntax python
+-tab 4
+-indentc 32
+-istep 4
+-spaces
+-utf8
+
+*
++#!\+\[	 ]\+\[a-z/]/env\+\[	 ]python
+-syntax python
+-tab 4
+-indentc 32
+-istep 4
+-spaces
+-utf8
+
+*.py
+-syntax python
+-tab 4
+-indentc 32
+-istep 4
+-spaces
+-utf8
+
+
 {Basic
 \i   Help Screen    turn off with ^J     more help with ESC . (^[.)              \i
 \i \i\u\bCURSOR\b\u           \u\bGOTO\b\u             \u\bBLOCK\b\u    \u\bDELETE\b\u    \u\bMISC\b\u         \u\bEXIT\b\u       \i \i
