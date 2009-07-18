@@ -508,6 +508,16 @@ Editing Tasks
      ing, use ^K R to insert it.
 
 
+     Temporarily suspending the editor
+
+     If you need to temporarily stop the editor and go back to
+     the shell, hit ^K Z.  You might want to do this to stop
+     whatever you're editing and answer an e-mail message or read
+     this man page, for example.  You have to type fg or exit
+     (you'll be told which when you hit ^K Z) to return to the
+     editor.
+
+
      Searching for text
 
      Hit ^K F to have the editor search forwards or backwards for
