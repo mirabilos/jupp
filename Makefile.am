@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/Makefile.am,v 1.3 2008/05/13 13:08:20 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.am,v 1.4 2009/07/30 20:15:58 tg Exp $
 
 AUTOMAKE_OPTIONS = foreign
 
@@ -33,7 +33,11 @@ noinst_HEADERS = b.h blocks.h bw.h cmd.h config.h hash.h help.h kbd.h \
 	utils.h va.h vfile.h vs.h w.h utf8.h syntax.h i18n.h charmap.h
 
 
-bin_PROGRAMS = joe termidx
+bin_PROGRAMS = joe
+if WANT_TERMIDX
+bin_PROGRAMS += termidx
+endif
+
 INCLUDES = -DJOERC="\"$(sysconf_joedir)/\""
 
 # joe_LDADD = @REQRD_LIBS@

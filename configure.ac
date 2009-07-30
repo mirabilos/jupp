@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.10 2008/08/25 13:44:40 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.11 2009/07/30 20:15:58 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -49,6 +49,11 @@ AC_ARG_ENABLE(termcap,
 if test "$termcap" = "yes"; then
 	search_libs="$search_libs termcap"
 fi
+
+AC_ARG_ENABLE([termidx],
+[  --disable-termidx       do not build the termidx binary],
+	termidx=$enableval, termidx=yes)
+AM_CONDITIONAL([WANT_TERMIDX], [test x"$termidx" != x"no"])
 
 AC_SEARCH_LIBS(openpty, util, AC_DEFINE_UNQUOTED(HAVE_OPENPTY, 1, [If we have BSD function openpty()]))
 AC_SEARCH_LIBS(login_tty, util, AC_DEFINE_UNQUOTED(HAVE_LOGIN_TTY, 1, [If we have BSD function login_tty()]))
