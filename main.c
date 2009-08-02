@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/main.c,v 1.5 2008/07/28 00:12:06 tg Exp $ */
+/* $MirOS: contrib/code/jupp/main.c,v 1.6 2009/08/02 15:47:31 tg Exp $ */
 /*
  *	Editor startup and main edit loop
  *	Copyright
@@ -384,11 +384,10 @@ int main(int argc, char **argv, char **envp)
 		help_on(maint);
 	}
 	if (!nonotice) {
-		if (locale_map->type)
-			joe_snprintf_1((char *)msgbuf,JOE_MSGBUFSIZE,"\\i** Joe's Own Editor v" VERSION " ** (%s) ** Copyright © 2005 **\\i",locale_map->name);
-		else
-			joe_snprintf_1((char *)msgbuf,JOE_MSGBUFSIZE,"\\i** Joe's Own Editor v" VERSION " ** (%s) ** Copyright (C) 2005 **\\i",locale_map->name);
-
+		joe_snprintf_2((char *)msgbuf,JOE_MSGBUFSIZE,
+		    "\\i** Joe's Own Editor v" VERSION
+		    " ** (%s) ** Copyright %s 2009 **\\i",
+		    locale_map->type ? "©" ? "(c)", locale_map->name);
 		msgnw(((BASE *)lastw(maint)->object)->parent, msgbuf);
 	}
 

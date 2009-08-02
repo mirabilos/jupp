@@ -1,7 +1,7 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.18 2009/08/02 15:42:43 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.19 2009/08/02 15:47:31 tg Exp $
 ------------------------------------------------------------------
 
-JOE 3.1jupp11 (unreleased)
+JOE 3.1jupp11
 
 - Split into two separate lines of *active* development:
   * JUPP for DOS (joe 2.8 plus some jupp patches and jupprc)
