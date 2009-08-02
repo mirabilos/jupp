@@ -14,8 +14,8 @@
 
 @SET_MAKE@
 
-# $MirOS: contrib/code/jupp/Makefile.in,v 1.7 2008/05/13 16:13:36 tg Exp $
-# $miros: contrib/code/jupp/Makefile.am,v 1.3 2008/05/13 13:08:20 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.in,v 1.8 2009/08/02 15:49:44 tg Exp $
+# $miros: contrib/code/jupp/Makefile.am,v 1.5 2009/08/02 15:42:43 tg Exp $
 
 
 
@@ -42,7 +42,8 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
-bin_PROGRAMS = joe$(EXEEXT) termidx$(EXEEXT)
+bin_PROGRAMS = joe$(EXEEXT) $(am__EXEEXT_1)
+@WANT_TERMIDX_TRUE@am__append_1 = termidx
 DIST_COMMON = README $(am__configure_deps) $(noinst_HEADERS) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/autoconf.h.in $(srcdir)/jmacsrc.in \
@@ -86,6 +87,7 @@ CONFIG_CLEAN_FILES = joe.1 joerc jmacsrc jstarrc rjoerc jpicorc \
 	syntax/vhdl.jsf syntax/fortran.jsf syntax/java.jsf \
 	syntax/xml.jsf syntax/tcl.jsf charmaps/klingon syntax/lisp.jsf \
 	syntax/csh.jsf syntax/mason.jsf syntax/diff.jsf syntax/asm.jsf
+@WANT_TERMIDX_TRUE@am__EXEEXT_1 = termidx$(EXEEXT)
 am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(man1dir)" \
 	"$(DESTDIR)$(sysconf_charmapsdir)" \
 	"$(DESTDIR)$(sysconf_joedir)" "$(DESTDIR)$(sysconf_syntaxdir)"
@@ -195,6 +197,8 @@ SHELL = @SHELL@
 SPELL = @SPELL@
 STRIP = @STRIP@
 VERSION = @VERSION@
+WANT_TERMIDX_FALSE = @WANT_TERMIDX_FALSE@
+WANT_TERMIDX_TRUE = @WANT_TERMIDX_TRUE@
 ac_ct_CC = @ac_ct_CC@
 am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
 am__fastdepCC_TRUE = @am__fastdepCC_TRUE@
@@ -252,6 +256,7 @@ EXTRA_DIST = COPYING INFO LIST NEWS README README.cvs TODO docs/help-system.html
 	syntax/lisp.jsf.in syntax/csh.jsf.in syntax/mail.jsf.in syntax/mason.jsf.in \
 	syntax/diff.jsf.in syntax/asm.jsf.in
 
+JOE_ALIASES = jmacs jpico jstar jupp rjoe
 sysconf_joedir = $(sysconfdir)/joe
 sysconf_joe_DATA = joerc jmacsrc jstarrc rjoerc jpicorc jupprc
 sysconf_syntaxdir = $(sysconf_joedir)/syntax
@@ -819,8 +824,6 @@ install-exec-am: install-binPROGRAMS
 
 install-info: install-info-am
 
-install-man: install-man1
-
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
@@ -869,11 +872,22 @@ uninstall-man: uninstall-man1
 
 
 install-exec-hook:
-	rm -f $(DESTDIR)$(bindir)/jmacs $(DESTDIR)$(bindir)/jstar $(DESTDIR)$(bindir)/rjoe $(DESTDIR)$(bindir)/jpico $(DESTDIR)$(bindir)/jupp
-	for i in jmacs jstar rjoe jpico jupp ; do $(LN_S) joe $(DESTDIR)$(bindir)/$$i ; done
+	cd $(DESTDIR)$(bindir) && for i in $(JOE_ALIASES); do \
+		rm -f $$i; \
+		$(LN_S) joe $$i; \
+	done
+
+install-man: install-man1-symlinks
+install-man1-symlinks: install-man1
+	cd $(DESTDIR)$(man1dir) && for i in $(JOE_ALIASES); do \
+		rm -f $$i.1; \
+		$(LN_S) joe.1 $$i.1; \
+	done
 
 uninstall-local:
-	rm -f $(DESTDIR)$(bindir)/jmacs $(DESTDIR)$(bindir)/jstar $(DESTDIR)$(bindir)/rjoe $(DESTDIR)$(bindir)/jpico $(DESTDIR)$(bindir)/jupp
+	for i in $(JOE_ALIASES); do \
+		rm -f $(DESTDIR)$(bindir)/$$i $(DESTDIR)$(man1dir)/$$i.1; \
+	done
 
 distclean-local:
 	rm -f *~
