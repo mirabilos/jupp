@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/main.c,v 1.7 2009/08/02 16:06:29 tg Exp $ */
+/* $MirOS: contrib/code/jupp/main.c,v 1.8 2009/08/02 16:13:25 tg Exp $ */
 /*
  *	Editor startup and main edit loop
  *	Copyright
@@ -387,7 +387,7 @@ int main(int argc, char **argv, char **envp)
 		joe_snprintf_2((char *)msgbuf,JOE_MSGBUFSIZE,
 		    "\\i** Joe's Own Editor v" VERSION
 		    " ** (%s) ** Copyright %s 2009 **\\i",
-		    locale_map->type ? "©" : "(c)", locale_map->name);
+		    locale_map->name, locale_map->type ? "©" : "(c)");
 		msgnw(((BASE *)lastw(maint)->object)->parent, msgbuf);
 	}
 
