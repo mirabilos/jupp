@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.17 2009/08/02 15:24:58 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.18 2009/08/02 15:42:43 tg Exp $
 ------------------------------------------------------------------
 
 JOE 3.1jupp11 (unreleased)
@@ -15,6 +15,7 @@ JOE 3.1jupp11 (unreleased)
 - Add language/syntax selection into jupprc, with Python settings
   adhering to the most common coding standards
 - The termidx binary can now be disabled by a configure option
+- Manual page symbolic links are installed alongside the manpages
 
 JOE 3.1jupp10
 

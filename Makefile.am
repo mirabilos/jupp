@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/Makefile.am,v 1.4 2009/07/30 20:15:58 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.am,v 1.5 2009/08/02 15:42:43 tg Exp $
 
 AUTOMAKE_OPTIONS = foreign
 
@@ -10,6 +10,8 @@ EXTRA_DIST = COPYING INFO LIST NEWS README README.cvs TODO docs/help-system.html
 	syntax/java.jsf.in syntax/xml.jsf.in syntax/tcl.jsf.in charmaps/klingon.in docs HINTS \
 	syntax/lisp.jsf.in syntax/csh.jsf.in syntax/mail.jsf.in syntax/mason.jsf.in \
 	syntax/diff.jsf.in syntax/asm.jsf.in
+
+JOE_ALIASES = jmacs jpico jstar jupp rjoe
 
 sysconf_joedir = $(sysconfdir)/joe
 sysconf_joe_DATA = joerc jmacsrc jstarrc rjoerc jpicorc jupprc
@@ -51,11 +53,22 @@ joe_SOURCES = b.c blocks.c bw.c cmd.c hash.c help.c kbd.c macro.c main.c menu.c 
 termidx_SOURCES = termidx.c
 
 install-exec-hook:
-	rm -f $(DESTDIR)$(bindir)/jmacs $(DESTDIR)$(bindir)/jstar $(DESTDIR)$(bindir)/rjoe $(DESTDIR)$(bindir)/jpico $(DESTDIR)$(bindir)/jupp
-	for i in jmacs jstar rjoe jpico jupp ; do $(LN_S) joe $(DESTDIR)$(bindir)/$$i ; done
+	cd $(DESTDIR)$(bindir) && for i in $(JOE_ALIASES); do \
+		rm -f $$i; \
+		$(LN_S) joe $$i; \
+	done
+
+install-man: install-man1-symlinks
+install-man1-symlinks: install-man1
+	cd $(DESTDIR)$(man1dir) && for i in $(JOE_ALIASES); do \
+		rm -f $$i.1; \
+		$(LN_S) joe.1 $$i.1; \
+	done
 
 uninstall-local:
-	rm -f $(DESTDIR)$(bindir)/jmacs $(DESTDIR)$(bindir)/jstar $(DESTDIR)$(bindir)/rjoe $(DESTDIR)$(bindir)/jpico $(DESTDIR)$(bindir)/jupp
+	for i in $(JOE_ALIASES); do \
+		rm -f $(DESTDIR)$(bindir)/$$i $(DESTDIR)$(man1dir)/$$i.1; \
+	done
 
 distclean-local:
 	rm -f *~
