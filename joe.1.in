@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.8 2009/07/18 18:54:19 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.9 2009/09/16 13:36:40 tg Exp $
 .\"-
 .TH JOE 1
 .SH Name
@@ -157,7 +157,7 @@ is given.
 Sets the number of screen lines.
 
 .IP -marking
-Text between ^KB and the cursor is highlighted (use with -lightoff and a
+Text between ^KB and the cursor is highlighted (use with \-lightoff and a
 modified joerc file to have drop-anchor style block selection).
 
 .IP -mid
@@ -186,7 +186,7 @@ in orphaned buffers instead of in extra windows.  This is useful for when
 joe is trying to be emacs.
 
 .IP -pg\ nnn
-This specifies the number of lines to keep after PgUp/PgDn (^U/^V).  If -1
+This specifies the number of lines to keep after PgUp/PgDn (^U/^V).  If \-1
 is given, half the window is kept.
 
 .IP -skiptop\ nnn
@@ -780,7 +780,7 @@ bytes 508 and 509 of the first floppy drive in Linux.
 .IP \fB-
 Use this to get input from the standard input or to write output to the
 standard output.  For example, you can put joe in a pipe of commands:
-\fBquota -v | joe - | mail root\fR, if you want to complain about your low
+\fBquota \-v | joe \- | mail root\fR, if you want to complain about your low
 quota.
 
 
