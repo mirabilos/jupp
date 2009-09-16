@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/rc.c,v 1.7 2008/07/28 00:12:06 tg Exp $ */
+/* $MirOS: contrib/code/jupp/rc.c,v 1.8 2009/09/16 13:29:28 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
@@ -571,7 +571,7 @@ static int dosyntax(BW *bw, unsigned char *s, int *xx, int *notify)
 	struct high_syntax *syn;
 
 	if (*s) {
-		if (syn = load_dfa(s))
+		if ((syn = load_dfa(s)))
 			bw->o.syntax = syn;
 		else
 			msgnw(bw->parent, US "Syntax definition file not found");
