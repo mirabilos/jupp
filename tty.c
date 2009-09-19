@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.c,v 1.5 2008/05/13 13:08:26 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.c,v 1.6 2009/09/19 22:42:41 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright
@@ -31,6 +31,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+#if HAVE_UTMP_H
+#include <utmp.h>
+#endif
 
 int idleout = 1;
 
