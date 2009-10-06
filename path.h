@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/path.h,v 1.3 2008/05/13 13:08:24 tg Exp $ */
+/* $MirOS: contrib/code/jupp/path.h,v 1.4 2009/10/06 09:39:41 tg Exp $ */
 /*
  *	Directory and path functions
  *	Copyright
@@ -15,6 +15,12 @@
 #define __attribute__(p) /* nothing */
 #endif
 
+#if defined(HAVE_ATTRIBUTE_BOUNDED) && (!HAVE_ATTRIBUTE_BOUNDED)
+#define bounded_attr(p)	/* nothing */
+#else
+#define bounded_attr(p)	__attribute__((__bounded__ (p)))
+#endif
+
 unsigned char *joesep PARAMS((unsigned char *path));
 
 /* char *namprt(char *path);
@@ -27,7 +33,7 @@ unsigned char *joesep PARAMS((unsigned char *path));
  */
 unsigned char *namprt PARAMS((unsigned char *path));
 unsigned char *namepart PARAMS((unsigned char *tmp, unsigned char *path))
-	__attribute__((__bounded__(__minbytes__,1,1024)));
+    bounded_attr(__minbytes__,1,1024);
 
 /* char *dirprt(char *path);
  * Return directory and drive part of a path.  I.E., everything to the
