@@ -6,6 +6,9 @@
 /* Define to 1 if you have the `alarm' function. */
 #undef HAVE_ALARM
 
+/* Define to 1 if you have the <bsd/string.h> header file. */
+#undef HAVE_BSD_STRING_H
+
 /* Define to 1 if you have the <dirent.h> header file, and it defines `DIR'.
    */
 #undef HAVE_DIRENT_H
@@ -71,11 +74,14 @@
 /* Define to 1 if you have the <pwd.h> header file. */
 #undef HAVE_PWD_H
 
-/* We have SELinux headers */
-#undef HAVE_SELINUX
-
 /* Define to 1 if you have the <selinux/context.h> header file. */
 #undef HAVE_SELINUX_CONTEXT_H
+
+/* We have SELinux functions */
+#undef HAVE_SELINUX_FUN
+
+/* We have SELinux headers */
+#undef HAVE_SELINUX_HDR
 
 /* Define to 1 if you have the <selinux/selinux.h> header file. */
 #undef HAVE_SELINUX_SELINUX_H
@@ -194,6 +200,9 @@
 /* Define to 1 if you have the <utime.h> header file. */
 #undef HAVE_UTIME_H
 
+/* Define to 1 if you have the <utmp.h> header file. */
+#undef HAVE_UTMP_H
+
 /* Define if isblank() works with expressions with side effects */
 #undef HAVE_WORKING_ISBLANK
 
@@ -251,6 +260,9 @@
 
 /* If we have newer terminfo/termcap capabilities */
 #undef TERMINFO
+
+/* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
+#undef TIME_WITH_SYS_TIME
 
 /* Version number of package */
 #undef VERSION

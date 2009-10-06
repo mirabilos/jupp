@@ -1,5 +1,14 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.19 2009/08/02 15:47:31 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.20 2009/10/06 10:25:28 tg Exp $
 ------------------------------------------------------------------
+
+JOE 3.1jupp-current
+
+- Fix compiler warnings
+- Fix the manpage wrt. UTF-8 hyphen/dash/minus
+- Add missing headers on some platforms
+- Add support for Debian libbsd
+- Add way to disable warnings wrt. Anil Madhavapeddy's bounds checker
+- Unbreak SELinux support
 
 JOE 3.1jupp11
 
