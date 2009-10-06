@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.14 2009/10/06 09:07:30 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.15 2009/10/06 09:54:04 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -81,6 +81,8 @@ AC_CHECK_HEADERS([util.h utmp.h])
 
 # Debian libbsd
 AC_CHECK_HEADERS([bsd/string.h])
+
+AC_HEADER_TIME
 
 AC_CHECK_HEADERS([selinux/selinux.h selinux/context.h])
 if test "$ac_cv_header_selinux_selinux_h" = "yes" -a "$ac_cv_header_selinux_context_h" = "yes" ; then

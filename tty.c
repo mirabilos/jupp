@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.c,v 1.7 2009/10/06 09:09:43 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.c,v 1.8 2009/10/06 09:54:04 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright
@@ -63,14 +63,16 @@ int idleout = 1;
 #endif
 #endif
 
-#ifdef HAVE_SETITIMER
-#ifdef HAVE_SYS_TIME_H
-#include <sys/time.h>
-#endif
+/* Straight from the GNU autoconf texinfo documentation */
+#ifdef TIME_WITH_SYS_TIME
+# include <sys/time.h>
+# include <time.h>
 #else
-#ifdef HAVE_TIME_H
-#include <time.h>
-#endif
+# ifdef HAVE_SYS_TIME_H
+#  include <sys/time.h>
+# else
+#  include <time.h>
+# endif
 #endif
 
 /* I'm not sure if SCO_UNIX and ISC have __svr4__ defined, but I think
