@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.c,v 1.6 2009/09/19 22:42:41 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.c,v 1.7 2009/10/06 09:09:43 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright
@@ -66,6 +66,10 @@ int idleout = 1;
 #ifdef HAVE_SETITIMER
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
+#endif
+#else
+#ifdef HAVE_TIME_H
+#include <time.h>
 #endif
 #endif
 
