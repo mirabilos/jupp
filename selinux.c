@@ -1,4 +1,12 @@
-/* $MirOS: contrib/code/jupp/selinux.c,v 1.2 2008/05/13 13:08:25 tg Exp $ */
+/* $MirOS: contrib/code/jupp/selinux.c,v 1.3 2009/10/06 10:18:03 tg Exp $ */
+
+#include "config.h"
+#if defined(HAVE_SELINUX_HDR) && defined(HAVE_SELINUX_FUN)
+#define WITH_SELINUX
+#else
+#undef WITH_SELINUX
+#endif
+
 /*
  * Example code to show how to copy the security context from one file to
  * another.
@@ -8,6 +16,8 @@
 static int selinux_enabled = -1;
 #endif
 #include <errno.h>
+#include <error.h>
+#include <string.h>
 
 int
 copy_security_context(const char *from_file, const char *to_file)
@@ -38,9 +48,14 @@ copy_security_context(const char *from_file, const char *to_file)
 	}
 
 	if (getfilecon(to_file, &to_context) < 0) {
+#ifdef _
 		MSG_PUTS(_("\nCould not get security context for "));
 		msg_outtrans(to_file);
 		msg_putchar('\n');
+#else
+		error(0, errno, "Could not get security context for %s",
+		    to_file);
+#endif
 		freecon(from_context);
 		return 1;
 	}

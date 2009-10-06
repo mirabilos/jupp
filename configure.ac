@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.15 2009/10/06 09:54:04 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.16 2009/10/06 10:18:03 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -60,6 +60,7 @@ AC_SEARCH_LIBS(openpty, util, AC_DEFINE_UNQUOTED(HAVE_OPENPTY, 1, [If we have BS
 AC_SEARCH_LIBS(login_tty, util, AC_DEFINE_UNQUOTED(HAVE_LOGIN_TTY, 1, [If we have BSD function login_tty()]))
 AC_SEARCH_LIBS(tgetflag, $search_libs, AC_DEFINE_UNQUOTED(TERMINFO, 1, [If we have newer terminfo/termcap capabilities]))
 AC_SEARCH_LIBS(snprintf, snprintf db, AC_DEFINE_UNQUOTED(HAVE_SNPRINTF, 1, [If we have snprintf]))
+AC_SEARCH_LIBS(is_selinux_enabled, selinux, AC_DEFINE_UNQUOTED(HAVE_SELINUX_FUN, 1, [We have SELinux functions]))
 
 # Checks for header files.
 AC_HEADER_DIRENT
@@ -87,7 +88,7 @@ AC_HEADER_TIME
 AC_CHECK_HEADERS([selinux/selinux.h selinux/context.h])
 if test "$ac_cv_header_selinux_selinux_h" = "yes" -a "$ac_cv_header_selinux_context_h" = "yes" ; then
 	echo "Enabling SELinux context copying!"
-	AC_DEFINE(HAVE_SELINUX, 1, [We have SELinux headers])
+	AC_DEFINE(HAVE_SELINUX_HDR, 1, [We have SELinux headers])
 fi
 
 # Checks for typedefs, structures, and compiler characteristics.
