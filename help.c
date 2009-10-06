@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/help.c,v 1.3 2008/05/13 13:08:22 tg Exp $ */
+/* $MirOS: contrib/code/jupp/help.c,v 1.4 2009/10/06 09:07:30 tg Exp $ */
 /*
  *	Help system
  *	Copyright
@@ -12,6 +12,10 @@
 
 #include <stdio.h>
 #include <string.h>
+
+#ifdef HAVE_BSD_STRING_H
+#include <bsd/string.h>
+#endif
 
 #include "blocks.h"
 #include "scrn.h"

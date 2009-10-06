@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/rc.c,v 1.8 2009/09/16 13:29:28 tg Exp $ */
+/* $MirOS: contrib/code/jupp/rc.c,v 1.9 2009/10/06 09:07:30 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
@@ -22,6 +22,10 @@
 #include <string.h>
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
+#endif
+
+#ifdef HAVE_BSD_STRING_H
+#include <bsd/string.h>
 #endif
 
 #include "cmd.h"

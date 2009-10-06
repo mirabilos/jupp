@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tw.c,v 1.4 2007/02/18 22:34:08 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tw.c,v 1.5 2009/10/06 09:07:30 tg Exp $ */
 /* 
  *	Text editing windows
  *	Copyright
@@ -12,6 +12,10 @@
 #include <stdio.h>
 #ifdef HAVE_TIME_H
 #include <time.h>
+#endif
+
+#ifdef HAVE_BSD_STRING_H
+#include <bsd/string.h>
 #endif
 
 #include "b.h"

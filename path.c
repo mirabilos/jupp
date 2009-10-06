@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/path.c,v 1.3 2008/05/13 13:08:23 tg Exp $ */
+/* $MirOS: contrib/code/jupp/path.c,v 1.4 2009/10/06 09:07:30 tg Exp $ */
 /* 
  *	Directory and path functions
  *	Copyright
@@ -25,6 +25,10 @@
 #endif
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
+#endif
+
+#ifdef HAVE_BSD_STRING_H
+#include <bsd/string.h>
 #endif
 
 #include "path.h"
