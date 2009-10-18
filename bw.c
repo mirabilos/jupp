@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/bw.c,v 1.13 2009/10/18 16:07:39 tg Exp $ */
+/* $MirOS: contrib/code/jupp/bw.c,v 1.14 2009/10/18 16:08:56 tg Exp $ */
 /*
  *	Edit buffer window generation
  *	Copyright
@@ -441,7 +441,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 						wid = joe_wcwidth(1,c);
 					else if(c== -1) /* Character taken */
 						wid = -1;
-					else if(c== -2) { /* Incomplete sequence (FIXME: do something better here) */
+					else if(c== -2) { /* Incomplete sequence */
 						wid = 1;
 						ungetit = c;
 						++amnt;
