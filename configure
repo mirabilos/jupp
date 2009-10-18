@@ -4711,12 +4711,12 @@ done
 
 
 
-for ac_header in
-	sys/dirent.h sys/ioctl.h sys/param.h sys/stat.h sys/termio.h
-	sys/termios.h sys/time.h sys/types.h sys/wait.h errno.h fcntl.h
-	limits.h locale.h paths.h pty.h pwd.h sgtty.h signal.h stdlib.h
-	string.h termio.h termios.h time.h unistd.h util.h utime.h
-	utmp.h bsd/string.h selinux/context.h selinux/selinux.h
+for ac_header in  \
+	sys/dirent.h sys/ioctl.h sys/param.h sys/stat.h sys/termio.h \
+	sys/termios.h sys/time.h sys/types.h sys/wait.h errno.h fcntl.h \
+	limits.h locale.h paths.h pty.h pwd.h sgtty.h signal.h stdlib.h \
+	string.h termio.h termios.h time.h unistd.h util.h utime.h \
+	utmp.h bsd/string.h selinux/context.h selinux/selinux.h \
 
 do
 as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
