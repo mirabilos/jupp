@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/uedit.c,v 1.8 2009/10/18 14:52:58 tg Exp $ */
+/* $MirOS: contrib/code/jupp/uedit.c,v 1.9 2009/10/18 16:02:02 tg Exp $ */
 /*
  *	Basic user edit functions
  *	Copyright
@@ -1087,19 +1087,27 @@ int utypebw_raw(BW *bw, int k, int no_decode)
 				pgetc(bw->cursor);
 			}
 
-		if (!no_decode) {
-			if(locale_map->type && !bw->b->o.charmap->type) {
-				unsigned char buf[10];
-				utf8_encode(buf,k);
-				k = from_utf8(bw->b->o.charmap,buf);
-			} else if(!locale_map->type && bw->b->o.charmap->type) {
-				unsigned char buf[10];
-				to_utf8(locale_map,buf,k);
-				k = utf8_decode_string(buf);
+		if (no_decode == 2) {
+			unsigned char ch = k;
+
+			binsm(bw->cursor, &ch, 1);
+			if (!bw->b->o.charmap->type)
+				no_decode = 1;
+		} else {
+			if (!no_decode) {
+				if(locale_map->type && !bw->b->o.charmap->type) {
+					unsigned char buf[10];
+					utf8_encode(buf,k);
+					k = from_utf8(bw->b->o.charmap,buf);
+				} else if(!locale_map->type && bw->b->o.charmap->type) {
+					unsigned char buf[10];
+					to_utf8(locale_map,buf,k);
+					k = utf8_decode_string(buf);
+				}
 			}
+			
+			binsc(bw->cursor, k);
 		}
-		
-		binsc(bw->cursor, k);
 
 		/* We need x position before we move cursor */
 		x = piscol(bw->cursor) - bw->offset;
@@ -1140,7 +1148,7 @@ int utypebw_raw(BW *bw, int k, int no_decode)
 			   ((!square && bw->cursor->byte >= markb->byte && bw->cursor->byte < markk->byte) ||
 			    ( square && bw->cursor->line >= markb->line && bw->cursor->line <= markk->line && piscol(bw->cursor) >= markb->xcol && piscol(bw->cursor) < markk->xcol)))
 				atr = INVERSE;
-			outatr(bw->b->o.charmap, t, screen + x, attr + x, x, y, k, atr);
+			outatr(bw->b->o.charmap, t, screen + x, attr + x, x, y, no_decode == 2 ? 0xFFFD : k, atr);
 		}
 #endif
 	}
@@ -1164,7 +1172,16 @@ static int dounicode(BW *bw, unsigned char *s, void *object, int *notify)
 	if (notify)
 		*notify = 1;
 	vsrm(s);
-	utypebw_raw(bw, num, 1);
+	if (bw->b->o.charmap->type)
+		utypebw_raw(bw, num, 1);
+	else {
+		unsigned char buf[8];
+		int x;
+
+		utf8_encode(buf,num);
+		for(x=0;buf[x];++x)
+			utypebw_raw(bw, buf[x], 1);
+	}
 	bw->cursor->xcol = piscol(bw->cursor);
 	return 0;
 }
@@ -1190,20 +1207,29 @@ static int doquote(BW *bw, int c, void *object, int *notify)
 				return -1;
 			else
 				return 0;
+		} else if (c == 'u' || c == 'U') {
+			if (bw->b->o.charmap->type)
+				goto unopoo;
+ uhex_uni:
+			if (!wmkpw(bw->parent, US "Unicode (ISO-10646) character in hex (^C to abort): ", &unicodehist, dounicode,
+			           NULL, NULL, NULL, NULL, NULL, locale_map))
+				return 0;
+			else
+				return -1;
+		} else if (c == 'r' || c == 'R') {
+			if (!bw->b->o.charmap->type)
+				goto unopoo;
+ uhex_raw:
+			quotestate = 3;
+			if (!mkqwna(bw->parent, sc("ASCII 0x--"), doquote, NULL, NULL, notify))
+				return -1;
+			else
+				return 0;
 		} else if (c == 'x' || c == 'X') {
-			if (bw->b->o.charmap->type) {
-				if (!wmkpw(bw->parent, US "Unicode (ISO-10646) character in hex (^C to abort): ", &unicodehist, dounicode,
-				           NULL, NULL, NULL, NULL, NULL, locale_map))
-					return 0;
-				else
-					return -1;
-			} else {
-				quotestate = 3;
-				if (!mkqwna(bw->parent, sc("ASCII 0x--"), doquote, NULL, NULL, notify))
-					return -1;
-				else
-					return 0;
-			}
+			if (bw->b->o.charmap->type)
+				goto uhex_uni;
+			else
+				goto uhex_raw;
 		} else if (c == 'o' || c == 'O') {
 			quotestate = 5;
 			if (!mkqwna(bw->parent, sc("ASCII 0---"), doquote, NULL, NULL, notify))
@@ -1211,6 +1237,7 @@ static int doquote(BW *bw, int c, void *object, int *notify)
 			else
 				return 0;
 		} else {
+ unopoo:
 			if ((c >= 0x40 && c <= 0x5F) || (c >= 'a' && c <= 'z'))
 				c &= 0x1F;
 			if (c == '?')
@@ -1267,16 +1294,15 @@ static int doquote(BW *bw, int c, void *object, int *notify)
 	case 4:
 		if (c >= '0' && c <= '9') {
 			quoteval = quoteval * 16 + c - '0';
-			utypebw_raw(bw, quoteval, 1);
+ u4out:
+			utypebw_raw(bw, quoteval, 2);
 			bw->cursor->xcol = piscol(bw->cursor);
 		} else if (c >= 'a' && c <= 'f') {
 			quoteval = quoteval * 16 + c - 'a' + 10;
-			utypebw_raw(bw, quoteval, 1);
-			bw->cursor->xcol = piscol(bw->cursor);
+			goto u4out;
 		} else if (c >= 'A' && c <= 'F') {
 			quoteval = quoteval * 16 + c - 'A' + 10;
-			utypebw_raw(bw, quoteval, 1);
-			bw->cursor->xcol = piscol(bw->cursor);
+			goto u4out;
 		}
 		break;
 	case 5:
@@ -1316,8 +1342,14 @@ static int doquote(BW *bw, int c, void *object, int *notify)
 
 int uquote(BW *bw)
 {
+	const char *qs;
+
+	if (bw->b->o.charmap->type)
+		qs = "Ctrl- (or 0-9 for dec. r for hex, o for octal ASCII, x for hex UTF-8)";
+	else
+		qs = "Ctrl- (or 0-9 for dec. x for hex, o for octal ASCII, u for hex UTF-8)";
 	quotestate = 0;
-	if (mkqwna(bw->parent, sc("Ctrl- (or 0-9 for dec. ascii, x for hex, or o for octal)"), doquote, NULL, NULL, NULL))
+	if (mkqwna(bw->parent, US qs, strlen(qs), doquote, NULL, NULL, NULL))
 		return 0;
 	else
 		return -1;
