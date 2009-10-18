@@ -1,7 +1,7 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.20 2009/10/06 10:25:28 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.21 2009/10/18 17:04:44 tg Exp $
 ------------------------------------------------------------------
 
-JOE 3.1jupp-current
+JOE 3.1jupp12
 
 - Fix compiler warnings
 - Fix the manpage wrt. UTF-8 hyphen/dash/minus
@@ -9,6 +9,20 @@ JOE 3.1jupp-current
 - Add support for Debian libbsd
 - Add way to disable warnings wrt. Anil Madhavapeddy's bounds checker
 - Unbreak SELinux support
+- Fix `x## for 80‥FF in !UTF-8 mode
+- Use the inverse/underlined U+FFFD for some more occurences of
+  undisplayable (control) characters and incomplete multibyte
+  sequences; fix displaying these at end of line
+- Ensure C0/C1 control characters are never sent to a UTF-8
+  terminal, even from !UTF-8 documents
+- Add built-in (minimal) jupprc file, for standalone EXEs
+- Backport hex editing mode; improve it, use uppercase
+- Implement `r## in UTF-8 mode (same as `x## in !UTF-8 mode)
+  and `u (interactive) in !UTF-8 mode (same as `x in UTF-8 mode)
+- Add new Makefile variable sysconfjoesubdir=/joe (to override
+  the /joe in /etc/joe/jupprc for example)
+- Update config.guess and config.sub
+- Provide a real ANSI (cp1252) codepage
 
 JOE 3.1jupp11
 

@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.16 2009/10/06 10:18:03 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.17 2009/10/18 17:04:44 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -6,7 +6,7 @@
 AC_PREREQ(2.54)
 
 #### Here's the only place where to change version number ####
-AC_INIT(joe, 3.1jupp11)
+AC_INIT(joe, 3.1jupp12)
 #### But see main.c near use of the CPP macro VERSION for the (c) year
 AC_CONFIG_SRCDIR([b.c])
 
