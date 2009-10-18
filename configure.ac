@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.19 2009/10/18 17:38:08 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.20 2009/10/18 17:54:54 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -63,12 +63,12 @@ AC_SEARCH_LIBS(snprintf, snprintf db, AC_DEFINE_UNQUOTED(HAVE_SNPRINTF, 1, [If w
 AC_SEARCH_LIBS(is_selinux_enabled, selinux, AC_DEFINE_UNQUOTED(HAVE_SELINUX_FUN, 1, [We have SELinux functions]))
 
 # Checks for header files.
-AC_CHECK_HEADERS([
-	sys/dirent.h sys/ioctl.h sys/param.h sys/stat.h sys/termio.h
-	sys/termios.h sys/time.h sys/types.h sys/wait.h errno.h fcntl.h
-	limits.h locale.h paths.h pty.h pwd.h sgtty.h signal.h stdlib.h
-	string.h termio.h termios.h time.h unistd.h util.h utime.h
-	utmp.h bsd/string.h selinux/context.h selinux/selinux.h
+AC_CHECK_HEADERS([ \
+	sys/dirent.h sys/ioctl.h sys/param.h sys/stat.h sys/termio.h \
+	sys/termios.h sys/time.h sys/types.h sys/wait.h errno.h fcntl.h \
+	limits.h locale.h paths.h pty.h pwd.h sgtty.h signal.h stdlib.h \
+	string.h termio.h termios.h time.h unistd.h util.h utime.h \
+	utmp.h bsd/string.h selinux/context.h selinux/selinux.h \
 ])
 AC_HEADER_DIRENT
 AC_SYS_POSIX_TERMIOS
