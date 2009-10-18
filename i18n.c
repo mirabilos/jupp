@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/i18n.c,v 1.3 2008/05/13 13:08:22 tg Exp $ */
+/* $MirOS: contrib/code/jupp/i18n.c,v 1.4 2009/10/18 16:06:29 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 functions for JOE
  *	Copyright
@@ -3543,20 +3543,20 @@ main(int argc,char *argv[])
 {
 	int c;
 	sscanf(argv[1],"%x",&c);
-	printf("Properties of character %x:\n",c);
-	printf("upper=%x\n",joe_iswupper(NULL,c));
-	printf("lower=%x\n",joe_iswlower(NULL,c));
-	printf("alpha=%x\n",joe_iswalpha(NULL,c));
-	printf("digit=%x\n",joe_iswdigit(NULL,c));
-	printf("ctrl=%x\n",joe_iswctrl(NULL,c));
-	printf("punct=%x\n",joe_iswpunct(NULL,c));
-	printf("graph=%x\n",joe_iswgraph(NULL,c));
-	printf("print=%x\n",joe_iswprint(NULL,c));
-	printf("xdigit=%x\n",joe_iswxdigit(NULL,c));
-	printf("blank=%x\n",joe_iswblank(NULL,c));
-	printf("width=%x\n",joe_wcwidth(1,c));
-	printf("toupper=%x\n",joe_towupper(NULL,c));
-	printf("tolower=%x\n",joe_towlower(NULL,c));
+	printf("Properties of character %X:\n",c);
+	printf("upper=%X\n",joe_iswupper(NULL,c));
+	printf("lower=%X\n",joe_iswlower(NULL,c));
+	printf("alpha=%X\n",joe_iswalpha(NULL,c));
+	printf("digit=%X\n",joe_iswdigit(NULL,c));
+	printf("ctrl=%X\n",joe_iswctrl(NULL,c));
+	printf("punct=%X\n",joe_iswpunct(NULL,c));
+	printf("graph=%X\n",joe_iswgraph(NULL,c));
+	printf("print=%X\n",joe_iswprint(NULL,c));
+	printf("xdigit=%X\n",joe_iswxdigit(NULL,c));
+	printf("blank=%X\n",joe_iswblank(NULL,c));
+	printf("width=%X\n",joe_wcwidth(1,c));
+	printf("toupper=%X\n",joe_towupper(NULL,c));
+	printf("tolower=%X\n",joe_towlower(NULL,c));
 }
 */
 

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/bw.c,v 1.11 2009/10/18 16:01:28 tg Exp $ */
+/* $MirOS: contrib/code/jupp/bw.c,v 1.12 2009/10/18 16:06:28 tg Exp $ */
 /*
  *	Edit buffer window generation
  *	Copyright
@@ -718,9 +718,9 @@ void bwgenh(BW *w)
 		txt[76]=0;
 		if (!flg) {
 #if SIZEOF_LONG_LONG && SIZEOF_LONG_LONG == SIZEOF_OFF_T
-			sprintf((char *)bf,"%8llx ",q->byte);
+			sprintf((char *)bf,"%8llX ",q->byte);
 #else
-			sprintf((char *)bf,"%8lx ",q->byte);
+			sprintf((char *)bf,"%8lX ",q->byte);
 #endif
 			memcpy(txt,bf,9);
 			for (x=0; x!=8; ++x) {
@@ -736,7 +736,7 @@ void bwgenh(BW *w)
 				}
 				c = pgetb(q);
 				if (c >= 0) {
-					sprintf((char *)bf,"%2.2x",c);
+					sprintf((char *)bf,"%2.2X",c);
 					txt[10+x*3] = bf[0];
 					txt[10+x*3+1] = bf[1];
 					if (c >= 0x20 && c <= 0x7E)
@@ -759,7 +759,7 @@ void bwgenh(BW *w)
 				}
 				c = pgetb(q);
 				if (c >= 0) {
-					sprintf((char *)bf,"%2.2x",c);
+					sprintf((char *)bf,"%2.2X",c);
 					txt[11+x*3] = bf[0];
 					txt[11+x*3+1] = bf[1];
 					if (c >= 0x20 && c <= 0x7E)
@@ -956,9 +956,9 @@ int ustat(BW *bw)
 	int c = brch(bw->cursor);
 
 	if (c == NO_MORE_DATA)
-		joe_snprintf_4((char *)buf, sizeof(buf), "** Line %ld  Col %ld  Offset %ld(0x%lx) **", bw->cursor->line + 1, piscol(bw->cursor) + 1, bw->cursor->byte, bw->cursor->byte);
+		joe_snprintf_4((char *)buf, sizeof(buf), "** Line %ld  Col %ld  Offset %ld(0x%lX) **", bw->cursor->line + 1, piscol(bw->cursor) + 1, bw->cursor->byte, bw->cursor->byte);
 	else
-		joe_snprintf_9((char *)buf, sizeof(buf), "** Line %ld  Col %ld  Offset %ld(0x%lx)  %s %d(0%o/0x%X) Width %d **", bw->cursor->line + 1, piscol(bw->cursor) + 1, bw->cursor->byte, bw->cursor->byte, bw->b->o.charmap->name, c, c, c, joe_wcwidth(bw->o.charmap->type,c));
+		joe_snprintf_9((char *)buf, sizeof(buf), "** Line %ld  Col %ld  Offset %ld(0x%lX)  %s %d(0%o/0x%X) Width %d **", bw->cursor->line + 1, piscol(bw->cursor) + 1, bw->cursor->byte, bw->cursor->byte, bw->b->o.charmap->name, c, c, c, joe_wcwidth(bw->o.charmap->type,c));
 	msgnw(bw->parent, buf);
 	return 0;
 }
