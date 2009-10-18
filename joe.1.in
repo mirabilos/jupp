@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.9 2009/09/16 13:36:40 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.10 2009/10/18 15:59:46 tg Exp $
 .\"-
 .TH JOE 1
 .SH Name
@@ -210,6 +210,9 @@ The cursor starts on the specified line.
 .IP -crlf
 Joe uses CR-LF as the end of line sequence instead of just LF.  This is for
 editing MS-DOS or VMS files.
+
+.IP -hex
+Sets the buffer to hex edit mode.
 
 .IP -wordwrap
 Joe wraps the previous word when you type past the right margin.
