@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.21 2009/10/18 17:04:44 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.22 2009/10/18 17:43:59 tg Exp $
 ------------------------------------------------------------------
 
 JOE 3.1jupp12
@@ -23,6 +23,7 @@ JOE 3.1jupp12
   the /joe in /etc/joe/jupprc for example)
 - Update config.guess and config.sub
 - Provide a real ANSI (cp1252) codepage
+- Fix build on AIX with xlC, Solaris with SUNWcc
 
 JOE 3.1jupp11
 
