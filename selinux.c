@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/selinux.c,v 1.3 2009/10/06 10:18:03 tg Exp $ */
+/* $MirOS: contrib/code/jupp/selinux.c,v 1.4 2009/10/18 13:13:53 tg Exp $ */
 
 #include "config.h"
 #if defined(HAVE_SELINUX_HDR) && defined(HAVE_SELINUX_FUN)
@@ -14,10 +14,10 @@
 #ifdef WITH_SELINUX
 #include <selinux/selinux.h>
 static int selinux_enabled = -1;
-#endif
 #include <errno.h>
 #include <error.h>
 #include <string.h>
+#endif
 
 int
 copy_security_context(const char *from_file, const char *to_file)
