@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/bw.c,v 1.10 2009/10/18 14:52:55 tg Exp $ */
+/* $MirOS: contrib/code/jupp/bw.c,v 1.11 2009/10/18 16:01:28 tg Exp $ */
 /*
  *	Edit buffer window generation
  *	Copyright
@@ -547,9 +547,11 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 					if (++x == w)
 						goto eosl;
 				} while (--ta);
-			} else if (bc == '\n')
+			} else if (bc == '\n') {
+				if (utf8_sm.state)
+					goto unget_cch;
 				goto eobl;
-			else {
+			} else {
 				int wid = -1;
 				int utf8_char;
 				if (p->b->o.charmap->type) { /* UTF-8 */
@@ -561,11 +563,13 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 					} else if(utf8_char== -1) { /* Character taken */
 						wid = -1;
 					} else if(utf8_char== -2) { /* Incomplete sequence (FIXME: do something better here) */
+ unget_cch:
 						ungetit = bc;
 						++amnt;
 						--byte;
 						utf8_char = 0x1000FFFE;
 						wid = utf8_sm.ptr;
+						utf8_init(&utf8_sm);
 					} else if(utf8_char== -3) { /* Invalid UTF-8 start character 128-191, 254, 255 */
 						/* Show as control character */
 						wid = 1;
