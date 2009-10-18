@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.h,v 1.2 2008/05/13 13:08:25 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.h,v 1.3 2009/10/18 14:52:57 tg Exp $ */
 /*
  *	Device independant tty interface for JOE
  *	Copyright
@@ -176,7 +176,7 @@ int clrins PARAMS((SCRN *t));
 int meta_color PARAMS((unsigned char *s));
 
 /* Generate a field */
-void genfield PARAMS((SCRN *t,int *scrn,int *attr,int x,int y,int ofst,unsigned char *s,int len,int atr,int width,int flg));
+void genfield PARAMS((SCRN *t,int *scrn,int *attr,int x,int y,int ofst,unsigned char *s,int len,int atr,int width,int flg,int *fmt));
 
 /* Column width of a string takes into account utf-8) */
 int txtwidth PARAMS((unsigned char *s,int len));

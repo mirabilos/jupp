@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/pw.h,v 1.2 2008/05/13 13:08:24 tg Exp $ */
+/* $MirOS: contrib/code/jupp/pw.h,v 1.3 2009/10/18 14:52:56 tg Exp $ */
 /*
  *	Prompt windows
  *	Copyright
@@ -31,5 +31,7 @@ int cmplt_abrt PARAMS((BW *bw,int x, unsigned char *line));
 int cmplt_rtn PARAMS((MENU *m,int x,unsigned char *line));
 
 int simple_cmplt PARAMS((BW *bw,unsigned char **list));
+
+extern WATOM watompw;
 
 #endif

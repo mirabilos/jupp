@@ -88,5 +88,25 @@ this in Putty).
 	Also you can hit Ctrl-delete to cut and Ctrl-insert to paste if the
 sequence for these keys are known.
 
+Hex edit mode
+-------------
+
+When this mode is selected (either put -hex on the command line, or look for
+"Hex edit mode" after hitting ^T), the buffer is displayed as a hex dump,
+but all of the editing commands operate the same way.  It is most useful to
+select overtype mode in conjunction with hex dump (hit ^T T).  Then typing
+will not insert.
+
+- To enter the hex byte 0xF8 type ` x F 8
+
+- You can use ^KC to copy a block as usual.  If overtype mode is selected,
+  the block will overwrite the destination data without changing the size of
+  the file.  Otherwise it inserts. 
+
+- Hit ESC x byte <Enter>, to jump to a particular byte offset.  Hex values
+  can be entered into this prompt like this: 0x2000.
+
+- Search, incremental search, and search & replace all operate as usual.
+
 __________________________________________________________________
-$MirOS: contrib/code/jupp/HINTS,v 1.3 2008/05/13 16:17:42 tg Exp $
+$MirOS: contrib/code/jupp/HINTS,v 1.4 2009/10/18 14:52:55 tg Exp $

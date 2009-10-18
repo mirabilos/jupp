@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tw.c,v 1.5 2009/10/06 09:07:30 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tw.c,v 1.6 2009/10/18 14:52:57 tg Exp $ */
 /* 
  *	Text editing windows
  *	Copyright
@@ -399,8 +399,13 @@ static void disptw(BW *bw, int flg)
 		bwfllw(bw);
 	}
 
-	w->cury = bw->cursor->line - bw->top->line + bw->y - w->y;
-	w->curx = bw->cursor->xcol - bw->offset + (bw->o.linums ? LINCOLS : 0);
+	if (bw->o.hex) {
+		w->cury = (bw->cursor->byte-bw->top->byte)/16 + bw->y - w->y;
+		w->curx = (bw->cursor->byte-bw->top->byte)%16 + 60 - bw->offset;
+	} else {
+		w->cury = bw->cursor->line - bw->top->line + bw->y - w->y;
+		w->curx = bw->cursor->xcol - bw->offset + (bw->o.linums ? LINCOLS : 0);
+	}
 
 	if ((staupd || keepup || bw->cursor->line != tw->prevline || bw->b->changed != tw->changed || bw->b != tw->prev_b) && (w->y || !staen)) {
 		int fill;
@@ -426,8 +431,12 @@ static void disptw(BW *bw, int flg)
 		w->t->t->updtab[w->y] = 0;
 	}
 
-	if (flg)
-		bwgen(bw, bw->o.linums);
+	if (flg) {
+		if (bw->o.hex)
+			bwgenh(bw);
+		else
+			bwgen(bw, bw->o.linums);
+	}
 }
 
 /* Split current window */
@@ -510,7 +519,7 @@ static void deltw(BW *bw, B *b, long int l, long int n, int flg)
 		bwdel(bw, l, n, flg);
 }
 
-static WATOM watomtw = {
+WATOM watomtw = {
 	US "main",
 	disptw,
 	bwfllw,

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tw.h,v 1.2 2008/05/13 13:08:27 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tw.h,v 1.3 2009/10/18 14:52:57 tg Exp $ */
 /*
  *	Text editing windows
  *	Copyright
@@ -25,5 +25,7 @@ int uabort1 PARAMS((BW *bw, int k));
 void setline PARAMS((B *b, long int line));
 int abortit PARAMS((BW *bw));
 extern int staen;
+
+extern WATOM watomtw;
 
 #endif

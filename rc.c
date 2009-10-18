@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/rc.c,v 1.10 2009/10/18 14:17:34 tg Exp $ */
+/* $MirOS: contrib/code/jupp/rc.c,v 1.11 2009/10/18 14:52:56 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
@@ -123,7 +123,8 @@ OPTIONS pdefault = {
 	NULL,		/* macro to execute for existing files */
 	NULL,		/* macro to execute before saving new files */
 	NULL,		/* macro to execute before saving existing files */
-	0		/* visible spaces */
+	0,		/* visible spaces */
+	0		/* hex */
 };
 
 /* Default options for file windows */
@@ -163,7 +164,8 @@ OPTIONS fdefault = {
 	0,		/* Purity indentation */
 	0,		/* Picture mode */
 	NULL, NULL, NULL, NULL,	/* macros (see above) */
-	0		/* visible spaces */
+	0,		/* visible spaces */
+	0		/* hex */
 };
 
 /* Update options */
@@ -174,6 +176,10 @@ void lazy_opts(OPTIONS *o)
 	o->charmap = find_charmap(o->map_name);
 	if (!o->charmap)
 		o->charmap = fdefault.charmap;
+	/* Hex not allowed with UTF-8 */
+	if (o->hex && o->charmap->type) {
+		o->charmap = find_charmap(US "c");
+	}
 }
 
 /* Set local options depending on file name and contents */
@@ -279,6 +285,7 @@ struct glopts {
 	{US "picture",	4, NULL, (unsigned char *) &fdefault.picture, US "Picture drawing mode enabled", US "Picture drawing mode disabled", US "Picture mode " },
 	{US "backpath",	2, (int *) &backpath, NULL, US "Backup files stored in (%s): ", 0, US "  Backup file path " },
 	{US "vispace",	4, NULL, (unsigned char *) &fdefault.vispace, US "Spaces visible", US "Spaces invisible", US "Visible spaces " },
+	{US "hex",	4, NULL, (unsigned char *) &fdefault.hex, US "Hex edit mode", US "Text edit mode", US "G Hexedit mode "},
 	{US "syntax",	9, NULL, NULL, US "Select syntax (%s; ^C to abort): ", 0, US "Y Syntax" },
 	{US "encoding",13, NULL, NULL, US "Select file character set (%s; ^C to abort): ", 0, US "Encoding " },
 	{US "nonotice",	0, &nonotice, NULL, 0, 0, 0 },
@@ -646,6 +653,18 @@ static int syntaxcmplt(BW *bw)
 	return simple_cmplt(bw,syntaxes);
 }
 
+int check_for_hex(BW *bw)
+{
+	W *w;
+	if (bw->o.hex)
+		return 1;
+	for (w = bw->parent->link.next; w != bw->parent; w = w->link.next)
+		if ((w->watom == &watomtw || w->watom == &watompw) && ((BW *)w->object)->b == bw->b &&
+		    ((BW *)w->object)->o.hex)
+		    	return 1;
+	return 0;
+}
+
 static int doencoding(BW *bw, unsigned char *s, int *xx, int *notify)
 {
 	int ret = 0;
@@ -655,6 +674,13 @@ static int doencoding(BW *bw, unsigned char *s, int *xx, int *notify)
 		map = find_charmap(s);
 	else
 		map = fdefault.charmap;
+
+	if (map && map->type && check_for_hex(bw)) {
+		msgnw(bw->parent, US "UTF-8 encoding not allowed with hex-edit windows");
+		if (notify)
+			*notify = 1;
+		return -1;
+	}
 
 	if (map) {
 		bw->o.charmap = map;
@@ -713,6 +739,12 @@ static int doopt(MENU *m, int x, void *object, int flg)
 		msgnw(bw->parent, *(int *) ((unsigned char *) &bw->o + glopts[x].ofst) ? glopts[x].yes : glopts[x].no);
 		if (glopts[x].ofst == (unsigned char *) &fdefault.readonly - (unsigned char *) &fdefault)
 			bw->b->rdonly = bw->o.readonly;
+		/* Kill UTF-8 mode if we switch to hex display */
+		if (glopts[x].ofst == (unsigned char *) &fdefault.hex - (unsigned char *) &fdefault &&
+		    bw->o.hex &&
+		    bw->b->o.charmap->type) {
+			doencoding(bw, vsncpy(NULL, 0, sc("C")), NULL, NULL);
+		}
 		break;
 	case 1:
 		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, *glopts[x].set);

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/menu.c,v 1.3 2006/11/10 23:38:40 tg Exp $ */
+/* $MirOS: contrib/code/jupp/menu.c,v 1.4 2009/10/18 14:52:56 tg Exp $ */
 /*
  *	Menu selection window
  *	Copyright
@@ -63,7 +63,8 @@ static void menudisp(MENU *m)
 			         strlen((char *)m->list[x + y*m->perline + m->top]),
 			         atr,
 			         m->width,
-			         0);
+			         0,
+				 NULL);
 
 			col += m->width;
 

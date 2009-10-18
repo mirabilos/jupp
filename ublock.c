@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ublock.c,v 1.3 2008/05/13 13:08:27 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ublock.c,v 1.4 2009/10/18 14:52:58 tg Exp $ */
 /*
  * 	Highlighted block functions
  *	Copyright
@@ -556,8 +556,20 @@ int ublkcpy(BW *bw)
 			return 0;
 		} else {
 			long size = markk->byte - markb->byte;
+			B *tmp = bcpy(markb, markk);
 
-			binsb(bw->cursor, bcpy(markb, markk));
+			/* Simple overtype for hex mode */
+			if (bw->o.hex && bw->o.overtype) {
+				P *q = pdup(bw->cursor);
+				if (q->byte + size >= q->b->eof->byte)
+					pset(q, q->b->eof);
+				else
+					pfwrd(q, size);
+				bdel(bw->cursor, q);
+				prm(q);
+			}
+
+			binsb(bw->cursor, tmp);
 			if (lightoff)
 				unmark(bw);
 			else {

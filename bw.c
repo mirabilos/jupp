@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/bw.c,v 1.9 2009/10/06 09:07:29 tg Exp $ */
+/* $MirOS: contrib/code/jupp/bw.c,v 1.10 2009/10/18 14:52:55 tg Exp $ */
 /*
  *	Edit buffer window generation
  *	Copyright
@@ -74,7 +74,60 @@ static P *getto(P *p, P *cur, P *top, long int line)
 
 int mid = 0;
 
-void bwfllw(BW *w)
+/* For hex */
+
+static void bwfllwh(BW *w)
+{
+	/* Top must be a muliple of 16 bytes */
+	if (w->top->byte%16) {
+		pbkwd(w->top,w->top->byte%16);
+	}
+
+	/* Move backward */
+	if (w->cursor->byte < w->top->byte) {
+		long new_top = w->cursor->byte/16;
+		if (mid) {
+			if (new_top >= w->h / 2)
+				new_top -= w->h / 2;
+			else
+				new_top = 0;
+		}
+		if (w->top->byte/16 - new_top < w->h)
+			nscrldn(w->t->t, w->y, w->y + w->h, (int) (w->top->byte/16 - new_top));
+		else
+			msetI(w->t->t->updtab + w->y, 1, w->h);
+		pgoto(w->top,new_top*16);
+	}
+
+	/* Move forward */
+	if (w->cursor->byte >= w->top->byte+(w->h*16)) {
+		long new_top;
+		if (mid) {
+			new_top = w->cursor->byte/16 - w->h / 2;
+		} else {
+			new_top = w->cursor->byte/16 - (w->h - 1);
+		}
+		if (new_top - w->top->byte/16 < w->h)
+			nscrlup(w->t->t, w->y, w->y + w->h, (int) (new_top - w->top->byte/16));
+		else {
+			msetI(w->t->t->updtab + w->y, 1, w->h);
+		}
+		pgoto(w->top, new_top*16);
+	}
+
+	/* Adjust scroll offset */
+	if (w->cursor->byte%16+60 < w->offset) {
+		w->offset = w->cursor->byte%16+60;
+		msetI(w->t->t->updtab + w->y, 1, w->h);
+	} else if (w->cursor->byte%16+60 >= w->offset + w->w) {
+		w->offset = w->cursor->byte%16+60 - (w->w - 1);
+		msetI(w->t->t->updtab + w->y, 1, w->h);
+	}
+}
+
+/* For text */
+
+static void bwfllwt(BW *w)
 {
 	P *newtop;
 
@@ -119,6 +172,16 @@ void bwfllw(BW *w)
 		w->offset = w->cursor->xcol - (w->w - 1);
 		msetI(w->t->t->updtab + w->y, 1, w->h);
 	}
+}
+
+/* For either */
+
+void bwfllw(BW *w)
+{
+	if (w->o.hex)
+		bwfllwh(w);
+	else
+		bwfllwt(w);
 }
 
 /* Determine highlighting state of a particular line on the window.
@@ -594,6 +657,118 @@ static void gennum(BW *w, int *screen, int *attr, SCRN *t, int y, int *comp)
 			return;
 		comp[z] = buf[z];
 	}
+}
+
+void bwgenh(BW *w)
+{
+	int *screen;
+	int *attr;
+	P *q = pdup(w->top);
+	int bot = w->h + w->y;
+	int y;
+	SCRN *t = w->t->t;
+	int flg = 0;
+	long from;
+	long to;
+	int dosquare = 0;
+
+	from = to = 0;
+
+	if (markv(0) && markk->b == w->b)
+		if (square) {
+			from = markb->xcol;
+			to = markk->xcol;
+			dosquare = 1;
+		} else {
+			from = markb->byte;
+			to = markk->byte;
+		}
+	else if (marking && w == (BW *)maint->curwin->object && markb && markb->b == w->b && w->cursor->byte != markb->byte && !from) {
+		if (square) {
+			from = long_min(w->cursor->xcol, markb->xcol);
+			to = long_max(w->cursor->xcol, markb->xcol);
+			dosquare = 1;
+		} else {
+			from = long_min(w->cursor->byte, markb->byte);
+			to = long_max(w->cursor->byte, markb->byte);
+		}
+	}
+
+	if (marking && w == (BW *)maint->curwin->object)
+		msetI(t->updtab + w->y, 1, w->h);
+
+	if (dosquare) {
+		from = 0;
+		to = 0;
+	}
+
+	y=w->y;
+	attr = t->attr + y*w->t->w;
+	for (screen = t->scrn + y * w->t->w; y != bot; ++y, (screen += w->t->w), (attr += w->t->w)) {
+		unsigned char txt[80];
+		int fmt[80];
+		unsigned char bf[16];
+		int x;
+		memset(txt,' ',76);
+		msetI(fmt, /* BG_COLOR(bg_text) */ 0,76);
+		txt[76]=0;
+		if (!flg) {
+#if SIZEOF_LONG_LONG && SIZEOF_LONG_LONG == SIZEOF_OFF_T
+			sprintf((char *)bf,"%8llx ",q->byte);
+#else
+			sprintf((char *)bf,"%8lx ",q->byte);
+#endif
+			memcpy(txt,bf,9);
+			for (x=0; x!=8; ++x) {
+				int c;
+				if (q->byte==w->cursor->byte && !flg) {
+					fmt[10+x*3] |= INVERSE;
+					fmt[10+x*3+1] |= INVERSE;
+				}
+				if (q->byte>=from && q->byte<to && !flg) {
+					fmt[10+x*3] |= UNDERLINE;
+					fmt[10+x*3+1] |= UNDERLINE;
+					fmt[60+x] |= INVERSE;
+				}
+				c = pgetb(q);
+				if (c >= 0) {
+					sprintf((char *)bf,"%2.2x",c);
+					txt[10+x*3] = bf[0];
+					txt[10+x*3+1] = bf[1];
+					if (c >= 0x20 && c <= 0x7E)
+						txt[60+x] = c;
+					else
+						txt[60+x] = '.';
+				} else
+					flg = 1;
+			}
+			for (x=8; x!=16; ++x) {
+				int c;
+				if (q->byte==w->cursor->byte && !flg) {
+					fmt[11+x*3] |= INVERSE;
+					fmt[11+x*3+1] |= INVERSE;
+				}
+				if (q->byte>=from && q->byte<to && !flg) {
+					fmt[11+x*3] |= UNDERLINE;
+					fmt[11+x*3+1] |= UNDERLINE;
+					fmt[60+x] |= INVERSE;
+				}
+				c = pgetb(q);
+				if (c >= 0) {
+					sprintf((char *)bf,"%2.2x",c);
+					txt[11+x*3] = bf[0];
+					txt[11+x*3+1] = bf[1];
+					if (c >= 0x20 && c <= 0x7E)
+						txt[60+x] = c;
+					else
+						txt[60+x] = '.';
+				} else
+					flg = 1;
+			}
+		}
+		genfield(t, screen, attr, 0, y, w->offset, txt, 76, 0, w->w, 1, fmt);
+	}
+	prm(q);
 }
 
 void bwgen(BW *w, int linums)

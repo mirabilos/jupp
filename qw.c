@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/qw.c,v 1.3 2008/05/13 13:08:24 tg Exp $ */
+/* $MirOS: contrib/code/jupp/qw.c,v 1.4 2009/10/18 14:52:56 tg Exp $ */
 /*
  *	Query windows
  *	Copyright
@@ -42,7 +42,8 @@ static void dispqw(QW *qw)
 	         qw->promptlen,
 	         0,
 	         w->w - w->x,
-	         1);
+	         1,
+		 NULL);
 }
 
 static void dispqwn(QW *qw)
@@ -75,7 +76,8 @@ static void dispqwn(QW *qw)
 	         qw->promptlen,
 	         0,
 	         w->w - w->x,
-	         1);
+	         1,
+		 NULL);
 }
 
 /* When user hits a key in a query window */

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/bw.h,v 1.2 2008/05/13 13:08:21 tg Exp $ */
+/* $MirOS: contrib/code/jupp/bw.h,v 1.3 2009/10/18 14:52:56 tg Exp $ */
 /*
  *	Edit buffer window generation
  *	Copyright
@@ -19,6 +19,7 @@ void bwfllw PARAMS((BW *w));
 void bwins PARAMS((BW *w, long int l, long int n, int flg));
 void bwdel PARAMS((BW *w, long int l, long int n, int flg));
 void bwgen PARAMS((BW *w, int linums));
+void bwgenh PARAMS((BW *w));
 BW *bwmk PARAMS((W *window, B *b, int prompt));
 void bwmove PARAMS((BW *w, int x, int y));
 void bwresz PARAMS((BW *w, int wi, int he));
