@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/uedit.h,v 1.2 2008/05/13 13:08:27 tg Exp $ */
+/* $MirOS: contrib/code/jupp/uedit.h,v 1.3 2009/10/18 13:20:55 tg Exp $ */
 /*
  *	Basic user edit functions
  *	Copyright
@@ -51,6 +51,7 @@ int udelbl PARAMS((BW *bw));
 int udelln PARAMS((BW *bw));
 int uinsc PARAMS((BW *bw));
 int utypebw PARAMS((BW *bw, int k));
+int utypebw_raw PARAMS((BW *bw, int k, int no_decode));
 int uquote PARAMS((BW *bw));
 int uquote8 PARAMS((BW *bw));
 int rtntw PARAMS((BW *bw));
