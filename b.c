@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/b.c,v 1.6 2007/02/18 22:34:07 tg Exp $ */
+/* $MirOS: contrib/code/jupp/b.c,v 1.7 2009/10/18 16:00:32 tg Exp $ */
 /*
  *	Editor engine
  *	Copyright
@@ -601,7 +601,7 @@ int pgetc(P *p)
 		if (n) {
 			while (n) {
 				d = brc(p);
-				if ((d&0xC0)!=0x80)
+				if (d == NO_MORE_DATA || (d&0xC0)!=0x80)
 					break;
 				pgetb(p);
 				c = ((c<<6)|(d&0x3F));
@@ -611,8 +611,8 @@ int pgetc(P *p)
 				/* How to represent this? */
 				/* pbkwd(p,m-n);
 				c = oc - 384; */
-				wid = m - n + 1;
-				c = wid == 1 ? 0x1000FFFE : 0x1000FFFF;
+				c = d == NO_MORE_DATA ? 0x1000FFFF : 0x1000FFFE;
+				wid = 1;
 			} else if (val)
 				wid = joe_wcwidth(1,c);
 		} else {
