@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.18 2009/10/18 17:27:54 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.19 2009/10/18 17:38:08 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -63,29 +63,26 @@ AC_SEARCH_LIBS(snprintf, snprintf db, AC_DEFINE_UNQUOTED(HAVE_SNPRINTF, 1, [If w
 AC_SEARCH_LIBS(is_selinux_enabled, selinux, AC_DEFINE_UNQUOTED(HAVE_SELINUX_FUN, 1, [We have SELinux functions]))
 
 # Checks for header files.
+AC_CHECK_HEADERS([
+	sys/dirent.h sys/ioctl.h sys/param.h sys/stat.h sys/termio.h
+	sys/termios.h sys/time.h sys/types.h sys/wait.h errno.h fcntl.h
+	limits.h locale.h paths.h pty.h pwd.h sgtty.h signal.h stdlib.h
+	string.h termio.h termios.h time.h unistd.h util.h utime.h
+	utmp.h bsd/string.h selinux/context.h selinux/selinux.h
+])
 AC_HEADER_DIRENT
 AC_SYS_POSIX_TERMIOS
 if test "$ac_cv_sys_posix_termios" = "yes"; then
-	AC_DEFINE(HAVE_POSIX_TERMIOS, 1, [We have <termios.h> and <sys/termios.h>])
+	AC_DEFINE(HAVE_POSIX_TERMIOS, 1, [We have <termios.h> and maybe <sys/termios.h>])
 else
-	AC_CHECK_HEADERS([termio.h sys/termio.h])
 	if test "$ac_cv_header_termio_h" = "yes" -a "$ac_cvs_header_sys_termio_h" = "yes" ]; then
 		AC_DEFINE(HAVE_SYSV_TERMIO, 1, [We have <termio.h> and <sys/termio.h>])
 	fi
 fi
 AC_HEADER_TIOCGWINSZ
-AC_CHECK_HEADERS([errno.h fcntl.h locale.h sgtty.h stdlib.h string.h])
-AC_CHECK_HEADERS([sys/ioctl.h sys/param.h sys/time.h unistd.h utime.h])
-AC_CHECK_HEADERS([sys/dirent.h time.h pwd.h paths.h pty.h])
-AC_CHECK_HEADERS([sys/types.h sys/stat.h sys/wait.h limits.h signal.h])
-AC_CHECK_HEADERS([sys/termios.h util.h utmp.h])
-
-# Debian libbsd
-AC_CHECK_HEADERS([bsd/string.h])
 
 AC_HEADER_TIME
 
-AC_CHECK_HEADERS([selinux/selinux.h selinux/context.h])
 if test "$ac_cv_header_selinux_selinux_h" = "yes" -a "$ac_cv_header_selinux_context_h" = "yes" ; then
 	echo "Enabling SELinux context copying!"
 	AC_DEFINE(HAVE_SELINUX_HDR, 1, [We have SELinux headers])
