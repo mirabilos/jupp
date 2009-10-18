@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.c,v 1.3 2008/05/13 13:08:25 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.c,v 1.4 2009/10/18 13:50:11 tg Exp $ */
 /*
  *	Device independant TTY interface for JOE
  *	Copyright
@@ -305,8 +305,10 @@ void outatr(struct charmap *map,SCRN *t,int *scrn,int *attrf,int xx,int yy,int c
 			}
 
 			c = to_uni(map,c);
-			if (c == -1)
-				c = '?';
+			if (c == -1) {
+				c = 0x1000FFFE;
+				a = (a | UNDERLINE) ^ INVERSE;
+			}
 			utf8_encode(buf,c);
 
 			if (*scrn == c && *attrf == a)
