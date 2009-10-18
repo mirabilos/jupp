@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.17 2009/10/18 17:04:44 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.18 2009/10/18 17:27:54 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -78,7 +78,7 @@ AC_CHECK_HEADERS([errno.h fcntl.h locale.h sgtty.h stdlib.h string.h])
 AC_CHECK_HEADERS([sys/ioctl.h sys/param.h sys/time.h unistd.h utime.h])
 AC_CHECK_HEADERS([sys/dirent.h time.h pwd.h paths.h pty.h])
 AC_CHECK_HEADERS([sys/types.h sys/stat.h sys/wait.h limits.h signal.h])
-AC_CHECK_HEADERS([util.h utmp.h])
+AC_CHECK_HEADERS([sys/termios.h util.h utmp.h])
 
 # Debian libbsd
 AC_CHECK_HEADERS([bsd/string.h])

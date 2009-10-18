@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.c,v 1.8 2009/10/06 09:54:04 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.c,v 1.9 2009/10/18 17:27:54 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright
@@ -44,7 +44,9 @@ int idleout = 1;
  */
 #ifdef HAVE_POSIX_TERMIOS
 #  include <termios.h>
+# ifdef HAVE_SYS_TERMIOS_H
 #  include <sys/termios.h>
+# endif
 #else
 #  ifdef HAVE_SYSV_TERMIO
 #    include <termio.h>
