@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/rc.c,v 1.9 2009/10/06 09:07:30 tg Exp $ */
+/* $MirOS: contrib/code/jupp/rc.c,v 1.10 2009/10/18 14:17:34 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
@@ -28,6 +28,7 @@
 #include <bsd/string.h>
 #endif
 
+#include "builtin.h"
 #include "cmd.h"
 #include "kbd.h"
 #include "macro.h"
@@ -875,15 +876,15 @@ int procrc(CAP *cap, unsigned char *name)
 	OPTIONS *o = &fdefault;	/* Current options */
 	KMAP *context = NULL;	/* Current context */
 	unsigned char buf[1024];	/* Input buffer */
-	FILE *fd;		/* rc file */
+	JFILE *fd;		/* rc file */
 	int line = 0;		/* Line number */
 	int err = 0;		/* Set to 1 if there was a syntax error */
 
 	strlcpy((char *)buf, (char *)name, 1024);
 #ifdef __MSDOS__
-	fd = fopen((char *)buf, "rt");
+	fd = jfopen((char *)buf, "rt");
 #else
-	fd = fopen((char *)buf, "r");
+	fd = jfopen((char *)buf, "r");
 #endif
 
 	if (!fd)
@@ -892,7 +893,7 @@ int procrc(CAP *cap, unsigned char *name)
 	fprintf(stderr, "Processing '%s'...", name);
 	fflush(stderr);
 
-	while (fgets((char *)buf, sizeof(buf), fd)) {
+	while (jfgets((char *)buf, sizeof(buf), fd)) {
 		line++;
 		switch (buf[0]) {
 		case ' ':
@@ -944,7 +945,7 @@ int procrc(CAP *cap, unsigned char *name)
 			break;
 		case '{':	/* Ignore help text */
 			{
-				while ((fgets((char *)buf, 256, fd)) && (buf[0] != /*{*/ '}'))
+				while ((jfgets((char *)buf, 256, fd)) && (buf[0] != /*{*/ '}'))
 					/* do nothing */;
 				if (buf[0] != '}') {
 					err = 1;
@@ -1056,7 +1057,7 @@ int procrc(CAP *cap, unsigned char *name)
 					fprintf(stderr, "\n%s %d: Unknown command in macro", name, line);
 					break;
 				} else if (x == -2) {
-					fgets((char *)buf, 1024, fd);
+					jfgets((char *)buf, 1024, fd);
 					goto macroloop;
 				}
 				if (!m)
@@ -1075,7 +1076,7 @@ int procrc(CAP *cap, unsigned char *name)
 			break;
 		}
 	}
-	fclose(fd);		/* Close rc file */
+	jfclose(fd);		/* Close rc file */
 
 	/* Print proper ending string */
 	if (err)

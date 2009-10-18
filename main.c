@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/main.c,v 1.8 2009/08/02 16:13:25 tg Exp $ */
+/* $MirOS: contrib/code/jupp/main.c,v 1.9 2009/10/18 14:17:34 tg Exp $ */
 /*
  *	Editor startup and main edit loop
  *	Copyright
@@ -270,6 +270,24 @@ int main(int argc, char **argv, char **envp)
 
 	vsrm(s);
 	s = vsncpy(NULL, 0, sc(JOERC));
+	s = vsncpy(sv(s), sv(run));
+	s = vsncpy(sv(s), sc("rc"));
+	c = procrc(cap, s);
+	if (c == 0)
+		goto donerc;
+	if (c == 1) {
+		unsigned char buf[8];
+
+		fprintf(stderr, "There were errors in '%s'.  Use it anyway?", s);
+		fflush(stderr);
+		fgets((char *)buf, 8, stdin);
+		if (buf[0] == 'y' || buf[0] == 'Y')
+			goto donerc;
+	}
+
+	/* Try built-in joerc */
+	vsrm(s);
+	s = vsncpy(NULL, 0, sc("*"));
 	s = vsncpy(sv(s), sv(run));
 	s = vsncpy(sv(s), sc("rc"));
 	c = procrc(cap, s);

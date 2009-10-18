@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/help.c,v 1.4 2009/10/06 09:07:30 tg Exp $ */
+/* $MirOS: contrib/code/jupp/help.c,v 1.5 2009/10/18 14:17:34 tg Exp $ */
 /*
  *	Help system
  *	Copyright
@@ -18,6 +18,7 @@
 #endif
 
 #include "blocks.h"
+#include "builtin.h"
 #include "scrn.h"
 #include "utils.h"
 #include "vs.h"
@@ -37,7 +38,7 @@ struct help *help_actual = NULL;			/* actual help screen */
 
 int help_init(unsigned char *filename)
 {
-	FILE *fd;					/* help file */
+	JFILE *fd;					/* help file */
 	unsigned char buf[1024];			/* input buffer */
 
 	struct help *tmp;
@@ -45,13 +46,13 @@ int help_init(unsigned char *filename)
 	unsigned int hlpsiz, hlpbsz;			/* number of used/allocated bytes for tmp->text */
 	unsigned char *tempbuf;
 
-	if (!(fd = fopen((char *)filename, "r")))		/* open the help file */
+	if (!(fd = jfopen((char *)filename, "r")))		/* open the help file */
 		return -1;				/* return if we couldn't open the file */
 
 	fprintf(stderr, "Processing '%s'...", filename);
 	fflush(stderr);
 
-	while (fgets((char *)buf, sizeof(buf), fd)) {
+	while (jfgets((char *)buf, sizeof(buf), fd)) {
 		if (buf[0] == '{') {			/* start of help screen */
 			if (!(tmp = (struct help *) joe_malloc(sizeof(struct help)))) {
 				return NOT_ENOUGH_MEMORY;
@@ -63,7 +64,7 @@ int help_init(unsigned char *filename)
 			hlpbsz = 0;
 			tmp->name = vsncpy(NULL, 0, sz(buf + 1) - 1);
 
-			while ((fgets((char *)buf, sizeof(buf), fd)) && (buf[0] != '}')) {
+			while ((jfgets((char *)buf, sizeof(buf), fd)) && (buf[0] != '}')) {
 				bfl = strlen((char *)buf);
 				if (hlpsiz + bfl > hlpbsz) {
 					if (tmp->text) {
@@ -117,7 +118,7 @@ int help_init(unsigned char *filename)
 			}
 		}
 	}
-	fclose(fd);					/* close help file */
+	jfclose(fd);					/* close help file */
 
 	fprintf(stderr, "done\n");
 	
