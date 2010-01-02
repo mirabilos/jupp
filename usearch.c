@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/usearch.c,v 1.3 2008/05/13 13:08:29 tg Exp $ */
+/* $MirOS: contrib/code/jupp/usearch.c,v 1.4 2010/01/02 15:41:04 tg Exp $ */
 /*
  *	Search & Replace system
  *	Copyright
@@ -483,6 +483,7 @@ static int pfabort(BW *bw, SRCH *srch)
 	return -1;
 }
 
+/* always returns -1 */
 static int pfsave(BW *bw, SRCH *srch)
 {
 	if (srch) {
@@ -717,13 +718,11 @@ static int dopfrepl(BW *bw, int c, SRCH *srch, int *notify)
 	srch->addr = bw->cursor->byte;
 	if (c == 'N' || c == 'n')
 		return dopfnext(bw, srch, notify);
-	else if (c == 'Y' || c == 'y' || c == ' ') {
+	else if (c == 'Y' || c == 'y' || c == ' ' || c == 'L' || c == 'l') {
 		srch->recs.link.prev->yn = 1;
-		if (doreplace(bw, srch)) {
-			pfsave(bw, srch);
-			return -1;
-		} else
-			return dopfnext(bw, srch, notify);
+		/* why do I return -1 on 'L' here? */
+		return ((doreplace(bw, srch) || c == 'L' || c == 'l') ?
+		    pfsave(bw, srch) : dopfnext(bw, srch, notify));
 	} else if (c == 'R' || c == 'r') {
 		if (doreplace(bw, srch))
 			return -1;
@@ -740,7 +739,7 @@ static int dopfrepl(BW *bw, int c, SRCH *srch, int *notify)
 		nungetc(c);
 		return 0;
 	}
-	if (mkqwnsr(bw->parent, sc("Replace (Y)es (N)o (R)est (B)ackup (^C to abort)?"), dopfrepl, pfsave, srch, notify))
+	if (mkqwnsr(bw->parent, sc("Replace (Y)es (N)o (L)ast (R)est (B)ackup (^C to abort)?"), dopfrepl, pfsave, srch, notify))
 		return 0;
 	else
 		return pfsave(bw, srch);

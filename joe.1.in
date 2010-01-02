@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.10 2009/10/18 15:59:46 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.11 2010/01/02 15:41:03 tg Exp $
 .\"-
 .TH JOE 1
 .SH Name
@@ -478,10 +478,10 @@ prompted for replacement text.  Each time the editor finds the search text,
 you will be prompted as to whether you want to replace the found search text
 with the replacement text.  You hit: \fBy\fR to replace the text and then
 find the next occurrence, \fBn\fR to not replace this text, but to then find
-the next occurrence, \fBr\fR to replace all of the remaining occurrences of
-the search text in the remainder of the file without asking for confirmation
-(subject to the \fBnnn\fR option above), or \fB^C\fR to stop searching and
-replacing.
+the next occurrence, \fBl\fR to replace the text and then stop searching,
+\fBr\fR to replace all of the remaining occurrences of the search text in
+the remainder of the file without asking for confirmation (subject to the
+\fBnnn\fR option above), or \fB^C\fR to stop searching and replacing.
 
 .PP
 You can hit \fB^L\fR to repeat the previous search.

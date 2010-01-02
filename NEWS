@@ -1,9 +1,10 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.23 2009/12/12 19:56:15 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.24 2010/01/02 15:41:03 tg Exp $
 ------------------------------------------------------------------
 
 JOE 3.1jupp-current
 
 - Update diff syntax file from joe-current
+- New option (L)ast in search-and-replace
 
 JOE 3.1jupp12
 
