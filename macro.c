@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/macro.c,v 1.3 2008/05/13 13:08:23 tg Exp $ */
+/* $MirOS: contrib/code/jupp/macro.c,v 1.4 2010/01/03 18:04:12 tg Exp $ */
 /*
  *	Keyboard macros
  *	Copyright
@@ -136,6 +136,12 @@ MACRO *mparse(MACRO *m, unsigned char *buf, int *sta)
 	/* Skip whitespace */
 	while (joe_isblank(locale_map,buf[x]))
 		++x;
+
+	/* If the buffer is only whitespace then treat as unknown command */
+	if (!buf[x]) {
+		*sta = -1;
+		return NULL;
+	}
 
 	/* Do we have a string? */
 	if (buf[x] == '\"') {
