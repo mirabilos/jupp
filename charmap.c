@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/charmap.c,v 1.7 2009/10/18 17:03:46 tg Exp $ */
+/* $MirOS: contrib/code/jupp/charmap.c,v 1.8 2010/01/03 18:22:04 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 conversion utilities
  *	Copyright
@@ -1083,7 +1083,7 @@ static struct charmap *charmaps = NULL;	/* Loaded character sets */
    Consults unicode database "i18n.c" to determine which characters are
    uppercase, etc. */
 
-static struct charmap *process_builtin(struct builtin_charmap *builtin)
+static struct charmap *process_builtin(const struct builtin_charmap *builtin)
 {
 	int x, extra_b7, extra_2192;
 	struct charmap *map;
@@ -1219,7 +1219,7 @@ static void load_builtins(void)
 
 /* Parse character map file */
 
-struct builtin_charmap *parse_charmap(unsigned char *name,FILE *f)
+static struct builtin_charmap *parse_charmap(const unsigned char *name,FILE *f)
 {
 	unsigned char buf[1024];
 	unsigned char bf1[1024];
@@ -1299,7 +1299,7 @@ static int map_up(int c)
 		return c;
 }
 
-int map_name_cmp(unsigned char *a,unsigned char *b)
+int map_name_cmp(const unsigned char *a, const unsigned char *b)
 {
 	while (*a=='-') ++a;
 	while (*b=='-') ++b;
@@ -1317,7 +1317,7 @@ int map_name_cmp(unsigned char *a,unsigned char *b)
 
 /* Find a character map */
 
-struct charmap *find_charmap(unsigned char *name)
+struct charmap *find_charmap(const unsigned char *name)
 {
 	unsigned char buf[1024];
 	unsigned char *p;

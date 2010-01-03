@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/vs.c,v 1.2 2008/05/13 13:08:32 tg Exp $ */
+/* $MirOS: contrib/code/jupp/vs.c,v 1.3 2010/01/03 18:22:04 tg Exp $ */
 /*
  *	Variable length strings
  *	Copyright
@@ -38,10 +38,10 @@ void vsrm(sELEMENT *vary)
 		joe_free((int *) vary - 2);
 }
 
-int slen(sELEMENT *ary)
+int slen(const sELEMENT *ary)
 {
 	if (ary) {
-		sELEMENT *beg = ary;
+		const sELEMENT *beg = ary;
 		while (scmp(*ary, sterm))
 			++ary;
 		return ary - beg;
@@ -92,7 +92,7 @@ sELEMENT *vsfill(sELEMENT *vary, int pos, sELEMENT el, int len)
 	return vary;
 }
 
-sELEMENT *vsncpy(sELEMENT *vary, int pos, sELEMENT *array, int len)
+sELEMENT *vsncpy(sELEMENT *vary, int pos, const sELEMENT *array, int len)
 {
 	int olen = sLEN(vary);
 

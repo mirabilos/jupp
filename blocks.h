@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/blocks.h,v 1.2 2008/05/13 13:08:21 tg Exp $ */
+/* $MirOS: contrib/code/jupp/blocks.h,v 1.3 2010/01/03 18:22:03 tg Exp $ */
 /*
  *	Fast block move/copy subroutines
  *	Copyright
@@ -15,7 +15,7 @@
  * Chooses either mbkwd or mfwrd to do this such that the data won't get
  * clobbered.
  */
-void *mmove PARAMS((void *d, void *s, int sz));
+void *mmove PARAMS((void *d, const void *s, int sz));
 
 /* char *mset(char *d,char c,int sz); Set 'sz' bytes at 'd' to 'c'.
  * If 'sz'==0 nothing happens

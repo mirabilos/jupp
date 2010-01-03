@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/vs.h,v 1.2 2008/05/13 13:08:32 tg Exp $ */
+/* $MirOS: contrib/code/jupp/vs.h,v 1.3 2010/01/03 18:22:05 tg Exp $ */
 /*
  *	Dynamic string library
  *	Copyright
@@ -178,11 +178,11 @@ void vsrm PARAMS((sELEMENT *vary));
 #define sLEN(a) ((a) ? *((int *)(a) - 1) : 0)
 #define sLen(a) (*((int *)(a) - 1))
 
-/* int slen(sELEMENT *ary);
+/* int slen(const sELEMENT *ary);
  * Compute length of char or variable length array by searching for termination
  * element.  Returns 0 if 'vary' is 0.
  */
-int slen PARAMS((sELEMENT *ary));
+int slen PARAMS((const sELEMENT *ary));
 
 /* sELEMENT *vsensure(sELEMENT *vary, int len);
  * Make sure there's enough space in the array for 'len' elements.  Whenever
@@ -212,13 +212,13 @@ sELEMENT *vstrunc PARAMS((sELEMENT *vary, int len));
  */
 sELEMENT *vsfill PARAMS((sELEMENT *vary, int pos, sELEMENT el, int len));
 
-/* sELEMENT *vsncpy(sELEMENT *vary, int pos, sELEMENT *array, int len));
+/* sELEMENT *vsncpy(sELEMENT *vary, int pos, const sELEMENT *array, int len));
  * Copy 'len' elements from 'array' onto 'vary' beginning at position 'pos'.
  * 'array' can be a normal char array since the length is passed seperately.  The
  * elements are copied, not duplicated.  A new array is created if 'vary' is
  * 0.  This does not zap previous elements.
  */
-sELEMENT *vsncpy PARAMS((sELEMENT *vary, int pos, sELEMENT *array, int len));
+sELEMENT *vsncpy PARAMS((sELEMENT *vary, int pos, const sELEMENT *array, int len));
 
 /* sELEMENT *vsndup(sELEMENT *vary, int pos, sELEMENT *array, int len));
  * Duplicate 'len' elements from 'array' onto 'vary' beginning at position

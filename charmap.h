@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/charmap.h,v 1.3 2006/11/10 23:23:30 tg Exp $ */
+/* $MirOS: contrib/code/jupp/charmap.h,v 1.4 2010/01/03 18:22:04 tg Exp $ */
 /*
  *	Character sets
  *	Copyright
@@ -46,7 +46,7 @@ struct charmap {
 
 	/* Information for byte-oriented character sets */
 
-	int *to_map;			/* Convert byte to unicode */
+	const int *to_map;		/* Convert byte to unicode */
 
 	unsigned char lower_map[256];	/* Convert to lower case */
 	unsigned char upper_map[256];
@@ -79,7 +79,7 @@ int joe_isspace_eof PARAMS((struct charmap *map,int c));
 unsigned char *lowerize PARAMS((unsigned char *s));
 
 /* Find (load if necessary) a character set */
-struct charmap *find_charmap PARAMS((unsigned char *name));
+struct charmap *find_charmap PARAMS((const unsigned char *name));
 
 /* Get available encodings */
 unsigned char **get_encodings PARAMS((void));

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/blocks.c,v 1.2 2008/05/13 13:08:21 tg Exp $ */
+/* $MirOS: contrib/code/jupp/blocks.c,v 1.3 2010/01/03 18:22:03 tg Exp $ */
 /*
  *	Fast block move/copy subroutines
  *	Copyright
@@ -192,10 +192,10 @@ unsigned char *mset(void *dest, unsigned char c, int sz)
 /* Copy a block of integers */
 /* Copy from highest address to lowest */
 
-static int *mbkwdI(void *dest, void *src, int sz)
+static int *mbkwdI(void *dest, const void *src, int sz)
 {
 	int	*d = dest;
-	int	*s = src;
+	const int *s = src;
 
 	if (d == s)
 		return d;
@@ -247,10 +247,10 @@ static int *mbkwdI(void *dest, void *src, int sz)
 
 /* Copy a block of 'int's.  Copy from lowest address to highest */
 
-static int *mfwrdI(void *dest, void *src, int sz)
+static int *mfwrdI(void *dest, const void *src, int sz)
 {
 	int	*d = dest;
-	int	*s = src;
+	const int *s = src;
 	int	*od = d;
 
 	if (s == d)
@@ -304,7 +304,7 @@ static int *mfwrdI(void *dest, void *src, int sz)
  * are copied before the ones at the lowest ('s') are.
  */
 
-static unsigned char *mbkwd(register unsigned char *d, register unsigned char *s, register int sz)
+static unsigned char *mbkwd(register unsigned char *d, register const unsigned char *s, register int sz)
 {
 	if (s == d)
 		return d;
@@ -395,7 +395,7 @@ static unsigned char *mbkwd(register unsigned char *d, register unsigned char *s
  * are copied before the ones at the highest ('s'+'sz'-1) are.
  */
 
-static unsigned char *mfwrd(register unsigned char *d, register unsigned char *s, register int sz)
+static unsigned char *mfwrd(register unsigned char *d, register const unsigned char *s, register int sz)
 {
 	unsigned char *od = d;
 
@@ -513,7 +513,7 @@ static unsigned char *mfwrd(register unsigned char *d, register unsigned char *s
 	return od;
 }
 
-void *mmove(void *d, void *s, int sz)
+void *mmove(void *d, const void *s, int sz)
 {
 	if (d > s)
 		mbkwd(d, s, sz);
