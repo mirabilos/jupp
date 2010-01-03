@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/cmd.c,v 1.5 2009/10/18 14:52:56 tg Exp $ */
+/* $MirOS: contrib/code/jupp/cmd.c,v 1.6 2010/01/03 17:45:55 tg Exp $ */
 /*
  *	Command execution
  *	Copyright
@@ -85,7 +85,7 @@ CMD cmds[] = {
 	{US "center", TYPETW + TYPEPW + EFIXXCOL + EMOD, ucenter, NULL, 1, NULL},
 	{US "ctrl", TYPETW + TYPEPW + EMOD, uctrl, NULL, 0, NULL},
 	{US "col", TYPETW + TYPEPW, ucol, NULL, 0, NULL},
-	{US "complete", TYPETW + TYPEPW + EMINOR + EMOD, ucmplt, NULL, 0, NULL},
+	{US "complete", TYPEPW + EMINOR + EMOD, ucmplt, NULL, 0, NULL},
 	{US "copy", TYPETW + TYPEPW, ucopy, NULL, 0, NULL},
 	{US "crawll", TYPETW + TYPEPW, ucrawll, NULL, 1, US "crawlr"},
 	{US "crawlr", TYPETW + TYPEPW, ucrawlr, NULL, 1, US "crawll"},
