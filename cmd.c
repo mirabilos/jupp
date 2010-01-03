@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/cmd.c,v 1.6 2010/01/03 17:45:55 tg Exp $ */
+/* $MirOS: contrib/code/jupp/cmd.c,v 1.7 2010/01/03 17:54:07 tg Exp $ */
 /*
  *	Command execution
  *	Copyright
@@ -365,16 +365,17 @@ static int docmd(BW *bw, unsigned char *s, void *object, int *notify)
 {
 	MACRO *mac;
 	int ret = -1;
-	CMD *cmd = findcmd(s);
 
-	vsrm(s);	/* allocated in pw.c::rtnpw() */
-	if (!cmd)
-		msgnw(bw->parent, US "No such command");
-	else {
-		mac = mkmacro(-1, 0, 0, cmd);
-		ret = exmacro(mac, 1);
-		rmmacro(mac);
+	if (s) {
+		mac = mparse(NULL, s, &ret);
+		if (ret < 0 || !mac)
+			msgnw(bw->parent, US "No such command");
+		else {
+			ret = exmacro(mac, 1);
+			rmmacro(mac);
+		}
 	}
+	vsrm(s);	/* allocated in pw.c::rtnpw() */
 	if (notify)
 		*notify = 1;
 	return ret;
