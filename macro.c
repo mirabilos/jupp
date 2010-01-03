@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/macro.c,v 1.4 2010/01/03 18:04:12 tg Exp $ */
+/* $MirOS: contrib/code/jupp/macro.c,v 1.5 2010/01/03 18:09:30 tg Exp $ */
 /*
  *	Keyboard macros
  *	Copyright
@@ -272,6 +272,9 @@ static unsigned char *unescape(unsigned char *ptr, int c)
 	if (c == '"') {
 		*ptr++ = '\\';
 		*ptr++ = '"';
+	} else if (c == '\\') {
+		*ptr++ = '\\';
+		*ptr++ = '\\';
 	} else if (c == '\'') {
 		*ptr++ = '\\';
 		*ptr++ = '\'';
