@@ -1,10 +1,13 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.24 2010/01/02 15:41:03 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.25 2010/01/03 18:25:01 tg Exp $
 ------------------------------------------------------------------
 
 JOE 3.1jupp-current
 
 - Update diff syntax file from joe-current
 - New option (L)ast in search-and-replace
+- Backport some bugfixes from joe-current
+- Let execmd cmd accept macros, not just commands
+- Let macros cmd escape backslash correctly
 
 JOE 3.1jupp12
 
