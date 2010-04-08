@@ -102,6 +102,7 @@ Usage
      you need to set the EDITOR and VISUAL environment variables
      in your shell initialization file (.cshrc or .profile) to
      refer to JOE (joe resides as c:/windows/system32/joe.exe).
+
      There are a number of other obscure invocation parameters
      which may have to be set, particularly if your terminal
      screen is not updating as you think it should.  See the sec-
@@ -235,6 +236,8 @@ Command Line Options
      -crlf
           Joe uses CR-LF as the end of line sequence instead of
           just LF.  This is for editing MS-DOS or VMS files.
+
+     -hex Sets the buffer to hex edit mode.
 
      -wordwrap
           Joe wraps the previous word when you type past the
@@ -545,11 +548,11 @@ Editing Tasks
           with the replacement text.  You hit: y to replace the
           text and then find the next occurrence, n to not
           replace this text, but to then find the next
-          occurrence, r to replace all of the remaining
-          occurrences of the search text in the remainder of the
-          file without asking for confirmation (subject to the
-          nnn option above), or ^C to stop searching and replac-
-          ing.
+          occurrence, l to replace the text and then stop search-
+          ing, r to replace all of the remaining occurrences of
+          the search text in the remainder of the file without
+          asking for confirmation (subject to the nnn option
+          above), or ^C to stop searching and replacing.
 
      You can hit ^L to repeat the previous search.
 
@@ -573,9 +576,9 @@ Editing Tasks
           line by itself.
 
      \< \>
-          These match the beginning and end of a word.  For exam-
-          ple, if you give \<\*is\*\>, then joe will find whole
-          words which have the sub-string is within them.
+          These match the beginning and end of a word.  For
+          example, if you give \<\*is\*\>, then joe will find
+          whole words which have the sub-string is within them.
 
      \[...]
           This matches any single character which appears within
