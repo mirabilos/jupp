@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/termcap.c,v 1.2 2008/05/13 13:08:26 tg Exp $ */
+/* $MirOS: contrib/code/jupp/termcap.c,v 1.3 2010/04/08 15:31:03 tg Exp $ */
 /*
  *	TERMCAP/TERMINFO database interface
  *	Copyright
@@ -513,11 +513,11 @@ void texec(CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int a3)
 
 #ifdef TERMINFO
 	if (cap->abuf) {
-		unsigned char *a;
+		unsigned char *aa;
 
 		outcap = cap;
-		a = (unsigned char *)tgoto((char *)s, a1, a0);
-		tputs((char *)a, l, outout);
+		aa = (unsigned char *)tgoto((char *)s, a1, a0);
+		tputs((char *)aa, l, outout);
 		return;
 	}
 #endif
@@ -699,7 +699,7 @@ static void cpl(unsigned char *ptr, unsigned char c)
 unsigned char *tcompile(CAP *cap, unsigned char *s, int a0, int a1, int a2, int a3)
 {
 	void (*out) (unsigned char *, unsigned char) = cap->out;
-	int div = cap->div;
+	int divider = cap->div;
 
 	if (!s)
 		return NULL;
@@ -708,7 +708,7 @@ unsigned char *tcompile(CAP *cap, unsigned char *s, int a0, int a1, int a2, int 
 	ssp = vsmk(10);
 	texec(cap, s, 0, a0, a1, a2, a3);
 	cap->out = out;
-	cap->div = div;
+	cap->div = divider;
 	return ssp;
 }
 

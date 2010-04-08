@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/bw.c,v 1.14 2009/10/18 16:08:56 tg Exp $ */
+/* $MirOS: contrib/code/jupp/bw.c,v 1.15 2010/04/08 15:31:01 tg Exp $ */
 /*
  *	Edit buffer window generation
  *	Copyright
@@ -34,7 +34,6 @@
 /* Display modes */
 int dspasis = 0;
 int marking = 0;
-extern int square;
 extern int staen;
 extern SCREEN *maint;
 
@@ -718,9 +717,9 @@ void bwgenh(BW *w)
 		txt[76]=0;
 		if (!flg) {
 #if SIZEOF_LONG_LONG && SIZEOF_LONG_LONG == SIZEOF_OFF_T
-			snprintf((char *)bf,sizeof(bf),"%8llX ",q->byte);
+			snprintf((char *)bf,sizeof(bf),"%8llX ",(unsigned long long)q->byte);
 #else
-			snprintf((char *)bf,sizeof(bf),"%8lX ",q->byte);
+			snprintf((char *)bf,sizeof(bf),"%8lX ",(unsigned long)q->byte);
 #endif
 			memcpy(txt,bf,9);
 			for (x=0; x!=8; ++x) {

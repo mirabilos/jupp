@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/macro.c,v 1.5 2010/01/03 18:09:30 tg Exp $ */
+/* $MirOS: contrib/code/jupp/macro.c,v 1.6 2010/04/08 15:31:01 tg Exp $ */
 /*
  *	Keyboard macros
  *	Copyright
@@ -267,26 +267,26 @@ static unsigned char *ptr;
 static int first;
 static int instr;
 
-static unsigned char *unescape(unsigned char *ptr, int c)
+static unsigned char *unescape(unsigned char *uptr, int c)
 {
 	if (c == '"') {
-		*ptr++ = '\\';
-		*ptr++ = '"';
+		*uptr++ = '\\';
+		*uptr++ = '"';
 	} else if (c == '\\') {
-		*ptr++ = '\\';
-		*ptr++ = '\\';
+		*uptr++ = '\\';
+		*uptr++ = '\\';
 	} else if (c == '\'') {
-		*ptr++ = '\\';
-		*ptr++ = '\'';
+		*uptr++ = '\\';
+		*uptr++ = '\'';
 	} else if (c < 32 || c > 126) {
 		/* FIXME: what if c > 256 or c < 0 ? */
-		*ptr++ = '\\';
-		*ptr++ = 'x';
-		*ptr++ = "0123456789ABCDEF"[c >> 4];
-		*ptr++ = "0123456789ABCDEF"[c & 15];
+		*uptr++ = '\\';
+		*uptr++ = 'x';
+		*uptr++ = "0123456789ABCDEF"[c >> 4];
+		*uptr++ = "0123456789ABCDEF"[c & 15];
 	} else
-		*ptr++ = c;
-	return ptr;
+		*uptr++ = c;
+	return uptr;
 }
 
 static void domtext(MACRO *m)

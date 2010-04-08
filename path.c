@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/path.c,v 1.4 2009/10/06 09:07:30 tg Exp $ */
+/* $MirOS: contrib/code/jupp/path.c,v 1.5 2010/04/08 15:31:02 tg Exp $ */
 /* 
  *	Directory and path functions
  *	Copyright
@@ -117,7 +117,8 @@ unsigned char *namepart(unsigned char *tmp, unsigned char *path)
 	z = path + strlen((char *)path);
 	while ((z != path) && (z[-1] != '/'))
 		--z;
-	return (unsigned char *)strlcpy((char *)tmp, (char *)z, 1024);
+	strlcpy((char *)tmp, (char *)z, 1024);
+	return (tmp);
 }
 /********************************************************************/
 unsigned char *dirprt(unsigned char *path)

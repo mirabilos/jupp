@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/undo.c,v 1.2 2008/05/13 13:08:28 tg Exp $ */
+/* $MirOS: contrib/code/jupp/undo.c,v 1.3 2010/04/08 15:31:05 tg Exp $ */
 /*
  *	UNDO system
  *	Copyright
@@ -19,8 +19,6 @@
 #include "ublock.h"
 #include "utils.h"
 #include "w.h"
-
-extern int lightoff;
 
 #define SMALL 1024
 

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/uformat.c,v 1.2 2008/05/13 13:08:28 tg Exp $ */
+/* $MirOS: contrib/code/jupp/uformat.c,v 1.3 2010/04/08 15:31:05 tg Exp $ */
 /*
  *	User text formatting functions
  *	Copyright
@@ -526,8 +526,6 @@ int uformat(BW *bw)
 }
 
 /* Format entire block */
-
-extern int lightoff;
 
 int ufmtblk(BW *bw)
 {

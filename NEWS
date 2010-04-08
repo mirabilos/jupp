@@ -1,13 +1,15 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.25 2010/01/03 18:25:01 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.26 2010/04/08 15:31:00 tg Exp $
 ------------------------------------------------------------------
 
-JOE 3.1jupp-current
+JOE 3.1jupp14
 
 - Update diff syntax file from joe-current
 - New option (L)ast in search-and-replace
 - Backport some bugfixes from joe-current
 - Let execmd cmd accept macros, not just commands
 - Let macros cmd escape backslash correctly
+- Flag --disable-getpwnam to link statically with eglibc
+- Compiler warning cleanup
 
 JOE 3.1jupp12
 

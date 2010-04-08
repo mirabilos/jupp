@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/termcap.h,v 1.3 2008/05/13 13:08:26 tg Exp $ */
+/* $MirOS: contrib/code/jupp/termcap.h,v 1.4 2010/04/08 15:31:04 tg Exp $ */
 /*
  * 	TERMCAP/TERMINFO header file
  *	Copyright
@@ -49,13 +49,13 @@
  * done for self-refering 'tc=filename' links (so all of core will be
  * allocated if there are any).
  */
-CAP *getcap PARAMS((unsigned char *name, unsigned int baud, void (*out) (unsigned char *, unsigned char), void *outptr));
+CAP *getcap PARAMS((unsigned char *name, unsigned int baudrate, void (*out) (unsigned char *, unsigned char), void *outptr));
 
 /* CAP *setcap(CAP *cap,int baud,void (*out)(void *outptr,char c),void *outptr);
  *
  * Reset baud, out and outptr for a CAP
  */
-CAP *setcap PARAMS((CAP *cap, unsigned int baud, void (*out) (unsigned char *, unsigned char), void *outptr));
+CAP *setcap PARAMS((CAP *cap, unsigned int baudrate, void (*out) (unsigned char *, unsigned char), void *outptr));
 
 /* char *jgetstr(CAP *cap,char *name);
  *

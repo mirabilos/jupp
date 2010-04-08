@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tw.c,v 1.6 2009/10/18 14:52:57 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tw.c,v 1.7 2010/04/08 15:31:04 tg Exp $ */
 /* 
  *	Text editing windows
  *	Copyright
@@ -33,7 +33,6 @@
 #include "charmap.h"
 #include "w.h"
 
-extern unsigned char *exmsg;
 extern int square;
 int staen = 0;
 int staupd = 0;
@@ -174,8 +173,8 @@ static unsigned char *stagen(unsigned char *stalin, BW *bw, unsigned char *s, in
 			case 'x': /* Context (but only if autoindent is enabled) */
 				{
 					if ( bw->o.autoindent) {
-						unsigned char *s = get_context(bw);
-						stalin = vsncpy(sv(stalin), sz(s));
+						unsigned char *s_ = get_context(bw);
+						stalin = vsncpy(sv(stalin), sz(s_));
 					}
 				}
 				break;
@@ -341,7 +340,7 @@ static unsigned char *stagen(unsigned char *stalin, BW *bw, unsigned char *s, in
 			case 'k':
 				{
 					int i;
-					unsigned char *cpos = buf;
+					unsigned char *cpos_ = buf;
 
 					buf[0] = 0;
 					if (w->kbd->x && w->kbd->seq[0])
@@ -349,22 +348,22 @@ static unsigned char *stagen(unsigned char *stalin, BW *bw, unsigned char *s, in
 							int c = w->kbd->seq[i] & 127;
 
 							if (c < 32) {
-								cpos[0] = '^';
-								cpos[1] = c + '@';
-								cpos += 2;
+								cpos_[0] = '^';
+								cpos_[1] = c + '@';
+								cpos_ += 2;
 							} else if (c == 127) {
-								cpos[0] = '^';
-								cpos[1] = '?';
-								cpos += 2;
+								cpos_[0] = '^';
+								cpos_[1] = '?';
+								cpos_ += 2;
 							} else {
-								cpos[0] = c;
-								cpos += 1;
+								cpos_[0] = c;
+								cpos_ += 1;
 							}
 						}
-					*cpos++ = fill;
-					while (cpos - buf < 4)
-						*cpos++ = fill;
-					stalin = vsncpy(sv(stalin), buf, cpos - buf);
+					*cpos_++ = fill;
+					while (cpos_ - buf < 4)
+						*cpos_++ = fill;
+					stalin = vsncpy(sv(stalin), buf, cpos_ - buf);
 				}
 				break;
 			case 'S':

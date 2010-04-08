@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/vfile.c,v 1.2 2008/05/13 13:08:32 tg Exp $ */
+/* $MirOS: contrib/code/jupp/vfile.c,v 1.3 2010/04/08 15:31:06 tg Exp $ */
 /*
  *	Software virtual memory system
  *	Copyright
@@ -130,7 +130,7 @@ unsigned char *vlock(VFILE *vfile, unsigned long addr)
 	addr -= ofst;
 
 	for (vp = htab[((addr >> LPGSIZE) + (unsigned long) vfile) & (HTSIZE - 1)]; vp; vp = vp->next)
-		if (vp->vfile == vfile && vp->addr == addr) {
+		if (vp->vfile == vfile && (unsigned long)vp->addr == addr) {
 			++vp->count;
 			return vp->data + ofst;
 		}
@@ -161,7 +161,7 @@ unsigned char *vlock(VFILE *vfile, unsigned long addr)
 					vheadsz += amnt;
 					vbase = vp->data;
 					joe_free(t);
-				} else if (((physical(vp->data + PGSIZE * INC) - physical(vbase)) >> LPGSIZE) > vheadsz) {
+				} else if (((physical(vp->data + PGSIZE * INC) - physical(vbase)) >> LPGSIZE) > (unsigned long)vheadsz) {
 					vheaders = (VPAGE **)
 					    joe_realloc(vheaders, (vheadsz = (((physical(vp->data + PGSIZE * INC) - physical(vbase)) >> LPGSIZE))) * sizeof(VPAGE *));
 				}
@@ -203,12 +203,12 @@ unsigned char *vlock(VFILE *vfile, unsigned long addr)
 	vp->next = htab[((addr >> LPGSIZE) + (unsigned long)vfile) & (HTSIZE - 1)];
 	htab[((addr >> LPGSIZE) + (unsigned long)vfile) & (HTSIZE - 1)] = vp;
 
-	if (addr < vfile->size) {
+	if (addr < (unsigned long)vfile->size) {
 		if (!vfile->fd) {
 			vfile->fd = open((char *)(vfile->name), O_RDWR);
 		}
 		lseek(vfile->fd, addr, 0);
-		if (addr + PGSIZE > vfile->size) {
+		if (addr + PGSIZE > (unsigned long)vfile->size) {
 			joe_read(vfile->fd, vp->data, (int) (vfile->size - addr));
 			mset(vp->data + vfile->size - addr, 0, PGSIZE - (int) (vfile->size - addr));
 		} else

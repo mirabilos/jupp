@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/utf8.h,v 1.2 2008/05/13 13:08:30 tg Exp $ */
+/* $MirOS: contrib/code/jupp/utf8.h,v 1.3 2010/04/08 15:31:06 tg Exp $ */
 /*
  *	UTF-8 Utilities
  *	Copyright
@@ -56,7 +56,6 @@ int from_utf8 PARAMS((struct charmap *map,unsigned char *s));
 
 extern int utf8;
 
-int unictrl PARAMS((int ucs));
 int mk_wcwidth PARAMS((int wide,int c));
 
 extern struct charmap *locale_map;	/* Default bytemap of terminal */

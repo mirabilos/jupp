@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tab.c,v 1.3 2008/07/28 00:12:07 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tab.c,v 1.4 2010/04/08 15:31:03 tg Exp $ */
 /*
  *	File selection menu
  *	Copyright
@@ -89,7 +89,7 @@ static int get_entries(TAB *tab, int prv)
 		mset(&buf, 0, sizeof(struct stat));
 
 		stat((char *)(files[a]), &buf);
-		if (buf.st_ino == prv)
+		if ((int)buf.st_ino == prv)
 			which = a;
 		if ((buf.st_mode & S_IFMT) == S_IFDIR)
 			tab->type[a] = F_DIR;

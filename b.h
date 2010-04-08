@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/b.h,v 1.2 2008/05/13 13:08:20 tg Exp $ */
+/* $MirOS: contrib/code/jupp/b.h,v 1.3 2010/04/08 15:31:00 tg Exp $ */
 /*
  *	Editor engine
  *	Copyright
@@ -125,7 +125,6 @@ P *binss PARAMS((P *p, unsigned char *s));
  */
 B *bload PARAMS((unsigned char *s));
 B *bread PARAMS((int fi, long int max));
-B *bfind PARAMS((unsigned char *s));
 B *borphan PARAMS((void));
 
 /* Save 'size' bytes beginning at 'p' into file with name in 's' */

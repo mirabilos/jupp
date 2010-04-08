@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.20 2009/10/18 17:54:54 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.21 2010/04/08 15:31:01 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -6,7 +6,7 @@
 AC_PREREQ(2.54)
 
 #### Here's the only place where to change version number ####
-AC_INIT(joe, 3.1jupp12)
+AC_INIT(joe, 3.1jupp14)
 #### But see main.c near use of the CPP macro VERSION for the (c) year
 AC_CONFIG_SRCDIR([b.c])
 
@@ -49,6 +49,14 @@ AC_ARG_ENABLE(termcap,
 
 if test "$termcap" = "yes"; then
 	search_libs="$search_libs termcap"
+fi
+
+AC_ARG_ENABLE([getpwnam],
+[  --disable-getpwnam      disable use of getpwnam function],
+	getpwnam=$enableval, getpwnam=yes)
+
+if test x"$getpwnam" = x"no"; then
+	CPPFLAGS="$CPPFLAGS -DJOE_NOPWNAM"
 fi
 
 AC_ARG_ENABLE([termidx],
@@ -99,6 +107,8 @@ AC_CHECK_SIZEOF(short, 2)
 AC_CHECK_SIZEOF(int, 4)
 AC_CHECK_SIZEOF(long, 4)
 AC_CHECK_SIZEOF(void *, 4)
+AC_CHECK_SIZEOF(long long, 8)
+AC_CHECK_SIZEOF(off_t, 8)
 AC_CHECK_TYPE([sighandler_t],
 	[AC_DEFINE([HAVE_SIGHANDLER_T], 1, [Define if you have the `sighandler_t' type.])],
 	,

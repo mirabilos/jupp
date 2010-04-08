@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.c,v 1.6 2009/10/18 14:52:57 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.c,v 1.7 2010/04/08 15:31:03 tg Exp $ */
 /*
  *	Device independant TTY interface for JOE
  *	Copyright
@@ -29,8 +29,6 @@ int columns = 0;
 int notite = 0;
 int usetabs = 0;
 int assume_color = 0;
-
-extern int mid;
 
 /* How to display characters (especially the control ones) */
 /* here are characters ... */

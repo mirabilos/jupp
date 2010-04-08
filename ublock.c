@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ublock.c,v 1.4 2009/10/18 14:52:58 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ublock.c,v 1.5 2010/04/08 15:31:04 tg Exp $ */
 /*
  * 	Highlighted block functions
  *	Copyright
@@ -417,8 +417,6 @@ int utomarkbk(BW *bw)
 }
 
 /* Delete block */
-
-extern int udelln(BW *bw);
 
 int ublkdel(BW *bw)
 {

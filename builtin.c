@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/builtin.c,v 1.1 2009/10/18 14:17:34 tg Exp $ */
+/* $MirOS: contrib/code/jupp/builtin.c,v 1.2 2010/04/08 15:31:01 tg Exp $ */
 /*
  *	Built-in config files
  *	Copyright
@@ -15,7 +15,7 @@
 
 #define zcmp(a,b) strcmp((char *)(a), (char *)(b))
 
-JFILE *jfopen(unsigned char *name, char *mode)
+JFILE *jfopen(unsigned char *name, const char *mode)
 {
 	if (name[0] == '*') {
 		int x;

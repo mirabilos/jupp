@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/rc.c,v 1.11 2009/10/18 14:52:56 tg Exp $ */
+/* $MirOS: contrib/code/jupp/rc.c,v 1.12 2010/04/08 15:31:02 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
@@ -78,8 +78,8 @@ KMAP *kmap_getcontext(unsigned char *name)
 OPTIONS *options = NULL;
 
 /* Global variable options */
-extern int mid, dspasis, dspctrl, force, help, pgamnt, square, csmode, nobackups, lightoff, exask, skiptop;
-extern int noxon, lines, staen, columns, Baud, dopadding, orphan, marking, dobeep, keepup, nonotice;
+extern int mid, dspasis, dspctrl, help, square, csmode, nobackups, lightoff, exask, skiptop;
+extern int noxon, lines, columns, Baud, dopadding, orphan, marking, keepup, nonotice;
 extern int notite, usetabs, assume_color, guesscrlf, guessindent, menu_explorer, icase, wrap, autoswap;
 extern unsigned char *backpath;
 
@@ -341,7 +341,7 @@ static void izopts(void)
  * glopt(name,arg,options,1): set file local option
  */
 
-int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options, int set)
+int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options_, int set)
 {
 	int val;
 	int ret = 0;
@@ -381,16 +381,16 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options, int set)
 				}
 				break;
 			case 4: /* Local option flag */
-				if (options)
-					*(int *) ((unsigned char *) options + glopts[x].ofst) = st;
+				if (options_)
+					*(int *) ((unsigned char *) options_ + glopts[x].ofst) = st;
 				break;
 			case 5: /* Local option integer */
 				if (arg) {
-					if (options) {
+					if (options_) {
 						sscanf((char *)arg, "%d", &val);
 						if (val >= glopts[x].low && val <= glopts[x].high)
 							*(int *) ((unsigned char *)
-								  options + glopts[x].ofst) = val;
+								  options_ + glopts[x].ofst) = val;
 					} 
 				}
 				break;
@@ -401,24 +401,24 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options, int set)
 					sscanf((char *)arg, "%d", &zz);
 					if (zz >= glopts[x].low && zz <= glopts[x].high) {
 						--zz;
-						if (options)
+						if (options_)
 							*(int *) ((unsigned char *)
-								  options + glopts[x].ofst) = zz;
+								  options_ + glopts[x].ofst) = zz;
 					}
 				}
 				break;
 
 			case 9: /* Set syntax */
-				if (arg && options)
-					options->syntax_name = (unsigned char *)strdup((char *)arg);
+				if (arg && options_)
+					options_->syntax_name = (unsigned char *)strdup((char *)arg);
 				/* this was causing all syntax files to be loaded...
-				if (arg && options)
-					options->syntax = load_dfa(arg); */
+				if (arg && options_)
+					options_->syntax = load_dfa(arg); */
 				break;
 
 			case 13: /* Set byte mode encoding */
-				if (arg && options)
-					options->map_name = (unsigned char *)strdup((char *)arg);
+				if (arg && options_)
+					options_->map_name = (unsigned char *)strdup((char *)arg);
 				break;
 			}
 			/* This is a stupid hack... */
@@ -432,15 +432,15 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options, int set)
 	/* These options do not show up in ^T */
 	if (!strcmp(s, "lmsg")) {
 		if (arg) {
-			if (options)
-				options->lmsg = (unsigned char *)strdup((char *)arg);
+			if (options_)
+				options_->lmsg = (unsigned char *)strdup((char *)arg);
 			ret = 2;
 		} else
 			ret = 1;
 	} else if (!strcmp(s, "rmsg")) {
 		if (arg) {
-			if (options)
-				options->rmsg = (unsigned char *)strdup((char *)arg);
+			if (options_)
+				options_->rmsg = (unsigned char *)strdup((char *)arg);
 			ret = 2;
 		} else
 			ret = 1;
@@ -451,8 +451,8 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options, int set)
 			for (y = 0; !joe_isspace(locale_map,arg[y]); ++y) ;
 			if (!arg[y])
 				arg[y] = 0;
-			if (options && y)
-				options->context = (unsigned char *)strdup((char *)arg);
+			if (options_ && y)
+				options_->context = (unsigned char *)strdup((char *)arg);
 			ret = 2;
 		} else
 			ret = 1;
@@ -460,8 +460,8 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options, int set)
 		if (arg) {
 			int sta;
 
-			if (options)
-				options->mnew = mparse(NULL, arg, &sta);
+			if (options_)
+				options_->mnew = mparse(NULL, arg, &sta);
 			ret = 2;
 		} else
 			ret = 1;
@@ -469,8 +469,8 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options, int set)
 		if (arg) {
 			int sta;
 
-			if (options)
-				options->mold = mparse(NULL, arg, &sta);
+			if (options_)
+				options_->mold = mparse(NULL, arg, &sta);
 			ret = 2;
 		} else
 			ret = 1;
@@ -478,8 +478,8 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options, int set)
 		if (arg) {
 			int sta;
 
-			if (options)
-				options->msnew = mparse(NULL, arg, &sta);
+			if (options_)
+				options_->msnew = mparse(NULL, arg, &sta);
 			ret = 2;
 		} else
 			ret = 1;
@@ -487,8 +487,8 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options, int set)
 		if (arg) {
 			int sta;
 
-			if (options)
-				options->msold = mparse(NULL, arg, &sta);
+			if (options_)
+				options_->msold = mparse(NULL, arg, &sta);
 			ret = 2;
 		} else
 			ret = 1;
@@ -827,9 +827,8 @@ static int doabrt(MENU *m, int x, unsigned char **s)
 
 int umode(BW *bw)
 {
-	int size;
+	size_t size, x, len;
 	unsigned char **s;
-	size_t x, len;
 
 	bw->b->o.readonly = bw->o.readonly = bw->b->rdonly;
 	for (size = 0; glopts[size].menu; ++size) ;

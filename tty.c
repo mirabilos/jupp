@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.c,v 1.10 2009/10/18 17:38:08 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.c,v 1.11 2010/04/08 15:31:04 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright
@@ -591,7 +591,7 @@ long last_time;
 
 int ttgetc(void)
 {
-	int stat;
+	int stat_;
 	long new_time;
 
 
@@ -617,11 +617,11 @@ int ttgetc(void)
 	}
 	if (ackkbd != -1) {
 		if (!have) {	/* Wait for input */
-			stat = read(mpxfd, &pack, sizeof(struct packet) - 1024);
+			stat_ = read(mpxfd, &pack, sizeof(struct packet) - 1024);
 
-			if (pack.size && stat > 0) {
+			if (pack.size && stat_ > 0) {
 				joe_read(mpxfd, pack.data, pack.size);
-			} else if (stat < 1) {
+			} else if (stat_ < 1) {
 				if (winched || ticked)
 					goto loop;
 				else

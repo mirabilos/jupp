@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/uisrch.c,v 1.5 2008/07/28 00:12:07 tg Exp $ */
+/* $MirOS: contrib/code/jupp/uisrch.c,v 1.6 2010/04/08 15:31:05 tg Exp $ */
 /*
  *	Incremental search
  *	Copyright
@@ -228,8 +228,8 @@ static int itype(BW *bw, int c, struct isrch *isrch, int *notify)
 		unsigned char buf[16];
 		int x;
 		for (x=0; x!=sLEN(isrch->pattern); ++x) {
-			int c = to_uni(bw->b->o.charmap, isrch->pattern[x]);
-			utf8_encode(buf,c);
+			int c_ = to_uni(bw->b->o.charmap, isrch->pattern[x]);
+			utf8_encode(buf,c_);
 			isrch->prompt = vsncpy(sv(isrch->prompt),sz(buf));
 		}
 	} else if (!locale_map->type && bw->b->o.charmap->type) {
@@ -237,10 +237,10 @@ static int itype(BW *bw, int c, struct isrch *isrch, int *notify)
 		unsigned char *p = isrch->pattern;
 		int len = sLEN(isrch->pattern);
 		while (len) {
-			int c = utf8_decode_fwrd(&p, &len);
-			if (c>=0) {
-				c = from_uni(locale_map, c);
-				isrch->prompt = vsadd(isrch->prompt, c);
+			int c_ = utf8_decode_fwrd(&p, &len);
+			if (c_ >= 0) {
+				c_ = from_uni(locale_map, c_);
+				isrch->prompt = vsadd(isrch->prompt, c_);
 			}
 		}
 	} else {

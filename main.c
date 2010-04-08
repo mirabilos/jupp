@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/main.c,v 1.9 2009/10/18 14:17:34 tg Exp $ */
+/* $MirOS: contrib/code/jupp/main.c,v 1.10 2010/04/08 15:31:02 tg Exp $ */
 /*
  *	Editor startup and main edit loop
  *	Copyright
@@ -32,7 +32,7 @@
 #include "charmap.h"
 #include "syntax.h"
 
-extern int mid, dspasis, force, help, pgamnt, nobackups, lightoff, exask, skiptop, noxon, lines, staen, columns, Baud, dopadding, marking, dobeep;
+extern int mid, dspasis, help, pgamnt, nobackups, lightoff, exask, lines, columns, dopadding, marking, dobeep;
 
 extern int idleout;		/* Clear to use /dev/tty for screen */
 extern unsigned char *joeterm;
@@ -404,7 +404,7 @@ int main(int argc, char **argv, char **envp)
 	if (!nonotice) {
 		joe_snprintf_2((char *)msgbuf,JOE_MSGBUFSIZE,
 		    "\\i** Joe's Own Editor v" VERSION
-		    " ** (%s) ** Copyright %s 2009 **\\i",
+		    " ** (%s) ** Copyright %s 2010 mirabilos **\\i",
 		    locale_map->name, locale_map->type ? "©" : "(c)");
 		msgnw(((BASE *)lastw(maint)->object)->parent, msgbuf);
 	}

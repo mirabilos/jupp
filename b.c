@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/b.c,v 1.7 2009/10/18 16:00:32 tg Exp $ */
+/* $MirOS: contrib/code/jupp/b.c,v 1.8 2010/04/08 15:31:00 tg Exp $ */
 /*
  *	Editor engine
  *	Copyright
@@ -43,7 +43,6 @@
 
 unsigned char stdbuf[stdsiz];
 
-extern int errno;
 int guesscrlf = 0;
 int guessindent = 0;
 
@@ -2006,7 +2005,7 @@ B *bread(int fi, long int max)
 /* Parse file name.
  *
  * Removes ',xxx,yyy' from end of name and puts their value into skip and amnt
- * Replaces ~user/ with directory of given user
+ * Replaces ~user/ with directory of given user unless -DJOE_NOPWNAM
  * Replaces ~/ with $HOME
  *
  * Returns new variable length string.
@@ -2055,6 +2054,7 @@ unsigned char *parsens(unsigned char *s, long int *skip, long int *amnt)
 				z = vsncpy(z, sLEN(z), sz(n + x));
 				vsrm(n);
 				n = z;
+#ifndef JOE_NOPWNAM
 			} else {
 				struct passwd *passwd;
 
@@ -2069,6 +2069,7 @@ unsigned char *parsens(unsigned char *s, long int *skip, long int *amnt)
 					vsrm(n);
 					n = z;
 				}
+#endif
 			}
 		}
 	}

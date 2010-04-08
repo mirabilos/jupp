@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.h,v 1.3 2008/05/13 13:08:27 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.h,v 1.4 2010/04/08 15:31:04 tg Exp $ */
 /*
  *	TTY interface header file
  *	Copyright
@@ -146,7 +146,11 @@ extern int leave;
  * It is called with 'n' set to the number of the caught signal or 0 if the
  * input closed.
  */
-RETSIGTYPE ttsig PARAMS((int sig));
+RETSIGTYPE ttsig PARAMS((int sig))
+#ifdef __GNUC__
+    __attribute__((noreturn))
+#endif
+    ;
 
 /* void ttgtsz(int *x,int *y);  Get size of screen from ttsize/winsize
  * structure */

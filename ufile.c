@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ufile.c,v 1.3 2008/05/13 13:08:28 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ufile.c,v 1.4 2010/04/08 15:31:05 tg Exp $ */
 /*
  * 	User file operations
  *	Copyright
@@ -281,14 +281,14 @@ struct savereq {
 	int rename;	/* Set if we're renaming the file during save */
 };
 
-struct savereq *mksavereq(int (*callback)(), unsigned char *name, B *first,int rename)
+struct savereq *mksavereq(int (*callback)(), unsigned char *name, B *first,int rename_)
 {
 	struct savereq *req = (struct savereq *) joe_malloc(sizeof(struct savereq));
 	req->callback = callback;
 	req->name = name;
 	req->first = first;
 	req->not_saved = 0;
-	req->rename = rename;
+	req->rename = rename_;
 	return req;
 }
 
@@ -898,24 +898,24 @@ static int dolose(BW *bw, int c, void *object, int *notify)
 		do {
 			if ((w->watom->what&TYPETW) && ((BW *)w->object)->b==b) {
 				if ((new_b = borphan()) != NULL) {
-					BW *bw = (BW *)w->object;
-					void *object = bw->object;
+					BW *bw_ = (BW *)w->object;
+					void *object_ = bw_->object;
 					/* FIXME: Shouldn't we wabort() and wcreate here to kill
 					   any prompt windows? */
 
-					bwrm(bw);
-					w->object = (void *) (bw = bwmk(w, new_b, 0));
+					bwrm(bw_);
+					w->object = (void *) (bw_ = bwmk(w, new_b, 0));
 					wredraw(w);
-					bw->object = object;
+					bw_->object = object_;
 				} else {
-					BW *bw = (BW *)w->object;
-					object = bw->object;
-					bwrm(bw);
-					w->object = (void *) (bw = bwmk(w, bfind(US ""), 0));
+					BW *bw_ = (BW *)w->object;
+					object = bw_->object;
+					bwrm(bw_);
+					w->object = (void *) (bw_ = bwmk(w, bfind(US ""), 0));
 					wredraw(w);
-					bw->object = object;
-					if (bw->o.mnew)
-						exemac(bw->o.mnew);
+					bw_->object = object;
+					if (bw_->o.mnew)
+						exemac(bw_->o.mnew);
 				}
 			}
 		w = w->link.next;
