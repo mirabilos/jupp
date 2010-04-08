@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/syntax.c,v 1.3 2008/05/13 13:08:26 tg Exp $ */
+/* $MirOS: contrib/code/jupp/syntax.c,v 1.4 2010/04/08 17:54:19 tg Exp $ */
 /*
  *	Syntax highlighting DFA interpreter
  *	Copyright
@@ -140,7 +140,8 @@ static struct high_state *find_state(struct high_syntax *syntax,unsigned char *n
 
 /* Create empty command */
 
-static struct high_cmd *mkcmd()
+static struct high_cmd *
+mkcmd(void)
 {
 	struct high_cmd *cmd = malloc(sizeof(struct high_cmd));
 	cmd->noeat = 0;

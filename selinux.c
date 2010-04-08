@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/selinux.c,v 1.4 2009/10/18 13:13:53 tg Exp $ */
+/* $MirOS: contrib/code/jupp/selinux.c,v 1.5 2010/04/08 17:54:19 tg Exp $ */
 
 #include "config.h"
 #if defined(HAVE_SELINUX_HDR) && defined(HAVE_SELINUX_FUN)
@@ -115,7 +115,7 @@ match_default_security_context(const char *from_file)
 
 
 int
-reset_default_security_context()
+reset_default_security_context(void)
 {
 #ifdef WITH_SELINUX
 	if (selinux_enabled == -1)

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/utf8.c,v 1.6 2008/05/13 13:08:30 tg Exp $ */
+/* $MirOS: contrib/code/jupp/utf8.c,v 1.7 2010/04/08 17:54:19 tg Exp $ */
 /*
  *	UTF-8 Utilities
  *	Copyright
@@ -210,7 +210,8 @@ unsigned char *non_utf8_codeset;
 struct charmap *locale_map;
 			/* Character map of terminal */
 
-void joe_locale()
+void
+joe_locale(void)
 {
 #if !defined(HAVE_SETLOCALE) || defined(junk)
 	unsigned char *s, *t;

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/charmap.c,v 1.8 2010/01/03 18:22:04 tg Exp $ */
+/* $MirOS: contrib/code/jupp/charmap.c,v 1.9 2010/04/08 17:54:18 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 conversion utilities
  *	Copyright
@@ -1388,7 +1388,8 @@ main(int argc,char *argv[])
 
 /* Get names of available encodings (for tab completion of ^T E prompt) */
 
-unsigned char **get_encodings()
+unsigned char **
+get_encodings(void)
 {
 	int y, x;
 	unsigned char **encodings = 0;
