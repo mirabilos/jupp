@@ -1,4 +1,4 @@
- "jupp" resource file for JOE 3.1*nix (c) 1997-2009 Thorsten Glaser
+ "jupp" resource file for JOE 3.1*nix (c) 1997-2010 Thorsten Glaser
  Provided that these terms and disclaimer and all copyright notices
  are retained or reproduced in an accompanying document, permission
  is granted to deal in this work without restriction, including un-
@@ -105,19 +105,11 @@
 -syntax csh
 
 *
-+#!\+\[	 ]\+\[a-z/]/csh\>
++#!\+\[	 ]\+\[a-z/]/\+tcsh\>
 -syntax csh
 
 *
-+#!\+\[	 ]\+\[a-z/]/env\+\[	 ]csh\>
--syntax csh
-
-*
-+#!\+\[	 ]\+\[a-z/]/tcsh\>
--syntax csh
-
-*
-+#!\+\[	 ]\+\[a-z/]/env\+\[	 ]tcsh\>
++#!\+\[	 ]\+\[a-z/]/env\+\[	 ]\+tcsh\>
 -syntax csh
 
  === Diff
@@ -304,27 +296,23 @@
 -syntax sh
 
 *
-+#!\+\[	 ]\+\[a-z/]/sh\>
++:\[	 \n]
 -syntax sh
 
 *
-+#!\+\[	 ]\+\[a-z/]/env\+\[	 ]sh\>
++#!\+\[	 ]\+\[a-z/]/\+\[bd]\+ash\>
 -syntax sh
 
 *
-+#!\+\[	 ]\+\[a-z/]/ksh\>
++#!\+\[	 ]\+\[a-z/]/env\+\[	 ]\+\[bd]\+ash\>
 -syntax sh
 
 *
-+#!\+\[	 ]\+\[a-z/]/env\+\[	 ]ksh\>
++#!\+\[	 ]\+\[a-z/]/\+\[a-z]ksh\+\[0-9._-]\>
 -syntax sh
 
 *
-+#!\+\[	 ]\+\[a-z/]/\[bm]\[ak]sh\+\[0-9.]\>
--syntax sh
-
-*
-+#!\+\[	 ]\+\[a-z/]/env\+\[	 ]\[bm]\[ak]sh\+\[0-9.]\>
++#!\+\[	 ]\+\[a-z/]/env\+\[	 ]\+\[a-z]ksh\+\[0-9._-]\>
 -syntax sh
 
  === TCL
@@ -427,7 +415,7 @@
 \i \i go to \uhttp://sf.net/projects/joe-editor/\u for upstream bug reports. JUPP 2.8 \i \i
 \i \i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\d(R)\d \i \i
 \i \i at \uhttp://mirbsd.de/jupp\u and by \bThorsten "\dmirabilos\d" Glaser <\utg@mirbsd.org\u>\b \i \i
-\i \i @(#) jupprc 2009-10-18; autoCR-LF; UTF-8 tty by LC_CTYPE; per-file encoding \i \i
+\i \i @(#) jupprc 2010-04-08; autoCR-LF; UTF-8 tty by LC_CTYPE; per-file encoding \i \i
 }
 
 :windows
