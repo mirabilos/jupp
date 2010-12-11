@@ -1,5 +1,11 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.26 2010/04/08 15:31:00 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.27 2010/12/11 21:18:07 tg Exp $
 ------------------------------------------------------------------
+
+JOE-current
+
+- Update COPYING file from MirOS master (refreshed from FSF master)
+- Refresh wcwidth code from Unicode 6.0.0
+  XXX maybe use MirBSD libc code for {to,is}wc* too, extended beyond BMP
 
 JOE 3.1jupp14
 
