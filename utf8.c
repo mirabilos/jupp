@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/utf8.c,v 1.7 2010/04/08 17:54:19 tg Exp $ */
+/* $MirOS: contrib/code/jupp/utf8.c,v 1.8 2011/07/02 22:50:52 tg Exp $ */
 /*
  *	UTF-8 Utilities
  *	Copyright
@@ -22,14 +22,27 @@
 #include <sys/param.h>
 #endif
 
-/* OpenBSD, ekkoBSD and old MirOS do not have real locale support */
-#if defined(__OpenBSD__) && (!defined(MirBSD) || (MirBSD < 0x09A0))
-#undef HAVE_SETLOCALE
+#undef USE_LOCALE
+#if defined(HAVE_SETLOCALE) && defined(HAVE_NL_LANGINFO)
+#define USE_LOCALE
 #endif
 
-#if defined(HAVE_LOCALE_H) && defined(HAVE_SETLOCALE)
-#	include <locale.h>
-#       include <langinfo.h>
+/* OpenBSD, ekkoBSD and old MirOS do not have real locale support */
+#if defined(__OpenBSD__) && (!defined(MirBSD) || (MirBSD < 0x09A0))
+#undef USE_LOCALE
+#endif
+
+#ifdef USE_LOCALE
+#ifdef HAVE_LOCALE_H
+#include <locale.h>
+#endif
+#ifdef HAVE_LANGINFO_H
+#include <langinfo.h>
+#endif
+#endif
+
+#ifndef CODESET
+#undef USE_LOCALE
 #endif
 
 #include "rc.h"
@@ -213,7 +226,7 @@ struct charmap *locale_map;
 void
 joe_locale(void)
 {
-#if !defined(HAVE_SETLOCALE) || defined(junk)
+#if !defined(USE_LOCALE) || defined(junk)
 	unsigned char *s, *t;
 
 
@@ -226,7 +239,7 @@ joe_locale(void)
 	}
 #endif
 
-#ifdef HAVE_SETLOCALE
+#ifdef USE_LOCALE
 #ifdef junk
 	if (s)
 		s=(unsigned char *)strdup((char *)s);
