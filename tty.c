@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.c,v 1.12 2011/07/02 22:44:46 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.c,v 1.14 2011/07/02 22:45:14 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright
@@ -848,7 +848,7 @@ static void mpxend(void)
 
 /* Newer sgi machines can do it the __svr4__ way, but old ones can't */
 
-extern char *_getpty();
+extern char *_getpty(int *fildes, int oflag, mode_t mode, int nofork);
 
 static unsigned char *getpty(int *ptyfd)
 {
@@ -860,7 +860,7 @@ static unsigned char *getpty(int *ptyfd)
 
 /* Strange streams way */
 
-extern char *ptsname();
+extern char *ptsname(int);
 
 static unsigned char *getpty(int *ptyfd)
 {
