@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/config.h,v 1.2 2008/05/13 13:08:21 tg Exp $ */
+/* $MirOS: contrib/code/jupp/config.h,v 1.3 2011/07/02 22:43:07 tg Exp $ */
 
 #ifndef _JOE_CONFIG_H
 #define _JOE_CONFIG_H
@@ -74,5 +74,11 @@
 #define HTSIZE 2048
 
 #endif /* real mode ms-dos */
+
+#ifdef __GNUC__
+#define ATTR_UNUSED	__attribute__((unused))
+#else
+#define ATTR_UNUSED	/* nothing */
+#endif
 
 #endif /* ifndef _JOE_CONFIG_H */
