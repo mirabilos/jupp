@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/rc.c,v 1.12 2010/04/08 15:31:02 tg Exp $ */
+/* $MirOS: contrib/code/jupp/rc.c,v 1.13 2011/07/02 16:17:06 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
@@ -970,7 +970,7 @@ int procrc(CAP *cap, unsigned char *name)
 				buf[x] = 0;
 				if (!glopt(opt, arg, o, 2)) {
 					err = 1;
-					fprintf(stderr, "\n%s %d: Unknown option %s", name, line, opt);
+					fprintf(stderr, "\n%s:%d: Unknown option '%s'", name, line, opt);
 				}
 			}
 			break;
@@ -980,7 +980,7 @@ int procrc(CAP *cap, unsigned char *name)
 					/* do nothing */;
 				if (buf[0] != '}') {
 					err = 1;
-					fprintf(stderr, "\n%s %d: End of joerc file occured before end of help text\n", name, line);
+					fprintf(stderr, "\n%s:%d: End of joerc file occured before end of help text\n", name, line);
 					break;
 				}
 			}
@@ -1009,11 +1009,11 @@ int procrc(CAP *cap, unsigned char *name)
 								addcmd(buf + x, m);
 							else {
 								err = 1;
-								fprintf(stderr, "\n%s %d: macro missing from :def", name, line);
+								fprintf(stderr, "\n%s:%d: macro missing from :def", name, line);
 							}
 						} else {
 							err = 1;
-							fprintf(stderr, "\n%s %d: command name missing from :def", name, line);
+							fprintf(stderr, "\n%s:%d: command name missing from :def", name, line);
 						}
 					} else if (!strcmp(buf + 1, "inherit"))
 						if (context) {
@@ -1024,11 +1024,11 @@ int procrc(CAP *cap, unsigned char *name)
 								kcpy(context, kmap_getcontext(buf + x));
 							else {
 								err = 1;
-								fprintf(stderr, "\n%s %d: context name missing from :inherit", name, line);
+								fprintf(stderr, "\n%s:%d: context name missing from :inherit", name, line);
 							}
 						} else {
 							err = 1;
-							fprintf(stderr, "\n%s %d: No context selected for :inherit", name, line);
+							fprintf(stderr, "\n%s:%d: No context selected for :inherit", name, line);
 					} else if (!strcmp(buf + 1, "include")) {
 						for (buf[x] = c; joe_isblank(locale_map,buf[x]); ++x) ;
 						for (c = x; !joe_isspace_eof(locale_map,buf[c]); ++c) ;
@@ -1039,7 +1039,7 @@ int procrc(CAP *cap, unsigned char *name)
 								err = 1;
 								break;
 							case -1:
-								fprintf(stderr, "\n%s %d: Couldn't open %s", name, line, buf + x);
+								fprintf(stderr, "\n%s:%d: Couldn't open %s", name, line, buf + x);
 								err = 1;
 								break;
 							}
@@ -1047,7 +1047,7 @@ int procrc(CAP *cap, unsigned char *name)
 							o = &fdefault;
 						} else {
 							err = 1;
-							fprintf(stderr, "\n%s %d: :include missing file name", name, line);
+							fprintf(stderr, "\n%s:%d: :include missing file name", name, line);
 						}
 					} else if (!strcmp(buf + 1, "delete"))
 						if (context) {
@@ -1060,12 +1060,12 @@ int procrc(CAP *cap, unsigned char *name)
 							kdel(context, buf + x);
 						} else {
 							err = 1;
-							fprintf(stderr, "\n%s %d: No context selected for :delete", name, line);
+							fprintf(stderr, "\n%s:%d: No context selected for :delete", name, line);
 					} else
 						context = kmap_getcontext(buf + 1);
 				else {
 					err = 1;
-					fprintf(stderr, "\n%s %d: Invalid context name", name, line);
+					fprintf(stderr, "\n%s:%d: Invalid context name", name, line);
 				}
 			}
 			break;
@@ -1076,7 +1076,7 @@ int procrc(CAP *cap, unsigned char *name)
 
 				if (!context) {
 					err = 1;
-					fprintf(stderr, "\n%s %d: No context selected for macro to key-sequence binding", name, line);
+					fprintf(stderr, "\n%s:%d: No context selected for macro to key-sequence binding", name, line);
 					break;
 				}
 
@@ -1085,7 +1085,7 @@ int procrc(CAP *cap, unsigned char *name)
 				m = mparse(m, buf, &x);
 				if (x == -1) {
 					err = 1;
-					fprintf(stderr, "\n%s %d: Unknown command in macro", name, line);
+					fprintf(stderr, "\n%s:%d: Unknown command in macro", name, line);
 					break;
 				} else if (x == -2) {
 					jfgets((char *)buf, 1024, fd);
@@ -1100,7 +1100,7 @@ int procrc(CAP *cap, unsigned char *name)
 
 				/* Add binding to context */
 				if (kadd(cap, context, buf + x, m) == -1) {
-					fprintf(stderr, "\n%s %d: Bad key sequence '%s'", name, line, buf + x);
+					fprintf(stderr, "\n%s:%d: Bad key sequence '%s'", name, line, buf + x);
 					err = 1;
 				}
 			}

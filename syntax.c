@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/syntax.c,v 1.4 2010/04/08 17:54:19 tg Exp $ */
+/* $MirOS: contrib/code/jupp/syntax.c,v 1.5 2011/07/02 16:17:07 tg Exp $ */
 /*
  *	Syntax highlighting DFA interpreter
  *	Copyright
@@ -235,12 +235,12 @@ struct high_syntax *load_dfa(unsigned char *name)
 						state->color=color->color;
 					else {
 						state->color=0;
-						fprintf(stderr,"%s %d: Unknown class\n",name,line);
+						fprintf(stderr,"%s:%d: Unknown class '%s'\n", name, line, bf);
 					}
 				} else
-					fprintf(stderr,"%s %d: Missing color for state definition\n",name,line);
+					fprintf(stderr,"%s:%d: Missing color for state definition\n", name, line);
 			} else
-				fprintf(stderr,"%s %d: Missing state name\n",name,line);
+				fprintf(stderr,"%s:%d: Missing state name\n", name, line);
 		} else if(!parse_char(&p, '=')) {
 			if(!parse_ident(&p, bf, 255)) {
 				struct high_color *color;
@@ -257,7 +257,7 @@ struct high_syntax *load_dfa(unsigned char *name)
 					color->next = syntax->color;
 					syntax->color = color;
 				} else {
-					fprintf(stderr,"%s %d: Class already defined\n",name,line);
+					fprintf(stderr,"%s:%d: Class '%s' already defined\n", name, line, bf);
 				}
 
 				/* Parse color definition */
@@ -282,7 +282,7 @@ struct high_syntax *load_dfa(unsigned char *name)
 					} else {
 						c = parse_string(&p, bf, 255);
 						if(c)
-							fprintf(stderr,"%s %d: Bad string\n",name,line);
+							fprintf(stderr,"%s:%d: Bad string\n", name, line);
 						else {
 							int z;
 							int first, second;
@@ -315,9 +315,9 @@ struct high_syntax *load_dfa(unsigned char *name)
 								if(!parse_char(&p,'=')) {
 									parse_ws(&p,'#');
 									if(parse_int(&p,&cmd->recolor))
-										fprintf(stderr,"%s %d: Missing value for option\n",name,line);
+										fprintf(stderr,"%s:%d: Missing value for option %s\n", name, line, bf);
 								} else
-									fprintf(stderr,"%s %d: Missing value for option\n",name,line);
+									fprintf(stderr,"%s:%d: Missing value for option %s\n", name, line, bf);
 							} else if(!strcmp(bf,"strings") || !strcmp(bf,"istrings")) {
 								if (bf[0]=='i')
 									cmd->ignore = 1;
@@ -349,32 +349,32 @@ struct high_syntax *load_dfa(unsigned char *name)
 														if(!parse_char(&p,'=')) {
 															parse_ws(&p,'#');
 															if(parse_int(&p,&kw_cmd->recolor))
-																fprintf(stderr,"%s %d: Missing value for option\n",name,line);
+																fprintf(stderr,"%s:%d: Missing value for option %s\n", name, line, bf);
 														} else
-															fprintf(stderr,"%s %d: Missing value for option\n",name,line);
+															fprintf(stderr,"%s:%d: Missing value for option %s\n", name, line, bf);
 													} else
-														fprintf(stderr,"%s %d: Unknown option\n",name,line);
+														fprintf(stderr,"%s:%d: Unknown option '%s'\n", name, line, bf);
 											} else
-												fprintf(stderr,"%s %d: Missing state name\n",name,line);
+												fprintf(stderr,"%s:%d: Missing state name\n", name, line);
 										} else
-											fprintf(stderr,"%s %d: Missing string\n",name,line);
+											fprintf(stderr,"%s:%d: Missing string\n", name, line);
 									}
 								}
 							} else if(!strcmp(bf,"noeat")) {
 								cmd->noeat = 1;
 							} else
-								fprintf(stderr,"%s %d: Unknown option\n",name,line);
+								fprintf(stderr,"%s:%d: Unknown option '%s'\n", name, line, bf);
 
 						/* Install command */
 						for(z=0;z!=256;++z)
 							if(clist[z])
 								state->cmd[z]=cmd;
 					} else
-						fprintf(stderr,"%s %d: Missing jump\n",name,line);
+						fprintf(stderr,"%s:%d: Missing jump\n", name, line);
 				} else
-					fprintf(stderr,"%s %d: No state\n",name,line);
+					fprintf(stderr,"%s:%d: No state\n", name, line);
 			} else
-				fprintf(stderr,"%s %d: Unknown character\n",name,line);
+				fprintf(stderr,"%s:%d: Unknown character\n", name, line);
 		}
 	}
 
