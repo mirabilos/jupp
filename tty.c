@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.c,v 1.11 2010/04/08 15:31:04 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.c,v 1.12 2011/07/02 22:44:46 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright
@@ -1086,10 +1086,13 @@ MPX *mpxmk(int *ptyfd, unsigned char *cmd, unsigned char **args, void (*func) (/
 #endif
 
 			setsid();	/* I think you do setprgp(0,0) on systems with no setsid() */
+#ifndef _MINIX
+/* http://mail-index.netbsd.org/pkgsrc-bugs/2011/06/13/msg043281.html */
 #ifndef SETPGRP_VOID
 			setpgrp(0, 0);
 #else
 			setpgrp();
+#endif
 #endif
 
 #endif
