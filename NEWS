@@ -1,13 +1,15 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.29 2011/07/02 16:26:10 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.30 2011/07/02 23:00:24 tg Exp $
 ------------------------------------------------------------------
 
-JOE-current
+JOE 3.1jupp15
 
 - Update COPYING file from MirOS master (refreshed from FSF master)
 - Refresh wcwidth code from Unicode 6.0.0
   XXX maybe use MirBSD libc code for {to,is}wc* too, extended beyond BMP
 - Better error messages when parsing syntax and rc files
 - Ignore syntax keywords from joe-3.7 diff.jsf that are not yet implemented
+- Update strlfun.c with an even more portable variant from MirBSD/kern
+- Port to Minix 3 by request of Alby <alb348@gmail.com>
 
 JOE 3.1jupp14
 

@@ -638,5 +638,14 @@ Other requests:
 
  -show no. utf characters, not no. bytes
 
+
+┌───────────┐
+│ jupp TODO │
+└───────────┘
+
+• merge syntax handling code from joe-3.7+
+• merge fixes from packages.debian.org/joe
+• …
+
 _________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.5 2009/09/19 22:42:40 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.6 2011/07/02 23:00:25 tg Exp $
