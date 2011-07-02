@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.28 2011/07/02 16:17:06 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.29 2011/07/02 16:26:10 tg Exp $
 ------------------------------------------------------------------
 
 JOE-current
@@ -7,6 +7,7 @@ JOE-current
 - Refresh wcwidth code from Unicode 6.0.0
   XXX maybe use MirBSD libc code for {to,is}wc* too, extended beyond BMP
 - Better error messages when parsing syntax and rc files
+- Ignore syntax keywords from joe-3.7 diff.jsf that are not yet implemented
 
 JOE 3.1jupp14
 

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/syntax.c,v 1.5 2011/07/02 16:17:07 tg Exp $ */
+/* $MirOS: contrib/code/jupp/syntax.c,v 1.6 2011/07/02 16:26:10 tg Exp $ */
 /*
  *	Syntax highlighting DFA interpreter
  *	Copyright
@@ -362,6 +362,12 @@ struct high_syntax *load_dfa(unsigned char *name)
 								}
 							} else if(!strcmp(bf,"noeat")) {
 								cmd->noeat = 1;
+							} else if(!strcmp(bf,"mark")) {
+								/* not implemented yet */ ;
+							} else if(!strcmp(bf,"markend")) {
+								/* not implemented yet */ ;
+							} else if(!strcmp(bf,"recolormark")) {
+								/* not implemented yet */ ;
 							} else
 								fprintf(stderr,"%s:%d: Unknown option '%s'\n", name, line, bf);
 
