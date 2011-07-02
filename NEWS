@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.30 2011/07/02 23:00:24 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.31 2011/07/02 23:47:57 tg Exp $
 ------------------------------------------------------------------
 
 JOE 3.1jupp15
@@ -10,6 +10,7 @@ JOE 3.1jupp15
 - Ignore syntax keywords from joe-3.7 diff.jsf that are not yet implemented
 - Update strlfun.c with an even more portable variant from MirBSD/kern
 - Port to Minix 3 by request of Alby <alb348@gmail.com>
+- Display help hint in initial status line
 
 JOE 3.1jupp14
 
