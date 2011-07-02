@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/config.h,v 1.3 2011/07/02 22:43:07 tg Exp $ */
+/* $MirOS: contrib/code/jupp/config.h,v 1.4 2011/07/02 22:49:12 tg Exp $ */
 
 #ifndef _JOE_CONFIG_H
 #define _JOE_CONFIG_H
@@ -75,10 +75,16 @@
 
 #endif /* real mode ms-dos */
 
-#ifdef __GNUC__
-#define ATTR_UNUSED	__attribute__((unused))
+#if !defined(__GNUC__) && !defined(__attribute__)
+#define __attribute__(p) /* nothing */
+#endif
+
+#define ATTR_UNUSED	__attribute__((__unused__))
+
+#ifdef HAVE_GCC_ATTRIBUTE_BOUNDED
+#define ATTR_BOUNDED(p)	__attribute__((__bounded__ p))
 #else
-#define ATTR_UNUSED	/* nothing */
+#define ATTR_BOUNDED(p)	/* nothing */
 #endif
 
 #endif /* ifndef _JOE_CONFIG_H */
