@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/rc.c,v 1.13 2011/07/02 16:17:06 tg Exp $ */
+/* $MirOS: contrib/code/jupp/rc.c,v 1.14 2011/07/03 00:35:04 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
@@ -100,6 +100,7 @@ OPTIONS pdefault = {
 	NULL,		/* *context */
 	NULL,		/* *lmsg */
 	NULL,		/* *rmsg */
+	NULL,		/* *hmsg */
 	0,		/* line numbers */
 	0,		/* read only */
 	0,		/* french spacing */
@@ -144,6 +145,7 @@ OPTIONS fdefault = {
 	US "main",		/* *context */
 	US "\\i%n %m %M",	/* *lmsg */
 	US " %S Ctrl-K H for help",	/* *rmsg */
+	NULL,		/* *hmsg */
 	0,		/* line numbers */
 	0,		/* read only */
 	0,		/* french spacing */
@@ -441,6 +443,13 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options_, int set)
 		if (arg) {
 			if (options_)
 				options_->rmsg = (unsigned char *)strdup((char *)arg);
+			ret = 2;
+		} else
+			ret = 1;
+	} else if (!strcmp(s, "hmsg")) {
+		if (arg) {
+			if (options_)
+				options_->hmsg = strdup((char *)arg);
 			ret = 2;
 		} else
 			ret = 1;

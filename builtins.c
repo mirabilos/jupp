@@ -16,6 +16,7 @@ const unsigned char * const builtins[]=
 		"-pg 2\n"
 		"-lmsg \\i%k%T%*\\b%n\\b%R\n"
 		"-rmsg  R%r<%l C%c\\u%o|%O\\i\\b%a|%A\\b\\i\\u %u\n"
+		"-hmsg ^J = Help\n"
 		"-guess_crlf\n"
 		"-french\n"
 		"-indentc 9\n"
@@ -131,7 +132,7 @@ const unsigned char * const builtins[]=
 		"\\i \\i go to \\uhttp://sf.net/projects/joe-editor/\\u for upstream bug reports. JUPP 2.8 \\i \\i\n"
 		"\\i \\i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\\d(R)\\d \\i \\i\n"
 		"\\i \\i at \\uhttp://mirbsd.de/jupp\\u and by \\bThorsten \"\\dmirabilos\\d\" Glaser <\\utg@mirbsd.org\\u>\\b \\i \\i\n"
-		"\\i \\i @(#) blt_in 2010-04-08; autoCR-LF; UTF-8 tty by LC_CTYPE; per-file encoding \\i \\i\n"
+		"\\i \\i @(#) blt_in 2011-07-02; autoCR-LF; UTF-8 tty by LC_CTYPE; per-file encoding \\i \\i\n"
 		"}\n"
 		"\n"
 		":windows\n"
@@ -462,5 +463,5 @@ const unsigned char * const builtins[]=
 		":querysr\n"
 		"type		^@ TO ÿ\n"
 ,	NULL
-,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.3 2010/04/08 15:46:15 tg Exp $"
+,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.4 2011/07/03 00:35:03 tg Exp $"
 };
