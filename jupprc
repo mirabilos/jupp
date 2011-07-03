@@ -1,4 +1,4 @@
- "jupp" resource file for JOE 3.1*nix (c) 1997-2010 Thorsten Glaser
+ "jupp" resource file for JOE 3.1*nix (c) 1997-2011 Thorsten Glaser
  Provided that these terms and disclaimer and all copyright notices
  are retained or reproduced in an accompanying document, permission
  is granted to deal in this work without restriction, including un-
@@ -25,6 +25,7 @@
 -pg 2
 -lmsg \i%k%T%*\b%n\b%R
 -rmsg  R%r<%l C%c\u%o|%O\i\b%a|%A\b\i\u %u
+-hmsg ^J = Help
  --crlf
 -guess_crlf
 -french
@@ -415,7 +416,7 @@
 \i \i go to \uhttp://sf.net/projects/joe-editor/\u for upstream bug reports. JUPP 2.8 \i \i
 \i \i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\d(R)\d \i \i
 \i \i at \uhttp://mirbsd.de/jupp\u and by \bThorsten "\dmirabilos\d" Glaser <\utg@mirbsd.org\u>\b \i \i
-\i \i @(#) jupprc 2010-04-08; autoCR-LF; UTF-8 tty by LC_CTYPE; per-file encoding \i \i
+\i \i @(#) jupprc 2011-07-02; autoCR-LF; UTF-8 tty by LC_CTYPE; per-file encoding \i \i
 }
 
 :windows
