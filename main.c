@@ -1,4 +1,7 @@
-/* $MirOS: contrib/code/jupp/main.c,v 1.13 2011/07/16 21:57:57 tg Exp $ */
+/* $MirOS: contrib/code/jupp/main.c,v 1.14 2011/07/16 22:01:28 tg Exp $ */
+
+#define JUPP_IS_COPYRIGHT_C_BY "2011 mirabilos"
+
 /*
  *	Editor startup and main edit loop
  *	Copyright
@@ -404,7 +407,7 @@ int main(int argc, char **argv, char **envp)
 	if (!nonotice) {
 		joe_snprintf_4((char *)msgbuf,JOE_MSGBUFSIZE,
 		    "\\i[ Joe's Own Editor v" VERSION
-		    " | %s | %s 2011 mirabilos ]%s%s\\i",
+		    " | %s | %s " JUPP_IS_COPYRIGHT_C_BY " ]%s%s\\i",
 		    locale_map->name, locale_map->type ? "©" : "(c)",
 		    fdefault.hmsg ? " " : "",
 		    fdefault.hmsg ? fdefault.hmsg : "");

@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.35 2011/07/16 20:41:15 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.36 2011/07/16 22:01:28 tg Exp $
 ------------------------------------------------------------------
 
 JOE 3.1jupp16
@@ -6,6 +6,7 @@ JOE 3.1jupp16
 - Better match for Python files for *rc (except jupprc, which had it already)
 - Improve jupprc file; split between three versions (2.8/DOS 3.7/*nix 3.1jupp)
 - The jupprc file now has a character map (ASCII / 8-bit table)
+- Clean up some compiler warnings; check for strlcpy/strlcat prototypes
 
 JOE 3.1jupp15
 
