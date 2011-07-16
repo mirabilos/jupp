@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jmacsrc.in,v 1.3 2011/07/03 00:35:03 tg Exp $
+ $MirOS: contrib/code/jupp/jmacsrc.in,v 1.4 2011/07/16 18:41:39 tg Exp $
 
                          Initialization file for JOE
                                 Gnu-Emacs Joe
@@ -362,7 +362,7 @@
 
  Python
 *
-+#!\+\[ 	]\+\[a-z/]/python\>
++#!\+\[ 	]\+\[a-z/]/python
 -autoindent
 -syntax python
 -smarthome
