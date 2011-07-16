@@ -9,6 +9,14 @@
 /* Define to 1 if you have the <bsd/string.h> header file. */
 #undef HAVE_BSD_STRING_H
 
+/* Define to 1 if you have the declaration of `strlcat', and to 0 if you
+   don't. */
+#undef HAVE_DECL_STRLCAT
+
+/* Define to 1 if you have the declaration of `strlcpy', and to 0 if you
+   don't. */
+#undef HAVE_DECL_STRLCPY
+
 /* Define to 1 if you have the <dirent.h> header file, and it defines `DIR'.
    */
 #undef HAVE_DIRENT_H
