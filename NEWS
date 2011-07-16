@@ -1,9 +1,10 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.33 2011/07/16 18:41:39 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.34 2011/07/16 20:25:17 tg Exp $
 ------------------------------------------------------------------
 
 JOE 3.1jupp16
 
 - Better match for Python files for *rc (except jupprc, which had it already)
+- Improve jupprc file; split between three versions (2.8/DOS 3.7/*nix 3.1jupp)
 
 JOE 3.1jupp15
 
