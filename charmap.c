@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/charmap.c,v 1.9 2010/04/08 17:54:18 tg Exp $ */
+/* $MirOS: contrib/code/jupp/charmap.c,v 1.10 2011/07/16 21:57:56 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 conversion utilities
  *	Copyright
@@ -1223,7 +1223,6 @@ static struct builtin_charmap *parse_charmap(const unsigned char *name,FILE *f)
 {
 	unsigned char buf[1024];
 	unsigned char bf1[1024];
-	unsigned esc_char = '\\';
 	unsigned comment_char = '#';
 	int in_map = 0;
 	int x;
@@ -1252,7 +1251,6 @@ static struct builtin_charmap *parse_charmap(const unsigned char *name,FILE *f)
 		} else if (!strcmp((char *)bf1,"<escape_char>")) {
 			parse_ws(&p, comment_char);
 			parse_tows(&p, bf1);
-			esc_char = bf1[0];
 		} else if (!strcmp((char *)bf1,"CHARMAP")) {
 			in_map = 1;
 		} else if (!strcmp((char *)bf1,"END")) {

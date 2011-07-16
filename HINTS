@@ -7,6 +7,14 @@ GCC
 Using -fomit-frame-pointer may miscompile code at least in gcc 3.4.6, see
 http://article.gmane.org/gmane.os.miros.cvs/11607 for details.
 
+Disable the following warnings; the code doesn't cope with it:
+-Wno-pointer-sign
+-Wno-unused-parameter
+-Wno-missing-field-initializers
+-Wno-old-style-definition -Wno-strict-prototypes
+-Wno-cast-qual
+-Wno-missing-prototypes -Wno-missing-declarations
+
 UTF-8
 -----
 
@@ -109,4 +117,4 @@ will not insert.
 - Search, incremental search, and search & replace all operate as usual.
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/HINTS,v 1.4 2009/10/18 14:52:55 tg Exp $
+$MirOS: contrib/code/jupp/HINTS,v 1.5 2011/07/16 21:57:55 tg Exp $

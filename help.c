@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/help.c,v 1.5 2009/10/18 14:17:34 tg Exp $ */
+/* $MirOS: contrib/code/jupp/help.c,v 1.6 2011/07/16 21:57:57 tg Exp $ */
 /*
  *	Help system
  *	Copyright
@@ -102,8 +102,8 @@ int help_init(unsigned char *filename)
 				fprintf(stderr, "\nHelp file '%s' is not properly ended with } on new line.\n", filename);
 				fprintf(stderr, "Do you want to accept incomplete help screen (y/n)?");
 				fflush(stderr);
-				fgets((char *)buf, 8, stdin);
-				if (!((buf[0] == 'y') || (buf[0] == 'Y'))) {
+				if (fgets((char *)buf, 8, stdin) == NULL ||
+				    (!((buf[0] == 'y') || (buf[0] == 'Y')))) {
 					joe_free(tmp->text);
 					joe_free(tmp);
 					return 0;

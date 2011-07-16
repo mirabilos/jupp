@@ -1,4 +1,4 @@
-#include "config.h"
+#include "autoconf.h"
 #undef L_strlcat
 #undef L_strlcpy
 #ifndef HAVE_STRLCAT
@@ -52,7 +52,7 @@ ifeq (0,gmake ignores from here)
 #define __RCSID(x)		static const char __rcsid[] = x
 #endif
 
-__RCSID("$MirOS: contrib/code/jupp/strlfun.c,v 1.10 2011/07/02 22:43:42 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/strlfun.c,v 1.11 2011/07/16 21:57:57 tg Exp $");
 
 #ifdef WIDEC
 #ifdef OUTSIDE_OF_LIBKERN

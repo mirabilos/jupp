@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/termcap.c,v 1.3 2010/04/08 15:31:03 tg Exp $ */
+/* $MirOS: contrib/code/jupp/termcap.c,v 1.4 2011/07/16 21:57:57 tg Exp $ */
 /*
  *	TERMCAP/TERMINFO database interface
  *	Copyright
@@ -493,12 +493,14 @@ static unsigned char escape(unsigned char **s)
 		return c;
 }
 
+#ifdef TERMINFO
 static CAP *outcap;
 static int outout(int c)
 {
 	outcap->out(outcap->outptr, c);
 	return(c);	/* act like putchar() - return written char */
 }
+#endif
 
 void texec(CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int a3)
 {

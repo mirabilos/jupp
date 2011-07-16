@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ublock.c,v 1.5 2010/04/08 15:31:04 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ublock.c,v 1.6 2011/07/16 21:57:58 tg Exp $ */
 /*
  * 	Highlighted block functions
  *	Copyright
@@ -946,8 +946,16 @@ static int dofilt(BW *bw, unsigned char *s, void *object, int *notify)
 	}
       ok:
 
-	pipe(fr);
-	pipe(fw);
+	if (pipe(fr)) {
+ piperr:
+		msgnw(bw->parent, US "Pipe error");
+		return (-1);
+	}
+	if (pipe(fw)) {
+		close(fr[0]);
+		close(fr[1]);
+		goto piperr;
+	}
 	npartial(bw->parent->t->t);
 	ttclsn();
 	if (!fork()) {
@@ -959,9 +967,10 @@ static int dofilt(BW *bw, unsigned char *s, void *object, int *notify)
 		close(0);
 		close(1);
 		close(2);
-		dup(fw[0]);
-		dup(fr[1]);
-		dup(fr[1]);
+		/* these dups will not fail */
+		if (dup(fw[0])) {}
+		if (dup(fr[1])) {}
+		if (dup(fr[1])) {}
 		close(fw[0]);
 		close(fr[1]);
 		close(fw[1]);

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/main.c,v 1.12 2011/07/03 00:35:04 tg Exp $ */
+/* $MirOS: contrib/code/jupp/main.c,v 1.13 2011/07/16 21:57:57 tg Exp $ */
 /*
  *	Editor startup and main edit loop
  *	Copyright
@@ -262,8 +262,8 @@ int main(int argc, char **argv, char **envp)
 
 			fprintf(stderr, "There were errors in '%s'.  Use it anyway?", s);
 			fflush(stderr);
-			fgets((char *)buf, 8, stdin);
-			if (buf[0] == 'y' || buf[0] == 'Y')
+			if (fgets((char *)buf, 8, stdin) != NULL &&
+			    (buf[0] == 'y' || buf[0] == 'Y'))
 				goto donerc;
 		}
 	}
@@ -280,8 +280,8 @@ int main(int argc, char **argv, char **envp)
 
 		fprintf(stderr, "There were errors in '%s'.  Use it anyway?", s);
 		fflush(stderr);
-		fgets((char *)buf, 8, stdin);
-		if (buf[0] == 'y' || buf[0] == 'Y')
+		if (fgets((char *)buf, 8, stdin) != NULL &&
+		    (buf[0] == 'y' || buf[0] == 'Y'))
 			goto donerc;
 	}
 
@@ -298,8 +298,8 @@ int main(int argc, char **argv, char **envp)
 
 		fprintf(stderr, "There were errors in '%s'.  Use it anyway?", s);
 		fflush(stderr);
-		fgets((char *)buf, 8, stdin);
-		if (buf[0] == 'y' || buf[0] == 'Y')
+		if (fgets((char *)buf, 8, stdin) != NULL &&
+		    (buf[0] == 'y' || buf[0] == 'Y'))
 			goto donerc;
 	}
 #endif

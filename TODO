@@ -644,8 +644,8 @@ Other requests:
 └───────────┘
 
 • merge syntax handling code from joe-3.7+
-• merge fixes from packages.debian.org/joe
+• make -Wcast-qual clean
 • …
 
 _________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.6 2011/07/02 23:00:25 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.7 2011/07/16 21:57:55 tg Exp $

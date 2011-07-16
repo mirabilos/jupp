@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.c,v 1.14 2011/07/02 22:45:14 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.c,v 1.15 2011/07/16 21:57:57 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright
@@ -735,10 +735,14 @@ void ttshell(unsigned char *cmd)
 
 /* Create keyboard task */
 
-static void mpxresume(void)
+static int mpxresume(void)
 {
 	int fds[2];
-	pipe(fds);
+
+	if (pipe(fds)) {
+		ackkbd = -1;
+		return (1);
+	}
 	tty_accept = NO_MORE_DATA;
 	have = 0;
 	if (!(kbdpid = fork())) {
@@ -760,6 +764,7 @@ static void mpxresume(void)
 	}
 	close(fds[0]);
 	ackkbd = fds[1];
+	return (0);
 }
 
 /* Kill keyboard task */
@@ -813,13 +818,20 @@ void ttsusp(void)
    written to the same pipe don't get interleaved, but you can reasonable
    rely on it with small packets. */
 
-static void mpxstart(void)
+/* This code will explode if pipe, fork, etc. fail. --mirabilos */
+
+static int mpxstart(void)
 {
 	int fds[2];
-	pipe(fds);
+
+	if (pipe(fds)) {
+		mpxfd = -1;
+		mpxsfd = -1;
+		return (1);
+	}
 	mpxfd = fds[0];
 	mpxsfd = fds[1];
-	mpxresume();
+	return (mpxresume());
 }
 
 static void mpxend(void)
@@ -1024,6 +1036,20 @@ MPX *mpxmk(int *ptyfd, unsigned char *cmd, unsigned char **args, void (*func) (/
 	if (x==NPROC)
 		return NULL;
 
+	/* PID number pipe */
+	if (pipe(comm))
+		return (NULL);
+
+	/* Acknowledgement pipe */
+	if (pipe(fds)) {
+		/* don't leak in error case */
+ pipout:
+		close(comm[0]);
+		close(comm[1]);
+		return (NULL);
+	}
+	m->ackfd = fds[1];
+
 	/* Fixes cygwin console bug: if you fork() with inverse video he assumes you want
 	 * ESC [ 0 m to keep it in inverse video from then on. */
 	set_attr(maint->t,0);
@@ -1036,20 +1062,19 @@ MPX *mpxmk(int *ptyfd, unsigned char *cmd, unsigned char **args, void (*func) (/
 
 	/* Start input multiplexer */
 	if (ackkbd == -1)
-		mpxstart();
+		if (mpxstart()) {
+			close(fds[0]);
+			close(fds[1]);
+			m->ackfd = -1;
+			--nmpx;
+			goto pipout;
+		}
 
 	/* Remember callback function */
 	m->func = func;
 	m->object = object;
 	m->die = die;
 	m->dieobj = dieobj;
-
-	/* Acknowledgement pipe */
-	pipe(fds);
-	m->ackfd = fds[1];
-
-	/* PID number pipe */
-	pipe(comm);
 
 	/* Create processes... */
 	if (!(m->kpid = fork())) {
@@ -1141,7 +1166,7 @@ MPX *mpxmk(int *ptyfd, unsigned char *cmd, unsigned char **args, void (*func) (/
 
 				/* If shell didn't execute */
 				joe_snprintf_1((char *)buf,sizeof(buf),"Couldn't execute shell '%s'\n",cmd);
-				write(0,(char *)buf,strlen((char *)buf));
+				if (write(0,(char *)buf,strlen((char *)buf))) {}
 				sleep(1);
 			}
 
