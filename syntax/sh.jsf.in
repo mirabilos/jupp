@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/syntax/sh.jsf.in,v 1.2 2008/05/13 16:17:45 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/sh.jsf.in,v 1.3 2011/07/27 18:10:26 tg Exp $
 #-
 # JOE syntax highlight file for sh/ksh/bash
 
@@ -19,6 +19,8 @@
 =Escape 	bold cyan
 =Keyword 	bold
 =Var		magenta
+=Parenthesis	yellow
+=Connect	bold green
 
 # Syntax
 
@@ -30,7 +32,11 @@
 	"'"		string_sq	recolor=-1
 	"\""		string_dq	recolor=-1
 	"\`"		string_bq	recolor=-1
-	"a-zA-Z{}!["	ident		buffer
+	"()"		paren		noeat
+	"a-zA-Z{}![].:"	ident		buffer
+	"|&"		connector	recolor=-1
+	"<>"		redir		noeat
+	"0123456789"	redirnum	recolor=-1
 
 :comment Comment
 	*		comment
@@ -41,6 +47,9 @@
 
 :subst Var
 	*		idle
+	"'"		string_sq	recolor=-2
+	"\""		string_dq	recolor=-2
+	"("		paren		noeat recolor=-2
 	"{"		subst_brack
 	"a-zA-Z_"	subst_name
 	"0-9*@?\-$_!"	idle
@@ -141,11 +150,18 @@
 	"}"		string_bq
 
 
+:paren Parenthesis
+	*		idle		noeat
+	"("		paren
+	")"		paren
+
 :ident Idle
 	*		idle		noeat strings
 	"!"		kw
 	"{"		kw
 	"}"		kw
+	"[["		kw
+	"]]"		kw
 	"["		kw
 	"]"		kw
 # primary keywords
@@ -218,6 +234,22 @@
 	"time"		kw
 	"typeset"	kw
 	"local"		kw
+	"global"	kw
+	"."		kw
+	":"		kw
+	"true"		kw
+	"false"		kw
+	"cat"		kw
+	"mknod"		kw
+	"realpath"	kw
+	"rename"	kw
+	"sleep"		kw
+	"autoload"	kw
+	"functions"	kw
+	"integer"	kw
+	"nameref"	kw
+	"nohup"		kw
+	"r"		kw
 # additional bash builtins
 	"source"	kw
 	"bind"		kw
@@ -238,4 +270,16 @@ done
 	"a-zA-Z0-9"	ident
 
 :kw Keyword
-	*	idle	noeat
+	*		idle	noeat
+
+:connector Connect
+	*		idle	noeat
+	"|&"		connector
+
+:redirnum Connect
+	*		idle	noeat recolor=-2
+	"<>"		redir
+
+:redir Connect
+	*		idle	noeat
+	"<>&0123456789p-" redir
