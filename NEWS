@@ -1,5 +1,12 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.36 2011/07/16 22:01:28 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.37 2011/07/27 18:43:11 tg Exp $
 ------------------------------------------------------------------
+
+JOE 3.1jupp17
+
+- Skip restoring the terminal after exiting jupp
+- Improve syntax highlighting for shell
+- Fix restoring context after losing sync for diff
+- Improve diff detection
 
 JOE 3.1jupp16
 
