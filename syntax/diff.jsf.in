@@ -1,3 +1,5 @@
+# $MirOS: contrib/code/jupp/syntax/diff.jsf.in,v 1.4 2011/07/27 18:13:14 tg Exp $
+#-
 # JOE syntax highlight file for diff/patch files
 #
 # 2007-05-11 :
@@ -11,6 +13,9 @@
 #
 #   Dirk Schenkewitz <Dirk.Schenkewitz (AT) gmx.de>
 #
+
+# Context scaling: whole file
+-
 
 
 # Color definitions
