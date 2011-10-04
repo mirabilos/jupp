@@ -80,7 +80,7 @@ can jump to markb with ^[ b and jump to markk with ^[ k.
 then hit Ctrl-space to complete the block.  Hit Ctrl-space in the block to
 cancel it.  Hit Ctrl-space outside of the block to start selecting a new
 one.  This uses the "toggle_marking" function.  Also any block command will
-complete the block.
+complete the block. (joe flavour only)
 
 	New way no.2: hit Ctrl-rtarw to start selecting rightward.  Each
 time you hit Ctrl-rtarw, the block is extended one more to the right.  This
@@ -91,10 +91,21 @@ sequence yourself and enter it directly in the joerc file.  Some examples
 are given for xterm and gnome-terminal.  Hit ` rtarw to have the sequence
 shown on your screen.  Note that Putty uses ^[ ^[ [ C which will not appear
 with ` rtarw (also ^[ ^[ is set book mark, so you need to unbind it to do
-this in Putty).
+this in Putty). (joe flavour only)
 
 	Also you can hit Ctrl-delete to cut and Ctrl-insert to paste if the
-sequence for these keys are known.
+sequence for these keys are known. (joe flavour only)
+
+	New way No.3: press down shift, then move the cursor with the
+arrow keys or, optionally with ctrl, the Home and End keys; release the
+shift key when done and remember that the cursor indicator on screen is
+not part of the selection. (all flavours)
+
+	Also, you can pass "-keymap cua" on the command line to change
+the key bindings for ^Z (Undo), ^X (Cut), ^C (Copy), ^V (Paste) as in
+contemporary GUI editors. (joe, rjoe, jstar, jupp flavours only)
+
+	Using Picture mode and Rectangle mode may help with that.
 
 Hex edit mode
 -------------
@@ -117,4 +128,4 @@ will not insert.
 - Search, incremental search, and search & replace all operate as usual.
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/HINTS,v 1.5 2011/07/16 21:57:55 tg Exp $
+$MirOS: contrib/code/jupp/HINTS,v 1.6 2011/10/04 22:47:50 tg Exp $

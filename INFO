@@ -1,5 +1,5 @@
-$MirOS: contrib/code/jupp/INFO,v 1.9 2008/05/13 16:17:42 tg Exp $
------------------------------------------------------------------
+$MirOS: contrib/code/jupp/INFO,v 1.10 2011/10/04 22:47:51 tg Exp $
+------------------------------------------------------------------
 
                                     Jupp
                             Joe's Own Editor 3.1
@@ -7,7 +7,7 @@ $MirOS: contrib/code/jupp/INFO,v 1.9 2008/05/13 16:17:42 tg Exp $
                   A Free ASCII-Text Screen Editor for UNIX
                           by Joseph Allen (<= 2.8)
                          Marek 'Marx' Grac (=> 2.9)
-                        by Joseph Allen again (=>3.0)
+                        by Joseph Allen again (=> 3.0)
                  by Thorsten "mirabilos" Glaser (jupp mods)
 
 Get it from:

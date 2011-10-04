@@ -112,7 +112,7 @@ Shift-home: [1;2H
 Shift-end: [1;2F
 Shift-pgup: -
 Shift-pgdn: -
-Shift-ins: ttp://www.gush-shalom.org/archives/kurdi_eng.html
+Shift-ins *DOES NOT WORK* but inserts the X PRIMARY SELECTION
 Shift-del: [3;2~
 
 Shift-ctrl-arrow: [1;6C [1;6D [1;6A [1;6B
@@ -389,10 +389,10 @@ notepad/cua mode?
 ^O	edit file (asks to save current)
 ^P	print
 ^S	save
-^V	paste
-^Z	undo
-^X	cut
-^C	copy
+^V	paste		(done)
+^Z	undo		(done)
+^X	cut		(done)
+^C	copy		(done)
 F3	find next
 F5	date/time
 
@@ -449,7 +449,7 @@ Fix for next release highlight:
 
  Reload modified files (or current window)
 
-  don't use -notite by default.
+  don't use -notite by default. (why? we switched back to -notite…)
 
 Watch loaded file for changes
 
@@ -457,7 +457,7 @@ Save all history buffers and keyboard macros in ~/.joe_state file?
 
   Update documentation.
 
-shift/alt/ctrl arrow key stuff.
+shift/alt/ctrl arrow key stuff. (partially done)
 
 regex: character classes? a-z matches any letter?
 
@@ -468,13 +468,11 @@ regex: character classes? a-z matches any letter?
   can't load terminfo- should switch to termcap or provide compiled
   ANSI terminfo built in.
 
-  gettext patch
-
 
 New features:
 -----------------------
 
-  move *rc files to .joe directory?
+  move *rc files to .etc/joe directory?
 
   check all instances of 'chars': use unicode to locale symbols instead.
   EBCDIC ?
@@ -491,6 +489,8 @@ Improvements for regular text
 mode where wordwrap wraps rest of paragraph?
 
 mode where all editing wraps rest of paragraph?
+
+soft wrap (i.e. wrap on screen but not in the file)!
 
 Improvements for programming
 ----------------------------
@@ -591,6 +591,7 @@ Prompts:
 Terminal handling:
 
  Emit ESC c to reset terminal on startup?
+ -> no, this power-cycles a hardware DEC VT420 (takes 1-2 minutes)
 
  Look into clearing right-most column.
 
@@ -648,4 +649,4 @@ Other requests:
 • …
 
 _________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.7 2011/07/16 21:57:55 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.8 2011/10/04 22:47:51 tg Exp $
