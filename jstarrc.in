@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jstarrc.in,v 1.7 2011/10/04 21:00:33 tg Exp $
+ $MirOS: contrib/code/jupp/jstarrc.in,v 1.8 2011/10/04 22:35:46 tg Exp $
 
                          Initialization file for JOE
                            WordStar / Turbo-C Joe
@@ -737,6 +737,10 @@ begin_marking,uparw,toggle_marking	^[ [ 1 ; 2 A	xterm shift-up mark
 begin_marking,dnarw,toggle_marking	^[ [ 1 ; 2 B	xterm shift-down mark
 begin_marking,rtarw,toggle_marking	^[ [ 1 ; 2 C	xterm shift-right mark
 begin_marking,ltarw,toggle_marking	^[ [ 1 ; 2 D	xterm shift-left mark
+begin_marking,bol,toggle_marking	^[ [ 1 ; 2 H	xterm shift-home
+begin_marking,eol,toggle_marking	^[ [ 1 ; 2 F	xterm shift-end
+begin_marking,bof,toggle_marking	^[ [ 1 ; 6 H	xterm shift-ctrl-home
+begin_marking,eof,toggle_marking	^[ [ 1 ; 6 F	xterm shift-ctrl-end
 
  Ispell
 :def ispellfile filt,"cat >ispell.tmp;ispell ispell.tmp </dev/tty >/dev/tty;cat ispell.tmp;/bin/rm ispell.tmp",rtn,retype
@@ -1055,3 +1059,10 @@ type		^@ TO ÿ
 
 :querysr		Search & replace query window
 type		^@ TO ÿ
+
+:cua			Undo/Cut/Copy/Paste, CUA style
+:inherit main
+undo		^Z
+blkdel,nmark	^X
+copy		^C
+yank		^V

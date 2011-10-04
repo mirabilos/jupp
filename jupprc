@@ -491,6 +491,10 @@ begin_marking,uparw,toggle_marking	^[ [ 1 ; 2 A
 begin_marking,dnarw,toggle_marking	^[ [ 1 ; 2 B
 begin_marking,rtarw,toggle_marking	^[ [ 1 ; 2 C
 begin_marking,ltarw,toggle_marking	^[ [ 1 ; 2 D
+begin_marking,bol,toggle_marking	^[ [ 1 ; 2 H
+begin_marking,eol,toggle_marking	^[ [ 1 ; 2 F
+begin_marking,bof,toggle_marking	^[ [ 1 ; 6 H
+begin_marking,eof,toggle_marking	^[ [ 1 ; 6 F
 backs		^?
 backs		^H
 backw		^[ o
@@ -770,3 +774,10 @@ type		^@ TO ÿ
 
 :querysr
 type		^@ TO ÿ
+
+:cua
+:inherit main
+undo		^Z
+blkdel,nmark	^X
+copy		^C
+yank		^V

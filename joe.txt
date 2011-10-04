@@ -275,7 +275,9 @@ Command Line Options
 
      -keymap name
           Use an alternate section of the joerc file for the key
-          sequence bindings.
+          sequence bindings. For example, joe, jstar, rjoe and
+          jupp support -keymap cua to make ^Z, ^X, ^C and ^V do
+          the same thing as in contemporary GUI editors.
 
      These options can also be specified in the joerc file.  They
      can be set depending on the file-name extension.  Programs

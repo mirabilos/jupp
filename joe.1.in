@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.11 2010/01/02 15:41:03 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.12 2011/10/04 22:35:45 tg Exp $
 .\"-
 .TH JOE 1
 .SH Name
@@ -247,6 +247,13 @@ The file is read only.
 
 .IP -keymap\ name
 Use an alternate section of the joerc file for the key sequence bindings.
+For example,
+.B joe, jstar, rjoe
+and
+.B jupp
+support
+.B \-keymap cua
+to make ^Z, ^X, ^C and ^V do the same thing as in contemporary GUI editors.
 
 .LP
 These options can also be specified in the joerc file.  They can be set

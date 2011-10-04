@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.42 2011/10/04 22:25:52 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.43 2011/10/04 22:35:44 tg Exp $
 ------------------------------------------------------------------
 
 JOE 3.1jupp18
@@ -7,10 +7,11 @@ JOE 3.1jupp18
 - To not make backups is now the default for all flavours
 - The jmacs flavour behaves a bit more like the jupp flavour
   (patch contributed by Johannes Langøy)
-- In xterm, Shift-Cur{Up,Down,Left,Right} now selects text
-  (idea contributed by Dmitry Geurkov)
+- In xterm, Shift-{Cur{Up,Down,Left,Right},{,Ctrl-}{Home,End}}
+  now select text (idea contributed by Dmitry Geurkov)
 - Fix bugs in *rc files; sync joerc and rjoerc with each other
 - Unbreak passing -keymap on the command line
+- New keymap "cua" (not jpico, jmacs) for GUI-like ^Z ^X ^C ^V
 
 JOE 3.1jupp17
 
