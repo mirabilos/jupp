@@ -1,7 +1,7 @@
- $MirOS: contrib/code/jupp/jmacsrc.in,v 1.4 2011/07/16 18:41:39 tg Exp $
+ $MirOS: contrib/code/jupp/jmacsrc.in,v 1.5 2011/10/04 20:31:23 tg Exp $
 
                          Initialization file for JOE
-                                Gnu-Emacs Joe
+                                GNU-Emacs Joe
 
  JOE looks for this file in:
 	1 - $HOME/.jmacsrc
@@ -24,8 +24,9 @@
  -mid		Cursor is recentered when scrolling is necessary
  -marking	Text between ^KB and cursor is highlighted
  -asis		Characters 128 - 255 shown as-is
+ -hex		Hex editing mode
  -force		Force final newline when files are saved
- -nobackups	If you don't want backup files to be created
+-nobackups	If you don't want backup files to be created
  -lightoff	Turn off highlighting after block copy or move
  -exask		^KX always confirms file name
 -beep		Beep on errors and when cursor goes past extremes
@@ -107,7 +108,7 @@
   \f  Blink
 
 -lmsg \i%k%T%W%I%X %* [%n] %y %M
--rmsg  %S Row %r Col %c %t  Ctrl-X H for help
+-rmsg  %S Row %r Col %c %u
 -hmsg Help: ^Xh
 
  SECOND SECTION: File name dependant local option settings:
@@ -190,16 +191,88 @@
 
  Default local options
 -highlight
--istep 2
+-tab 8
+-indentc 9
+-istep 1
+--autoindent
+-smartbacks
+--wordwrap
 
- No '.' in file name?  Assume it's a text file and we want wordwrap on.
+ === Assembly
+*.asm
+-syntax asm
+
+*.S
+-syntax asm
+
+*.s
+-syntax asm
+
+ === C, C++, Objective-C
+*.C
+-syntax c
+
+*.c
+-syntax c
+
+*.cc
+-syntax c
+
+*.cpp
+-syntax c
+
+*.cxx
+-syntax c
+
+*.c++
+-syntax c
+
+*.h
+-syntax c
+
+*.hh
+-syntax c
+
+*.hpp
+-syntax c
+
+*.h++
+-syntax c
+
+*.m
+-syntax c
+
+ === C Shell
+*.csh
+-syntax csh
+
+*.login
+-syntax csh
+
+*.logout
+-syntax csh
+
+*.tcsh
+-syntax csh
+
+*.tcshrc
+-syntax csh
+
 *
--wordwrap
++#!\+\[	 ]\+\[a-z/]/\+tcsh\>
+-syntax csh
 
- File name with '.'?  It's probably not a text file.
-*.*
+*
++#!\+\[	 ]\+\[a-z/]/env\+\[	 ]\+tcsh\>
+-syntax csh
 
- Diff
+ === Diff
+*.diff
+-syntax diff
+
+*.patch
+-syntax diff
+
 *
 +--- 
 -syntax diff
@@ -212,338 +285,220 @@
 +\[1-9]\+\[0-9]\[cda]
 -syntax diff
 
- Text file.
-*.txt
--wordwrap
-
- Assembly language
-*.asm
--wordwrap
--syntax asm
-
-*.s
--wordwrap
--syntax asm
-
-*.S
--wordwrap
--syntax asm
-
- Mason
-*.mas
--autoindent
--syntax mason
--smarthome
--smartbacks
-
- Perl
 *
-+#!\+\[ 	]\+\[a-z/]/perl\>
--autoindent
--syntax perl
--smarthome
--smartbacks
++Index: \*\n======================================================
+-syntax diff
 
-*.pl
--autoindent
--syntax perl
--smarthome
--smartbacks
+ === eMail
+*tmp/mutt-*
+-syntax mail
 
-*.pm
--autoindent
--syntax perl
--smarthome
--smartbacks
+*/mail/*
+-syntax mail
 
- C language file
-*.c
--autoindent
--syntax c
--smarthome
--smartbacks
--purify
+*.eml
+-syntax mail
 
-*.cpp
--autoindent
--syntax c
--smarthome
--smartbacks
--purify
-
-*.c++
--autoindent
--syntax c
--smarthome
--smartbacks
--purify
-
- C language header file
-*.h
--autoindent
--syntax c
--smarthome
--smartbacks
--purify
-
-*.hpp
--autoindent
--syntax c
--smarthome
--smartbacks
--purify
-
-*.h++
--autoindent
--syntax c
--smarthome
--smartbacks
--purify
-
- Verilog file
-*.v
--autoindent
--syntax verilog
--istep 2
--smarthome
--smartbacks
--purify
-
- Verilog header file
-*.vh
--autoindent
--syntax verilog
--istep 2
--smarthome
--smartbacks
--purify
-
- VHDL file
-*.vhd
--autoindent
--syntax vhdl
--istep 2
--smarthome
--smartbacks
--purify
-
- XML
-*.xml
--wordwrap
--autoindent
--syntax xml
-
- HTML
-*.htm
--wordwrap
--autoindent
--syntax html
-
-*.html
--wordwrap
--autoindent
--syntax html
-
- JAVA
-*.java
--autoindent
--syntax java
--smarthome
--smartbacks
--purify
-
- Hypertext preprocessor file
-*.php
--autoindent
--syntax php
--smarthome
--smartbacks
--purify
-
- Python
-*
-+#!\+\[ 	]\+\[a-z/]/python
--autoindent
--syntax python
--smarthome
--smartbacks
--purify
-
-*.py
--autoindent
--syntax python
--smarthome
--smartbacks
--purify
-
- CSH
-*
-+#!\+\[ 	]\+\[a-z/]/csh\>
--autoindent
--syntax csh
-
-*.cshrc
--autoindent
--syntax csh
-
-*.login
--autoindent
--syntax csh
-
-*.logout
--autoindent
--syntax csh
-
-*.csh
--autoindent
--syntax csh
-
- TCSH
-*
-+#!\+\[ 	]\+\[a-z/]/tcsh\>
--autoindent
--syntax csh
-
-*.tcsh
--autoindent
--syntax csh
-
-*.tcshrc
--autoindent
--syntax csh
-
- Shell
-*
-+#!\+\[ 	]\+\[a-z/]/sh\>
--autoindent
--syntax sh
-
-*.sh
--autoindent
--syntax sh
-
-*profile
--autoindent
--syntax sh
-
- BASH Shell
-*
-+#!\+\[ 	]\+\[a-z/]/bash\>
--autoindent
--syntax sh
-
-*.bash
--autoindent
--syntax sh
-
-*.bash_login
--autoindent
--syntax sh
-
-*.bash_logout
--autoindent
--syntax sh
-
- KSH
-*
-+#!\+\[ 	]\+\[a-z/]/ksh\>
--autoindent
--syntax sh
-
-*.ksh
--autoindent
--syntax sh
-
- LISP
-*.lisp
--autoindent
--syntax lisp
-
-*.lsp
--autoindent
--syntax lisp
-
-*.el
--autoindent
--syntax lisp
-
- Makefile
-*akefile
--autoindent
--syntax conf
-
-*AKEFILE
--autoindent
--syntax conf
-
- Pascal
-*.p
--autoindent
--syntax pascal
--smarthome
--smartbacks
--purify
-
-*.pas
--autoindent
--syntax pascal
--smarthome
--smartbacks
--purify
-
- Fortran
+ === FORTRAN
 *.f
--autoindent
 -syntax fortran
 
 *.for
--autoindent
 -syntax fortran
 
 *.FOR
--autoindent
 -syntax fortran
 
- YACC
-*.y
--autoindent
--syntax yacc
+*.f77
+-syntax fortran
 
- LEX
+*.F77
+-syntax fortran
+
+*.f90
+-syntax fortran
+
+*.F90
+-syntax fortran
+
+ === GNU autoconf
+*.ac
+-syntax conf
+
+*.am
+-syntax conf
+
+ === HTML
+*.htm
+-encoding utf8
+-syntax html
+
+*.html
+-encoding utf8
+-syntax html
+
+ === Java
+*.java
+-encoding utf8
+-syntax java
+
+ === Joe Syntax File
+*.jsf
+-syntax conf
+
+ === flex
 *.l
--autoindent
 -syntax lex
 
- TCL
-*.tcl
--autoindent
--syntax tcl
+ === LISP
+*.lisp
+-syntax lisp
 
- Joe Syntax File
-*.jsf
--autoindent
--syntax conf
+*.lsp
+-syntax lisp
 
- Autoconfig file
-*.ac
--autoindent
--syntax conf
+*.el
+-syntax lisp
 
- M4 file
+ === M4
 *.m4
--autoindent
 -syntax m4
 
- Automake file
-*.am
--autoindent
+ === Make
+*akefile
 -syntax conf
 
+*AKEFILE
+-syntax conf
 
- Mail file
-*tmp/mutt-*
--wordwrap
--syntax mail
+ === Mason
+*.mas
+-syntax mason
+
+ === Pascal
+*.p
+-syntax pascal
+
+*.pas
+-syntax pascal
+
+ === Perl
+*.pl
+-syntax perl
+
+*.pm
+-syntax perl
+
+*
++#!\+\[	 ]\+\[a-z/]/perl
+-syntax perl
+
+*
++#!\+\[	 ]\+\[a-z/]/env\+\[	 ]perl
+-syntax perl
+
+ === PHP
+*.php
+-syntax php
+
+ === Python
+*.py
+-encoding utf8
+-syntax python
+--guess_indent
+-tab 4
+-indentc 32
+-istep 4
+-spaces
+
+*
++#!\+\[	 ]\+\[a-z/]/python
+-encoding utf8
+-syntax python
+--guess_indent
+-tab 4
+-indentc 32
+-istep 4
+-spaces
+
+*
++#!\+\[	 ]\+\[a-z/]/env\+\[	 ]python
+-encoding utf8
+-syntax python
+--guess_indent
+-tab 4
+-indentc 32
+-istep 4
+-spaces
+
+ === Bourne, Korn, POSIX Shell
+*.sh
+-syntax sh
+
+*.ksh
+-syntax sh
+
+*.mksh
+-syntax sh
+
+*.bash
+-syntax sh
+
+*.bash_login
+-syntax sh
+
+*.bash_logout
+-syntax sh
+
+*profile
+-syntax sh
+
+*
++:\[	 \n]
+-syntax sh
+
+*
++#!\+\[	 ]\+\[a-z/]/\+\[bd]\+ash\>
+-syntax sh
+
+*
++#!\+\[	 ]\+\[a-z/]/env\+\[	 ]\+\[bd]\+ash\>
+-syntax sh
+
+*
++#!\+\[	 ]\+\[a-z/]/\+\[a-z]ksh\+\[0-9._-]\>
+-syntax sh
+
+*
++#!\+\[	 ]\+\[a-z/]/env\+\[	 ]\+\[a-z]ksh\+\[0-9._-]\>
+-syntax sh
+
+ === TCL
+*.tcl
+-syntax tcl
+
+ === Verilog
+*.v
+-syntax verilog
+-istep 2
+
+*.vh
+-syntax verilog
+-istep 2
+
+ === VHDL
+*.vhd
+-syntax vhdl
+-istep 2
+
+ === XML
+*.xml
+-encoding utf8
+-syntax xml
+
+ === yacc
+*.y
+-syntax yacc
 
  THIRD SECTION: Named help screens:
 
@@ -565,7 +520,7 @@
 \i \i\|^R  backward     \|^[G to line No. \|^[ DEL word<\|  replace \|^XX swap   \|^X^B switch\|\i \i
 }
 
-{Editing 
+{Editing
 \i   Help Screen    \|turn off with ^XH   prev. screen ^X,  next screen ^X.        \i
 \i \i\|\uCASE\u           \|\uTRANSPOSE\u  \|\uINSERT\u    \|\uMACROS\u            \|\uPROGRAMS\u               \|\i \i
 \i \i\|^[U  Up word   \|^T   Chars \|^O  line  \|^X( record        \|^X^I Indent region     \|\i \i
@@ -614,7 +569,21 @@
 
 {Joe
 \i   Help Screen    \|turn off with ^XH   prev. screen ^X,                         \i
-\i \i Send bug reports to: http://sourceforge.net/projects/joe-editor             \|\i \i
+\i \i For bug reports and other information, refer to: \uhttp://mirbsd.de/jupp\u      \|\i \i
+}
+
+{CharTable
+\i   Help Screen    turn off with ^J     prev. screen ^[,    \uCharacter Map\u       \i
+\i \i Dec Hex  \u 0123 4567  89AB CDEF    0123 4567  89AB CDEF \u  Hex Dec            \i \i
+\i \i         |                                              |                    \i \i
+\i \i   0  00 | \u@ABC\u \uDEFG\u  \uHIJK\u \uLMNO\u    \i\u@ABC\u\i \i\uDEFG\u\i  \i\uHIJK\u\i \i\uLMNO\u\i | 80  128            \i \i
+\i \i  16  10 | \uPQRS\u \uTUVW\u  \uXYZ[\u \u\\]^_\u    \i\uPQRS\u\i \i\uTUVW\u\i  \i\uXYZ[\u\i \i\u\\]^_\u\i | 90  144            \i \i
+\i \i  32  20 |  !"# $%&'  ()*+ ,-./     ¡¢£ ¤¥¦§  ¨©ª« ¬­®¯ | A0  160            \i \i
+\i \i  48  30 | 0123 4567  89:; <=>?    °±²³ ´µ¶·  ¸¹º» ¼½¾¿ | B0  176            \i \i
+\i \i  64  40 | @ABC DEFG  HIJK LMNO    ÀÁÂÃ ÄÅÆÇ  ÈÉÊË ÌÍÎÏ | C0  192            \i \i
+\i \i  80  50 | PQRS TUVW  XYZ[ \\]^_    ĞÑÒÓ ÔÕÖ×  ØÙÚÛ ÜİŞß | D0  208            \i \i
+\i \i  96  60 | `abc defg  hijk lmno    àáâã äåæç  èéêë ìíîï | E0  224            \i \i
+\i \i 112  70 | pqrs tuvw  xyz{ |}~    ğñòó ôõö÷  øùúû üışÿ | F0  240            \i \i
 }
 
  FOURTH SECTION: Key bindings:

@@ -1,9 +1,12 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.38 2011/10/04 20:05:29 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.39 2011/10/04 20:31:23 tg Exp $
 ------------------------------------------------------------------
 
 JOE 3.1jupp18
 
 - Fix displaying ASCII tilde in non-UTF-8 encodings
+- To not make backups is now the default for all flavours
+- The jmacs flavour behaves a bit more like the jupp flavour
+  (patch contributed by Johannes Langøy)
 
 JOE 3.1jupp17
 
