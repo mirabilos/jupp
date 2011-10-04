@@ -1,11 +1,13 @@
 /* Built-in files */
 
+/* while IFS= read -r x; do x=${x//\\/\\\\}; print -r -- $'\t\t'\""${x//\"/\\\"}\n"\"; done */
+
 #include "types.h"
 
 const unsigned char * const builtins[]=
 {
-	US "jupprc",
-		US "-asis\n"
+	US "jupprc", US
+		"-asis\n"
 		"-assume_color\n"
 		"-dopadding\n"
 		"--force\n"
@@ -13,6 +15,7 @@ const unsigned char * const builtins[]=
 		"-mid\n"
 		"-nobackups\n"
 		"-noxon\n"
+		"-notite\n"
 		"-pg 2\n"
 		"-lmsg \\i%k%T%*\\b%n\\b%R\n"
 		"-rmsg  R%r<%l C%c\\u%o|%O\\i\\b%a|%A\\b\\i\\u %u\n"
@@ -127,12 +130,26 @@ const unsigned char * const builtins[]=
 		"}\n"
 		"\n"
 		"{Joe\n"
-		"\\i   Help Screen    turn off with ^J     prev. screen ^[,                        \\i\n"
+		"\\i   Help Screen    turn off with ^J     prev. screen ^[,    next screen ^[.     \\i\n"
 		"\\i \\i \\bJUPP\\b is based upon JOE (Joe's Own Editor) 2.8/3.x \\d(GPL v1)\\d by Joe H. Allen; \\i \\i\n"
 		"\\i \\i go to \\uhttp://sf.net/projects/joe-editor/\\u for upstream bug reports. JUPP 2.8 \\i \\i\n"
 		"\\i \\i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\\d(R)\\d \\i \\i\n"
 		"\\i \\i at \\uhttp://mirbsd.de/jupp\\u and by \\bThorsten \"\\dmirabilos\\d\" Glaser <\\utg@mirbsd.org\\u>\\b \\i \\i\n"
-		"\\i \\i @(#) blt_in 2011-07-02; autoCR-LF; UTF-8 tty by LC_CTYPE; per-file encoding \\i \\i\n"
+		"\\i \\i @(#) blt_in 2011-10-04; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \\i \\i\n"
+		"}\n"
+		"\n"
+		"{CharTable\n"
+		"\\i   Help Screen    turn off with ^J     prev. screen ^[,    \\uCharacter Map\\u       \\i\n"
+		"\\i \\i Dec Hex  \\u 0123 4567  89AB CDEF    0123 4567  89AB CDEF \\u  Hex Dec            \\i \\i\n"
+		"\\i \\i         |                                              |                    \\i \\i\n"
+		"\\i \\i   0  00 | \\u@ABC\\u \\uDEFG\\u  \\uHIJK\\u \\uLMNO\\u    \\i\\u@ABC\\u\\i \\i\\uDEFG\\u\\i  \\i\\uHIJK\\u\\i \\i\\uLMNO\\u\\i | 80  128            \\i \\i\n"
+		"\\i \\i  16  10 | \\uPQRS\\u \\uTUVW\\u  \\uXYZ[\\u \\u\\\\]^_\\u    \\i\\uPQRS\\u\\i \\i\\uTUVW\\u\\i  \\i\\uXYZ[\\u\\i \\i\\u\\\\]^_\\u\\i | 90  144            \\i \\i\n"
+		"\\i \\i  32  20 |  !\"# $%&'  ()*+ ,-./     ¡¢£ ¤¥¦§  ¨©ª« ¬­®¯ | A0  160            \\i \\i\n"
+		"\\i \\i  48  30 | 0123 4567  89:; <=>?    °±²³ ´µ¶·  ¸¹º» ¼½¾¿ | B0  176            \\i \\i\n"
+		"\\i \\i  64  40 | @ABC DEFG  HIJK LMNO    ÀÁÂÃ ÄÅÆÇ  ÈÉÊË ÌÍÎÏ | C0  192            \\i \\i\n"
+		"\\i \\i  80  50 | PQRS TUVW  XYZ[ \\\\]^_    ÐÑÒÓ ÔÕÖ×  ØÙÚÛ ÜÝÞß | D0  208            \\i \\i\n"
+		"\\i \\i  96  60 | `abc defg  hijk lmno    àáâã äåæç  èéêë ìíîï | E0  224            \\i \\i\n"
+		"\\i \\i 112  70 | pqrs tuvw  xyz{ |}~    ðñòó ôõö÷  øùúû üýþÿ | F0  240            \\i \\i\n"
 		"}\n"
 		"\n"
 		":windows\n"
@@ -183,6 +200,10 @@ const unsigned char * const builtins[]=
 		"bof,qrepl,\"\\\\[\",quote,\"i\",quote,\"k\",quote,\"l\",quote,\"m ]\\\\+\\\\[\",quote,\"i\",quote,\"k\",quote,\"l\",quote,\"m ]\\\\$\",rtn,rtn,rtn,\"r\",eof	^K ]\n"
 		"edit,rtn,filt,query,parserr	^[ C\n"
 		"edit,rtn,filt,query,parserr	^[ c\n"
+		"begin_marking,uparw,toggle_marking	^[ [ 1 ; 2 A\n"
+		"begin_marking,dnarw,toggle_marking	^[ [ 1 ; 2 B\n"
+		"begin_marking,rtarw,toggle_marking	^[ [ 1 ; 2 C\n"
+		"begin_marking,ltarw,toggle_marking	^[ [ 1 ; 2 D\n"
 		"backs		^?\n"
 		"backs		^H\n"
 		"backw		^[ o\n"
@@ -463,5 +484,5 @@ const unsigned char * const builtins[]=
 		":querysr\n"
 		"type		^@ TO ÿ\n"
 ,	NULL
-,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.4 2011/07/03 00:35:03 tg Exp $"
+,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.5 2011/10/04 21:25:21 tg Exp $"
 };
