@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/main.c,v 1.14 2011/07/16 22:01:28 tg Exp $ */
+/* $MirOS: contrib/code/jupp/main.c,v 1.15 2011/10/04 22:25:52 tg Exp $ */
 
 #define JUPP_IS_COPYRIGHT_C_BY "2011 mirabilos"
 
@@ -359,6 +359,9 @@ int main(int argc, char **argv, char **envp)
 
 				bw->o.readonly = bw->b->rdonly;
 				if (backopt) {
+					unsigned char *old_context;
+
+					old_context = bw->o.context;
 					while (backopt != c) {
 						if (argv[backopt][0] == '+') {
 							sscanf((char *)(argv[backopt] + 1), "%ld", &lnum);
@@ -370,6 +373,12 @@ int main(int argc, char **argv, char **envp)
 								backopt += 1;
 							lazy_opts(&bw->o);
 						}
+					}
+					if (old_context != bw->o.context) {
+						/* update keymap */
+						rmkbd(bw->parent->kbd);
+						bw->parent->kbd =
+						    mkkbd(kmap_getcontext(bw->o.context));
 					}
 				}
 				bw->b->o = bw->o;

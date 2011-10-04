@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/rc.c,v 1.14 2011/07/03 00:35:04 tg Exp $ */
+/* $MirOS: contrib/code/jupp/rc.c,v 1.15 2011/10/04 22:25:52 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
@@ -455,12 +455,7 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options_, int set)
 			ret = 1;
 	} else if (!strcmp(s, "keymap")) {
 		if (arg) {
-			int y;
-
-			for (y = 0; !joe_isspace(locale_map,arg[y]); ++y) ;
-			if (!arg[y])
-				arg[y] = 0;
-			if (options_ && y)
+			if (options_)
 				options_->context = (unsigned char *)strdup((char *)arg);
 			ret = 2;
 		} else

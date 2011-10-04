@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.41 2011/10/04 21:00:32 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.42 2011/10/04 22:25:52 tg Exp $
 ------------------------------------------------------------------
 
 JOE 3.1jupp18
@@ -10,6 +10,7 @@ JOE 3.1jupp18
 - In xterm, Shift-Cur{Up,Down,Left,Right} now selects text
   (idea contributed by Dmitry Geurkov)
 - Fix bugs in *rc files; sync joerc and rjoerc with each other
+- Unbreak passing -keymap on the command line
 
 JOE 3.1jupp17
 
