@@ -1,5 +1,9 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.37 2011/07/27 18:43:11 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.38 2011/10/04 20:05:29 tg Exp $
 ------------------------------------------------------------------
+
+JOE 3.1jupp18
+
+- Fix displaying ASCII tilde in non-UTF-8 encodings
 
 JOE 3.1jupp17
 
