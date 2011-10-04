@@ -1,11 +1,11 @@
- $MirOS: contrib/code/jupp/jstarrc.in,v 1.5 2011/10/04 20:31:24 tg Exp $
+ $MirOS: contrib/code/jupp/jstarrc.in,v 1.6 2011/10/04 20:57:31 tg Exp $
 
                          Initialization file for JOE
                            WordStar / Turbo-C Joe
 
  JOE looks for this file in:
 	1 - $HOME/.jstarrc
-	2 - ${prefix}/etc/jstarrc
+	2 - @sysconfdir@/jstarrc
 
  This file can include other files by placing the following include command
  in the first column:
@@ -678,7 +678,7 @@
  Simple macros can be made by comma seperating 2 or more command names.  For
  example:
 
- bof,bol	^T Z		Goto beginning of last line
+ eof,bol	^T Z		Goto beginning of last line
 
  Also quoted matter is typed in literally:
 

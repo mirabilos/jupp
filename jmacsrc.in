@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jmacsrc.in,v 1.5 2011/10/04 20:31:23 tg Exp $
+ $MirOS: contrib/code/jupp/jmacsrc.in,v 1.6 2011/10/04 20:57:30 tg Exp $
 
                          Initialization file for JOE
                                 GNU-Emacs Joe
@@ -630,7 +630,7 @@
  Simple macros can be made by comma seperating 2 or more command names.  For
  example:
 
- bof,bol	^T Z		Goto beginning of last line
+ eof,bol	^T Z		Goto beginning of last line
 
  Also quoted matter is typed in literally:
 
@@ -751,7 +751,7 @@ ask			^X s
 drop,msg,"Mark set",rtn	^@			Drop anchor
 nextw,pgdn,prevw	^[ ^V			Scroll other window down
 nextw,pgup,prevw	^[ ^Z			Scroll other window up
- bol,nedge,pedge	^[ m			Gnu-emacs goto indentation
+ bol,nedge,pedge	^[ m			GNU-Emacs goto indentation
 nextw,nbuf,prevw	^X 4 b			Switch buffers other window
 nextw,edit,query,prevw	^X 4 f			Find file other window
 nextw,edit,query,prevw	^X 4 ^F
@@ -760,7 +760,7 @@ nextw,tag,query,prevw	^X 4 .			Find tag other window
  Old way...
  exsave			^X ^C			Save file and exit
 
- More like gnu-emacs...
+ More like GNU Emacs...
 querysave,query,killjoe	^X ^C			Query to save files, then exit
 
  Old way...
@@ -864,9 +864,9 @@ save		^X ^W		Write file
 setmark		^X j		Set bookmark
 shrinkw		^X ^Z		(uemacs)
 splitw		^X 2		Split window
-stat		^X l		Gnu-Emacs Show status
+stat		^X l		GNU-Emacs Show status
 stat		^X ?		JED
-stat		^X =		Gnu-Emacs
+stat		^X =		GNU-Emacs
 swap		^X ^X		Swap mark and cursor
 tag		^[ .		Tag search
 tomatch		^X g		Goto matching parenthasis (joe)

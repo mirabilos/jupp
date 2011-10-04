@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/rjoerc.in,v 1.5 2011/10/04 20:31:24 tg Exp $
+ $MirOS: contrib/code/jupp/rjoerc.in,v 1.6 2011/10/04 20:57:31 tg Exp $
 
                          Initialization file for JOE
                             Restricted access Joe
@@ -87,6 +87,8 @@
 
  -wrap          Search wraps
 
+ -autoswap	Swap markb with markk when necessary
+
  Status line definition strings.  -lmsg defines the left-justified string,
  and -rmsg defines the right-justified string. The first character of -rmsg
  is the background fill character.  -hmsg (3.1jupp15) defines the help hint
@@ -116,6 +118,7 @@
   %S  '*SHELL*' if there is a shell running in window
   %M  Macro recording message
   %y  Syntax
+  %x  Context (first non-indented line going backwards)
 
  These formatting escape sequences may also be given:
  
@@ -125,15 +128,16 @@
   \d  Dim
   \f  Blink
 
--lmsg \i%k%T%W%I%X %n %m%y%R %M
+-lmsg \i%k%T%W%I%X %n %m%y%R %M %x
 -rmsg  %S Row %r Col %c %t  Ctrl-K H for help
 -hmsg Help: ^KH
 
  SECOND SECTION: File name dependant local option settings:
 
  Each line with '*' in the first column indicates the modes which should be
- set for files which match the regular expression.  If more than one regular
- expression matches the file name, then the last matching one is chosen.
+ set for files whose name matches the regular expression.  If more than one
+ regular expression matches the file name, then the last matching one is
+ chosen.
 
  Here are the modes which can be set:
 
@@ -571,6 +575,12 @@
  Use \d to turn on/off dim
  Use \f to turn on/off flash
 
+ Use \| to insert a spring: all springs in a given line are set to the same
+ width such that the entire line exactly fits in the width of the screen (if
+ it's not an exact multiple so that there are N spaces remaining, the
+ rightmost N springs each get one extra space).  Hint: if you want vertical
+ alignment, each line should have the same number of springs.
+
 {Basic
 \i   Help Screen    \|turn off with ^KH    more help with ESC . (^[.)              \i
 \i \i\|\uCURSOR\u           \|\uGO TO\u            \|\uBLOCK\u      \|\uDELETE\u   \|\uMISC\u         \|\uEXIT\u      \|\i \i
@@ -686,13 +696,20 @@
  Simple macros can be made by comma seperating 2 or more command names.  For
  example:
 
- bof,bol	^T Z		Goto beginning of last line
+ eof,bol	^T Z		Goto beginning of last line
 
  Also quoted matter is typed in literally:
 
  bol,">",dnarw	.k1		Quote news article line
 
  Macros may cross lines if they end with ,
+
+ Commands or named macros may be created with :def.  For example, you can
+ use:
+
+ :def foo eof,bol
+
+ To define a command foo which will goto the beginning of the last line.
 
 :windows		Bindings common to all windows
 type		^@ TO ÿ		Type a character
@@ -711,7 +728,7 @@ hnext		^[ .		Next help window
 hprev		^[ ,		Previous help window
 math		^[ m		Calculator
 math		^[ M		Calculator
-math		^[ ^M		Calculator
+ math		^[ ^M		Calculator
 msg		^[ h		Display a message
 msg		^[ H		Display a message
 msg		^[ ^H		Display a message
@@ -772,6 +789,33 @@ eol			^[ [ F			Xterm, Konsole, SCO
 eol			^[ O F			gnome-terminal
 eol			^[ [ 8 ~		RxVT
 
+begin_marking,rtarw,toggle_marking	^[ [ 1 ; 5 C    Mark right Xterm
+begin_marking,rtarw,toggle_marking	^[ [ 5 C        Mark right Gnome-terminal
+ (Almost all termcap entries have ^[ O C as an arrow key).
+ begin_marking,rtarw,toggle_marking	^[ O C		Mark right Putty Ctrl-rtarw
+begin_marking,rtarw,toggle_marking	^[ O c		Mark right RxVT Ctrl-rtarw
+
+begin_marking,ltarw,toggle_marking	^[ [ 1 ; 5 D    Mark left
+begin_marking,ltarw,toggle_marking	^[ [ 5 D        Mark left
+ begin_marking,ltarw,toggle_marking	^[ O D		Mark left Putty Ctrl-ltarw
+begin_marking,ltarw,toggle_marking	^[ O d		Mark left RxVT Ctrl-ltarw
+
+begin_marking,uparw,toggle_marking	^[ [ 1 ; 5 A    Mark up
+begin_marking,uparw,toggle_marking	^[ [ 5 A        Mark up
+ begin_marking,uparw,toggle_marking	^[ O A		Mark up Putty Ctrl-uparw
+begin_marking,uparw,toggle_marking	^[ O a		Mark up RxVT Ctrl-uparw
+
+begin_marking,dnarw,toggle_marking	^[ [ 1 ; 5 B    Mark down
+begin_marking,dnarw,toggle_marking	^[ [ 5 B        Mark down
+ begin_marking,dnarw,toggle_marking	^[ O B		Mark down Putty Ctrl-dnarw
+begin_marking,dnarw,toggle_marking	^[ O b		Mark down RxVT Ctrl-dnarw
+
+blkdel,nmark   ^[ [ 3 ; 5 -	Gnome-terminal Ctrl-Del
+blkdel,nmark   ^[ [ 3 ; 5 ~	Xterm Ctrl-Del
+
+yank		^[ [ 2 ; 5 -	Gnome-terminal Ctrl-Ins
+yank		^[ [ 2 ; 5 ~    Xterm Ctrl-Ins
+
  Extra functions not really part of JOE user interface:
 
 delbol		^[ o		Delete to beginning of line
@@ -807,14 +851,16 @@ tomarkk		^[ k		Go to end of marked block
 tomarkk		^[ ^K		Go to end of marked block
 tomarkk		^[ K		Go to end of marked block
 txt		^[ i		Prompt for text and insert it
-txt		^[ ^I		Prompt for text and insert it
 txt		^[ I		Prompt for text and insert it
 upslide		^[ w		Scroll up one line
 upslide		^[ ^W		Scroll up one line
 upslide		^[ W		Scroll up one line
-yankpop		^[ y		Undelete text
+yank		^[ y		Undelete text
 yankpop		^[ ^Y		Undelete text
-yankpop		^[ Y		Undelete text
+yank		^[ Y		Undelete text
+
+toggle_marking	^@		Ctrl-space block selection method
+				Ctrl-space used to insert a space
 
  bufed		^[ d		Menu of buffers
  pbuf		^[ .		Next buffer

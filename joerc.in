@@ -1,11 +1,11 @@
- $MirOS: contrib/code/jupp/joerc.in,v 1.5 2011/10/04 20:31:23 tg Exp $
+ $MirOS: contrib/code/jupp/joerc.in,v 1.6 2011/10/04 20:57:31 tg Exp $
 
                          Initialization file for JOE
                                 Standard Joe
 
  JOE looks for this file in:
 	1 - $HOME/.joerc
-	2 - ${prefix}/etc/joerc
+	2 - @sysconfdir@/joerc
 
  This file can include other files by placing the following include command
  in the first column:
@@ -410,6 +410,10 @@
 -syntax csh
 
 *.csh
+-autoindent
+-syntax csh
+
+*.cshrc
 -autoindent
 -syntax csh
 
@@ -1058,7 +1062,7 @@ eolmenu			^[ [ F			Xterm, Konsole
 eolmenu			^[ O F			gnome-terminal
 eolmenu			^[ [ 8 ~		RxVT
 
-abort		^[ ^[	Why?
+abort		^[ ^[
 backsmenu	^?
 backsmenu	^H
 bofmenu		^K U

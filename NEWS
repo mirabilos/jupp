@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.39 2011/10/04 20:31:23 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.40 2011/10/04 20:57:30 tg Exp $
 ------------------------------------------------------------------
 
 JOE 3.1jupp18
@@ -7,6 +7,7 @@ JOE 3.1jupp18
 - To not make backups is now the default for all flavours
 - The jmacs flavour behaves a bit more like the jupp flavour
   (patch contributed by Johannes Langøy)
+- Fix bugs in *rc files; sync joerc and rjoerc with each other
 
 JOE 3.1jupp17
 
