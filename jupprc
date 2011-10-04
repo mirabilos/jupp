@@ -487,6 +487,10 @@ stop		^[ )
 bof,qrepl,"\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\+\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\$",rtn,rtn,rtn,"r",eof	^K ]
 edit,rtn,filt,query,parserr	^[ C
 edit,rtn,filt,query,parserr	^[ c
+begin_marking,uparw,toggle_marking	^[ [ 1 ; 2 A
+begin_marking,dnarw,toggle_marking	^[ [ 1 ; 2 B
+begin_marking,rtarw,toggle_marking	^[ [ 1 ; 2 C
+begin_marking,ltarw,toggle_marking	^[ [ 1 ; 2 D
 backs		^?
 backs		^H
 backw		^[ o

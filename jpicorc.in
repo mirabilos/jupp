@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jpicorc.in,v 1.5 2011/10/04 20:31:24 tg Exp $
+ $MirOS: contrib/code/jupp/jpicorc.in,v 1.6 2011/10/04 21:00:32 tg Exp $
 
                          Initialization file for JOE
                                  Super Pico
@@ -739,6 +739,11 @@ stop		^[ )		Stop recording
 
 :main			Text editing window
 :inherit windows
+
+begin_marking,uparw,toggle_marking	^[ [ 1 ; 2 A	xterm shift-up mark
+begin_marking,dnarw,toggle_marking	^[ [ 1 ; 2 B	xterm shift-down mark
+begin_marking,rtarw,toggle_marking	^[ [ 1 ; 2 C	xterm shift-right mark
+begin_marking,ltarw,toggle_marking	^[ [ 1 ; 2 D	xterm shift-left mark
 
  Spell-check macros
 
