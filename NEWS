@@ -1,5 +1,9 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.43 2011/10/04 22:35:44 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.44 2011/10/05 21:24:29 tg Exp $
 ------------------------------------------------------------------
+
+JOE 3.1jupp19
+
+- Support ncurses tinfo split
 
 JOE 3.1jupp18
 
