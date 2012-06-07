@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/b.c,v 1.9 2011/07/16 21:57:55 tg Exp $ */
+/* $MirOS: contrib/code/jupp/b.c,v 1.10 2012/06/07 22:16:08 tg Exp $ */
 /*
  *	Editor engine
  *	Copyright
@@ -40,6 +40,14 @@
 #include "utf8.h"
 #include "charmap.h"
 #include "w.h"
+
+#if !HAVE_DECL_CTIME
+char *ctime(const time_t *);
+#endif
+#if !HAVE_DECL_POPEN
+FILE *popen(const char *, const char *);
+int pclose(FILE *);
+#endif
 
 unsigned char stdbuf[stdsiz];
 

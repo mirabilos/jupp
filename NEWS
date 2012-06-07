@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.45 2012/06/07 19:01:28 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.46 2012/06/07 22:16:08 tg Exp $
 ------------------------------------------------------------------
 
 JOE 3.1jupp19
@@ -7,6 +7,7 @@ JOE 3.1jupp19
 - Use glibc specific get_current_dir_name if existent and PATH_MAX
   is undefined (as on Debian GNU/Hurd, for example) instead of a
   fallback value of 4096 with PATH_MAX-using code
+- Build with dietlibc (wheezy) or klibc 2.0 now works
 
 JOE 3.1jupp18
 

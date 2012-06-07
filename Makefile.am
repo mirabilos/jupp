@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/Makefile.am,v 1.7 2009/10/18 16:23:59 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.am,v 1.8 2012/06/07 22:16:07 tg Exp $
 
 AUTOMAKE_OPTIONS = foreign
 
@@ -49,7 +49,7 @@ joe_SOURCES = b.c blocks.c bw.c cmd.c hash.c help.c kbd.c macro.c main.c menu.c 
 	path.c poshist.c pw.c queue.c qw.c rc.c regex.c scrn.c tab.c termcap.c \
 	tty.c tw.c ublock.c uedit.c uerror.c ufile.c uformat.c uisrch.c umath.c \
 	undo.c usearch.c ushell.c utag.c va.c vfile.c vs.c w.c utils.c syntax.c \
-	utf8.c selinux.c i18n.c charmap.c strlfun.c builtin.c builtins.c
+	utf8.c selinux.c i18n.c charmap.c builtin.c builtins.c compat.c
 
 termidx_SOURCES = termidx.c
 

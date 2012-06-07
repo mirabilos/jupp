@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tw.c,v 1.7 2010/04/08 15:31:04 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tw.c,v 1.8 2012/06/07 22:16:09 tg Exp $ */
 /* 
  *	Text editing windows
  *	Copyright
@@ -32,6 +32,10 @@
 #include "syntax.h"
 #include "charmap.h"
 #include "w.h"
+
+#if !HAVE_DECL_CTIME
+char *ctime(const time_t *);
+#endif
 
 extern int square;
 int staen = 0;
