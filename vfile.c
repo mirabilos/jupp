@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/vfile.c,v 1.5 2012/06/07 22:19:51 tg Exp $ */
+/* $MirOS: contrib/code/jupp/vfile.c,v 1.6 2012/06/07 22:30:49 tg Exp $ */
 /*
  *	Software virtual memory system
  *	Copyright
@@ -36,6 +36,8 @@ static long maxvalloc = ILIMIT;	/* Maximum allowed */
 unsigned char *vbase;			/* Data first entry in vheader refers to */
 VPAGE **vheaders = NULL;	/* Array of header addresses */
 static int vheadsz = 0;		/* No. entries allocated to vheaders */
+
+static unsigned int joe_random(void);
 
 void vflsh(void)
 {
@@ -179,14 +181,14 @@ unsigned char *vlock(VFILE *vfile, unsigned long addr)
 		}
 	}
 
-	for (y = HTSIZE, x = (random() & (HTSIZE - 1)); y; x = ((x + 1) & (HTSIZE - 1)), --y)
+	for (y = HTSIZE, x = (joe_random() & (HTSIZE - 1)); y; x = ((x + 1) & (HTSIZE - 1)), --y)
 		for (pp = (VPAGE *) (htab + x), vp = pp->next; vp; pp = vp, vp = vp->next)
 			if (!vp->count && !vp->dirty) {
 				pp->next = vp->next;
 				goto gotit;
 			}
 	vflsh();
-	for (y = HTSIZE, x = (random() & (HTSIZE - 1)); y; x = ((x + 1) & (HTSIZE - 1)), --y)
+	for (y = HTSIZE, x = (joe_random() & (HTSIZE - 1)); y; x = ((x + 1) & (HTSIZE - 1)), --y)
 		for (pp = (VPAGE *) (htab + x), vp = pp->next; vp; pp = vp, vp = vp->next)
 			if (!vp->count && !vp->dirty) {
 				pp->next = vp->next;
@@ -281,3 +283,14 @@ long my_valloc(VFILE *vfile, long int size)
 	}
 	return start;
 }
+
+#if ((HTSIZE) <= 0x8000)
+/* Borland LCG */
+static unsigned int
+joe_random(void)
+{
+	static unsigned int lcg_state = 5381;
+
+	return (((lcg_state = 22695477 * lcg_state + 1) >> 16) & 0x7FFF);
+}
+#endif
