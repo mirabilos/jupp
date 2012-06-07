@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/path.c,v 1.5 2010/04/08 15:31:02 tg Exp $ */
+/* $MirOS: contrib/code/jupp/path.c,v 1.6 2012/06/07 19:01:29 tg Exp $ */
 /* 
  *	Directory and path functions
  *	Copyright
@@ -82,7 +82,7 @@
 #  endif
 #endif
 
-#ifndef PATH_MAX
+#if !defined(PATH_MAX) && !defined(HAVE_GET_CURRENT_DIR_NAME)
 #warning What should we include to have PATH_MAX defined?
 #define PATH_MAX	4096
 #endif
@@ -399,6 +399,7 @@ int chpwd(unsigned char *path)
 /* The pwd function */
 unsigned char *pwd(void)
 {
+#if defined(PATH_MAX) || !defined(HAVE_GET_CURRENT_DIR_NAME)
 	static unsigned char buf[PATH_MAX];
 	unsigned char	*ret;
 
@@ -410,4 +411,12 @@ unsigned char *pwd(void)
 	buf[PATH_MAX - 1] = '\0';
 
 	return ret;
+#else
+	/* Hurd */
+	static char *wd = NULL;
+
+	free(wd);
+	wd = get_current_dir_name();
+	return ((void *)wd);
+#endif
 }

@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.30 2011/10/05 21:24:29 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.31 2012/06/07 19:01:29 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -33,6 +33,9 @@ case $host in
 *-*-solaris*)
 	CPPFLAGS="$CPPFLAGS -I/usr/local/include"
 	LDFLAGS="$LDFLAGS -L/usr/local/lib -R/usr/local/lib"
+	;;
+*-gnu*)
+	CPPFLAGS="$CPPFLAGS -D_GNU_SOURCE"
 	;;
 esac
 
@@ -148,7 +151,7 @@ if test x"$ac_cv_func_isblank" = xyes; then
 fi
 AC_CHECK_FUNCS([alarm mkdir mkstemp putenv setlocale strchr strdup utime setpgid])
 AC_CHECK_FUNCS([setitimer sigaction sigvec siginterrupt sigprocmask])
-AC_CHECK_FUNCS([strlcpy strlcat nl_langinfo])
+AC_CHECK_FUNCS([strlcpy strlcat nl_langinfo get_current_dir_name])
 
 AC_CHECK_DECLS([strlcpy, strlcat])
 

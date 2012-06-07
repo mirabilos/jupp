@@ -1,9 +1,12 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.44 2011/10/05 21:24:29 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.45 2012/06/07 19:01:28 tg Exp $
 ------------------------------------------------------------------
 
 JOE 3.1jupp19
 
 - Support ncurses tinfo split
+- Use glibc specific get_current_dir_name if existent and PATH_MAX
+  is undefined (as on Debian GNU/Hurd, for example) instead of a
+  fallback value of 4096 with PATH_MAX-using code
 
 JOE 3.1jupp18
 
