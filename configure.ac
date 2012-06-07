@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.31 2012/06/07 19:01:29 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.32 2012/06/07 20:37:40 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -45,43 +45,59 @@ case $host in
 	;;
 esac
 
+
 # Checks for libraries.
+
+search_libs_selinux="selinux"
+search_libs_snprintf="snprintf db"
+search_libs_term=""
+search_libs_util="util"
+
 AC_ARG_ENABLE(curses,
 [  --disable-curses        disable use of curses library],
 	curses=$enableval, curses=yes)
-
-if test "$curses" = "yes"; then
-	search_libs="tinfo ncurses curses"
-fi
+test x"$curses" = x"yes" && \
+    search_libs_term="$search_libs_term tinfo ncurses curses"
 
 AC_ARG_ENABLE(termcap,
 [  --disable-termcap       disable use of termcap library],
 	termcap=$enableval, termcap=yes)
+test x"$termcap" = x"yes" && \
+    search_libs_term="$search_libs_term termcap"
 
-if test "$termcap" = "yes"; then
-	search_libs="$search_libs termcap"
+AC_ARG_ENABLE([search_libs],
+[  --disable-search-libs   do not search in any external libraries],
+	search_libs=$enableval, search_libs=yes)
+
+if test x"$search_libs" = x"no"; then
+	search_libs_selinux=""
+	search_libs_snprintf=""
+	search_libs_term=""
+	search_libs_util=""
 fi
+
+AC_SEARCH_LIBS(openpty, $search_libs_util, AC_DEFINE_UNQUOTED(HAVE_OPENPTY, 1, [If we have BSD function openpty()]))
+AC_SEARCH_LIBS(login_tty, $search_libs_util, AC_DEFINE_UNQUOTED(HAVE_LOGIN_TTY, 1, [If we have BSD function login_tty()]))
+AC_SEARCH_LIBS(tgetflag, $search_libs_term, AC_DEFINE_UNQUOTED(TERMINFO, 1, [If we have newer terminfo/termcap capabilities]))
+AC_SEARCH_LIBS(snprintf, $search_libs_snprintf, AC_DEFINE_UNQUOTED(HAVE_SNPRINTF, 1, [If we have snprintf]))
+AC_SEARCH_LIBS(is_selinux_enabled, $search_libs_selinux, AC_DEFINE_UNQUOTED(HAVE_SELINUX_FUN, 1, [We have SELinux functions]))
+
+
+# other conditionals
 
 AC_ARG_ENABLE([getpwnam],
 [  --disable-getpwnam      disable use of getpwnam function],
 	getpwnam=$enableval, getpwnam=yes)
-
-if test x"$getpwnam" = x"no"; then
-	CPPFLAGS="$CPPFLAGS -DJOE_NOPWNAM"
-fi
+test x"$getpwnam" = x"no" && CPPFLAGS="$CPPFLAGS -DJOE_NOPWNAM"
 
 AC_ARG_ENABLE([termidx],
 [  --disable-termidx       do not build the termidx binary],
 	termidx=$enableval, termidx=yes)
 AM_CONDITIONAL([WANT_TERMIDX], [test x"$termidx" != x"no"])
 
-AC_SEARCH_LIBS(openpty, util, AC_DEFINE_UNQUOTED(HAVE_OPENPTY, 1, [If we have BSD function openpty()]))
-AC_SEARCH_LIBS(login_tty, util, AC_DEFINE_UNQUOTED(HAVE_LOGIN_TTY, 1, [If we have BSD function login_tty()]))
-AC_SEARCH_LIBS(tgetflag, $search_libs, AC_DEFINE_UNQUOTED(TERMINFO, 1, [If we have newer terminfo/termcap capabilities]))
-AC_SEARCH_LIBS(snprintf, snprintf db, AC_DEFINE_UNQUOTED(HAVE_SNPRINTF, 1, [If we have snprintf]))
-AC_SEARCH_LIBS(is_selinux_enabled, selinux, AC_DEFINE_UNQUOTED(HAVE_SELINUX_FUN, 1, [We have SELinux functions]))
 
 # Checks for header files.
+
 AC_CHECK_HEADERS([ \
 	sys/dirent.h sys/ioctl.h sys/param.h sys/stat.h sys/termio.h \
 	sys/termios.h sys/time.h sys/types.h sys/wait.h errno.h fcntl.h \
@@ -108,6 +124,7 @@ if test "$ac_cv_header_selinux_selinux_h" = "yes" -a "$ac_cv_header_selinux_cont
 fi
 
 # Checks for typedefs, structures, and compiler characteristics.
+
 AC_C_PROTOTYPES
 AC_C_CONST
 if test "$cross_compiling" = "yes" ; then
@@ -129,6 +146,7 @@ AC_CHECK_TYPE([sighandler_t],
 #endif])
 
 # Checks for library functions.
+
 AC_PROG_GCC_TRADITIONAL
 AC_FUNC_LSTAT
 joe_SETPGRP
