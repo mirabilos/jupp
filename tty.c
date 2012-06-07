@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.c,v 1.15 2011/07/16 21:57:57 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.c,v 1.16 2012/06/07 22:14:17 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright
@@ -1141,10 +1141,13 @@ MPX *mpxmk(int *ptyfd, unsigned char *cmd, unsigned char **args, void (*func) (/
 #endif
 
 				/* Open stdout, stderr */
-				dup(x);
-				dup(x);	/* Standard output, standard error */
-				/* (yes, stdin, stdout, and stderr must all be open for reading and
-				 * writing.  On some systems the shell assumes this */
+				if (dup(x)) {}	/* standard output */
+				if (dup(x)) {}	/* standard error */
+				/*
+				 * yes, stdin, stdout, and stderr must
+				 * all be open for reading and writing.
+				 * On some systems the shell assumes this.
+				 */
 #endif
 
 				/* We could probably have a special TTY set-up for JOE, but for now
