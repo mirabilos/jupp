@@ -646,7 +646,8 @@ Other requests:
 
 • merge syntax handling code from joe-3.7+
 • make -Wcast-qual clean
+• write a jupp(1) mdoc page
 • …
 
 _________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.8 2011/10/04 22:47:51 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.9 2012/06/07 22:39:44 tg Exp $
