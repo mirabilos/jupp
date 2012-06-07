@@ -9,6 +9,17 @@
 /* Define to 1 if you have the <bsd/string.h> header file. */
 #undef HAVE_BSD_STRING_H
 
+/* Define to 1 if you have the `ctime' function. */
+#undef HAVE_CTIME
+
+/* Define to 1 if you have the declaration of `ctime', and to 0 if you don't.
+   */
+#undef HAVE_DECL_CTIME
+
+/* Define to 1 if you have the declaration of `popen', and to 0 if you don't.
+   */
+#undef HAVE_DECL_POPEN
+
 /* Define to 1 if you have the declaration of `strlcat', and to 0 if you
    don't. */
 #undef HAVE_DECL_STRLCAT
@@ -35,6 +46,9 @@
 
 /* Define to 1 if you have the `getwd' function. */
 #undef HAVE_GETWD
+
+/* Define to 1 if you have the `get_current_dir_name' function. */
+#undef HAVE_GET_CURRENT_DIR_NAME
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
@@ -78,6 +92,9 @@
 
 /* Define to 1 if you have the <paths.h> header file. */
 #undef HAVE_PATHS_H
+
+/* Define to 1 if you have the `popen' function. */
+#undef HAVE_POPEN
 
 /* We have <termios.h> and maybe <sys/termios.h> */
 #undef HAVE_POSIX_TERMIOS

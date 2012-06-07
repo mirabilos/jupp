@@ -14,8 +14,8 @@
 
 @SET_MAKE@
 
-# $MirOS: contrib/code/jupp/Makefile.in,v 1.10 2010/04/08 15:46:35 tg Exp $
-# $miros: contrib/code/jupp/Makefile.am,v 1.7 2009/10/18 16:23:59 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.in,v 1.11 2012/06/07 22:42:23 tg Exp $
+# $miros: contrib/code/jupp/Makefile.am,v 1.8 2012/06/07 22:16:07 tg Exp $
 
 
 
@@ -105,7 +105,7 @@ am_joe_OBJECTS = b.$(OBJEXT) blocks.$(OBJEXT) bw.$(OBJEXT) \
 	utag.$(OBJEXT) va.$(OBJEXT) vfile.$(OBJEXT) vs.$(OBJEXT) \
 	w.$(OBJEXT) utils.$(OBJEXT) syntax.$(OBJEXT) utf8.$(OBJEXT) \
 	selinux.$(OBJEXT) i18n.$(OBJEXT) charmap.$(OBJEXT) \
-	strlfun.$(OBJEXT) builtin.$(OBJEXT) builtins.$(OBJEXT)
+	builtin.$(OBJEXT) builtins.$(OBJEXT) compat.$(OBJEXT)
 joe_OBJECTS = $(am_joe_OBJECTS)
 joe_LDADD = $(LDADD)
 am_termidx_OBJECTS = termidx.$(OBJEXT)
@@ -284,7 +284,7 @@ joe_SOURCES = b.c blocks.c bw.c cmd.c hash.c help.c kbd.c macro.c main.c menu.c 
 	path.c poshist.c pw.c queue.c qw.c rc.c regex.c scrn.c tab.c termcap.c \
 	tty.c tw.c ublock.c uedit.c uerror.c ufile.c uformat.c uisrch.c umath.c \
 	undo.c usearch.c ushell.c utag.c va.c vfile.c vs.c w.c utils.c syntax.c \
-	utf8.c selinux.c i18n.c charmap.c strlfun.c builtin.c builtins.c
+	utf8.c selinux.c i18n.c charmap.c builtin.c builtins.c compat.c
 
 termidx_SOURCES = termidx.c
 all: autoconf.h
@@ -439,6 +439,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bw.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/charmap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/compat.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hash.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/help.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/i18n.Po@am__quote@
@@ -455,7 +456,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/regex.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/scrn.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/selinux.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/strlfun.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/syntax.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tab.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/termcap.Po@am__quote@
