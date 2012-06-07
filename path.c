@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/path.c,v 1.6 2012/06/07 19:01:29 tg Exp $ */
+/* $MirOS: contrib/code/jupp/path.c,v 1.7 2012/06/07 22:18:23 tg Exp $ */
 /* 
  *	Directory and path functions
  *	Copyright
@@ -34,6 +34,17 @@
 #include "path.h"
 #include "vs.h"
 #include "va.h"
+
+#ifdef TIME_WITH_SYS_TIME
+# include <sys/time.h>
+# include <time.h>
+#else
+# ifdef HAVE_SYS_TIME_H
+#  include <sys/time.h>
+# else
+#  include <time.h>
+# endif
+#endif
 
 #ifdef HAVE_DIRENT_H
 #  include <dirent.h>
