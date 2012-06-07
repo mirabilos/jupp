@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.32 2012/06/07 20:37:40 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.33 2012/06/07 20:41:24 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -174,17 +174,6 @@ AC_CHECK_FUNCS([strlcpy strlcat nl_langinfo get_current_dir_name])
 AC_CHECK_DECLS([strlcpy, strlcat])
 
 joe_REINSTALL_SIGHANDLERS
-
-# check if -liconv is necessary
-# if iconv() is in libc, don't bother with -liconv
-#AC_CHECK_LIB(c,iconv,
-#  [REQRD_LIBS= ],
-#  [REQRD_LIBS=-liconv])
-#
-#AC_SUBST(REQRD_LIBS)
-
-dnl not yet :-)
-dnl AM_GNU_GETTEXT
 
 AH_VERBATIM([_PARAMS],[/* Check to see if we can use strict prototypes */
 #ifndef PARAMS
