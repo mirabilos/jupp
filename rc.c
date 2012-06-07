@@ -1,19 +1,10 @@
-/* $MirOS: contrib/code/jupp/rc.c,v 1.15 2011/10/04 22:25:52 tg Exp $ */
+/* $MirOS: contrib/code/jupp/rc.c,v 1.16 2012/06/07 23:38:17 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
  *		(C) 1992 Joseph H. Allen; 
  *
  *	This file is part of JOE (Joe's Own Editor)
- *
- * This work is provided "AS IS" and WITHOUT WARRANTY of any kind, to
- * the utmost extent permitted by applicable law, neither express nor
- * implied; without malicious intent or gross negligence. In no event
- * may a licensor, author or contributor be held liable for indirect,
- * direct, other damage, loss, or other issues arising in any way out
- * of dealing in the work, even if advised of the possibility of such
- * damage or existence of a defect, except proven that it results out
- * of said person's immediate fault when using the work as intended.
  */
 #include "config.h"
 #include "types.h"

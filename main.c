@@ -1,14 +1,35 @@
-/* $MirOS: contrib/code/jupp/main.c,v 1.16 2012/06/07 22:39:54 tg Exp $ */
+/* $MirOS: contrib/code/jupp/main.c,v 1.17 2012/06/07 23:38:17 tg Exp $ */
 
 #define JUPP_IS_COPYRIGHT_C_BY "2012 mirabilos"
 
-/*
- *	Editor startup and main edit loop
- *	Copyright
- *		(C) 1992 Joseph H. Allen
+/*-
+ * Copyright (c) 2004ff. Thorsten Glaser
+ * Copyright (C) 1992 Joseph H. Allen
  *
- * 	This file is part of JOE (Joe's Own Editor)
+ * This file is part of "jupp", a variant of Joe's Own Editor "JOE".
+ *
+ * jupp is free software; you can redistribute and/or modify it, deal
+ * in the work, etc. under the terms of the GNU General Public Licen-
+ * se, version 1 (of February 1989) as published by the Free Software
+ * Foundation, reproduced in the file COPYING in the jupp source code
+ * distribution. If jupp is combined with other independent work, for
+ * example libraries or when using crunchgen, into a combined binary,
+ * that may be conveyed under any version of the GPL, as published by
+ * the Free Software Foundation, and any compatible licence permitted
+ * by the GPL.
+ *
+ * This work is provided "AS IS" and WITHOUT WARRANTY of any kind, to
+ * the utmost extent permitted by applicable law, neither express nor
+ * implied; without malicious intent or gross negligence. In no event
+ * may a licensor, author or contributor be held liable for indirect,
+ * direct, other damage, loss, or other issues arising in any way out
+ * of dealing in the work, even if advised of the possibility of such
+ * damage or existence of a defect, except proven that it results out
+ * of said person's immediate fault when using the work as intended.
+ *-
+ * Editor startup and main edit loop
  */
+
 #include "config.h"
 #include "types.h"
 

@@ -1,22 +1,4 @@
-/* $MirOS: contrib/code/jupp/types.h,v 1.6 2011/07/03 00:35:05 tg Exp $ */
-
-/*-
- * This file is part of JUPP, a variant of Joe's Own Editor.
- *
- * JUPP is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 1 (February 1989), as shown
- * in the file COPYING in the JUPP source distribution.
- *
- * This work is provided "AS IS" and WITHOUT WARRANTY of any kind, to
- * the utmost extent permitted by applicable law, neither express nor
- * implied; without malicious intent or gross negligence. In no event
- * may a licensor, author or contributor be held liable for indirect,
- * direct, other damage, loss, or other issues arising in any way out
- * of dealing in the work, even if advised of the possibility of such
- * damage or existence of a defect, except proven that it results out
- * of said person's immediate fault when using the work as intended.
- */
+/* $MirOS: contrib/code/jupp/types.h,v 1.7 2012/06/07 23:38:17 tg Exp $ */
 
 #ifndef _JOE_TYPES_H
 #define _JOE_TYPES_H
