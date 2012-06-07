@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/syntax.c,v 1.6 2011/07/02 16:26:10 tg Exp $ */
+/* $MirOS: contrib/code/jupp/syntax.c,v 1.7 2012/06/07 22:34:52 tg Exp $ */
 /*
  *	Syntax highlighting DFA interpreter
  *	Copyright
@@ -208,7 +208,7 @@ struct high_syntax *load_dfa(unsigned char *name)
 	syntax->nstates = 0;
 	syntax->color = 0;
 	syntax->states = malloc(sizeof(struct high_state *)*(syntax->szstates=64));
-	syntax->sync_lines = 50;
+	syntax->sync_lines = 120;
 	syntax->default_cmd.noeat = 0;
 	syntax->default_cmd.recolor = 0;
 	syntax->default_cmd.start_buffering = 0;

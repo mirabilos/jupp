@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/syntax/xml.jsf.in,v 1.2 2008/05/13 16:17:46 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/xml.jsf.in,v 1.3 2012/06/07 22:34:54 tg Exp $
 #-
 # Improved XML highlighter by: Brian Candler <B.Candler@pobox.com>
 
@@ -6,7 +6,7 @@
 # You can say:
 # -200     means 200 lines
 # -        means always start parsing from beginning of file when we lose sync
-#          if nothing is specified, the default is -50
+#          if nothing is specified, the default is -120
 
 -
 
