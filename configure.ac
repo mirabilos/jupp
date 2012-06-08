@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.35 2012/06/07 22:39:53 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.36 2012/06/08 13:44:43 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -171,7 +171,19 @@ AC_CHECK_FUNCS([alarm mkdir mkstemp putenv setlocale strchr strdup utime setpgid
 AC_CHECK_FUNCS([setitimer sigaction sigvec siginterrupt sigprocmask])
 AC_CHECK_FUNCS([strlcpy strlcat nl_langinfo get_current_dir_name ctime popen])
 
-AC_CHECK_DECLS([strlcpy, strlcat, ctime, popen])
+AC_CHECK_DECLS([strlcpy, strlcat, popen])
+AC_CHECK_DECLS([ctime], [], [], [AC_INCLUDES_DEFAULT
+#ifdef TIME_WITH_SYS_TIME
+# include <sys/time.h>
+# include <time.h>
+#else
+# ifdef HAVE_SYS_TIME_H
+#  include <sys/time.h>
+# else
+#  include <time.h>
+# endif
+#endif
+])
 
 joe_REINSTALL_SIGHANDLERS
 
