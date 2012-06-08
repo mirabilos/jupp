@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/rc.c,v 1.17 2012/06/08 16:07:42 tg Exp $ */
+/* $MirOS: contrib/code/jupp/rc.c,v 1.18 2012/06/08 16:45:00 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
@@ -169,13 +169,9 @@ void lazy_opts(OPTIONS *o)
 	o->charmap = find_charmap(o->map_name);
 	if (!o->charmap)
 		o->charmap = fdefault.charmap;
-	if (o->hex) {
-		/* UTF-8 not allowed with hex mode */
-		if (o->charmap->type) {
-			o->charmap = find_charmap(US "c");
-		}
-		/* CR-LF and hex mode do not mix */
-		o->crlf = 0;
+	/* Hex not allowed with UTF-8 */
+	if (o->hex && o->charmap->type) {
+		o->charmap = find_charmap(US "c");
 	}
 }
 
@@ -738,11 +734,14 @@ static int doopt(MENU *m, int x, void *object, int flg)
 		msgnw(bw->parent, *(int *) ((unsigned char *) &bw->o + glopts[x].ofst) ? glopts[x].yes : glopts[x].no);
 		if (glopts[x].ofst == (unsigned char *) &fdefault.readonly - (unsigned char *) &fdefault)
 			bw->b->rdonly = bw->o.readonly;
-		/* Kill UTF-8 mode if we switch to hex display */
-		if (glopts[x].ofst == (unsigned char *) &fdefault.hex - (unsigned char *) &fdefault &&
-		    bw->o.hex &&
-		    bw->b->o.charmap->type) {
-			doencoding(bw, vsncpy(NULL, 0, sc("C")), NULL, NULL);
+		/* Kill UTF-8 and CR-LF mode if we switch to hex display */
+		if (glopts[x].ofst == (unsigned char *)&fdefault.hex - (unsigned char *)&fdefault &&
+		    bw->o.hex) {
+			if (bw->b->o.charmap->type) {
+				doencoding(bw, vsncpy(NULL, 0, sc("C")),
+				    NULL, NULL);
+			}
+			bw->o.crlf = 0;
 		}
 		break;
 	case 1:
