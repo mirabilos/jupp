@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/compat.c,v 1.2 2012/06/08 00:37:25 tg Exp $ */
+/* $MirOS: contrib/code/jupp/compat.c,v 1.3 2012/06/08 02:04:13 tg Exp $ */
 
 /*-
  * Copyright © 2004, 2005, 2006, 2007, 2011, 2012
@@ -92,11 +92,11 @@ static const char joe_months[12][4] = {
 
 /*-
  * Dimensions for the buffer, example formats:
- * "Sun Jan  1 12:34:56 1234"
- * "Sat Dec 31 12:34:56     12345"
- *  <- 24 -----------------> + max.length of a year + NUL
+ * "Sun Jan  1 12:34:56 1234\n"
+ * "Sat Dec 31 12:34:56     12345\n"
+ *  <- 24 -----------------> + max.length of a year + NL + NUL
  */
-static char joe_ctime_buf[24 + T_MAXLEN(time_t) + 1];
+static char joe_ctime_buf[24 + T_MAXLEN(time_t) + 2];
 
 char *
 ctime(const time_t *tp)
@@ -108,10 +108,10 @@ ctime(const time_t *tp)
 	year = (int)(tm.tm_year + 1900);
 	joe_snprintf_7(joe_ctime_buf, sizeof(joe_ctime_buf),
 	    (year >= -999 && year <= 9999) ?
-	    "%s %s %2d %02d:%02d:%02d %04d" :
-	    "%s %s %2d %02d:%02d:%02d     %d",
+	    "%s %s %2d %02d:%02d:%02d %04d\n" :
+	    "%s %s %2d %02d:%02d:%02d     %d\n",
 	    joe_days[tm.tm_wday], joe_months[tm.tm_mon],
-	    tm.tm_mday, tm.tm_sec, tm.tm_min, tm.tm_hour, year);
+	    tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec, year);
 	return (joe_ctime_buf);
 }
 
