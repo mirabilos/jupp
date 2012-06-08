@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/vs.c,v 1.3 2010/01/03 18:22:04 tg Exp $ */
+/* $MirOS: contrib/code/jupp/vs.c,v 1.4 2012/06/08 16:55:29 tg Exp $ */
 /*
  *	Variable length strings
  *	Copyright
@@ -150,47 +150,6 @@ sELEMENT *_vsset(sELEMENT *vary, int pos, sELEMENT el)
 	return vary;
 }
 
-#ifdef junk
-
-sELEMENT *vsins(sELEMENT *vary, int pos, int n)
-{
-	if (!vary || sLEN(vary) + n > sSIZ(vary))
-		vary = vsensure(vary, sLEN(vary) + n);
-	if (pos >= sLen(vary))
-		vary = vstrunc(vary, pos + n);
-	else {
-		mmove(vary + pos + n, vary + pos, sLen(vary) - (pos + n) + 1);
-		sLen(vary) += n;
-	}
-	return vary;
-}
-
-sELEMENT *vsdel(sELEMENT *vary, int pos, int n)
-{
-	if (pos >= sLEN(vary))
-		return vary;
-	if (pos + n >= sLen(vary))
-		return vstrunc(vary, pos);
-	mmove(vary + pos, vary + pos + n, sLen(vary) - (pos + n) + 1);
-	sLen(vary) -= n;
-	return vary;
-}
-
-int _scmp(sELEMENT a, sELEMENT b)
-{
-	return scmp(a, b);
-}
-
-sELEMENT *vssort(sELEMENT *ary, int len)
-{
-	if (!ary || !len)
-		return ary;
-	qsort(ary, len, sizeof(sELEMENT), _scmp);
-	return ary;
-}
-
-#endif
-
 int vsbsearch(sELEMENT *ary, int len, sELEMENT el)
 {
 	int x, y, z;
@@ -215,36 +174,6 @@ int vsbsearch(sELEMENT *ary, int len, sELEMENT el)
 	}
 	return y;
 }
-
-#ifdef junk
-
-int vsfirst(sELEMENT *ary, int len, sELEMENT el)
-{
-	int x;
-
-	if (!ary || !len)
-		return ~0;
-	for (x = 0; x != len; ++x)
-		if (!scmp(ary[x], el))
-			return x;
-	return ~0;
-}
-
-int vslast(sELEMENT *ary, int len, sELEMENT el)
-{
-	int x = len;
-
-	if (!ary || !len)
-		return ~0;
-	do {
-		--x;
-		if (!scmp(ary[x], el))
-			return x;
-	} while (x);
-	return ~0;
-}
-
-#endif
 
 int vscmpn(sELEMENT *a, int alen, sELEMENT *b, int blen)
 {
@@ -275,51 +204,6 @@ int vscmp(sELEMENT *a, sELEMENT *b)
 {
 	return vscmpn(sv(a), sv(b));
 }
-#ifdef junk
-int vsicmpn(sELEMENT *a, int alen, sELEMENT *b, int blen)
-{
-	int x, l;
-	int t;
-
-	if (!a && !b)
-		return 0;
-	if (!a)
-		return -1;
-	if (!b)
-		return 1;
-	if (alen > blen)
-		l = sLen(a);
-	else
-		l = blen;
-	for (x = 0; x != l; ++x)
-		if (t = sicmp(a[x], b[x]))
-			return t;
-	if (alen > blen)
-		return 1;
-	if (alen < blen)
-		return -1;
-	return 0;
-}
-
-int vss(sELEMENT *a, int alen, sELEMENT *b, int blen)
-{
-	int x;
-
-	if (!a && !b)
-		return 0;
-	if (!a || !b)
-		return ~0;
-	if (alen < blen)
-		return ~0;
-	if (!blen)
-		return 0;
-	for (x = 0; x != alen - blen; ++x)
-		if (!vscmpn(a, blen, b, blen))
-			return x;
-	return ~0;
-}
-
-#endif
 
 int vsscan(sELEMENT *a, int alen, sELEMENT *b, int blen)
 {
@@ -346,46 +230,3 @@ int vsspan(sELEMENT *a, int alen, sELEMENT *b, int blen)
 	}
 	return x;
 }
-
-#ifdef junk
-
-sELEMENT *vsread(sELEMENT d, int p, int (*getC)(), void *ptr)
-{
-	int c;
-
-	if (!d)
-		d = vsmk(10);
-	c = getC(ptr);
-	if (c == NO_MORE_DATA) {
-		vsrm(d);
-		return NULL;
-	} else if (c == '\n')
-		return d;
-	else {
-		d = vsset(d, p, c);
-		p++;
-	}
-	while (c = getC(ptr), c != NO_MORE_DATA && c != '\n') {
-		d = vsset(d, p, c);
-		p++;
-	}
-	return d;
-}
-
-sELEMENT *vwords(sELEMENT *s, sELEMENT **a, int len, sELEMENT t)
-{
-	int x;
-
-	if (!s)
-		s = vsmk(32);
-	else
-		s = vstrunc(s, 0);
-	for (x = 0; x != len; ++x) {
-		s = vsncpy(s, sLEN(s), sz(a[x]));
-		if (a[1])
-			s = vsadd(s, t);
-	}
-	return s;
-}
-
-#endif

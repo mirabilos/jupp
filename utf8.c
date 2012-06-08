@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/utf8.c,v 1.8 2011/07/02 22:50:52 tg Exp $ */
+/* $MirOS: contrib/code/jupp/utf8.c,v 1.9 2012/06/08 16:55:29 tg Exp $ */
 /*
  *	UTF-8 Utilities
  *	Copyright
@@ -215,18 +215,13 @@ int utf8_decode_fwrd(unsigned char **p,int *plen)
 
 unsigned char *codeset;	/* Codeset of terminal */
 
-#ifdef junk
-unsigned char *non_utf8_codeset;
-			/* Codeset of local language non-UTF-8 */
-#endif
-
 struct charmap *locale_map;
 			/* Character map of terminal */
 
 void
 joe_locale(void)
 {
-#if !defined(USE_LOCALE) || defined(junk)
+#if !defined(USE_LOCALE)
 	unsigned char *s, *t;
 
 
@@ -240,19 +235,6 @@ joe_locale(void)
 #endif
 
 #ifdef USE_LOCALE
-#ifdef junk
-	if (s)
-		s=(unsigned char *)strdup((char *)s);
-	else
-		s=US "ascii";
-
-	if (t=(unsigned char *)strrchr((char *)s,'.'))
-		*t = 0;
-
-	setlocale(LC_ALL,(char *)s);
-	non_utf8_codeset = (unsigned char *)strdup(nl_langinfo(CODESET));
-#endif
-
 	setlocale(LC_ALL,"");
 	codeset = (unsigned char *)strdup(nl_langinfo(CODESET));
 
@@ -276,20 +258,6 @@ joe_locale(void)
 	fdefault.charmap = locale_map;
 #endif
 	pdefault.charmap = locale_map;
-
-/*
-	printf("Character set is %s\n",locale_map->name);
-
-	for(int x=0;x!=128;++x)
-		printf("%x	space=%d blank=%d alpha=%d alnum=%d punct=%d print=%d\n",
-		       x,joe_isspace(locale_map,x), joe_isblank(locale_map,x), joe_isalpha_(locale_map,x),
-		       joe_isalnum_(locale_map,x), joe_ispunct(locale_map,x), joe_isprint(locale_map,x));
-*/
-
-#ifdef junk
-	to_utf = iconv_open("UTF-8", (char *)non_utf8_codeset);
-	from_utf = iconv_open((char *)non_utf8_codeset, "UTF-8");
-#endif
 }
 
 void to_utf8(struct charmap *map,unsigned char *s,int c)
@@ -300,24 +268,6 @@ void to_utf8(struct charmap *map,unsigned char *s,int c)
 		utf8_encode(s,'?');
 	else
 		utf8_encode(s,d);
-#ifdef junk
-	/* Iconv() way */
-	unsigned char buf[10];
-	unsigned char *ibufp = buf;
-	unsigned char *obufp = s;
-	int ibuf_sz=1;
-	int obuf_sz= 10;
-	buf[0]=c;
-	buf[1]=0;
-
-	if (to_utf==(iconv_t)-1 ||
-	    iconv(to_utf,(char **)&ibufp,&ibuf_sz,(char **)&obufp,&obuf_sz)==(size_t)-1) {
-		s[0]='?';
-		s[1]=0;
-	} else {
-		*obufp = 0;
-	}
-#endif
 }
 
 int from_utf8(struct charmap *map,unsigned char *s)
@@ -328,20 +278,4 @@ int from_utf8(struct charmap *map,unsigned char *s)
 		return '?';
 	else
 		return c;
-
-#ifdef junk
-	/* Iconv() way */
-	int ibuf_sz=strlen((char *)s);
-	unsigned char *ibufp=s;
-	int obuf_sz=10;
-	unsigned char obuf[10];
-	unsigned char *obufp = obuf;
-
-
-	if (from_utf==(iconv_t)-1 ||
-	    iconv(from_utf,(char **)&ibufp,&ibuf_sz,(char **)&obufp,&obuf_sz)==((size_t)-1))
-		return '?';
-	else
-		return obuf[0];
-#endif
 }

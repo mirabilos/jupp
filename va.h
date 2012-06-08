@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/va.h,v 1.2 2008/05/13 13:08:32 tg Exp $ */
+/* $MirOS: contrib/code/jupp/va.h,v 1.3 2012/06/08 16:55:29 tg Exp $ */
 /*
  *	Variable length arrays of strings
  *	Copyright
@@ -14,7 +14,7 @@
 #include "vs.h"
 
 /* Functions and global variable you have to define.  Replace these with
- * macros or defines here if they are not to be actual functions 
+ * macros or defines here if they are not to be actual functions
  */
 
 typedef unsigned char *aELEMENT;
@@ -118,16 +118,6 @@ aELEMENT *vatrunc PARAMS((aELEMENT *vary, int len));
  * vazap first.  It does move the terminator around properly though.
  */
 aELEMENT *vafill PARAMS((aELEMENT *vary, int pos, aELEMENT el, int len));
-
-#ifdef junk
-/* aELEMENT *vancpy(aELEMENT *vary, int pos, aELEMENT *array, int len);
- * Copy 'len' elements from 'array' onto 'vary' beginning at position 'pos'.
- * 'array' can be a normal char array since the length is passed seperately.  The
- * elements are copied, not duplicated.  A new array is created if 'vary' is
- * 0.  This does not zap previous elements.
- */
-aELEMENT *vancpy PARAMS((aELEMENT *vary, int pos, aELEMENT *array, int len));
-#endif
 
 /* aELEMENT *vandup(aELEMENT *vary, int pos, aELEMENT *array, int len);
  * Duplicate 'len' elements from 'array' onto 'vary' beginning at position

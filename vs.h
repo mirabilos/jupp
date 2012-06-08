@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/vs.h,v 1.3 2010/01/03 18:22:05 tg Exp $ */
+/* $MirOS: contrib/code/jupp/vs.h,v 1.4 2012/06/08 16:55:29 tg Exp $ */
 /*
  *	Dynamic string library
  *	Copyright
@@ -103,7 +103,7 @@
  */
 
 /* Functions and global variable you have to define.  Replace these with
- * macros or defines here if they are not to be actual functions 
+ * macros or defines here if they are not to be actual functions
  */
 
 /* An element with name 'a' */
@@ -318,33 +318,10 @@ sELEMENT *_vsset PARAMS((sELEMENT *vary, int pos, sELEMENT el));
  */
 #define vsget(a, p) ((p) >= sLEN(a) ? sterm : (a)[p])
 
-/**********************/
-/* Insertion/Deletion */
-/**********************/
-#ifdef junk
-/* sELEMENT *vsins(sELEMENT *vary, int pos, int n));
- * Insert n empty slots into the array.  If 'pos' >= the length of the array,
- * the array is simply extended.  The new slots are not set to anything.
- * This does not set the elements in the created hole to any particular
- * value: use vsfill if you need that to occur.
- */
-sELEMENT *vsins PARAMS((sELEMENT *vary, int pos, int n));
-
-/* sELEMENT *vsdel(sELEMENT *vary, int pos, int n));
- * Delete n slots from the array.  This does not zap the elements first; call
- * vszap first if you need this to happen.
- */
-sELEMENT *vsdel PARAMS((SELEMENT *vary, int pos, int n));
-
 /*************************/
 /* Searching and Sorting */
 /*************************/
 
-/* sELEMENT *vssort(sELEMENT *ary, int len))
- * Sort the elements of an array (char or variable length) using qsort().
- */
-sELEMENT *vssort PARAMS((sELEMENT *ary, int len));
-#endif
 /* int vsbsearch(sELEMENT *ary, int len, sELEMENT element);
  * Do a binary search on a sorted variable length or char array.  Returns position
  * of matching element or the position where the element should be if it was
@@ -354,23 +331,6 @@ sELEMENT *vssort PARAMS((sELEMENT *ary, int len));
  */
 int vsbsearch PARAMS((sELEMENT *ary, int len, sELEMENT el));
 
-#ifdef junk
-/* int vsfirst(sELEMENT *ary, int len, sELEMENT element);
- * Find offset to first matching element in 'vary' or return ~0 if not found.
- */
-int vsfirst PARAMS((sELEMENT *ary, int len, sELEMENT element));
-
-/* int vslast(sELEMENT *ary, int len, sELEMENT element);
- * Find offset to last matching element in 'vary' or return ~0 if none found.
- */
-int vslast PARAMS((sELEMENT *ary, int len, sELEMENT element));
-
-/* int vss(sELEMENT *a, int alen, sELEMENT *b, int blen);
- * Do a substring search on 'a'.  Return offset from 'a' to first matching
- * occurance of 'b' in 'a' or return ~0 if none found.
- */
-int vss PARAMS((sELEMENT *a, int alen, sELEMENT *b, int blen));
-#endif
 /* int vscmpn(sELEMENT *a, int alen, sELEMENT *b, int blen);
  *
  * Compare two arrays using scmp.  If 'a' > 'b', return 1.  If 'a' == 'b',
@@ -385,23 +345,6 @@ int vscmpn PARAMS((sELEMENT *a, int alen, sELEMENT *b, int blen));
  */
 int vscmp PARAMS((sELEMENT *a, sELEMENT *b));
 
-#ifdef junk
-/* int vsicmpn(sELEMENT *a, int alen, sELEMENT *b, int blen);
- *
- * Compare two arrays using sicmp.  If 'a' > 'b', return 1.  If 'a' == 'b',
- * return 0.  If 'a' < 'b', return -1.  Longer strings are > shorter ones if
- * their beginning match.
- *
- * This is same as vscmpn except that it is case insensitive.
- */
-int vsicmpn PARAMS((sELEMENT *a, int alen, sELEMENT *b, int blen));
-
-/* int vsicmp(sELEMENT *a, sELEMENT *b);
- *
- * Functionalized version of: vsicmpn(sv(a), sv(b));
- */
-int vsicmp PARAMS((sELEMENT *a, sELEMENT *b));
-#endif
 /* int vsscan(sELEMENT *a, int alen, sELEMENT *b, int blen);
  * Find offset of first matching element in 'a' which matches any
  * of the elements passed in 'b'.  Array 'b' must be sorted.
@@ -415,33 +358,4 @@ int vsscan PARAMS((sELEMENT *a, int alen, sELEMENT *b, int blen));
  * of the elements passed in 'b'.  Array 'b' must be sorted.
  */
 int vsspan PARAMS((sELEMENT *a, int alen, sELEMENT *b, int blen));
-
-/***************/
-/* Other stuff */
-/***************/
-#ifdef junk
-/* char *vsread(char *d, int p, int (*getC)(void *ptr), void *ptr);
- * Replace 'd' with next line read from read-character function 'getC'.  If 
- * 'd' is 0, a new string is allocated.  If there is no more input, the string
- * is freed and 0 is returned.  The \n is deleted from the entered line.
- *
- * 'ptr' is passed as the first arg to 'getC'.  'getC' should return -1 if
- * there is no more input.
- */
-unsigned char *vsread PARAMS(());
-
-/* char *vwords(char *s, char **a, int len, char t);
- *
- * Generate a 't'-seperated word list from the words in the zero-terminated
- * array of zero-terminated strings 'a'.  For example a simple 'echo.c':
- *
- * main(argc, argv)
- * char *argv[];
- * {
- * printf("%s\n",vwords(NULL,argv,argc,' ')):
- * }
- *
- */
-unsigned char *vwords PARAMS(());
-#endif
 #endif

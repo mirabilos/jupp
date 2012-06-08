@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.c,v 1.16 2012/06/07 22:14:17 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.c,v 1.17 2012/06/08 16:55:28 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright
@@ -796,11 +796,6 @@ void ttsusp(void)
 	ttclsn();
 	fprintf(stderr, "You have suspended the program.  Type 'fg' to return\n");
 	kill(0, SIGTSTP);
-#ifdef junk
-	/* Hmmm... this should not have been necessary */
-	if (ackkbd != -1)
-		kill(kbdpid, SIGCONT);
-#endif
 	if (omode)
 		ttopnn();
 	if (ackkbd!= -1)

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/types.h,v 1.7 2012/06/07 23:38:17 tg Exp $ */
+/* $MirOS: contrib/code/jupp/types.h,v 1.8 2012/06/08 16:55:28 tg Exp $ */
 
 #ifndef _JOE_TYPES_H
 #define _JOE_TYPES_H
@@ -26,16 +26,6 @@
 #define TYPEPW		0x0200
 #define TYPEMENU	0x0800
 #define TYPEQW		0x1000
-
-#ifdef junk					/* These are now defined in config.h */
-
-/* Minimum page size for MS-DOS is 128 (for 32K vheaders table) or 256 (for
- * 64K vheaders table) */
-#define PGSIZE 512		/* Page size in bytes (Must be power of 2) */
-#define LPGSIZE 9		/* LOG base 2 of PGSIZE */
-#define ILIMIT (PGSIZE*128L)	/* Max amount to buffer */
-#define HTSIZE 128		/* Entries in hash table.  Must be pwr of 2 */
-#endif
 
 
 typedef struct header H;

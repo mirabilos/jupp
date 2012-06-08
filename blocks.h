@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/blocks.h,v 1.3 2010/01/03 18:22:03 tg Exp $ */
+/* $MirOS: contrib/code/jupp/blocks.h,v 1.4 2012/06/08 16:55:27 tg Exp $ */
 /*
  *	Fast block move/copy subroutines
  *	Copyright
@@ -40,12 +40,4 @@ void **msetP PARAMS((void **dest, void *c, int sz));
  * Count the number of occurances a character appears in a block
  */
 int mcnt PARAMS((unsigned char *blk, unsigned char c, int size));
-
-#ifdef junk
-/* char *mchr(char *s,char c);
- *
- * Return address of first 'c' following 's'.
- */
-unsigned char *mchr PARAMS(());
-#endif
 #endif

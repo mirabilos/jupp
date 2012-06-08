@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/termcap.c,v 1.4 2011/07/16 21:57:57 tg Exp $ */
+/* $MirOS: contrib/code/jupp/termcap.c,v 1.5 2012/06/08 16:55:27 tg Exp $ */
 /*
  *	TERMCAP/TERMINFO database interface
  *	Copyright
@@ -713,69 +713,3 @@ unsigned char *tcompile(CAP *cap, unsigned char *s, int a0, int a1, int a2, int 
 	cap->div = divider;
 	return ssp;
 }
-
-/* Old termcap compatibility (not to be used when TERMINFO is set) */
-#ifdef junk
-short ospeed;			/* Output speed */
-unsigned char PC, *UP, *BC;		/* Unused */
-static CAP *latest;		/* CAP entry to use */
-
-static void stupid(ptr, c)
-void (*ptr) ();
-unsigned char c;
-{
-	ptr(c);
-}
-
-int tgetent(buf, name)
-unsigned char *buf, *name;
-{
-	latest = getcap(name, 9600, stupid, NULL);
-	if (latest)
-		return 1;
-	else
-		return -1;
-}
-
-int tgetflag(name)
-unsigned char *name;
-{
-	return getflag(latest, name);
-}
-
-int tgetnum(name)
-unsigned char *name;
-{
-	return getnum(latest, name);
-}
-
-unsigned char *tgetstr(name)
-unsigned char *name;
-{
-	return jgetstr(latest, name);
-}
-
-static int latestx, latesty;
-
-unsigned char *tgoto(str, x, y)
-unsigned char *str;
-int x, y;
-{
-	latestx = x;
-	latesty = y;
-	return str;
-}
-
-void tputs(str, l, out)
-unsigned char *str;
-int l;
-void (*out) ();
-{
-	latest->outptr = (void *) out;
-	if (latest->baud != ospeed) {
-		latest->baud = ospeed;
-		latest->div = 100000 / ospeed;
-	}
-	texec(latest, str, l, latesty, latestx);
-}
-#endif

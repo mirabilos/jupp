@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/blocks.c,v 1.3 2010/01/03 18:22:03 tg Exp $ */
+/* $MirOS: contrib/code/jupp/blocks.c,v 1.4 2012/06/08 16:55:27 tg Exp $ */
 /*
  *	Fast block move/copy subroutines
  *	Copyright
@@ -568,31 +568,3 @@ int mcnt(register unsigned char *blk, register unsigned char c, int size)
 	}
 	return nlines;
 }
-
-#ifdef junk
-
-unsigned char *mchr(blk, c)
-register unsigned char *blk, c;
-{
-    loop:
-	if (blk[0] == c) return blk + 0;
-	if (blk[1] == c) return blk + 1;
-	if (blk[2] == c) return blk + 2;
-	if (blk[3] == c) return blk + 3;
-	if (blk[4] == c) return blk + 4;
-	if (blk[5] == c) return blk + 5;
-	if (blk[6] == c) return blk + 6;
-	if (blk[7] == c) return blk + 7;
-	if (blk[8] == c) return blk + 8;
-	if (blk[9] == c) return blk + 9;
-	if (blk[10] == c) return blk + 10;
-	if (blk[11] == c) return blk + 11;
-	if (blk[12] == c) return blk + 12;
-	if (blk[13] == c) return blk + 13;
-	if (blk[14] == c) return blk + 14;
-	if (blk[15] == c) return blk + 15;
-	blk += 15;
-	goto loop;
-}
-
-#endif

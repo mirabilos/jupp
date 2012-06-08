@@ -647,7 +647,8 @@ Other requests:
 • merge syntax handling code from joe-3.7+
 • make -Wcast-qual clean
 • write a jupp(1) mdoc page
+• use mirkev (better code for hashtables)
 • …
 
-_________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.9 2012/06/07 22:39:44 tg Exp $
+__________________________________________________________________
+$MirOS: contrib/code/jupp/TODO,v 1.10 2012/06/08 16:55:27 tg Exp $

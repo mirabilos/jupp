@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/va.c,v 1.2 2008/05/13 13:08:32 tg Exp $ */
+/* $MirOS: contrib/code/jupp/va.c,v 1.3 2012/06/08 16:55:29 tg Exp $ */
 /*
  *	Variable length array of strings
  *	Copyright
@@ -105,24 +105,6 @@ aELEMENT *vafill(aELEMENT *vary, int pos, aELEMENT el, int len)
 		vary = vafill(vary, pos, ablank, pos - olen);
 	return vary;
 }
-
-#ifdef junk
-aELEMENT *vancpy(aELEMENT *vary, int pos, aELEMENT *array, int len)
-{
-	int olen = aLEN(vary);
-
-	if (!vary || pos + len > aSIZ(vary))
-		vary = vaensure(vary, pos + len);
-	if (pos + len > olen) {
-		vary[pos + len] = vary[olen];
-		aLen(vary) = pos + len;
-	}
-	if (pos > olen)
-		vary = vafill(vary, olen, ablank, pos - olen);
-	mfwrd(vary + pos, array, len * sizeof(aELEMENT));
-	return vary;
-}
-#endif
 
 aELEMENT *vandup(aELEMENT *vary, int pos, aELEMENT *array, int len)
 {
