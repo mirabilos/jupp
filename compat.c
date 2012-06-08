@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/compat.c,v 1.3 2012/06/08 02:04:13 tg Exp $ */
+/* $MirOS: contrib/code/jupp/compat.c,v 1.4 2012/06/08 16:48:58 tg Exp $ */
 
 /*-
  * Copyright © 2004, 2005, 2006, 2007, 2011, 2012
@@ -21,9 +21,11 @@
  *-
  * Compatibility functions for jupp.
  *
- * - ctime: based on mirtime from MirBSD libc; not leap second compliant
+ * – ctime: based on mirtime from MirBSD libc; not leap second capable
  *   src/kern/include/mirtime.h,v 1.2 2011/11/20 23:40:11 tg Exp
  *   src/kern/c/mirtime.c,v 1.3 2011/11/20 23:40:10 tg Exp
+ * – strlcpy, strlcat: pulled in via "strlfun.inc"
+ * – popen, pclose: pulled in via "popen.inc"
  */
 
 #include "config.h"
