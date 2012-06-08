@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/termcap.c,v 1.5 2012/06/08 16:55:27 tg Exp $ */
+/* $MirOS: contrib/code/jupp/termcap.c,v 1.6 2012/06/08 17:05:12 tg Exp $ */
 /*
  *	TERMCAP/TERMINFO database interface
  *	Copyright
@@ -121,10 +121,10 @@ static unsigned char *lfind(unsigned char *s, int pos, FILE *fd, unsigned char *
 
 /* Lookup termcap entry in index */
 
-static long findidx(FILE *file, unsigned char *name)
+static off_t findidx(FILE *file, unsigned char *name)
 {
 	unsigned char buf[80];
-	long addr = 0;
+	off_t addr = 0;
 
 	while (fgets((char *)buf, 80, file)) {
 		int x = 0, flg = 0, c, y, z;
@@ -153,7 +153,7 @@ CAP *getcap(unsigned char *name, unsigned int baud, void (*out) (unsigned char *
 {
 	CAP *cap;
 	FILE *f, *f1;
-	long idx;
+	off_t idx;
 	int x, y, c, z, ti;
 	unsigned char *tp, *pp, *qq, *namebuf, **npbuf, *idxname;
 	int sortsiz;
@@ -248,7 +248,7 @@ CAP *getcap(unsigned char *name, unsigned int baud, void (*out) (unsigned char *
 		fclose(f);
 	}
 	vsrm(idxname);
-	fseek(f1, idx, 0);
+	fseeko(f1, idx, 0);
 	cap->tbuf = lfind(cap->tbuf, ti, f1, name);
 	fclose(f1);
 	if (sLEN(cap->tbuf) == ti)

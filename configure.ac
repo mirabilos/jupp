@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.36 2012/06/08 13:44:43 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.37 2012/06/08 17:05:12 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -127,6 +127,7 @@ fi
 
 AC_C_PROTOTYPES
 AC_C_CONST
+AC_SYS_LARGEFILE
 if test "$cross_compiling" = "yes" ; then
 	AC_MSG_WARN(cross compiling so assuming defaults for most 32 bit machines)
 fi
@@ -148,6 +149,7 @@ AC_CHECK_TYPE([sighandler_t],
 # Checks for library functions.
 
 AC_PROG_GCC_TRADITIONAL
+AC_FUNC_FSEEKO
 AC_FUNC_LSTAT
 joe_SETPGRP
 AC_TYPE_PID_T
