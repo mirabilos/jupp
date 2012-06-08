@@ -1,5 +1,13 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.47 2012/06/07 22:34:52 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.48 2012/06/08 17:07:21 tg Exp $
 ------------------------------------------------------------------
+
+JOE 3.1jupp20
+
+- Fix mistakes in the ctime replacement code for klibc
+- Fix mistakes in the configure script
+- Disable CR-LF mode upon entering hex edit mode
+- Remove junk from files and improve comments
+- Configure for Large File Support
 
 JOE 3.1jupp19
 
