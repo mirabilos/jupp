@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/bw.c,v 1.15 2010/04/08 15:31:01 tg Exp $ */
+/* $MirOS: contrib/code/jupp/bw.c,v 1.16 2012/07/18 16:46:03 tg Exp $ */
 /*
  *	Edit buffer window generation
  *	Copyright
@@ -924,7 +924,7 @@ BW *bwmk(W *window, B *b, int prompt)
 	w->object = NULL;
 	w->offset = 0;
 	w->o = w->b->o;
-	if (w->o.linums) {
+	if ((w->linums = w->o.linums)) {
 		w->x = window->x + LINCOLS;
 		w->w = window->w - LINCOLS;
 	} else {
