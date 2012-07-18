@@ -1,5 +1,10 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.48 2012/06/08 17:07:21 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.49 2012/07/18 17:07:42 tg Exp $
 ------------------------------------------------------------------
+
+JOE 3.1jupp21
+
+- Fix use of uninitialised memory
+- Do not underflow attribute buffer in syntax highlighting code
 
 JOE 3.1jupp20
 
