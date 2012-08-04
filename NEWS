@@ -1,9 +1,10 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.51 2012/08/03 09:19:30 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.52 2012/08/04 16:00:12 tg Exp $
 ------------------------------------------------------------------
 
 jupp-current
 
 - Fix ternary operator PHP syntax highlighting hiccup
+- Fix C string percent handling syntax highlighting hiccup
 
 JOE 3.1jupp21
 
