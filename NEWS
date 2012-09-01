@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.53 2012/08/22 11:54:18 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.54 2012/09/01 23:46:44 tg Exp $
 ------------------------------------------------------------------
 
 jupp-current
@@ -6,6 +6,7 @@ jupp-current
 - Fix ternary operator PHP syntax highlighting hiccup
 - Fix C string percent handling syntax highlighting hiccup
 - Use unlimited # of sync lines for Python highlighting, too
+- Refresh wcwidth code from Unicode 6.1.0
 
 JOE 3.1jupp21
 
