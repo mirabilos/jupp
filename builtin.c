@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/builtin.c,v 1.2 2010/04/08 15:31:01 tg Exp $ */
+/* $MirOS: contrib/code/jupp/builtin.c,v 1.3 2012/09/02 14:44:36 tg Exp $ */
 /*
  *	Built-in config files
  *	Copyright
@@ -19,14 +19,25 @@ JFILE *jfopen(unsigned char *name, const char *mode)
 {
 	if (name[0] == '*') {
 		int x;
+		char *xname;
+
+		xname = strdup((char *)name + 1);
+		name = (void *)xname;
+		while ((x = *name++)) {
+			if (x >= 'A' && x <= 'Z')
+				name[-1] = x - 'A' + 'a';
+		}
+
 		for (x = 0; builtins[x]; x += 2) {
-			if (!zcmp(builtins[x], name + 1)) {
+			if (!zcmp(builtins[x], xname)) {
 				JFILE *j = (JFILE *)joe_malloc(sizeof(JFILE));
 				j->f = 0;
 				j->p = builtins[x + 1];
+				joe_free(xname);
 				return j;
 			}
 		}
+		joe_free(xname);
 		return 0;
 	} else {
 		FILE *f = fopen((char *)name, (char *)mode);
