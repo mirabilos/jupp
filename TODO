@@ -648,7 +648,10 @@ Other requests:
 • make -Wcast-qual clean
 • write a jupp(1) mdoc page
 • use mirkev (better code for hashtables)
+• attach labels to ftypes; allow ftypes to inherit from these
+  labels, instead of fdefault; add UI to apply an ftype, including
+  fdefault, to the current buffer
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.10 2012/06/08 16:55:27 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.11 2012/09/02 14:15:23 tg Exp $
