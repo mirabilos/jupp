@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/syntax/asm.jsf.in,v 1.2 2008/05/13 16:17:44 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/asm.jsf.in,v 1.3 2012/09/02 14:46:51 tg Exp $
 #-
 # JOE syntax highlight file for assembly language
 
@@ -14,6 +14,11 @@
 
 # This highlighter is too strict for numeric constants.  Many assembly
 # languages allow '000009', which looks like a bad octal constant in C/UNIX.
+
+
+# Always reparse from beginning
+-
+
 
 =Idle
 =Bad		bold red

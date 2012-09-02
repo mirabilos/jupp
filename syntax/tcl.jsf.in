@@ -1,6 +1,11 @@
-# $MirOS: contrib/code/jupp/syntax/tcl.jsf.in,v 1.2 2008/05/13 16:17:46 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/tcl.jsf.in,v 1.3 2012/09/02 14:46:52 tg Exp $
 #-
 # JOE syntax highlight file for TCL
+
+
+# Always reparse from beginning
+-
+
 
 =Idle
 =Comment 	green

@@ -1,13 +1,15 @@
-# $MirOS: contrib/code/jupp/syntax/python.jsf.in,v 1.3 2012/08/22 11:54:19 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/python.jsf.in,v 1.4 2012/09/02 14:46:52 tg Exp $
 #-
 # JOE syntax highlight file for Python
-
-# unlimited sync lines
--
 
 # TODO:
 #  * octal escape sequences
 #  * highlight function and class names?
+
+
+# Always reparse from beginning
+-
+
 
 =Idle
 =Comment 	green

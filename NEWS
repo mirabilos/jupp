@@ -1,13 +1,16 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.55 2012/09/02 14:44:36 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.56 2012/09/02 14:46:49 tg Exp $
 ------------------------------------------------------------------
 
-jupp-current
+JOE 3.1jupp22
 
 - Fix ternary operator PHP syntax highlighting hiccup
 - Fix C string percent handling syntax highlighting hiccup
-- Use unlimited # of sync lines for Python highlighting, too
+- Use unlimited # of sync lines for Assembly, C, Java™, Perl,
+  Python, Shell, Tcl highlighting, too
 - Refresh wcwidth code from Unicode 6.1.0
 - Check names of built-in files converted to lowercase, for Win9x
+- Improve recognition of debdiffs and 'bzr diff' output
+- Sync built-in jupprc with full one (a bit of CUA was added)
 
 JOE 3.1jupp21
 

@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/syntax/diff.jsf.in,v 1.4 2011/07/27 18:13:14 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/diff.jsf.in,v 1.5 2012/09/02 14:46:51 tg Exp $
 #-
 # JOE syntax highlight file for diff/patch files
 #
@@ -8,13 +8,12 @@
 # into one file, to handle cases where A) it's difficult to tell what
 # type of diff might be inside the file to highlight and B) the file to
 # highlight may contain hunks of different types of diffs (unlikely).
-# Of course it can be used to replace the 3 abovementioned files
-# completely. If you want that, you need to edit ftyperc accordingly.
 #
 #   Dirk Schenkewitz <Dirk.Schenkewitz (AT) gmx.de>
 #
 
-# Context scaling: whole file
+
+# Always reparse from beginning
 -
 
 

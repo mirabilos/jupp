@@ -135,7 +135,7 @@ const unsigned char * const builtins[]=
 		"\\i \\i go to \\uhttp://sf.net/projects/joe-editor/\\u for upstream bug reports. JUPP 2.8 \\i \\i\n"
 		"\\i \\i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\\d(R)\\d \\i \\i\n"
 		"\\i \\i at \\uhttp://mirbsd.de/jupp\\u and by \\bThorsten \"\\dmirabilos\\d\" Glaser <\\utg@mirbsd.org\\u>\\b \\i \\i\n"
-		"\\i \\i @(#) blt_in 2011-10-04; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \\i \\i\n"
+		"\\i \\i @(#) blt_in 2012-09-02; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \\i \\i\n"
 		"}\n"
 		"\n"
 		"{CharTable\n"
@@ -204,6 +204,10 @@ const unsigned char * const builtins[]=
 		"begin_marking,dnarw,toggle_marking	^[ [ 1 ; 2 B\n"
 		"begin_marking,rtarw,toggle_marking	^[ [ 1 ; 2 C\n"
 		"begin_marking,ltarw,toggle_marking	^[ [ 1 ; 2 D\n"
+		"begin_marking,bol,toggle_marking	^[ [ 1 ; 2 H\n"
+		"begin_marking,eol,toggle_marking	^[ [ 1 ; 2 F\n"
+		"begin_marking,bof,toggle_marking	^[ [ 1 ; 6 H\n"
+		"begin_marking,eof,toggle_marking	^[ [ 1 ; 6 F\n"
 		"backs		^?\n"
 		"backs		^H\n"
 		"backw		^[ o\n"
@@ -484,5 +488,5 @@ const unsigned char * const builtins[]=
 		":querysr\n"
 		"type		^@ TO ÿ\n"
 ,	NULL
-,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.5 2011/10/04 21:25:21 tg Exp $"
+,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.6 2012/09/02 14:46:50 tg Exp $"
 };
