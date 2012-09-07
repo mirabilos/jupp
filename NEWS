@@ -1,5 +1,9 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.56 2012/09/02 14:46:49 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.57 2012/09/07 14:45:16 tg Exp $
 ------------------------------------------------------------------
+
+jupp-current
+
+- Highlight *.rej as diff, too (patch(1) rejects)
 
 JOE 3.1jupp22
 

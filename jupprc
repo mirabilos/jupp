@@ -123,6 +123,10 @@
 -highlight
 -syntax diff
 
+*.rej
+-highlight
+-syntax diff
+
 *.debdiff
 -highlight
 -syntax diff
