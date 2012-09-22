@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jmacsrc.in,v 1.9 2012/09/07 20:29:33 tg Exp $
+ $MirOS: contrib/code/jupp/jmacsrc.in,v 1.10 2012/09/22 12:27:24 tg Exp $
 
                          Initialization file for JOE
                                 GNU-Emacs Joe
@@ -305,6 +305,11 @@
 
 *
 +\[=?]\*\n--- \*\n+++\[ ]
+-highlight
+-syntax diff
+
+*
++diff\*\n--- \*\n+++\[ ]
 -highlight
 -syntax diff
 

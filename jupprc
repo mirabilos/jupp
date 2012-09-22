@@ -156,6 +156,11 @@
 -highlight
 -syntax diff
 
+*
++diff\*\n--- \*\n+++\[ ]
+-highlight
+-syntax diff
+
  === eMail
 *tmp/mutt-*
 -syntax mail
