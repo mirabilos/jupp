@@ -1,10 +1,12 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.58 2012/09/22 12:27:24 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.59 2012/10/23 16:29:13 tg Exp $
 ------------------------------------------------------------------
 
 jupp-current
 
 - Highlight *.rej as diff, too (patch(1) rejects)
 - Highlight “diff -pruN %D %d | jupp -” as well
+- Recognise more Python keywords in syntax highlighting
+  (patch contributed by Eike Jesinghaus)
 
 JOE 3.1jupp22
 

@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/syntax/python.jsf.in,v 1.4 2012/09/02 14:46:52 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/python.jsf.in,v 1.5 2012/10/23 16:29:16 tg Exp $
 #-
 # JOE syntax highlight file for Python
 
@@ -134,6 +134,7 @@
 :ident Idle
 	*		idle		noeat strings
 	"and"		kw
+	"as"		kw
 	"assert"	kw
 	"break"		kw
 	"class"		kw
@@ -161,6 +162,7 @@
 	"return"	kw
 	"try"		kw
 	"while"		kw
+	"with"		kw
 	"yield"		kw
 done
 	"a-zA-Z0-9_"	ident
