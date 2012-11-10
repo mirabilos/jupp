@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.59 2012/10/23 16:29:13 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.60 2012/11/10 16:22:20 tg Exp $
 ------------------------------------------------------------------
 
 jupp-current
@@ -7,6 +7,7 @@ jupp-current
 - Highlight “diff -pruN %D %d | jupp -” as well
 - Recognise more Python keywords in syntax highlighting
   (patch contributed by Eike Jesinghaus)
+- Allow building against bionic libc (for Android)
 
 JOE 3.1jupp22
 

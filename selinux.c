@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/selinux.c,v 1.5 2010/04/08 17:54:19 tg Exp $ */
+/* $MirOS: contrib/code/jupp/selinux.c,v 1.6 2012/11/10 16:22:20 tg Exp $ */
 
 #include "config.h"
 #if defined(HAVE_SELINUX_HDR) && defined(HAVE_SELINUX_FUN)
@@ -14,8 +14,8 @@
 #ifdef WITH_SELINUX
 #include <selinux/selinux.h>
 static int selinux_enabled = -1;
+#include <err.h>
 #include <errno.h>
-#include <error.h>
 #include <string.h>
 #endif
 
@@ -42,7 +42,7 @@ copy_security_context(const char *from_file, const char *to_file)
 		if (errno == EOPNOTSUPP)
 			return 0;
 
-		error(0, errno, "Could not get security context for %s",
+		warn("Could not get security context for %s",
 		      from_file);
 		return 1;
 	}
@@ -53,7 +53,7 @@ copy_security_context(const char *from_file, const char *to_file)
 		msg_outtrans(to_file);
 		msg_putchar('\n');
 #else
-		error(0, errno, "Could not get security context for %s",
+		warn("Could not get security context for %s",
 		    to_file);
 #endif
 		freecon(from_context);
@@ -62,7 +62,7 @@ copy_security_context(const char *from_file, const char *to_file)
 
 	if (strcmp(from_context, to_context) != 0) {
 		if (setfilecon(to_file, from_context) < 0) {
-			error(0, errno,
+			warn(
 			      "Could not set security context for %s",
 			      to_file);
 			status = 1;
@@ -96,13 +96,13 @@ match_default_security_context(const char *from_file)
 		if (errno == EOPNOTSUPP)
 			return 0;
 
-		error(0, errno, "Could not get security context for %s",
+		warn("Could not get security context for %s",
 		      from_file);
 		return 1;
 	}
 
 	if (setfscreatecon(scontext) < 0) {
-		error(0, errno,
+		warn(
 		      "Could not set default security context for %s",
 		      from_file);
 		freecon(scontext);
@@ -125,7 +125,7 @@ reset_default_security_context(void)
 		return 0;
 
 	if (setfscreatecon(0) < 0) {
-		error(0, errno, "Could not reset default security context");
+		warn("Could not reset default security context");
 		return 1;
 	}
 #endif
@@ -153,12 +153,12 @@ output_security_context(char *from_file)
 		if (errno == EOPNOTSUPP)
 			return 0;
 		
-		error(0, errno, "Could not get security context for %s",
+		warn("Could not get security context for %s",
 		      from_file);
 		return 1;
 	}
 
-	error(0, 0, "%s Security Context %s", from_file, scontext);
+	fprintf(stderr, "%s Security Context %s", from_file, scontext);
 	freecon(scontext);
 #endif
 	return 0;
