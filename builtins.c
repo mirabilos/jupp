@@ -24,7 +24,7 @@ const unsigned char * const builtins[]=
 		"-french\n"
 		"-indentc 9\n"
 		"-istep 1\n"
-		"-guess_indent\n"
+		"--guess_indent\n"
 		"--autoindent\n"
 		"-purify\n"
 		"-highlight\n"
@@ -135,7 +135,7 @@ const unsigned char * const builtins[]=
 		"\\i \\i go to \\uhttp://sf.net/projects/joe-editor/\\u for upstream bug reports. JUPP 2.8 \\i \\i\n"
 		"\\i \\i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\\d(R)\\d \\i \\i\n"
 		"\\i \\i at \\uhttp://mirbsd.de/jupp\\u and by \\bThorsten \"\\dmirabilos\\d\" Glaser <\\utg@mirbsd.org\\u>\\b \\i \\i\n"
-		"\\i \\i @(#) blt_in 2012-09-02; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \\i \\i\n"
+		"\\i \\i @(#) blt_in 2012-12-19; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \\i \\i\n"
 		"}\n"
 		"\n"
 		"{CharTable\n"
@@ -488,5 +488,5 @@ const unsigned char * const builtins[]=
 		":querysr\n"
 		"type		^@ TO ÿ\n"
 ,	NULL
-,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.6 2012/09/02 14:46:50 tg Exp $"
+,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.7 2012/12/19 22:58:16 tg Exp $"
 };

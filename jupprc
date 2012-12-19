@@ -33,7 +33,7 @@
  -hex
 -indentc 9
 -istep 1
--guess_indent
+--guess_indent
 --autoindent
 -purify
 -highlight
@@ -45,6 +45,43 @@
 -smartbacks
 -tab 8
 --wordwrap
+
+ === Generic files
+ No '.' in filename?
+*
+ Assume it's a text file and, except in jupp, we want wordwrap on.
+ -wordwrap
+
+ Filename with '.' is probably not a text file.
+*.*
+
+ === Patterns with multiple wildcards
+ Order is latest match wins, so...
+*/patch-*
+-highlight
+-syntax diff
+
+*.sh*
+-syntax sh
+
+*.ksh*
+-syntax sh
+
+*.mksh*
+-syntax sh
+
+*.bash*
+-syntax sh
+
+*tmp/mutt-*
+-syntax mail
+
+*/mail/*
+-syntax mail
+
+*/patches/*
+-highlight
+-syntax diff
 
  === Assembly
 *.asm
@@ -132,12 +169,12 @@
 -syntax diff
 
 *
-+--- 
++---\[ ]
 -highlight
 -syntax diff
 
 *
-+*** 
++***\[ ]
 -highlight
 -syntax diff
 
@@ -162,13 +199,11 @@
 -syntax diff
 
  === eMail
-*tmp/mutt-*
--syntax mail
-
-*/mail/*
--syntax mail
-
 *.eml
+-syntax mail
+
+ Not quite eMail but still RFC822
+*.mht
 -syntax mail
 
  === FORTRAN
@@ -304,24 +339,6 @@
 -spaces
 
  === Bourne, Korn, POSIX Shell
-*.sh
--syntax sh
-
-*.ksh
--syntax sh
-
-*.mksh
--syntax sh
-
-*.bash
--syntax sh
-
-*.bash_login
--syntax sh
-
-*.bash_logout
--syntax sh
-
 *profile
 -syntax sh
 
@@ -349,6 +366,11 @@
 *.tcl
 -syntax tcl
 
+ === Text
+*.txt
+-guess_indent
+-wordwrap
+
  === Verilog
 *.v
 -syntax verilog
@@ -371,7 +393,6 @@
  === yacc
 *.y
 -syntax yacc
-
 
 {Basic
 \i   Help Screen    turn off with ^J     more help with ESC . (^[.)              \i
@@ -445,7 +466,7 @@
 \i \i go to \uhttp://sf.net/projects/joe-editor/\u for upstream bug reports. JUPP 2.8 \i \i
 \i \i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\d(R)\d \i \i
 \i \i at \uhttp://mirbsd.de/jupp\u and by \bThorsten "\dmirabilos\d" Glaser <\utg@mirbsd.org\u>\b \i \i
-\i \i @(#) jupprc 2012-09-07; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
+\i \i @(#) jupprc 2012-12-19; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
 }
 
 {CharTable
@@ -461,7 +482,6 @@
 \i \i  96  60 | `abc defg  hijk lmno    אבגד הוזח  טיךכ לםמן | E0  224            \i \i
 \i \i 112  70 | pqrs tuvw  xyz{ |}~    נסעף פץצק  רשתû ü‎‏ÿ | F0  240            \i \i
 }
-
 
 :windows
 type		^@ TO ÿ
