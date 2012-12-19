@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.60 2012/11/10 16:22:20 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.61 2012/12/19 22:06:29 tg Exp $
 ------------------------------------------------------------------
 
 jupp-current
@@ -8,6 +8,7 @@ jupp-current
 - Recognise more Python keywords in syntax highlighting
   (patch contributed by Eike Jesinghaus)
 - Allow building against bionic libc (for Android)
+- Securely make backup files using mkstemp(3), thanks Han Boetes
 
 JOE 3.1jupp22
 

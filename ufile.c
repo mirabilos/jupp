@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ufile.c,v 1.6 2012/12/19 21:30:13 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ufile.c,v 1.7 2012/12/19 22:06:29 tg Exp $ */
 /*
  * 	User file operations
  *	Copyright
@@ -155,9 +155,10 @@ int ushell(BW *bw)
 
 /* Copy a file */
 
-static int cp(unsigned char *from, unsigned char *to)
+static int
+cp(unsigned char *from, int g, unsigned char *tmpfn, unsigned char *to)
 {
-	int f, g, amnt;
+	int f, amnt;
 	struct stat sbuf;
 
 #ifdef HAVEUTIME
@@ -175,10 +176,9 @@ static int cp(unsigned char *from, unsigned char *to)
 	if (fstat(f, &sbuf) < 0) {
 		return -1;
 	}
-	g = creat((char *)to, sbuf.st_mode & ~(S_ISUID | S_ISGID));
-	if (g < 0) {
+	if (fchmod(g, sbuf.st_mode & 0777)) {
 		close(f);
-		return -1;
+		return (-1);
 	}
 	while ((amnt = read(f, stdbuf, stdsiz)) > 0) {
 		if (amnt != joe_write(g, stdbuf, amnt)) {
@@ -186,10 +186,19 @@ static int cp(unsigned char *from, unsigned char *to)
 		}
 	}
 	close(f);
-	close(g);
 	if (amnt) {
 		return -1;
 	}
+
+	if (tmpfn && rename(tmpfn, to)) {
+		return (-1);
+	}
+	/*
+	 * Do not return !0 from here on.
+	 * Below are only operations that run when the copy
+	 * process finished successfully.
+	 */
+	close(g);
 
 #ifdef HAVEUTIME
 #ifdef NeXT
@@ -203,7 +212,7 @@ static int cp(unsigned char *from, unsigned char *to)
 #endif
 
 #ifdef WITH_SELINUX
-	copy_security_context(from,to);
+	copy_security_context(from, to);
 #endif
 
 	return 0;
@@ -217,9 +226,10 @@ static int cp(unsigned char *from, unsigned char *to)
 static int
 backup(BW *bw)
 {
-	unsigned char tmp[1024];
+	unsigned char tmp[1024 + 12];
 	unsigned char name[1024];
 	unsigned char *simple_backup_suffix;
+	int fd;
 
 	if (bw->b->backup || nobackups || !(bw->b->name) || !(bw->b->name[0]))
 		return (0);
@@ -236,13 +246,38 @@ backup(BW *bw)
 		joe_snprintf_2((char *)name, sizeof(name), "%s%s", bw->b->name, simple_backup_suffix);
 	}
 
+#ifdef HAVE_MKSTEMP
+	/* Securely generate a backup file temporary file */
+	joe_snprintf_1((char *)tmp, sizeof(tmp), "%s.XXXXXXXXXX", name);
+	if ((fd = mkstemp((char *)tmp)) < 0) {
+		return (1);
+	}
+#endif
+
 	/* Attempt to delete backup file first */
 	unlink((char *)name);
 
-	/* Copy original file to backup file */
-	if (cp(bw->b->name, name)) {
+#ifdef HAVE_MKSTEMP
+	/* Copy original file to backup file securely */
+	if (cp(bw->b->name, fd, tmp, name)) {
+		close(fd);
+		unlink((char *)tmp);
 		return (1);
 	}
+#else
+	/* Yeowch! */
+	if ((fd = creat((char *)name, 0600)) < 0) {
+		return (1);
+	}
+#warning "TOCTOU temp file race here! Consider getting mkstemp!"
+
+	/* Copy original file to backup file */
+	if (cp(bw->b->name, fd, NULL, name)) {
+		close(fd);
+		unlink((char *)name);
+		return (1);
+	}
+#endif
 	bw->b->backup = 1;
 	return (0);
 }
