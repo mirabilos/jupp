@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/rjoerc.in,v 1.8 2011/10/04 22:35:46 tg Exp $
+ $MirOS: contrib/code/jupp/rjoerc.in,v 1.9 2012/12/19 23:11:43 tg Exp $
 
                          Initialization file for JOE
                             Restricted access Joe
@@ -213,359 +213,366 @@
 
  Default local options
 -highlight
--istep 2
+-french
+-indentc 9
+-istep 1
+-purify
+-smartbacks
+-tab 8
+--wordwrap
 
- No '.' in file name?  Assume it's a text file and we want wordwrap on.
+ === Generic files
+ No '.' in filename?
 *
+ Assume it's a text file and, except in jupp, we want wordwrap on.
 -wordwrap
 
- File name with '.'?  It's probably not a text file.
+ Filename with '.' is probably not a text file.
 *.*
 
- Diff
+ === Patterns with multiple wildcards
+ Order is latest match wins, so...
+*/patch-*
+-highlight
+-syntax diff
+
+*.sh*
+-syntax sh
+
+*.ksh*
+-syntax sh
+
+*.mksh*
+-syntax sh
+
+*.bash*
+-syntax sh
+
+*tmp/mutt-*
+-wordwrap
+-syntax mail
+
+*tmp/pico.*
+-wordwrap
+-syntax mail
+
+*/mail/*
+-syntax mail
+
+*/patches/*
+-highlight
+-syntax diff
+
+ === Assembly
+*.asm
+-syntax asm
+
+*.S
+-syntax asm
+
+*.s
+-syntax asm
+
+ === C, C++, Objective-C
+*.C
+-syntax c
+
+*.c
+-syntax c
+
+*.cc
+-syntax c
+
+*.cpp
+-syntax c
+
+*.cxx
+-syntax c
+
+*.c++
+-syntax c
+
+*.h
+-syntax c
+
+*.hh
+-syntax c
+
+*.hpp
+-syntax c
+
+*.h++
+-syntax c
+
+*.m
+-syntax c
+
+ === C Shell
+*.csh
+-syntax csh
+
+*.login
+-syntax csh
+
+*.logout
+-syntax csh
+
+*.tcsh
+-syntax csh
+
+*.tcshrc
+-syntax csh
+
 *
-+--- 
++#!\+\[	 ]\+\[a-z/]/\+tcsh\>
+-syntax csh
+
+*
++#!\+\[	 ]\+\[a-z/]/env\+\[	 ]\+tcsh\>
+-syntax csh
+
+ === Diff
+*.diff
+-highlight
+-syntax diff
+
+*.patch
+-highlight
+-syntax diff
+
+*.rej
+-highlight
+-syntax diff
+
+*.debdiff
+-highlight
 -syntax diff
 
 *
-+*** 
++---\[ ]
+-highlight
+-syntax diff
+
+*
++***\[ ]
+-highlight
 -syntax diff
 
 *
 +\[1-9]\+\[0-9]\[cda]
+-highlight
 -syntax diff
 
- Text file.
-*.txt
--wordwrap
-
- Assembly language
-*.asm
--wordwrap
--syntax asm
-
-*.s
--wordwrap
--syntax asm
-
-*.S
--wordwrap
--syntax asm
-
- Mason
-*.mas
--autoindent
--syntax mason
--smarthome
--smartbacks
-
- Perl
 *
-+#!\+\[ 	]\+\[a-z/]/perl\>
--autoindent
--syntax perl
--smarthome
--smartbacks
++Index: \*\n======================================================
+-highlight
+-syntax diff
 
-*.pl
--autoindent
--syntax perl
--smarthome
--smartbacks
-
-*.pm
--autoindent
--syntax perl
--smarthome
--smartbacks
-
- C language file
-*.c
--autoindent
--syntax c
--smarthome
--smartbacks
--purify
-
-*.cpp
--autoindent
--syntax c
--smarthome
--smartbacks
--purify
-
-*.c++
--autoindent
--syntax c
--smarthome
--smartbacks
--purify
-
- C language header file
-*.h
--autoindent
--syntax c
--smarthome
--smartbacks
--purify
-
-*.hpp
--autoindent
--syntax c
--smarthome
--smartbacks
--purify
-
-*.h++
--autoindent
--syntax c
--smarthome
--smartbacks
--purify
-
- Verilog file
-*.v
--autoindent
--syntax verilog
--istep 2
--smarthome
--smartbacks
--purify
-
- Verilog header file
-*.vh
--autoindent
--syntax verilog
--istep 2
--smarthome
--smartbacks
--purify
-
- VHDL file
-*.vhd
--autoindent
--syntax vhdl
--istep 2
--smarthome
--smartbacks
--purify
-
- XML
-*.xml
--wordwrap
--autoindent
--syntax xml
-
- HTML
-*.htm
--wordwrap
--autoindent
--syntax html
-
-*.html
--wordwrap
--autoindent
--syntax html
-
- JAVA
-*.java
--autoindent
--syntax java
--smarthome
--smartbacks
--purify
-
- Hypertext preprocessor file
-*.php
--autoindent
--syntax php
--smarthome
--smartbacks
--purify
-
- Python
 *
-+#!\+\[ 	]\+\[a-z/]/python
--autoindent
--syntax python
--smarthome
--smartbacks
--purify
++\[=?]\*\n--- \*\n+++\[ ]
+-highlight
+-syntax diff
 
-*.py
--autoindent
--syntax python
--smarthome
--smartbacks
--purify
-
- CSH
 *
-+#!\+\[ 	]\+\[a-z/]/csh\>
--autoindent
--syntax csh
++diff\*\n--- \*\n+++\[ ]
+-highlight
+-syntax diff
 
-*.csh
--autoindent
--syntax csh
+ === eMail
+*.eml
+-syntax mail
 
-*.cshrc
--autoindent
--syntax csh
+ Not quite eMail but still RFC822
+*.mht
+-syntax mail
 
-*.login
--autoindent
--syntax csh
-
-*.logout
--autoindent
--syntax csh
-
- TCSH
-*
-+#!\+\[ 	]\+\[a-z/]/tcsh\>
--autoindent
--syntax csh
-
-*.tcsh
--autoindent
--syntax csh
-
-*.tcshrc
--autoindent
--syntax csh
-
- Shell
-*
-+#!\+\[ 	]\+\[a-z/]/sh\>
--autoindent
--syntax sh
-
-*.sh
--autoindent
--syntax sh
-
-*profile
--autoindent
--syntax sh
-
- BASH Shell
-*
-+#!\+\[ 	]\+\[a-z/]/bash\>
--autoindent
--syntax sh
-
-*.bash
--autoindent
--syntax sh
-
-*.bash_login
--autoindent
--syntax sh
-
-*.bash_logout
--autoindent
--syntax sh
-
- LISP
-*.lisp
--autoindent
--syntax lisp
-
-*.lsp
--autoindent
--syntax lisp
-
-*.el
--autoindent
--syntax lisp
-
- KSH
-*
-+#!\+\[ 	]\+\[a-z/]/ksh\>
--autoindent
--syntax sh
-
-*.ksh
--autoindent
--syntax sh
-
- Makefile
-*akefile
--autoindent
--syntax conf
-
-*AKEFILE
--autoindent
--syntax conf
-
- Pascal
-*.p
--autoindent
--syntax pascal
--smarthome
--smartbacks
--purify
-
-*.pas
--autoindent
--syntax pascal
--smarthome
--smartbacks
--purify
-
- Fortran
+ === FORTRAN
 *.f
--autoindent
 -syntax fortran
 
 *.for
--autoindent
 -syntax fortran
 
 *.FOR
--autoindent
 -syntax fortran
 
- YACC
-*.y
--autoindent
--syntax yacc
+*.f77
+-syntax fortran
 
- LEX
+*.F77
+-syntax fortran
+
+*.f90
+-syntax fortran
+
+*.F90
+-syntax fortran
+
+ === GNU autoconf
+*.ac
+-syntax conf
+
+*.am
+-syntax conf
+
+ === HTML
+*.htm
+-encoding utf8
+-syntax html
+
+*.html
+-encoding utf8
+-syntax html
+
+ === Java
+*.java
+-encoding utf8
+-syntax java
+
+ === Joe Syntax File
+*.jsf
+-syntax conf
+
+ === flex
 *.l
--autoindent
 -syntax lex
 
- TCL
-*.tcl
--autoindent
--syntax tcl
+ === LISP
+*.lisp
+-syntax lisp
 
- Joe Syntax File
-*.jsf
--autoindent
--syntax conf
+*.lsp
+-syntax lisp
 
- Autoconfig file
-*.ac
--autoindent
--syntax conf
+*.el
+-syntax lisp
 
- M4 file
+ === M4
 *.m4
--autoindent
 -syntax m4
 
- Automake file
-*.am
--autoindent
+ === Make
+*akefile
 -syntax conf
 
- Mail file
-*tmp/mutt-*
+*AKEFILE
+-syntax conf
+
+ === Mason
+*.mas
+-syntax mason
+
+ === Pascal
+*.p
+-syntax pascal
+
+*.pas
+-syntax pascal
+
+ === Perl
+*.pl
+-syntax perl
+
+*.pm
+-syntax perl
+
+*
++#!\+\[	 ]\+\[a-z/]/perl
+-syntax perl
+
+*
++#!\+\[	 ]\+\[a-z/]/env\+\[	 ]perl
+-syntax perl
+
+ === PHP
+*.php
+-syntax php
+
+ === Python
+*.py
+-encoding utf8
+-syntax python
+--guess_indent
+-tab 4
+-indentc 32
+-istep 4
+-spaces
+
+*
++#!\+\[	 ]\+\[a-z/]/python
+-encoding utf8
+-syntax python
+--guess_indent
+-tab 4
+-indentc 32
+-istep 4
+-spaces
+
+*
++#!\+\[	 ]\+\[a-z/]/env\+\[	 ]python
+-encoding utf8
+-syntax python
+--guess_indent
+-tab 4
+-indentc 32
+-istep 4
+-spaces
+
+ === Bourne, Korn, POSIX Shell
+*profile
+-syntax sh
+
+*
++:\[	 \n]
+-syntax sh
+
+*
++#!\+\[	 ]\+\[a-z/]/\+\[bd]\+ash\>
+-syntax sh
+
+*
++#!\+\[	 ]\+\[a-z/]/env\+\[	 ]\+\[bd]\+ash\>
+-syntax sh
+
+*
++#!\+\[	 ]\+\[a-z/]/\+\[a-z]ksh\+\[0-9._-]\>
+-syntax sh
+
+*
++#!\+\[	 ]\+\[a-z/]/env\+\[	 ]\+\[a-z]ksh\+\[0-9._-]\>
+-syntax sh
+
+ === TCL
+*.tcl
+-syntax tcl
+
+ === Text
+*.txt
+-guess_indent
 -wordwrap
--syntax mail
+
+ === Verilog
+*.v
+-syntax verilog
+-istep 2
+
+*.vh
+-syntax verilog
+-istep 2
+
+ === VHDL
+*.vhd
+-syntax vhdl
+-istep 2
+
+ === XML
+*.xml
+-encoding utf8
+-syntax xml
+
+ === yacc
+*.y
+-syntax yacc
 
  THIRD SECTION: Named help screens:
 

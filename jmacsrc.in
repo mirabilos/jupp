@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jmacsrc.in,v 1.10 2012/09/22 12:27:24 tg Exp $
+ $MirOS: contrib/code/jupp/jmacsrc.in,v 1.11 2012/12/19 23:11:41 tg Exp $
 
                          Initialization file for JOE
                                 GNU-Emacs Joe
@@ -191,12 +191,56 @@
 
  Default local options
 -highlight
+-french
 -tab 8
 -indentc 9
 -istep 1
+-purify
 --autoindent
 -smartbacks
 --wordwrap
+
+ === Generic files
+ No '.' in filename?
+*
+ Assume it's a text file and, except in jupp, we want wordwrap on.
+-wordwrap
+
+ Filename with '.' is probably not a text file.
+*.*
+
+ === Patterns with multiple wildcards
+ Order is latest match wins, so...
+*/patch-*
+-highlight
+-syntax diff
+
+*.sh*
+-syntax sh
+
+*.ksh*
+-syntax sh
+
+*.mksh*
+-syntax sh
+
+*.bash*
+-syntax sh
+
+*tmp/mutt-*
+-wordwrap
+-syntax mail
+
+*tmp/pico.*
+-wordwrap
+-syntax mail
+
+*/mail/*
+-syntax mail
+
+*/patches/*
+-highlight
+-syntax diff
 
  === Assembly
 *.asm
@@ -284,12 +328,12 @@
 -syntax diff
 
 *
-+--- 
++---\[ ]
 -highlight
 -syntax diff
 
 *
-+*** 
++***\[ ]
 -highlight
 -syntax diff
 
@@ -314,13 +358,11 @@
 -syntax diff
 
  === eMail
-*tmp/mutt-*
--syntax mail
-
-*/mail/*
--syntax mail
-
 *.eml
+-syntax mail
+
+ Not quite eMail but still RFC822
+*.mht
 -syntax mail
 
  === FORTRAN
@@ -456,24 +498,6 @@
 -spaces
 
  === Bourne, Korn, POSIX Shell
-*.sh
--syntax sh
-
-*.ksh
--syntax sh
-
-*.mksh
--syntax sh
-
-*.bash
--syntax sh
-
-*.bash_login
--syntax sh
-
-*.bash_logout
--syntax sh
-
 *profile
 -syntax sh
 
@@ -500,6 +524,11 @@
  === TCL
 *.tcl
 -syntax tcl
+
+ === Text
+*.txt
+-guess_indent
+-wordwrap
 
  === Verilog
 *.v

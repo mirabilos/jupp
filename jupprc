@@ -74,6 +74,11 @@
 -syntax sh
 
 *tmp/mutt-*
+ -wordwrap
+-syntax mail
+
+*tmp/pico.*
+ -wordwrap
 -syntax mail
 
 */mail/*

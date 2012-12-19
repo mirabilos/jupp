@@ -1,10 +1,13 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.61 2012/12/19 22:06:29 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.62 2012/12/19 23:11:41 tg Exp $
 ------------------------------------------------------------------
 
-jupp-current
+JOE 3.1jupp23
 
-- Highlight *.rej as diff, too (patch(1) rejects)
-- Highlight “diff -pruN %D %d | jupp -” as well
+- Overhaul and harmonise syntax detection and editor defaults
+  across all six *rc files (except jupp continues having no
+  wordwrap by default and now disables guess_indent except in
+  *.txt files); improve shell/mail wildcards; recognise a lot
+  more diff files by pathname or content patterns
 - Recognise more Python keywords in syntax highlighting
   (patch contributed by Eike Jesinghaus)
 - Allow building against bionic libc (for Android)
