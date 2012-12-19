@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ufile.c,v 1.4 2010/04/08 15:31:05 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ufile.c,v 1.5 2012/12/19 21:15:54 tg Exp $ */
 /*
  * 	User file operations
  *	Copyright
@@ -220,26 +220,6 @@ static int backup(BW *bw)
 		unsigned char tmp[1024];
 		unsigned char name[1024];
 
-#ifdef __MSDOS__
-		int x;
-
-		if (backpath) {
-			joe_snprintf_2(name, sizeof(name), "%s/%s", backpath, namepart(tmp, bw->b->name));
-		} else {
-			joe_snprintf_1(name, sizeof(name), "%s", bw->b->name);
-		}
-
-		for (x = strlen(name); name[--x] != '.';) {
-			if (name[x] == '\\' || (name[x] == ':' && x == 1) || x == 0) {
-				x = strlen(name);
-				break;
-			}
-		}
-
-		strcpy(name + x, ".bak");
-
-#else
-
 		/* Create backup file name */
 		unsigned char *simple_backup_suffix = (unsigned char *)getenv("SIMPLE_BACKUP_SUFFIX");
 		
@@ -254,8 +234,6 @@ static int backup(BW *bw)
 		
 		/* Attempt to delete backup file first */
 		unlink((char *)name);
-
-#endif
 
 		/* Copy original file to backup file */
 		if (cp(bw->b->name, name)) {
