@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/path.c,v 1.7 2012/06/07 22:18:23 tg Exp $ */
+/* $MirOS: contrib/code/jupp/path.c,v 1.8 2012/12/19 21:14:53 tg Exp $ */
 /* 
  *	Directory and path functions
  *	Copyright
@@ -225,12 +225,12 @@ unsigned char *mktmp(unsigned char *where)
 	if (!where)
 		where = US _PATH_TMP;
 
-	namesize = strlen((char *)where) + 16;
+	namesize = strlen((char *)where) + 20;
 	name = vsmk(namesize);	/* [G.Ghibo'] we need to use vsmk() and not malloc() as
 				   area returned by mktmp() is destroyed later with
 				   vsrm(); */
 #ifdef HAVE_MKSTEMP
-	joe_snprintf_1((char *)name, namesize, "%s/joe.tmp.XXXXXX", where);
+	joe_snprintf_1((char *)name, namesize, "%s/joe.tmp.XXXXXXXXXX", where);
 	if((fd = mkstemp((char *)name)) == -1)
 		return NULL;	/* FIXME: vflsh() and vflshf() */
 				/* expect mktmp() always succeed!!! */
@@ -242,12 +242,13 @@ unsigned char *mktmp(unsigned char *where)
 
 #else
       loop:
-	seq = (seq + 1) % 1000;
-	joe_snprintf_3(name, namesize, "%s/joe.tmp.%03u%03u", where, seq, (unsigned) time(NULL) % 1000);
+	seq = (seq + 1) % 10000;
+	joe_snprintf_3(name, namesize, "%s/joe.tmp.%04u%05u", where, seq, (unsigned) time(NULL) % 100000);
 	if ((fd = open(name, O_RDONLY)) != -1) {
 		close(fd);
 		goto loop;	/* FIXME: possible endless loop --> DoS attack */
 	}
+#warning "Waah, this is insecure! Consider getting mkstemp!"
 	if ((fd = open(name, O_RDWR | O_CREAT | O_EXCL, 0600)) == -1)
 		return NULL;	/* FIXME: see above */
 	else
