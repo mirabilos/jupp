@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ufile.c,v 1.5 2012/12/19 21:15:54 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ufile.c,v 1.6 2012/12/19 21:30:13 tg Exp $ */
 /*
  * 	User file operations
  *	Copyright
@@ -214,37 +214,37 @@ static int cp(unsigned char *from, unsigned char *to)
  * Returns 1 for error
  */
 
-static int backup(BW *bw)
+static int
+backup(BW *bw)
 {
-	if (!bw->b->backup && !nobackups && bw->b->name && bw->b->name[0]) {
-		unsigned char tmp[1024];
-		unsigned char name[1024];
+	unsigned char tmp[1024];
+	unsigned char name[1024];
+	unsigned char *simple_backup_suffix;
 
-		/* Create backup file name */
-		unsigned char *simple_backup_suffix = (unsigned char *)getenv("SIMPLE_BACKUP_SUFFIX");
-		
-		if (simple_backup_suffix == NULL) {
-			simple_backup_suffix = US "~";
-		}
-		if (backpath) {
-			joe_snprintf_3((char *)name, sizeof(name), "%s/%s%s", backpath, namepart(tmp, bw->b->name), simple_backup_suffix);
-		} else {
-			joe_snprintf_2((char *)name, sizeof(name), "%s%s", bw->b->name, simple_backup_suffix);
-		}
-		
-		/* Attempt to delete backup file first */
-		unlink((char *)name);
+	if (bw->b->backup || nobackups || !(bw->b->name) || !(bw->b->name[0]))
+		return (0);
 
-		/* Copy original file to backup file */
-		if (cp(bw->b->name, name)) {
-			return 1;
-		} else {
-			bw->b->backup = 1;
-			return 0;
-		}
-	} else {
-		return 0;
+	/* Create backup file name */
+	simple_backup_suffix = (unsigned char *)getenv("SIMPLE_BACKUP_SUFFIX");
+
+	if (simple_backup_suffix == NULL) {
+		simple_backup_suffix = US "~";
 	}
+	if (backpath) {
+		joe_snprintf_3((char *)name, sizeof(name), "%s/%s%s", backpath, namepart(tmp, bw->b->name), simple_backup_suffix);
+	} else {
+		joe_snprintf_2((char *)name, sizeof(name), "%s%s", bw->b->name, simple_backup_suffix);
+	}
+
+	/* Attempt to delete backup file first */
+	unlink((char *)name);
+
+	/* Copy original file to backup file */
+	if (cp(bw->b->name, name)) {
+		return (1);
+	}
+	bw->b->backup = 1;
+	return (0);
 }
 
 /* Write file */
@@ -446,7 +446,7 @@ static int dosave1(BW *bw, unsigned char *s, struct savereq *req, int *notify)
 int usave(BW *bw)
 {
 	BW *pbw;
-	
+
 	pbw = wmkpw(bw->parent, US "Name of file to save (^C to abort): ", &filehist, dosave1, US "Names", NULL, cmplt, mksavereq(NULL,NULL,NULL,0), NULL, locale_map);
 
 	if (pbw && bw->b->name) {
