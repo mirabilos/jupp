@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/umath.c,v 1.2 2008/05/13 13:08:28 tg Exp $ */
+/* $MirOS: contrib/code/jupp/umath.c,v 1.3 2012/12/20 19:56:13 tg Exp $ */
 /*
  *	Math
  *	Copyright
@@ -182,10 +182,19 @@ double calc(BW *bw, unsigned char *s)
 	return result;
 }
 
+#if defined(SIZEOF_LONG_LONG) && (SIZEOF_LONG_LONG > 0)
+typedef long long joe_imaxt;
+#define JOE_IMAXT "ll"
+#else
+typedef long joe_imaxt;
+#define JOE_IMAXT "l"
+#endif
+
 /* Main user interface */
 static int domath(BW *bw, unsigned char *s, void *object, int *notify)
 {
 	double result = calc(bw, s);
+	joe_imaxt ires;
 
 	if (notify) {
 		*notify = 1;
@@ -195,7 +204,16 @@ static int domath(BW *bw, unsigned char *s, void *object, int *notify)
 		return -1;
 	}
 	vsrm(s);
-	joe_snprintf_1((char *)msgbuf, JOE_MSGBUFSIZE, "%G", result);
+	ires = (joe_imaxt)result;
+	if ((double)ires == result) {
+		/* representable as integer value */
+		joe_snprintf_1((char *)msgbuf, JOE_MSGBUFSIZE,
+		    "%" JOE_IMAXT "d", ires);
+	} else {
+		/* use float with large precision */
+		joe_snprintf_1((char *)msgbuf, JOE_MSGBUFSIZE,
+		    "%.60G", result);
+	}
 	if (bw->parent->watom->what != TYPETW) {
 		binsm(bw->cursor, sz(msgbuf));
 		pfwrd(bw->cursor, strlen((char *)msgbuf));
