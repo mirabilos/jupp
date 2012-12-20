@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.63 2012/12/20 19:56:13 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.64 2012/12/20 20:11:53 tg Exp $
 ------------------------------------------------------------------
 
 JOE 3.1jupp23
@@ -13,6 +13,7 @@ JOE 3.1jupp23
 - Allow building against bionic libc (for Android)
 - Securely make backup files using mkstemp(3), thanks Han Boetes
 - Print math results more precisely; if possible, as integer
+- Permit hexadecimal input in math expressions
 
 JOE 3.1jupp22
 

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/umath.c,v 1.3 2012/12/20 19:56:13 tg Exp $ */
+/* $MirOS: contrib/code/jupp/umath.c,v 1.4 2012/12/20 20:11:54 tg Exp $ */
 /*
  *	Math
  *	Copyright
@@ -80,6 +80,14 @@ static double expr(int prec, struct var **rtv)
 		v = get(s);
 		x = v->val;
 		*ptr = c;
+	} else if (ptr[0] == '0' && (ptr[1] | 0x20) == 'x') {
+		unsigned long xi;
+
+		sscanf((char *)ptr, "%li", &xi);
+		x = (double)xi;
+		ptr += 2;
+		while ((*ptr >= '0' && *ptr <= '9') || ((*ptr | 0x20) >= 'a' && (*ptr | 0x20) <= 'f'))
+			++ptr;
 	} else if ((*ptr >= '0' && *ptr <= '9') || *ptr == '.') {
 		sscanf((char *)ptr, "%lf", &x);
 		while ((*ptr >= '0' && *ptr <= '9') || *ptr == '.' || *ptr == 'e' || *ptr == 'E')
