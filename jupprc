@@ -413,10 +413,11 @@
 
 {Windows
 \i   Help Screen    turn off with ^J     prev. screen ^[,    next screen ^[.     \i
-\i \i^KO Split the window in half         ^KE Load file into window               \i \i
+\i \i^KO Split the window in half         ^KE Load file into new window           \i \i
 \i \i^KG Make current window bigger       ^KT Make current window smaller         \i \i
 \i \i^KN Go to the window below           ^KP Go to the window above              \i \i
 \i \i^KQ Eliminate the current window     ^KI Show all windows / Show one window  \i \i
+\i \i^K; Do ctags search into new window  ^K- Edit scratch buffer in new window   \i \i
 \i \i\u\bSpecial help for XON/XOFF aware terminals\b\u                                    \i \i
 \i \i You can use \b^[q\b and \b^[s\b instead of \b^Q\b and \b^S\b to initiate a command.         \i \i
 }
@@ -428,7 +429,7 @@
 \i \i^[) Stop    ^QQ repeat    ^Q, Left    ^[! Command ^QK to ^KK  ^[S Forwards   \i \i
 \i \i^[ 0-9 Play ^QM Math      \u\bCharSEARCH\b\u  \u\bQUOTE\b\u       \u\bDELETE\b\u      \u\bBOOKMARKS\b\u      \i \i
 \i \i^[? Query   ^KA CenterLn. ^QH forwrd   ` Ctrl-    ^[Y yank    ^K 0-9 Set     \i \i
-\i \i^[D Dump    ^K; Split+Tag ^QG backwd  ^P Meta-    ^[O word<   ^Q 0-9 Goto    \i \i
+\i \i^[D Dump    ^[H Message   ^QG backwd  ^P Meta-    ^[O word<   ^Q 0-9 Goto    \i \i
 }
 
 {Programs
@@ -723,6 +724,7 @@ run		^[ !
 save		^K S
 save		^K ^S
 save		^K s
+scratch		^K -
 setmark		^K 0 TO 9
 shrinkw		^K T
 shrinkw		^K ^T
@@ -730,9 +732,9 @@ shrinkw		^K t
 splitw		^K O
 splitw		^K ^O
 splitw		^K o
-splitw,tag	^K ;
 stat		^Q ?
 stat		^[ q ?
+tag		^K ;
 tomarkb		^Q B
 tomarkb		^Q ^B
 tomarkb		^Q b

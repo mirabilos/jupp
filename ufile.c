@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ufile.c,v 1.7 2012/12/19 22:06:29 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ufile.c,v 1.8 2012/12/20 21:39:28 tg Exp $ */
 /*
  * 	User file operations
  *	Copyright
@@ -514,7 +514,7 @@ int doedit1(BW *bw,int c,unsigned char *s,int *notify)
 
 		b = bfind_reload(s);
 		er = error;
-		if (bw->b->count == 1 && (bw->b->changed || bw->b->name)) {
+		if (bw->b->count >= 1 && (bw->b->changed || bw->b->name)) {
 			if (orphan) {
 				orphit(bw);
 			} else {
