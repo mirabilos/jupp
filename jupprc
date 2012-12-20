@@ -724,7 +724,7 @@ run		^[ !
 save		^K S
 save		^K ^S
 save		^K s
-scratch		^K -
+scratch,"(S) "	^K -
 setmark		^K 0 TO 9
 shrinkw		^K T
 shrinkw		^K ^T

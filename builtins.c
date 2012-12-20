@@ -388,7 +388,7 @@ const unsigned char * const builtins[]=
 		"save		^K S\n"
 		"save		^K ^S\n"
 		"save		^K s\n"
-		"scratch		^K -\n"
+		"scratch,\"(S) \"	^K -\n"
 		"setmark		^K 0 TO 9\n"
 		"shrinkw		^K T\n"
 		"shrinkw		^K ^T\n"
@@ -494,5 +494,5 @@ const unsigned char * const builtins[]=
 		":querysr\n"
 		"type		^@ TO ÿ\n"
 ,	NULL
-,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.9 2012/12/20 21:39:27 tg Exp $"
+,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.10 2012/12/20 21:59:23 tg Exp $"
 };
