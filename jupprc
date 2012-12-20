@@ -408,7 +408,7 @@
 \i \i^F next word     ^QD end of line  ^K/ pipe ^QY >line ^O  options  \u\bFILE\b\u       \i \i
 \i \i\u\bSEARCH\b\u           ^QR top of file  ^KB begin          \u\bBUFFER\b\u       ^KE new    \i \i
 \i \i^QF find first   ^QC end of file  ^KK end  ^K] space ^U undo      ^KR import \i \i
-\i \i^L  find next    ^QI to line No.  ^KD reformat       ^^ redo      ^KW export \i \i
+\i \i^L  find next    ^QO byte offset  ^KD reformat       ^^ redo      ^KW export \i \i
 }
 
 {Windows
@@ -418,27 +418,30 @@
 \i \i^KN Go to the window below           ^KP Go to the window above              \i \i
 \i \i^KQ Eliminate the current window     ^KI Show all windows / Show one window  \i \i
 \i \i^K; Do ctags search into new window  ^K- Edit scratch buffer in new window   \i \i
+\i \i Note: some commands (^KE ^K; ^K-) hide the current window. Use ^KI/^KN then.\i \i
 \i \i\u\bSpecial help for XON/XOFF aware terminals\b\u                                    \i \i
 \i \i You can use \b^[q\b and \b^[s\b instead of \b^Q\b and \b^S\b to initiate a command.         \i \i
 }
 
 {Advanced
 \i   Help Screen    turn off with ^J     prev. screen ^[,    next screen ^[.     \i
-\i \i\u\bMACROS\b\u      \u\bMISC\b\u          \u\bSCROLL\b\u      \u\bSHELL\b\u       \u\bGOTO\b\u        \u\bI-SEARCH\b\u       \i \i
-\i \i^[( Record  ^Q? status    ^Q. Right   ^K' Window  ^QB to ^KB  ^[R Backwards  \i \i
-\i \i^[) Stop    ^QQ repeat    ^Q, Left    ^[! Command ^QK to ^KK  ^[S Forwards   \i \i
-\i \i^[ 0-9 Play ^QM Math      \u\bCharSEARCH\b\u  \u\bQUOTE\b\u       \u\bDELETE\b\u      \u\bBOOKMARKS\b\u      \i \i
-\i \i^[? Query   ^KA CenterLn. ^QH forwrd   ` Ctrl-    ^[Y yank    ^K 0-9 Set     \i \i
-\i \i^[D Dump    ^[H Message   ^QG backwd  ^P Meta-    ^[O word<   ^Q 0-9 Goto    \i \i
+\i \i\u\bMACROS\b\u       \u\bMISC\b\u         \u\bSCROLL\b\u      \u\bSHELL\b\u       \u\bGOTO\b\u        \u\bI-SEARCH\b\u       \i \i
+\i \i^[( Record   ^Q? status   ^Q. Right   ^K' Window  ^QB to ^KB  ^[R Backwards  \i \i
+\i \i^[) Stop     ^QQ repeat   ^Q, Left    ^[! Command ^QK to ^KK  ^[S Forwards   \i \i
+\i \i^[? Query    ^QM Math     \u\bCharSEARCH\b\u  \u\bQUOTE\b\u       \u\bDELETE\b\u      \u\bBOOKMARKS\b\u      \i \i
+\i \i^[D Dump     ^[H Message  ^QH forwrd   ` Ctrl-    ^[Y yank    ^K 0-9 Set     \i \i
+\i \i^[ 0-9 Play  ^N  Play #0  ^QG backwd  ^P Meta-    ^[O word<   ^Q 0-9 Goto    \i \i
+\i \i \u\bIn math mode\b\u, use 0xCAFE for hex. All ops are floating point internally.    \i \i
+\i \i \u\bPredefined variables:\b\u byte col height line lines top width                  \i \i
 }
 
 {Programs
 \i   Help Screen    turn off with ^J     prev. screen ^[,    next screen ^[.     \i
-\i \i\u\bGOTO\b\u                  \u\bINDENT\b\u         \u\bCOMPILING\b\u                   \u\bMACROS\b\u      \i \i
-\i \i^QO Offset (bytes)    ^K. more       ^[C Compile & parse errors  ^N play #0  \i \i
-\i \i^Q[ Matching brace    ^K, less       ^[E Parse errors            \u\bSLIDING\b\u     \i \i
-\i \i^QP Previous place    \u\bSPECIAL\b\u        ^[M Goto next error         ^W up       \i \i
-\i \i^K= Next place        ^[- jexecmd    ^[N Goto previous error     ^Z down     \i \i
+\i \i\u\bGOTO\b\u                  \u\bCOMPILING\b\u                     \u\bINDENT\b\u       \u\bSLIDING\b\u     \i \i
+\i \i^Q- to column number  ^[C Compile & parse errors    ^K. more     ^W up       \i \i
+\i \i^QI to line number    ^[E Parse errors              ^K, less     ^Z down     \i \i
+\i \i^QP previous place    ^[N goto previous error       ^KA center   \u\bSPECIAL\b\u     \i \i
+\i \i^K= next place        ^[M next error     ^Q[ matching brace      ^[- jexecmd \i \i
 }
 
 {Search
@@ -589,6 +592,7 @@ byte		^[ q o
 center		^K A
 center		^K ^A
 center		^K a
+col		^Q -
 crawll		^Q ,
 crawll		^[ q ,
 crawlr		^Q .
