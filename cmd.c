@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/cmd.c,v 1.7 2010/01/03 17:54:07 tg Exp $ */
+/* $MirOS: contrib/code/jupp/cmd.c,v 1.8 2012/12/20 21:15:30 tg Exp $ */
 /*
  *	Command execution
  *	Copyright
@@ -99,7 +99,7 @@ CMD cmds[] = {
 	{US "dnslide", TYPETW + TYPEPW + TYPEMENU + TYPEQW + EMOVE, udnslide, NULL, 1, US "upslide"},
 	{US "drop", TYPETW + TYPEPW, udrop, NULL, 0, NULL},
 	{US "dupw", TYPETW, uduptw, NULL, 0, NULL},
-	{US "edit", TYPETW + TYPEPW, uedit, NULL, 0, NULL},
+	{US "edit", TYPETW, uedit, NULL, 0, NULL},
 	{US "eof", TYPETW + TYPEPW + EFIXXCOL + EMOVE, u_goto_eof, NULL, 0, NULL},
 	{US "eofmenu", TYPEMENU, umeof, NULL, 0, NULL},
 	{US "eol", TYPETW + TYPEPW + EFIXXCOL, u_goto_eol, NULL, 0, NULL},
@@ -178,7 +178,7 @@ CMD cmds[] = {
 	{US "rtarw", TYPETW + TYPEPW /* + EFIXXCOL */, u_goto_right, NULL, 1, US "ltarw"}, /* EFIX removed for picture mode */
 	{US "rtarwmenu", TYPEMENU, umrtarw, NULL, 1, US "ltarwmenu"},
 	{US "rtn", TYPETW + TYPEPW + TYPEMENU + TYPEQW + EMOD, urtn, NULL, 1, NULL},
-	{US "save", TYPETW + TYPEPW, usave, NULL, 0, NULL},
+	{US "save", TYPETW, usave, NULL, 0, NULL},
 	{US "scratch", TYPETW + TYPEPW, uscratch, NULL, 0, NULL},
 	{US "select", TYPETW + TYPEPW, uselect, NULL, 0, NULL},
 	{US "setmark", TYPETW + TYPEPW, usetmark, NULL, 0, NULL},
