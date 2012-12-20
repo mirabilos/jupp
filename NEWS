@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.64 2012/12/20 20:11:53 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.65 2012/12/20 20:20:47 tg Exp $
 ------------------------------------------------------------------
 
 JOE 3.1jupp23
@@ -14,6 +14,7 @@ JOE 3.1jupp23
 - Securely make backup files using mkstemp(3), thanks Han Boetes
 - Print math results more precisely; if possible, as integer
 - Permit hexadecimal input in math expressions
+- Hook up GOTO “byte” offset command as ^QO in jupprc
 
 JOE 3.1jupp22
 
