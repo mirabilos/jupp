@@ -1,6 +1,10 @@
 /* Built-in files */
 
-/* grep -v $'^[\t ]'|while IFS= read -r x;do x=${x//\\/\\\\};print -r -- $'\t\t'\""${x//\"/\\\"}\n"\";done */
+/*
+	grep -v $'^[\t ]' | while IFS= read -r x; do
+		x=${x//\\/\\\\}; print -r -- $'\t\t'\""${x//\"/\\\"}\n"\";
+	done | perl -pi -e 's/[^\ca-~]/sprintf "\\x%02X", unpack("U", $&)/eg'
+ */
 
 #include "types.h"
 
@@ -148,16 +152,16 @@ const unsigned char * const builtins[]=
 		"\\i \\i         |                                              |                    \\i \\i\n"
 		"\\i \\i   0  00 | \\u@ABC\\u \\uDEFG\\u  \\uHIJK\\u \\uLMNO\\u    \\i\\u@ABC\\u\\i \\i\\uDEFG\\u\\i  \\i\\uHIJK\\u\\i \\i\\uLMNO\\u\\i | 80  128            \\i \\i\n"
 		"\\i \\i  16  10 | \\uPQRS\\u \\uTUVW\\u  \\uXYZ[\\u \\u\\\\]^_\\u    \\i\\uPQRS\\u\\i \\i\\uTUVW\\u\\i  \\i\\uXYZ[\\u\\i \\i\\u\\\\]^_\\u\\i | 90  144            \\i \\i\n"
-		"\\i \\i  32  20 |  !\"# $%&'  ()*+ ,-./     ¡¢£ ¤¥¦§  ¨©ª« ¬­®¯ | A0  160            \\i \\i\n"
-		"\\i \\i  48  30 | 0123 4567  89:; <=>?    °±²³ ´µ¶·  ¸¹º» ¼½¾¿ | B0  176            \\i \\i\n"
-		"\\i \\i  64  40 | @ABC DEFG  HIJK LMNO    ÀÁÂÃ ÄÅÆÇ  ÈÉÊË ÌÍÎÏ | C0  192            \\i \\i\n"
-		"\\i \\i  80  50 | PQRS TUVW  XYZ[ \\\\]^_    ÐÑÒÓ ÔÕÖ×  ØÙÚÛ ÜÝÞß | D0  208            \\i \\i\n"
-		"\\i \\i  96  60 | `abc defg  hijk lmno    àáâã äåæç  èéêë ìíîï | E0  224            \\i \\i\n"
-		"\\i \\i 112  70 | pqrs tuvw  xyz{ |}~    ðñòó ôõö÷  øùúû üýþÿ | F0  240            \\i \\i\n"
+		"\\i \\i  32  20 |  !\"# $%&'  ()*+ ,-./    \xA0\xA1\xA2\xA3 \xA4\xA5\xA6\xA7  \xA8\xA9\xAA\xAB \xAC\xAD\xAE\xAF | A0  160            \\i \\i\n"
+		"\\i \\i  48  30 | 0123 4567  89:; <=>?    \xB0\xB1\xB2\xB3 \xB4\xB5\xB6\xB7  \xB8\xB9\xBA\xBB \xBC\xBD\xBE\xBF | B0  176            \\i \\i\n"
+		"\\i \\i  64  40 | @ABC DEFG  HIJK LMNO    \xC0\xC1\xC2\xC3 \xC4\xC5\xC6\xC7  \xC8\xC9\xCA\xCB \xCC\xCD\xCE\xCF | C0  192            \\i \\i\n"
+		"\\i \\i  80  50 | PQRS TUVW  XYZ[ \\\\]^_    \xD0\xD1\xD2\xD3 \xD4\xD5\xD6\xD7  \xD8\xD9\xDA\xDB \xDC\xDD\xDE\xDF | D0  208            \\i \\i\n"
+		"\\i \\i  96  60 | `abc defg  hijk lmno    \xE0\xE1\xE2\xE3 \xE4\xE5\xE6\xE7  \xE8\xE9\xEA\xEB \xEC\xED\xEE\xEF | E0  224            \\i \\i\n"
+		"\\i \\i 112  70 | pqrs tuvw  xyz{ |}~\x7F    \xF0\xF1\xF2\xF3 \xF4\xF5\xF6\xF7  \xF8\xF9\xFA\xFB \xFC\xFD\xFE\xFF | F0  240            \\i \\i\n"
 		"}\n"
 		"\n"
 		":windows\n"
-		"type		^@ TO ÿ\n"
+		"type		^@ TO \xFF\n"
 		"abort		^K Q\n"
 		"abort		^K ^Q\n"
 		"abort		^K q\n"
@@ -216,10 +220,10 @@ const unsigned char * const builtins[]=
 		"backs		^H\n"
 		"backw		^[ o\n"
 		"bknd		^K '\n"
-		"bkwdc		^Q G ^@ TO ÿ\n"
-		"bkwdc		^Q ^G ^@ TO ÿ\n"
-		"bkwdc		^Q g ^@ TO ÿ\n"
-		"bkwdc		^[ q g ^@ TO ÿ\n"
+		"bkwdc		^Q G ^@ TO \xFF\n"
+		"bkwdc		^Q ^G ^@ TO \xFF\n"
+		"bkwdc		^Q g ^@ TO \xFF\n"
+		"bkwdc		^[ q g ^@ TO \xFF\n"
 		"blkcpy		^K C\n"
 		"blkcpy		^K ^C\n"
 		"blkcpy		^K c\n"
@@ -312,10 +316,10 @@ const unsigned char * const builtins[]=
 		"fnext		^L\n"
 		"fnext		^[ [ 1 3 ~\n"
 		"format		^B\n"
-		"fwrdc		^Q H ^@ TO ÿ\n"
-		"fwrdc		^Q ^H ^@ TO ÿ\n"
-		"fwrdc		^Q h ^@ TO ÿ\n"
-		"fwrdc		^[ q h ^@ TO ÿ\n"
+		"fwrdc		^Q H ^@ TO \xFF\n"
+		"fwrdc		^Q ^H ^@ TO \xFF\n"
+		"fwrdc		^Q h ^@ TO \xFF\n"
+		"fwrdc		^[ q h ^@ TO \xFF\n"
 		"gomark		^Q 0 TO 9\n"
 		"gomark		^[ q 0 TO 9\n"
 		"groww		^K G\n"
@@ -493,10 +497,10 @@ const unsigned char * const builtins[]=
 		":inherit windows\n"
 		"\n"
 		":querya\n"
-		"type		^@ TO ÿ\n"
+		"type		^@ TO \xFF\n"
 		"\n"
 		":querysr\n"
-		"type		^@ TO ÿ\n"
+		"type		^@ TO \xFF\n"
 ,	NULL
-,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.11 2012/12/20 23:05:48 tg Exp $"
+,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.12 2012/12/21 22:18:13 tg Exp $"
 };
