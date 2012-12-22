@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/bw.c,v 1.16 2012/07/18 16:46:03 tg Exp $ */
+/* $MirOS: contrib/code/jupp/bw.c,v 1.17 2012/12/22 00:06:11 tg Exp $ */
 /*
  *	Edit buffer window generation
  *	Copyright
@@ -52,7 +52,7 @@ static P *getto(P *p, P *cur, P *top, long int line)
 		}
 		d = (line >= top->line ? line - top->line : top->line - line);
 		if (d < dist) {
-			dist = d;
+			/* dead store: dist = d; */
 			best = top;
 		}
 		p = pdup(best);
@@ -148,11 +148,9 @@ static void bwfllwt(BW *w)
 		pset(w->top, newtop);
 		prm(newtop);
 	} else if (w->cursor->line >= w->top->line + w->h) {
-		newtop = pdup(w->top);
-		if (mid)
-			newtop = getto(NULL, w->cursor, w->top, w->cursor->line - w->h / 2);
-		else
-			newtop = getto(NULL, w->cursor, w->top, w->cursor->line - (w->h - 1));
+		pdup(w->top);
+		newtop = getto(NULL, w->cursor, w->top, w->cursor->line -
+		    (mid ? (w->h / 2) : (w->h - 1)));
 		if (newtop->line - w->top->line < w->h)
 			nscrlup(w->t->t, w->y, w->y + w->h, (int) (newtop->line - w->top->line));
 		else {

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/w.c,v 1.2 2008/05/13 13:08:32 tg Exp $ */
+/* $MirOS: contrib/code/jupp/w.c,v 1.3 2012/12/22 00:06:16 tg Exp $ */
 /*
  *	Window system
  *	Copyright
@@ -301,6 +301,9 @@ void wfit(SCREEN *t)
 		} while (w != t->topwin && w->main == w->link.prev->main);
 	} while (w != t->topwin && left >= FITHEIGHT);
 
+	if (!pw)
+		return;
+
 	/* We can't use extra space to fit a new family on, so give space to parent of
 	 * previous family */
 	pw->nh += left;
@@ -489,7 +492,7 @@ void wshowall(SCREEN *t)
 	} while (w != t->topwin);
 
 	/* Compute size to set each window */
-	if ((set = (t->h - t->wind) / n) < FITHEIGHT)
+	if ((set = (t->h - t->wind) / (n ? n : 1)) < FITHEIGHT)
 		set = FITHEIGHT;
 
 	/* Set size of each variable size window */

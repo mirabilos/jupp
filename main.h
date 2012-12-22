@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/main.h,v 1.2 2008/05/13 13:08:23 tg Exp $ */
+/* $MirOS: contrib/code/jupp/main.h,v 1.3 2012/12/22 00:06:12 tg Exp $ */
 /*
  *	Editor startup and edit loop
  *	Copyright
@@ -11,6 +11,8 @@
 
 #include "config.h"
 #include "types.h"
+
+extern const char null[];
 
 extern unsigned char *exmsg;	/* Exit message */
 extern int help;		/* Set to start with help on */

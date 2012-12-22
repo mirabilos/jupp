@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/menu.c,v 1.4 2009/10/18 14:52:56 tg Exp $ */
+/* $MirOS: contrib/code/jupp/menu.c,v 1.5 2012/12/22 00:06:13 tg Exp $ */
 /*
  *	Menu selection window
  *	Copyright
@@ -80,12 +80,10 @@ static void menudisp(MENU *m)
 		s += m->t->t->co;
 		a += m->t->t->co;
 	}
-	m->parent->cury = (m->cursor - m->top) / m->perline;
+	m->parent->cury = (m->cursor - m->top) / (m->perline ? m->perline : 1);
 	col = txtwidth(m->list[m->cursor],strlen((char *)m->list[m->cursor]));
-	if (col < m->width)
-		m->parent->curx = ((m->cursor - m->top) % m->perline) * (m->width + 1) + col;
-	else
-		m->parent->curx = ((m->cursor - m->top) % m->perline) * (m->width + 1) + m->width;
+	m->parent->curx = ((m->cursor - m->top) % (m->perline ? m->perline : 1)) *
+	    (m->width + 1) + (col < m->width ? col : m->width);
 }
 
 static void menumove(MENU *m, int x, int y)

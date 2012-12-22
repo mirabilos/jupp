@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/macro.c,v 1.6 2010/04/08 15:31:01 tg Exp $ */
+/* $MirOS: contrib/code/jupp/macro.c,v 1.7 2012/12/22 00:06:11 tg Exp $ */
 /*
  *	Keyboard macros
  *	Copyright
@@ -386,6 +386,7 @@ static int argset = 0;		/* Set if 'arg' is set */
 int exmacro(MACRO *m, int u)
 {
 	int larg;
+	/*XXX why is this local here and global below? */
 	int negarg = 0;
 	int flg = 0;
 	CMD *cmd = NULL;
@@ -399,9 +400,9 @@ int exmacro(MACRO *m, int u)
 			negarg = 1;
 			larg = -larg;
 		}
-		if (m->steps)
-			negarg = 0;
-		else {
+		if (m->steps) {
+			; /* dead store: negarg = 0; */
+		} else {
 			cmd = m->cmd;
 			if (!cmd->arg)
 				larg = 0;

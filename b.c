@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/b.c,v 1.10 2012/06/07 22:16:08 tg Exp $ */
+/* $MirOS: contrib/code/jupp/b.c,v 1.11 2012/12/22 00:06:09 tg Exp $ */
 /*
  *	Editor engine
  *	Copyright
@@ -1810,6 +1810,11 @@ static H *bldchn(unsigned char *blk, int size, long *nlines)
 	} while (size);
 	l = anchor.link.next;
 	deque(H, link, &anchor);
+#ifdef CLANG_SCAN_BUILD
+	/* this can only be fixed properly by using ({ … }) in queue.h */
+	ITEM = NULL;
+	QUEUE = NULL;
+#endif
 	return l;
 }
 

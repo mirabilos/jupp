@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/regex.c,v 1.4 2010/04/08 15:31:03 tg Exp $ */
+/* $MirOS: contrib/code/jupp/regex.c,v 1.5 2012/12/22 00:06:13 tg Exp $ */
 /*
  *	Regular expression subroutines
  *	Copyright
@@ -227,7 +227,7 @@ static int skip_special(P *p)
 		break;
 	case '\'':
 		if ((s = pgetc(p)) == '\\') {
-			s = pgetc(p);
+			pgetc(p);
 			s = pgetc(p);
 		}
 		if (s == '\'')

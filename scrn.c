@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.c,v 1.8 2011/10/04 20:05:29 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.c,v 1.9 2012/12/22 00:06:13 tg Exp $ */
 /*
  *	Device independant TTY interface for JOE
  *	Copyright
@@ -1023,7 +1023,7 @@ static void cposs(register SCRN *t, register int x, register int y)
 	if (t->cho + t->ccv < bestcost) {
 		cost = tcost(t->cap, t->ho, 1, 0, 0, 0, 0) + tcost(t->cap, t->cv, 1, y, 0, 0, 0) + relcost(t, x, y, 0, y);
 		if (cost < bestcost) {
-			bestcost = cost;
+			/* dead store: bestcost = cost; */
 			bestway = 12;
 		}
 	}

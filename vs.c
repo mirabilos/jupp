@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/vs.c,v 1.4 2012/06/08 16:55:29 tg Exp $ */
+/* $MirOS: contrib/code/jupp/vs.c,v 1.5 2012/12/22 00:06:16 tg Exp $ */
 /*
  *	Variable length strings
  *	Copyright
@@ -98,6 +98,7 @@ sELEMENT *vsncpy(sELEMENT *vary, int pos, const sELEMENT *array, int len)
 
 	if (!vary || pos + len > sSIZ(vary))
 		vary = vsensure(vary, pos + len);
+	mkssert(vary != NULL);
 	if (pos + len > olen) {
 		vary[pos + len] = vary[olen];
 		sLen(vary) = pos + len;
@@ -221,6 +222,10 @@ int vsscan(sELEMENT *a, int alen, sELEMENT *b, int blen)
 int vsspan(sELEMENT *a, int alen, sELEMENT *b, int blen)
 {
 	int x;
+
+	/* should not happen */
+	if (!b)
+		return (0);
 
 	for (x = 0; x != alen; ++x) {
 		int z = vsbsearch(b, blen, a[x]);

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/types.h,v 1.8 2012/06/08 16:55:28 tg Exp $ */
+/* $MirOS: contrib/code/jupp/types.h,v 1.9 2012/12/22 00:06:14 tg Exp $ */
 
 #ifndef _JOE_TYPES_H
 #define _JOE_TYPES_H
@@ -10,6 +10,12 @@
 
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>				/* we need pid_t */
+#endif
+
+#if defined(DEBUG) || defined(__COVERITY__)
+#define mkssert(e)	((e) ? (void)0 : exit(255))
+#else
+#define mkssert(e)	((void)0)
 #endif
 
 #define LINK(type) struct { type *next; type *prev; }

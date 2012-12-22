@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/main.c,v 1.17 2012/06/07 23:38:17 tg Exp $ */
+/* $MirOS: contrib/code/jupp/main.c,v 1.18 2012/12/22 00:06:12 tg Exp $ */
 
 #define JUPP_IS_COPYRIGHT_C_BY "2012 mirabilos"
 
@@ -66,6 +66,8 @@ int orphan = 0;
 unsigned char *exmsg = NULL;		/* Message to display when exiting the editor */
 
 SCREEN *maint;			/* Main edit screen */
+
+const char null[] = "";
 
 /* Make windows follow cursor */
 

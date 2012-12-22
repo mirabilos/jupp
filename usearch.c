@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/usearch.c,v 1.5 2010/04/08 15:31:06 tg Exp $ */
+/* $MirOS: contrib/code/jupp/usearch.c,v 1.6 2012/12/22 00:06:15 tg Exp $ */
 /*
  *	Search & Replace system
  *	Copyright
@@ -99,7 +99,7 @@ unsigned char **get_word_list(B *b,int ignore)
 
 void fcmplt_ins(BW *bw, unsigned char *line)
 {
-	P *p = pdup(bw->cursor);
+	P *p;
 	int c;
 
 	if (!piseol(bw->cursor)) {

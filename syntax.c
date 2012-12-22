@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/syntax.c,v 1.8 2012/07/18 17:02:56 tg Exp $ */
+/* $MirOS: contrib/code/jupp/syntax.c,v 1.9 2012/12/22 00:06:14 tg Exp $ */
 /*
  *	Syntax highlighting DFA interpreter
  *	Copyright
@@ -218,11 +218,13 @@ struct high_syntax *load_dfa(unsigned char *name)
 	syntax->default_cmd.new_state = 0;
 	syntax->default_cmd.keywords = 0;
 
+	memset(clist, 0, sizeof(clist));
+
 	/* Parse file */
 	while(fgets((char *)buf,1023,f)) {
 		++line;
 		p = buf;
-		c = parse_ws(&p,'#');
+		parse_ws(&p,'#');
 		if(!parse_char(&p, ':')) {
 			if(!parse_ident(&p, bf, 255)) {
 
@@ -327,7 +329,7 @@ struct high_syntax *load_dfa(unsigned char *name)
 								while(fgets((char *)buf,1023,f)) {
 									++line;
 									p = buf;
-									c = parse_ws(&p,'#');
+									parse_ws(&p,'#');
 									if (*p) {
 										if(!parse_field(&p,US "done"))
 											break;
