@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ushell.c,v 1.3 2008/05/13 13:08:29 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ushell.c,v 1.4 2012/12/30 18:18:07 tg Exp $ */
 /*
  *	Shell-window functions
  *	Copyright
@@ -12,6 +12,9 @@
 #include <unistd.h>
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
+#endif
+#ifdef HAVE_SYS_STAT_H
+#include <sys/stat.h>
 #endif
 #ifdef HAVE_SIGNAL_H
 #include <signal.h>
@@ -30,6 +33,7 @@
 #include "ufile.h"
 #include "va.h"
 #include "vs.h"
+#include "ushell.h"
 #include "utf8.h"
 #include "w.h"
 
@@ -104,7 +108,7 @@ static void cdata(B *b, unsigned char *dat, int siz)
 	cfollow(b,byte);
 }
 
-static int cstart(BW *bw, unsigned char *name, unsigned char **s, void *obj, int *notify, int build)
+static int doushell(BW *bw, unsigned char *cmd, int *notify, int build)
 {
 #ifdef __MSDOS__
 	if (notify) {
@@ -115,6 +119,22 @@ static int cstart(BW *bw, unsigned char *name, unsigned char **s, void *obj, int
 	return -1;
 #else
 	MPX *m;
+	unsigned char **s;
+	unsigned char *u;
+	const unsigned char *name;
+
+	name = getushell();
+	s = vamk(10);
+	u = vsncpy(NULL, 0, sz(name));
+	s = vaadd(s, u);
+	if (cmd) {
+		u = vsncpy(NULL, 0, sc("-c"));
+		s = vaadd(s, u);
+		s = vaadd(s, cmd);
+	} else {
+		u = vsncpy(NULL, 0, sc("-i"));
+		s = vaadd(s, u);
+	}
 
 	if (notify) {
 		*notify = 1;
@@ -139,35 +159,17 @@ static int cstart(BW *bw, unsigned char *name, unsigned char **s, void *obj, int
 
 int ubknd(BW *bw)
 {
-	unsigned char **a;
-	unsigned char *s;
-        unsigned char *sh=(unsigned char *)getenv("SHELL");
-        if (!sh) {
+	if (!getenv("SHELL")) {
         	msgnw(bw->parent, US "\"SHELL\" environment variable not defined or exported");
-        	/* return -1; */
-        	sh = US "/bin/sh";
         }
-
-	a = vamk(3);
-	s = vsncpy(NULL, 0, sz(sh));
-	a = vaadd(a, s);
-	s = vsncpy(NULL, 0, sc("-i"));
-	a = vaadd(a, s);
-	return cstart(bw, sh, a, NULL, NULL, 0);
+	return doushell(bw, NULL, NULL, 0);
 }
 
 /* Run a program in a window */
 
 static int dorun(BW *bw, unsigned char *s, void *object, int *notify)
 {
-	unsigned char **a = vamk(10);
-	unsigned char *cmd = vsncpy(NULL, 0, sc("/bin/sh"));
-
-	a = vaadd(a, cmd);
-	cmd = vsncpy(NULL, 0, sc("-c"));
-	a = vaadd(a, cmd);
-	a = vaadd(a, s);
-	return cstart(bw, US "/bin/sh", a, NULL, notify, 0);
+	return doushell(bw, s, notify, 0);
 }
 
 B *runhist = NULL;
@@ -183,14 +185,7 @@ int urun(BW *bw)
 
 static int dobuild(BW *bw, unsigned char *s, void *object, int *notify)
 {
-	unsigned char **a = vamk(10);
-	unsigned char *cmd = vsncpy(NULL, 0, sc("/bin/sh"));
-
-	a = vaadd(a, cmd);
-	cmd = vsncpy(NULL, 0, sc("-c"));
-	a = vaadd(a, cmd);
-	a = vaadd(a, s);
-	return cstart(bw, US "/bin/sh", a, NULL, notify, 1);
+	return doushell(bw, s, notify, 1);
 }
 
 B *buildhist = NULL;
@@ -238,4 +233,33 @@ int ukillpid(BW *bw)
 	} else {
 		return 0;
 	}
+}
+
+static const char * const getushell_envs[] = {
+	"SHELL",
+	"EXECSHELL",
+};
+const void *getushell(void)
+{
+	static char *rshell;
+
+	if (!rshell) {
+		char *eshell;
+		struct stat sbuf;
+		int i = 0;
+
+		while (i < 2) {
+			eshell = getenv(getushell_envs[i++]);
+			if (eshell && *eshell &&
+			    !stat(eshell, &sbuf) &&
+			    S_ISREG(sbuf.st_mode) &&
+			    (sbuf.st_mode & 0111) &&
+			    /* LINTED use of access */
+			    !access(eshell, X_OK)) {
+				rshell = eshell;
+				break;
+			}
+		}
+	}
+	return (rshell ? rshell : "/bin/sh");
 }

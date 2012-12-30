@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.c,v 1.17 2012/06/08 16:55:28 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.c,v 1.18 2012/12/30 18:18:06 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright
@@ -108,6 +108,7 @@ int idleout = 1;
 #include "scrn.h"
 #include "tty.h"
 #include "utils.h"
+#include "ushell.h"
 
 /** Aliased defines **/
 
@@ -709,12 +710,9 @@ void ttgtsz(int *x, int *y)
 void ttshell(unsigned char *cmd)
 {
 	int x, omode = ttymode;
-	unsigned char *s = (unsigned char *)getenv("SHELL");
+	const char *sh;
 
-	if (!s) {
-		s = US "/bin/sh";
-		/* return; */
-	}
+	sh = getushell();
 	ttclsn();
 	if ((x = fork()) != 0) {
 		if (x != -1)
@@ -724,10 +722,10 @@ void ttshell(unsigned char *cmd)
 	} else {
 		signrm();
 		if (cmd)
-			execl((char *)s, (char *)s, "-c", cmd, NULL);
+			execl(sh, sh, "-c", cmd, NULL);
 		else {
 			fprintf(stderr, "You are at the command shell.  Type 'exit' to return\n");
-			execl((char *)s, (char *)s, NULL);
+			execl(sh, sh, NULL);
 		}
 		_exit(0);
 	}
@@ -1008,7 +1006,7 @@ static unsigned char **newenv(unsigned char **old, unsigned char *s)
 
 /* Create a shell process */
 
-MPX *mpxmk(int *ptyfd, unsigned char *cmd, unsigned char **args, void (*func) (/* ??? */), void *object, void (*die) (/* ??? */), void *dieobj)
+MPX *mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args, void (*func) (/* ??? */), void *object, void (*die) (/* ??? */), void *dieobj)
 {
 	unsigned char buf[80];
 	int fds[2];
@@ -1160,7 +1158,7 @@ MPX *mpxmk(int *ptyfd, unsigned char *cmd, unsigned char **args, void (*func) (/
 #endif
 
 				/* Execute the shell */
-				execve((char *)cmd, (char **)args, (char **)env);
+				execve((const char *)cmd, (char **)args, (char **)env);
 
 				/* If shell didn't execute */
 				joe_snprintf_1((char *)buf,sizeof(buf),"Couldn't execute shell '%s'\n",cmd);

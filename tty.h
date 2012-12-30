@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.h,v 1.4 2010/04/08 15:31:04 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.h,v 1.5 2012/12/30 18:18:07 tg Exp $ */
 /*
  *	TTY interface header file
  *	Copyright
@@ -183,7 +183,7 @@ void signrm PARAMS((void));
  *   Function to call when process dies in 'die'
  *   The first arg passed to func and die is object and dieobj
  */
-MPX *mpxmk PARAMS((int *ptyfd, unsigned char *cmd, unsigned char **args, void (*func) (/* ??? */), void *object, void (*die) (/* ??? */), void *dieobj));
+MPX *mpxmk PARAMS((int *ptyfd, const unsigned char *cmd, unsigned char **args, void (*func) (/* ??? */), void *object, void (*die) (/* ??? */), void *dieobj));
 
 /* int subshell(int *ptyfd);
  * Execute a subshell.  Returns 'pid' of shell or zero if there was a

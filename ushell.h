@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ushell.h,v 1.2 2008/05/13 13:08:30 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ushell.h,v 1.3 2012/12/30 18:18:07 tg Exp $ */
 /*
  * 	Shell-window functions
  *	Copyright (C) 1992 Joseph H. Allen
@@ -15,5 +15,7 @@ int ubknd PARAMS((BW *bw));
 int ukillpid PARAMS((BW *bw));
 int urun PARAMS((BW *bw));
 int ubuild PARAMS((BW *bw));
+
+const void *getushell PARAMS((void));
 
 #endif

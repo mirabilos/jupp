@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ublock.c,v 1.6 2011/07/16 21:57:58 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ublock.c,v 1.7 2012/12/30 18:18:07 tg Exp $ */
 /*
  * 	Highlighted block functions
  *	Copyright
@@ -29,6 +29,7 @@
 #include "uedit.h"
 #include "utils.h"
 #include "vs.h"
+#include "ushell.h"
 #include "utf8.h"
 #include "charmap.h"
 #include "w.h"
@@ -959,6 +960,7 @@ static int dofilt(BW *bw, unsigned char *s, void *object, int *notify)
 	npartial(bw->parent->t->t);
 	ttclsn();
 	if (!fork()) {
+		const char *sh;
 #ifdef HAVE_PUTENV
 		unsigned char		*fname, *name;
 		unsigned	len;
@@ -984,7 +986,8 @@ static int dofilt(BW *bw, unsigned char *s, void *object, int *notify)
 		putenv((char *)fname);
 		vsrm(fname);
 #endif
-		execl("/bin/sh", "/bin/sh", "-c", s, NULL);
+		sh = getushell();
+		execl(sh, sh, "-c", s, NULL);
 		_exit(0);
 	}
 	close(fr[1]);
