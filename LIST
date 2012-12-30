@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/LIST,v 1.5 2012/12/30 17:12:36 tg Exp $
+$MirOS: contrib/code/jupp/LIST,v 1.6 2012/12/30 19:27:12 tg Exp $
 -----------------------------------------------------------------
 
 Joe commands grouped by function
@@ -141,6 +141,7 @@ rindent		Indent to the right
 Help
 ----
 help		Turn help on or off
+helpcard	Turn help on at selected screen
 hnext		Switch to next help screen
 hprev		Switch to previous help screen
 

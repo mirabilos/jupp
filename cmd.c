@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/cmd.c,v 1.9 2012/12/30 17:12:36 tg Exp $ */
+/* $MirOS: contrib/code/jupp/cmd.c,v 1.10 2012/12/30 19:27:12 tg Exp $ */
 /*
  *	Command execution
  *	Copyright
@@ -121,6 +121,7 @@ CMD cmds[] = {
 	{US "killjoe", TYPETW + TYPEPW + TYPEMENU + TYPEQW, ukilljoe, NULL, 0, NULL},
 	{US "killproc", TYPETW + TYPEPW, ukillpid, NULL, 0, NULL},
 	{US "help", TYPETW + TYPEPW + TYPEQW, u_help, NULL, 0, NULL},
+	{US "helpcard", TYPETW + TYPEPW + TYPEQW, u_helpcard, NULL, 0, NULL},
 	{US "home", TYPETW + TYPEPW + EFIXXCOL, uhome, NULL, 0, NULL},
 	{US "hnext", TYPETW + TYPEPW + TYPEQW, u_help_next, NULL, 0, NULL},
 	{US "hprev", TYPETW + TYPEPW + TYPEQW, u_help_prev, NULL, 0, NULL},
@@ -392,4 +393,35 @@ int uexecmd(BW *bw)
 	} else {
 		return -1;
 	}
+}
+
+/*
+ * Show help screen at a specific card
+ */
+static int do_helpcard(BASE *base, unsigned char *s, void *object, int *notify)
+{
+	struct help *new_help;
+
+	if (notify)
+		*notify = 1;
+	if (!s || !*s) {
+		while (help_actual->prev != NULL)
+			/* find the first help entry */
+			help_actual = help_actual->prev;
+		help_off(base->parent->t);
+		return (0);
+	}
+	if ((new_help = find_context_help(s)) != NULL) {
+		help_actual = new_help;
+		return (help_on(base->parent->t));
+	}
+	return (-1);
+}
+int u_helpcard(BASE *base)
+{
+	if (wmkpw(base->parent, US "Name of help card to show: ", NULL,
+	    do_helpcard, NULL, NULL, utypebw, NULL, NULL, locale_map)) {
+		return (0);
+	}
+	return (-1);
 }

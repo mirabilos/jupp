@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/help.c,v 1.6 2011/07/16 21:57:57 tg Exp $ */
+/* $MirOS: contrib/code/jupp/help.c,v 1.7 2012/12/30 19:27:13 tg Exp $ */
 /*
  *	Help system
  *	Copyright
@@ -133,7 +133,7 @@ int help_init(unsigned char *filename)
  * Find context help - find help entry with the same name
  */
 
-struct help *find_context_help(unsigned char *name)
+struct help *find_context_help(const unsigned char *name)
 {
 	struct help *tmp = help_actual;
 
@@ -306,7 +306,7 @@ int help_on(SCREEN *t)
 /*
  * Hide help screen
  */
-static void help_off(SCREEN *t)
+void help_off(SCREEN *t)
 {
 	t->wind = skiptop;
 	wfit(t);
