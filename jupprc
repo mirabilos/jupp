@@ -437,11 +437,12 @@
 
 {Programs
 \i   Help Screen    turn off with ^J     prev. screen ^[,    next screen ^[.     \i
-\i \i\u\bGOTO\b\u                  \u\bCOMPILING\b\u                     \u\bINDENT\b\u       \u\bSLIDING\b\u     \i \i
-\i \i^Q- to column number  ^[C Compile & parse errors    ^K. more     ^W up       \i \i
-\i \i^QI to line number    ^[E Parse errors              ^K, less     ^Z down     \i \i
-\i \i^QP previous place    ^[N goto previous error       ^KA center   \u\bSPECIAL\b\u     \i \i
-\i \i^K= next place        ^[M next error     ^Q[ matching brace      ^[- jexecmd \i \i
+\i \i\u\bGOTO\b\u                  \u\bCOMPILING\b\u                    \u\bINDENT\b\u       \u\bSLIDING\b\u      \i \i
+\i \i^Q- to column number  ^[C Compile & parse errors   ^K. more     ^W up        \i \i
+\i \i^QI to line number    ^[E Parse errors             ^K, less     ^Z down      \i \i
+\i \i^QP previous place    \u\bGOTO AFTER COMPILING\b\u         ^KA center   \u\bINSERT MATH\b\u  \i \i
+\i \i^K= next place        ^[N previous error    \u\bSPECIAL\b\u             ^[# equation \i \i
+\i \i^Q[ matching brace    ^[M next error        ^[- exec. juppcmd   ^[= result   \i \i
 }
 
 {Search
@@ -475,7 +476,7 @@
 \i \i go to \uhttp://sf.net/projects/joe-editor/\u for upstream bug reports. JUPP 2.8 \i \i
 \i \i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\d(R)\d \i \i
 \i \i at \uhttp://mirbsd.de/jupp\u and by \bThorsten "\dmirabilos\d" Glaser <\utg@mirbsd.org\u>\b \i \i
-\i \i @(#) jupprc 2012-12-20; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
+\i \i @(#) jupprc 2012-12-30; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
 }
 
 {CharTable
@@ -512,6 +513,8 @@ math		^Q M
 math		^Q ^M
 math		^Q m
 math		^[ q m
+mathins		^[ #
+mathres		^[ =
 msg		^[ H
 msg		^[ h
 nextw		^K N

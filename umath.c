@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/umath.c,v 1.5 2012/12/30 17:10:58 tg Exp $ */
+/* $MirOS: contrib/code/jupp/umath.c,v 1.6 2012/12/30 17:12:37 tg Exp $ */
 /*
  *	Math
  *	Copyright
@@ -10,6 +10,9 @@
 #include "types.h"
 
 #include <stdio.h>
+#ifdef HAVE_STDLIB_H
+#include <stdlib.h>
+#endif
 #include <string.h>
 
 #include "b.h"
@@ -21,6 +24,9 @@
 #include "w.h"
 
 const unsigned char * volatile merr;
+
+static char math_res[JOE_MSGBUFSIZE];
+static char *math_exp;
 
 static RETSIGTYPE fperr(int unused)
 {
@@ -140,11 +146,24 @@ static double expr(int prec, struct var **rtv)
 	return x;
 }
 
+#if defined(SIZEOF_LONG_LONG) && (SIZEOF_LONG_LONG > 0)
+typedef long long joe_imaxt;
+#define JOE_IMAXT "ll"
+#else
+typedef long joe_imaxt;
+#define JOE_IMAXT "l"
+#endif
+
 double calc(BW *bw, unsigned char *s)
 {
 	double result;
 	struct var *v;
 	BW *tbw = bw->parent->main->object;
+
+	if (math_exp) {
+		free(math_exp);
+	}
+	math_exp = strdup((void *)s);
 
 	v = get(US "top");
 	v->val = tbw->top->line + 1;
@@ -187,22 +206,31 @@ double calc(BW *bw, unsigned char *s)
 			merr = US "Extra junk after end of expr";
 		}
 	}
+
+	if (merr) {
+		joe_snprintf_1(math_res, JOE_MSGBUFSIZE,
+		    "math_error{%s}", merr);
+	} else {
+		joe_imaxt ires = (joe_imaxt)result;
+
+		if ((double)ires == result) {
+			/* representable as integer value */
+			joe_snprintf_1(math_res, JOE_MSGBUFSIZE,
+			    "%" JOE_IMAXT "d", ires);
+		} else {
+			/* use float with large precision */
+			joe_snprintf_1(math_res, JOE_MSGBUFSIZE,
+			    "%.60G", result);
+		}
+	}
+
 	return result;
 }
-
-#if defined(SIZEOF_LONG_LONG) && (SIZEOF_LONG_LONG > 0)
-typedef long long joe_imaxt;
-#define JOE_IMAXT "ll"
-#else
-typedef long joe_imaxt;
-#define JOE_IMAXT "l"
-#endif
 
 /* Main user interface */
 static int domath(BW *bw, unsigned char *s, void *object, int *notify)
 {
-	double result = calc(bw, s);
-	joe_imaxt ires;
+	calc(bw, s);
 
 	if (notify) {
 		*notify = 1;
@@ -212,16 +240,7 @@ static int domath(BW *bw, unsigned char *s, void *object, int *notify)
 		return -1;
 	}
 	vsrm(s);
-	ires = (joe_imaxt)result;
-	if ((double)ires == result) {
-		/* representable as integer value */
-		joe_snprintf_1((char *)msgbuf, JOE_MSGBUFSIZE,
-		    "%" JOE_IMAXT "d", ires);
-	} else {
-		/* use float with large precision */
-		joe_snprintf_1((char *)msgbuf, JOE_MSGBUFSIZE,
-		    "%.60G", result);
-	}
+	memcpy(msgbuf, math_res, JOE_MSGBUFSIZE);
 	if (bw->parent->watom->what != TYPETW) {
 		binsm(bw->cursor, sz(msgbuf));
 		pfwrd(bw->cursor, strlen((char *)msgbuf));
@@ -242,4 +261,18 @@ int umath(BW *bw)
 	} else {
 		return -1;
 	}
+}
+
+int umathins(BW *bw)
+{
+	if (math_exp) {
+		binss(bw->cursor, (void *)math_exp);
+	}
+	return 0;
+}
+
+int umathres(BW *bw)
+{
+	binss(bw->cursor, (void *)math_res);
+	return 0;
 }

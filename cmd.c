@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/cmd.c,v 1.8 2012/12/20 21:15:30 tg Exp $ */
+/* $MirOS: contrib/code/jupp/cmd.c,v 1.9 2012/12/30 17:12:36 tg Exp $ */
 /*
  *	Command execution
  *	Copyright
@@ -137,6 +137,8 @@ CMD cmds[] = {
 	{US "markk", TYPETW + TYPEPW, umarkk, NULL, 0, NULL},
 	{US "markl", TYPETW + TYPEPW, umarkl, NULL, 0, NULL},
 	{US "math", TYPETW + TYPEPW, umath, NULL, 0, NULL},
+	{US "mathins", TYPETW + TYPEPW, umathins, NULL, 0, NULL},
+	{US "mathres", TYPETW + TYPEPW, umathres, NULL, 0, NULL},
 	{US "mode", TYPETW + TYPEPW + TYPEQW, umode, NULL, 0, NULL},
 	{US "msg", TYPETW + TYPEPW + TYPEQW + TYPEMENU, umsg, NULL, 0, NULL},
 	{US "nbuf", TYPETW, unbuf, NULL, 1, US "pbuf"},
