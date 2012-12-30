@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/cmd.c,v 1.10 2012/12/30 19:27:12 tg Exp $ */
+/* $MirOS: contrib/code/jupp/cmd.c,v 1.11 2012/12/30 21:45:13 tg Exp $ */
 /*
  *	Command execution
  *	Copyright
@@ -9,6 +9,9 @@
 #include "config.h"
 #include "types.h"
 
+#ifdef HAVE_STDLIB_H
+#include <stdlib.h>
+#endif
 #include <string.h>
 
 #include "b.h"
@@ -16,6 +19,7 @@
 #include "cmd.h"
 #include "hash.h"
 #include "help.h"
+#include "kbd.h"
 #include "macro.h"
 #include "main.h"
 #include "menu.h"
@@ -53,6 +57,34 @@ int ubeep(BW *bw, int k)
 {
 	ttputc(7);
 	return 0;
+}
+
+extern char main_context[];
+static int do_keymap(BW *bw, unsigned char *s, void *object, int *notify)
+{
+	KMAP *new_kmap;
+
+	if (notify)
+		*notify = 1;
+	if (!s || !*s || !(new_kmap = kmap_getcontext(s, 0)))
+		return (-1);
+	if (bw->o.context != (unsigned char *)main_context)
+		free(bw->o.context);
+	bw->o.context = strcmp((char *)s, main_context) ?
+	    (unsigned char *)strdup((char *)s) : (unsigned char *)main_context;
+	rmkbd(bw->parent->kbd);
+	bw->parent->kbd = mkkbd(new_kmap);
+	joe_snprintf_1((char *)msgbuf, JOE_MSGBUFSIZE, "New keymap: %s", s);
+	msgnw(bw->parent, msgbuf);
+	return (0);
+}
+static int ukeymap(BW *bw)
+{
+	if (wmkpw(bw->parent, US "Name of keymap to switch to: ", NULL,
+	    do_keymap, NULL, NULL, utypebw, NULL, NULL, locale_map)) {
+		return (0);
+	}
+	return (-1);
 }
 
 CMD cmds[] = {
@@ -127,6 +159,7 @@ CMD cmds[] = {
 	{US "hprev", TYPETW + TYPEPW + TYPEQW, u_help_prev, NULL, 0, NULL},
 	{US "insc", TYPETW + TYPEPW + EFIXXCOL + EMOD, uinsc, NULL, 1, US "delch"},
 	{US "insf", TYPETW + TYPEPW + EMOD, uinsf, NULL, 0, NULL}, 
+	{US "keymap", TYPETW, ukeymap, NULL, 0, NULL},
 	{US "lindent", TYPETW + TYPEPW + EFIXXCOL + EMOD + EBLOCK, ulindent, NULL, 1, US "rindent"},
 	{US "line", TYPETW + TYPEPW, uline, NULL, 0, NULL},
 	{US "lose", TYPETW + TYPEPW, ulose, NULL, 0, NULL}, 

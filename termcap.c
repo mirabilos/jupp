@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/termcap.c,v 1.7 2012/12/22 00:06:14 tg Exp $ */
+/* $MirOS: contrib/code/jupp/termcap.c,v 1.8 2012/12/30 21:45:17 tg Exp $ */
 /*
  *	TERMCAP/TERMINFO database interface
  *	Copyright
@@ -164,6 +164,13 @@ CAP *getcap(unsigned char *name, unsigned int baud, void (*out) (unsigned char *
 	cap->tbuf = vsmk(4096);
 	cap->abuf = NULL;
 	cap->sort = NULL;
+	cap->paste_on = NULL;
+	cap->paste_off = NULL;
+
+	if (!strcmp(name, "xterm-xfree86")) {
+		cap->paste_on = "\033[?2004h";
+		cap->paste_off = "\033[?2004l";
+	}
 
 #ifdef TERMINFO
 	cap->abuf = (unsigned char *) joe_malloc(4096);

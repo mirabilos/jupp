@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/main.c,v 1.18 2012/12/22 00:06:12 tg Exp $ */
+/* $MirOS: contrib/code/jupp/main.c,v 1.19 2012/12/30 21:45:16 tg Exp $ */
 
 #define JUPP_IS_COPYRIGHT_C_BY "2012 mirabilos"
 
@@ -401,7 +401,7 @@ int main(int argc, char **argv, char **envp)
 						/* update keymap */
 						rmkbd(bw->parent->kbd);
 						bw->parent->kbd =
-						    mkkbd(kmap_getcontext(bw->o.context));
+						    mkkbd(kmap_getcontext(bw->o.context, 1));
 					}
 				}
 				bw->b->o = bw->o;

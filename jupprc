@@ -23,6 +23,7 @@
 -nobackups
 -noxon
 -notite
+-pastetite
 -pg 2
 -lmsg \i%k%T%*\b%n\b%R
 -rmsg  R%r<%l C%c\u%o|%O\i\b%a|%A\b\i\u %u
@@ -493,6 +494,11 @@
 \i \i 112  70 | pqrs tuvw  xyz{ |}~    ðñòó ôõö÷  øùúû üýþÿ | F0  240            \i \i
 }
 
+{Paste
+\i                                                                               \i
+\i \i \u\bPaste Mode\b\u     turn off with \b^D\b or \b^[[201~\b                                  \i \i
+}
+
 :windows
 type		^@ TO ÿ
 abort		^K Q
@@ -538,11 +544,21 @@ shell		^K ^Z
 shell		^K z
 stop		^[ )
 
+:Paste
+type					^@ TO ÿ
+rtn					^M
+msg,"Entered bracketed paste mode",rtn	^[ [ 2 0 0 ~
+helpcard,rtn,keymap,"main",rtn,msg,rtn	^[ [ 2 0 1 ~
+helpcard,rtn,keymap,"main",rtn		^D
+
 :main
 :inherit windows
 bof,qrepl,"\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\+\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\$",rtn,rtn,rtn,"r",eof	^K ]
 edit,rtn,filt,query,parserr	^[ C
 edit,rtn,filt,query,parserr	^[ c
+helpcard,"Paste",rtn,keymap,"Paste",rtn	^[ P
+helpcard,"Paste",rtn,keymap,"Paste",rtn	^[ p
+helpcard,"Paste",rtn,keymap,"Paste",rtn	^[ [ 2 0 0 ~
 begin_marking,uparw,toggle_marking	^[ [ 1 ; 2 A
 begin_marking,dnarw,toggle_marking	^[ [ 1 ; 2 B
 begin_marking,rtarw,toggle_marking	^[ [ 1 ; 2 C

@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/rjoerc.in,v 1.9 2012/12/19 23:11:43 tg Exp $
+ $MirOS: contrib/code/jupp/rjoerc.in,v 1.10 2012/12/30 21:45:16 tg Exp $
 
                          Initialization file for JOE
                             Restricted access Joe
@@ -68,6 +68,8 @@
 
 -notite         Don't send terminal initialization and termination strings: prevents
                 restoration of screen on exit.
+
+-pastetite	Enter bracketed paste mode automatically for TERM=xterm-xfree86
 
  -usetabs       Use tabs to help optimize screen update.
 
@@ -659,6 +661,11 @@
 \i \i 112  70 | pqrs tuvw  xyz{ |}~    ðñòó ôõö÷  øùúû üýþÿ | F0  240            \i \i
 }
 
+{Paste
+\i                                                                               \i
+\i \i \u\bPaste Mode\b\u     turn off with \b^D\b or \b^[[201~\b                                  \i \i
+}
+
  FOURTH SECTION: Key bindings:
 
  Section names you must provide:
@@ -761,8 +768,17 @@ rtn		^M		Return
  shell		^K z
 stop		^K ]		Stop recording
 
+:Paste
+type					^@ TO ÿ
+rtn					^M
+msg,"Entered bracketed paste mode",rtn	^[ [ 2 0 0 ~
+helpcard,rtn,keymap,"main",rtn,msg,rtn	^[ [ 2 0 1 ~
+helpcard,rtn,keymap,"main",rtn		^D
+
 :main			Text editing window
 :inherit windows
+
+helpcard,"Paste",rtn,keymap,"Paste",rtn	^[ [ 2 0 0 ~
 
  Spell-check macros
 

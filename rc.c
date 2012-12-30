@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/rc.c,v 1.18 2012/06/08 16:45:00 tg Exp $ */
+/* $MirOS: contrib/code/jupp/rc.c,v 1.19 2012/12/30 21:45:16 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
@@ -51,13 +51,17 @@ static struct context {
  * is created.
  */
 
-KMAP *kmap_getcontext(unsigned char *name)
+KMAP *kmap_getcontext(unsigned char *name, int docreate)
 {
 	struct context *c;
 
 	for (c = contexts; c; c = c->next)
 		if (!strcmp(c->name, name))
 			return c->kmap;
+
+	if (!docreate)
+		return (NULL);
+
 	c = (struct context *) joe_malloc(sizeof(struct context));
 
 	c->next = contexts;
@@ -71,7 +75,7 @@ OPTIONS *options = NULL;
 /* Global variable options */
 extern int mid, dspasis, dspctrl, help, square, csmode, nobackups, lightoff, exask, skiptop;
 extern int noxon, lines, columns, Baud, dopadding, orphan, marking, keepup, nonotice;
-extern int notite, usetabs, assume_color, guesscrlf, guessindent, menu_explorer, icase, wrap, autoswap;
+extern int notite, pastetite, usetabs, assume_color, guesscrlf, guessindent, menu_explorer, icase, wrap, autoswap;
 extern unsigned char *backpath;
 
 /* Default options for prompt windows */
@@ -121,6 +125,7 @@ OPTIONS pdefault = {
 
 /* Default options for file windows */
 
+char main_context[] = "main";
 OPTIONS fdefault = {
 	NULL,		/* *next */
 	NULL,		/* *name_regex */
@@ -133,7 +138,7 @@ OPTIONS fdefault = {
 	8,		/* tab */
 	' ',		/* indent char */
 	1,		/* indent step */
-	US "main",		/* *context */
+	US main_context,	/* *context */
 	US "\\i%n %m %M",	/* *lmsg */
 	US " %S Ctrl-K H for help",	/* *rmsg */
 	NULL,		/* *hmsg */
@@ -289,6 +294,7 @@ struct glopts {
 	{US "columns",	1, &columns, NULL, 0, 0, 0, 0, 2, 1024 },
 	{US "skiptop",	1, &skiptop, NULL, 0, 0, 0, 0, 0, 64 },
 	{US "notite",	0, &notite, NULL, 0, 0, 0 },
+	{US "pastetite", 0, &pastetite, NULL, 0, 0, 0 },
 	{US "usetabs",	0, &usetabs, NULL, 0, 0, 0 },
 	{US "assume_color", 0, &assume_color, NULL, 0, 0, 0 },
 	{ NULL,		0, NULL, NULL, NULL, NULL, NULL, 0, 0, 0 }
@@ -1019,7 +1025,7 @@ int procrc(CAP *cap, unsigned char *name)
 							for (c = x; !joe_isspace_eof(locale_map,buf[c]); ++c) ;
 							buf[c] = 0;
 							if (c != x)
-								kcpy(context, kmap_getcontext(buf + x));
+								kcpy(context, kmap_getcontext(buf + x, 1));
 							else {
 								err = 1;
 								fprintf(stderr, "\n%s:%d: context name missing from :inherit", name, line);
@@ -1060,7 +1066,7 @@ int procrc(CAP *cap, unsigned char *name)
 							err = 1;
 							fprintf(stderr, "\n%s:%d: No context selected for :delete", name, line);
 					} else
-						context = kmap_getcontext(buf + 1);
+						context = kmap_getcontext(buf + 1, 1);
 				else {
 					err = 1;
 					fprintf(stderr, "\n%s:%d: Invalid context name", name, line);

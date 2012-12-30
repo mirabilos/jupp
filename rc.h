@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/rc.h,v 1.3 2008/05/13 13:08:24 tg Exp $ */
+/* $MirOS: contrib/code/jupp/rc.h,v 1.4 2012/12/30 21:45:16 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
@@ -20,7 +20,7 @@ void setopt PARAMS((B *b, unsigned char *name));
  * Find and return the KMAP for a given context name.  If none is found, an
  * empty kmap is created, bound to the context name, and returned.
  */
-KMAP *kmap_getcontext PARAMS((unsigned char *name));
+KMAP *kmap_getcontext PARAMS((unsigned char *name, int docreate));
 
 /* int procrc(CAP *cap, char *name);  Process an rc file
    Returns 0 for success

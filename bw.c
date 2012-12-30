@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/bw.c,v 1.17 2012/12/22 00:06:11 tg Exp $ */
+/* $MirOS: contrib/code/jupp/bw.c,v 1.18 2012/12/30 21:45:12 tg Exp $ */
 /*
  *	Edit buffer window generation
  *	Copyright
@@ -931,7 +931,7 @@ BW *bwmk(W *window, B *b, int prompt)
 	}
 	if (window == window->main) {
 		rmkbd(window->kbd);
-		window->kbd = mkkbd(kmap_getcontext(w->o.context));
+		window->kbd = mkkbd(kmap_getcontext(w->o.context, 1));
 	}
 	w->top->xcol = 0;
 	w->cursor->xcol = 0;

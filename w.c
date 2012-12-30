@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/w.c,v 1.4 2012/12/30 17:10:58 tg Exp $ */
+/* $MirOS: contrib/code/jupp/w.c,v 1.5 2012/12/30 21:45:18 tg Exp $ */
 /*
  *	Window system
  *	Copyright
@@ -612,7 +612,7 @@ W *wcreate(SCREEN *t, WATOM *watom, W *where, W *target, W *original, int height
 
 	/* Create new keyboard handler for window */
 	if (watom->context)
-		new->kbd = mkkbd(kmap_getcontext(watom->context));
+		new->kbd = mkkbd(kmap_getcontext(watom->context, 1));
 	else
 		new->kbd = NULL;
 

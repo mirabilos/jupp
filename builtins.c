@@ -1,7 +1,7 @@
 /* Built-in files */
 
 /*
-	grep -v $'^[\t ]' | while IFS= read -r x; do
+	<jupprc grep -v $'^[\t ]' | while IFS= read -r x; do
 		x=${x//\\/\\\\}; print -r -- $'\t\t'\""${x//\"/\\\"}\n"\";
 	done | perl -pi -e 's/[^\ca-~]/sprintf "\\x%02X", unpack("U", $&)/eg'
  */
@@ -20,6 +20,7 @@ const unsigned char * const builtins[]=
 		"-nobackups\n"
 		"-noxon\n"
 		"-notite\n"
+		"-pastetite\n"
 		"-pg 2\n"
 		"-lmsg \\i%k%T%*\\b%n\\b%R\n"
 		"-rmsg  R%r<%l C%c\\u%o|%O\\i\\b%a|%A\\b\\i\\u %u\n"
@@ -161,6 +162,11 @@ const unsigned char * const builtins[]=
 		"\\i \\i 112  70 | pqrs tuvw  xyz{ |}~\x7F    \xF0\xF1\xF2\xF3 \xF4\xF5\xF6\xF7  \xF8\xF9\xFA\xFB \xFC\xFD\xFE\xFF | F0  240            \\i \\i\n"
 		"}\n"
 		"\n"
+		"{Paste\n"
+		"\\i                                                                               \\i\n"
+		"\\i \\i \\u\\bPaste Mode\\b\\u     turn off with \\b^D\\b or \\b^[[201~\\b                                  \\i \\i\n"
+		"}\n"
+		"\n"
 		":windows\n"
 		"type		^@ TO \xFF\n"
 		"abort		^K Q\n"
@@ -206,11 +212,21 @@ const unsigned char * const builtins[]=
 		"shell		^K z\n"
 		"stop		^[ )\n"
 		"\n"
+		":Paste\n"
+		"type					^@ TO \xFF\n"
+		"rtn					^M\n"
+		"msg,\"Entered bracketed paste mode\",rtn	^[ [ 2 0 0 ~\n"
+		"helpcard,rtn,keymap,\"main\",rtn,msg,rtn	^[ [ 2 0 1 ~\n"
+		"helpcard,rtn,keymap,\"main\",rtn		^D\n"
+		"\n"
 		":main\n"
 		":inherit windows\n"
 		"bof,qrepl,\"\\\\[\",quote,\"i\",quote,\"k\",quote,\"l\",quote,\"m ]\\\\+\\\\[\",quote,\"i\",quote,\"k\",quote,\"l\",quote,\"m ]\\\\$\",rtn,rtn,rtn,\"r\",eof	^K ]\n"
 		"edit,rtn,filt,query,parserr	^[ C\n"
 		"edit,rtn,filt,query,parserr	^[ c\n"
+		"helpcard,\"Paste\",rtn,keymap,\"Paste\",rtn	^[ P\n"
+		"helpcard,\"Paste\",rtn,keymap,\"Paste\",rtn	^[ p\n"
+		"helpcard,\"Paste\",rtn,keymap,\"Paste\",rtn	^[ [ 2 0 0 ~\n"
 		"begin_marking,uparw,toggle_marking	^[ [ 1 ; 2 A\n"
 		"begin_marking,dnarw,toggle_marking	^[ [ 1 ; 2 B\n"
 		"begin_marking,rtarw,toggle_marking	^[ [ 1 ; 2 C\n"
@@ -505,5 +521,5 @@ const unsigned char * const builtins[]=
 		":querysr\n"
 		"type		^@ TO \xFF\n"
 ,	NULL
-,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.14 2012/12/30 17:13:25 tg Exp $"
+,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.15 2012/12/30 21:45:12 tg Exp $"
 };

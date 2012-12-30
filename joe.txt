@@ -860,6 +860,9 @@ Environment variables
      with the stty rows nn cols nn command, or by setting the
      LINES and COLUMNS environment variables.
 
+     The xterm-xfree86 terminal allows automatic entering and
+     leaving of the bracketed paste mode.
+
      JOE normally expects that flow control between the computer
      and your terminal to use ^S/^Q handshaking (I.E., if the
      computer is sending characters too fast for your terminal,

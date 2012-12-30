@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.c,v 1.10 2012/12/30 17:10:57 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.c,v 1.11 2012/12/30 21:45:17 tg Exp $ */
 /*
  *	Device independant TTY interface for JOE
  *	Copyright
@@ -27,6 +27,7 @@ int skiptop = 0;
 int lines = 0;
 int columns = 0;
 int notite = 0;
+int pastetite = 0;
 int usetabs = 0;
 int assume_color = 0;
 
@@ -477,17 +478,41 @@ SCRN *nopen(CAP *cap)
 	t->xn = getflag(t->cap,US "xn");
 	t->am = getflag(t->cap,US "am");
 
-	if (notite)
-		t->ti = 0;
-	else
-		t->ti = jgetstr(t->cap,US "ti");
 	t->cl = jgetstr(t->cap,US "cl");
 	t->cd = jgetstr(t->cap,US "cd");
 
-	if (notite)
-		t->te = 0;
-	else
+	if (notite) {
+		t->ti = NULL;
+		t->te = NULL;
+	} else {
+		t->ti = jgetstr(t->cap,US "ti");
 		t->te = jgetstr(t->cap,US "te");
+	}
+	if (pastetite && t->cap->paste_on && t->cap->paste_off) {
+		if (notite) {
+			t->ti = (void *)strdup(t->cap->paste_on);
+			t->te = (void *)strdup(t->cap->paste_off);
+		} else {
+			size_t n1, n2;
+			char *cp;
+
+			n1 = t->ti ? strlen(t->ti) : 0;
+			n2 = strlen(t->cap->paste_on);
+			cp = joe_malloc(n1 + n2 + 1);
+			if (t->ti)
+				memcpy(cp, t->ti, n1);
+			memcpy(cp + n1, t->cap->paste_on, n2 + 1);
+			t->ti = cp;
+
+			n1 = t->te ? strlen(t->te) : 0;
+			n2 = strlen(t->cap->paste_off);
+			cp = joe_malloc(n1 + n2 + 1);
+			memcpy(cp, t->cap->paste_off, n2 + 1);
+			if (t->te)
+				memcpy(cp + n2, t->te, n1 + 1);
+			t->te = cp;
+		}
+	}
 
 	t->ut = getflag(t->cap,US "ut");
 	t->Sb = jgetstr(t->cap,US "AB");

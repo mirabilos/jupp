@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/types.h,v 1.10 2012/12/30 17:10:58 tg Exp $ */
+/* $MirOS: contrib/code/jupp/types.h,v 1.11 2012/12/30 21:45:17 tg Exp $ */
 
 #ifndef _JOE_TYPES_H
 #define _JOE_TYPES_H
@@ -494,6 +494,8 @@ struct cap {
 	void	*outptr;	/* First arg passed to output routine.  Second
 				   arg is character to write */
 	int	dopadding;	/* Set if pad characters should be used */
+	const char *paste_on;	/* Enable bracketed paste mode */
+	const char *paste_off;	/* Disable bracketed paste mode */
 };
 
 

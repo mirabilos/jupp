@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.13 2012/12/30 21:28:41 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.14 2012/12/30 21:45:13 tg Exp $
 .\"-
 .TH JOE 1
 .SH Name
@@ -758,6 +758,9 @@ you're using.  If the size (number of lines/columns) of your terminal is
 different from what is reported in the TERMCAP or TERMINFO entry, you can
 set this with the \fBstty rows nn cols nn\fR command, or by setting the
 \fBLINES\fR and \fBCOLUMNS\fR environment variables.
+
+The \fBxterm\-xfree86\fR terminal allows automatic entering and leaving
+of the bracketed paste mode.
 
 JOE normally expects that flow control between the computer and your
 terminal to use ^S/^Q handshaking (I.E., if the computer is sending
