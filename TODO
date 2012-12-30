@@ -604,7 +604,17 @@ Mouse:
 
  ` and autoindent mode are a problem for drag and drop.
  any way we can distinguish normal typing from a drop?
- modify xterm...
+
+ xterm can actually do that: it's called bracketed paste mode:
+ you send ^[ [ ? 2 0 0 4 h then any pastes you receive begin
+ with ^[ [ 2 0 0 ~ and end with ^[ [ 2 0 1 ~ until you send
+ ^[ [ ? 2 0 0 4 l but it only works with recent xterm and, while
+ you can wrap the requests between ^[ P and ^[ \ to make them
+ pass GNU screen it would wreck havoc with the other tabs, so
+ we probably must make this conditional on $TERM; look into a
+ generic paste mode (via :paste keymap that can be entered and
+ left via some keystrokes or bracketed paste) instead and make
+ the xterm feature an addition
 
  mouse mode: mouse can position cursor.  Would be good for
  jcua...
@@ -642,6 +652,8 @@ Other requests:
 └───────────┘
 
 • merge syntax handling code from joe-3.7+
+• merge math from joe-3.7+
+• add group support to regex code
 • make -Wcast-qual clean
 • write a jupp(1) mdoc page
 • use mirkev (better code for hashtables)
@@ -651,4 +663,4 @@ Other requests:
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.12 2012/12/30 17:22:19 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.14 2012/12/30 17:40:04 tg Exp $
