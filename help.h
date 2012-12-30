@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/help.h,v 1.3 2012/12/30 19:27:13 tg Exp $ */
+/* $MirOS: contrib/code/jupp/help.h,v 1.4 2012/12/30 19:50:32 tg Exp $ */
 /*
  *	Help system
  *	Copyright
@@ -13,7 +13,7 @@
 #include "config.h"
 #include "types.h"
 
-struct help *help_actual;
+extern struct help *help_actual;
 
 void help_display PARAMS((SCREEN *t));		/* display text in help window */
 void help_off PARAMS((SCREEN *t));		/* turn help off */
