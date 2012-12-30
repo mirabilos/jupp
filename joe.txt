@@ -848,6 +848,11 @@ Environment variables
      instead (use setenv BAUD 9600 for csh or BAUD=9600; export
      BAUD for sh).
 
+     The SHELL or EXECSHELL environment variable must be set to
+     the full pathname of a shell executable that accepts the -i
+     (interactive) and -c (run a command) arguments of the Korn
+     Shell; otherwise, /bin/sh is used.
+
      The TERM environment variable must be set to the type of
      terminal you're using.  If the size (number of
      lines/columns) of your terminal is different from what is
