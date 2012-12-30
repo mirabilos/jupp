@@ -658,7 +658,9 @@ Other requests:
 • attach labels to ftypes; allow ftypes to inherit from these
   labels, instead of fdefault; add UI to apply an ftype, including
   fdefault, to the current buffer
+• regex needs groups
+• bracketed paste mode should disable autoindent, wordwrap, …(?)
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.15 2012/12/30 21:45:12 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.16 2012/12/30 22:14:33 tg Exp $
