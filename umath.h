@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/umath.h,v 1.2 2008/05/13 13:08:28 tg Exp $ */
+/* $MirOS: contrib/code/jupp/umath.h,v 1.3 2012/12/30 17:10:58 tg Exp $ */
 /*
  *	Math
  *	Copyright
@@ -12,7 +12,7 @@
 #include "config.h"
 #include "types.h"
 
-extern unsigned char *merr;
+extern const unsigned char * volatile merr;
 double calc(BW *bw, unsigned char *s);
 int umath(BW *bw);
 

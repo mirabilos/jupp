@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/w.h,v 1.2 2008/05/13 13:08:33 tg Exp $ */
+/* $MirOS: contrib/code/jupp/w.h,v 1.3 2012/12/30 17:10:59 tg Exp $ */
 /*
  *	Window management
  *	Copyright
@@ -149,8 +149,8 @@ void updall PARAMS((void));
  * msgnw displays message on bottom line of window
  * msgnwt displays message on top line of window
  */
-void msgnw PARAMS((W *w, unsigned char *s));
-void msgnwt PARAMS((W *w, unsigned char *s));
+void msgnw PARAMS((W *w, const unsigned char *s));
+void msgnwt PARAMS((W *w, const unsigned char *s));
 
 #define JOE_MSGBUFSIZE 300
 extern unsigned char msgbuf[JOE_MSGBUFSIZE];	/* Message composition buffer for msgnw/msgnwt */

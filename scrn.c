@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.c,v 1.9 2012/12/22 00:06:13 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.c,v 1.10 2012/12/30 17:10:57 tg Exp $ */
 /*
  *	Device independant TTY interface for JOE
  *	Copyright
@@ -1897,7 +1897,7 @@ int txtwidth(unsigned char *s,int len)
 
 /* Generate text with formatting escape sequences */
 
-void genfmt(SCRN *t, int x, int y, int ofst, unsigned char *s, int flg)
+void genfmt(SCRN *t, int x, int y, int ofst, const unsigned char *s, int flg)
 {
 	int *scrn = t->scrn + y * t->co + x;
 	int *attr = t->attr + y * t->co + x;
@@ -1987,7 +1987,7 @@ void genfmt(SCRN *t, int x, int y, int ofst, unsigned char *s, int flg)
 
 /* Determine column width of string with format codes */
 
-int fmtlen(unsigned char *s)
+int fmtlen(const unsigned char *s)
 {
 	int col = 0;
 	struct utf8_sm sm;

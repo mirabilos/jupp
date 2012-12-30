@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/w.c,v 1.3 2012/12/22 00:06:16 tg Exp $ */
+/* $MirOS: contrib/code/jupp/w.c,v 1.4 2012/12/30 17:10:58 tg Exp $ */
 /*
  *	Window system
  *	Copyright
@@ -706,7 +706,7 @@ int wabort(W *w)
 
 /* Display a message and skip the next key */
 
-static void mdisp(SCRN *t, int y, unsigned char *s)
+static void mdisp(SCRN *t, int y, const unsigned char *s)
 {
 	int ofst;
 	int len;
@@ -726,11 +726,11 @@ void msgout(W *w)
 
 	if (w->msgb) {
 		mdisp(t, w->y + w->h - 1, w->msgb);
-		w->msgb = 0;
+		w->msgb = NULL;
 	}
 	if (w->msgt) {
 		mdisp(t, w->y + ((w->h > 1 && (w->y || !staen)) ? 1 : 0), w->msgt);
-		w->msgt = 0;
+		w->msgt = NULL;
 	}
 }
 
@@ -739,12 +739,12 @@ void msgout(W *w)
 unsigned char msgbuf[JOE_MSGBUFSIZE];
 
 /* display message on bottom line of window */
-void msgnw(W *w, unsigned char *s)
+void msgnw(W *w, const unsigned char *s)
 {
 	w->msgb = s;
 }
 
-void msgnwt(W *w, unsigned char *s)
+void msgnwt(W *w, const unsigned char *s)
 {
 	w->msgt = s;
 }

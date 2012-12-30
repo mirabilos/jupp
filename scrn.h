@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.h,v 1.3 2009/10/18 14:52:57 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.h,v 1.4 2012/12/30 17:10:58 tg Exp $ */
 /*
  *	Device independant tty interface for JOE
  *	Copyright
@@ -182,10 +182,10 @@ void genfield PARAMS((SCRN *t,int *scrn,int *attr,int x,int y,int ofst,unsigned 
 int txtwidth PARAMS((unsigned char *s,int len));
 
 /* Generate a field: formatted */
-void genfmt PARAMS((SCRN *t, int x, int y, int ofst, unsigned char *s, int flg));
+void genfmt PARAMS((SCRN *t, int x, int y, int ofst, const unsigned char *s, int flg));
 
 /* Column width of formatted string */
-int fmtlen PARAMS((unsigned char *s));
+int fmtlen PARAMS((const unsigned char *s));
 
 /* Offset within formatted string of particular column */
 int fmtpos PARAMS((unsigned char *s, int goal));
