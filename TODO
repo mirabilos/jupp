@@ -660,8 +660,9 @@ Other requests:
   fdefault, to the current buffer
 • regex needs groups
 • bracketed paste mode should disable autoindent, wordwrap,
-  updating the status line, …(?)
+  updating the status line, …(?) ⇐ implemented using a “paste”
+  labeled ftype that is switched to using the UI (command)
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.17 2012/12/31 03:36:51 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.18 2013/01/05 22:03:21 tg Exp $
