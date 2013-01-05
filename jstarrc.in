@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jstarrc.in,v 1.10 2012/12/30 21:45:15 tg Exp $
+ $MirOS: contrib/code/jupp/jstarrc.in,v 1.11 2013/01/05 22:16:31 tg Exp $
 
                          Initialization file for JOE
                            WordStar / Turbo-C Joe
@@ -469,7 +469,6 @@
 *.py
 -encoding utf8
 -syntax python
---guess_indent
 -tab 4
 -indentc 32
 -istep 4
@@ -479,7 +478,6 @@
 +#!\+\[	 ]\+\[a-z/]/python
 -encoding utf8
 -syntax python
---guess_indent
 -tab 4
 -indentc 32
 -istep 4
@@ -489,7 +487,6 @@
 +#!\+\[	 ]\+\[a-z/]/env\+\[	 ]python
 -encoding utf8
 -syntax python
---guess_indent
 -tab 4
 -indentc 32
 -istep 4
@@ -524,8 +521,13 @@
 -syntax tcl
 
  === Text
+*.asc
+-wordwrap
+
+*.doc
+-wordwrap
+
 *.txt
--guess_indent
 -wordwrap
 
  === Verilog

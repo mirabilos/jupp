@@ -1,6 +1,6 @@
-/* $MirOS: contrib/code/jupp/main.c,v 1.19 2012/12/30 21:45:16 tg Exp $ */
+/* $MirOS: contrib/code/jupp/main.c,v 1.20 2013/01/05 22:16:31 tg Exp $ */
 
-#define JUPP_IS_COPYRIGHT_C_BY "2012 mirabilos"
+#define JUPP_IS_COPYRIGHT_C_BY "2013 mirabilos"
 
 /*-
  * Copyright (c) 2004ff. Thorsten Glaser

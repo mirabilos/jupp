@@ -1,5 +1,11 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.71 2012/12/30 21:45:11 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.72 2013/01/05 22:16:29 tg Exp $
 ------------------------------------------------------------------
+
+JOE 3.1jupp24
+
+- Bugfix for all *rc files: -guess_indent is a global option,
+  not a per-file option; using it as the latter led to spurious
+  whitespace mis-detection, remove them (and make *.{asc,doc}=txt)
 
 JOE 3.1jupp23
 
