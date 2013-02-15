@@ -1,5 +1,9 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.72 2013/01/05 22:16:29 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.73 2013/02/15 19:38:44 tg Exp $
 ------------------------------------------------------------------
+
+JOE-current
+
+- Better colouring of diffs; better support for CVS and git
 
 JOE 3.1jupp24
 

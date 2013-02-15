@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/syntax/diff.jsf.in,v 1.5 2012/09/02 14:46:51 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/diff.jsf.in,v 1.6 2013/02/15 19:38:47 tg Exp $
 #-
 # JOE syntax highlight file for diff/patch files
 #
@@ -19,7 +19,7 @@
 
 # Color definitions
 =Idle
-=Garbage	dim white
+=Garbage	bold black
 =DiffCmd	blue
 =FileOld	bold red
 =FileNew	bold green

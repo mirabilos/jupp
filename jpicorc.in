@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jpicorc.in,v 1.10 2013/01/05 22:16:30 tg Exp $
+ $MirOS: contrib/code/jupp/jpicorc.in,v 1.11 2013/02/15 19:38:45 tg Exp $
 
                          Initialization file for JOE
                                  Super Pico
@@ -367,12 +367,22 @@
 -syntax diff
 
 *
++Index: \*\ndiff\*\n--- \*\n+++\[ ]
+-highlight
+-syntax diff
+
+*
 +\[=?]\*\n--- \*\n+++\[ ]
 -highlight
 -syntax diff
 
 *
 +diff\*\n--- \*\n+++\[ ]
+-highlight
+-syntax diff
+
+*
++diff --git\*\nindex\*\n--- \*\n+++\[ ]
 -highlight
 -syntax diff
 

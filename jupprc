@@ -195,12 +195,22 @@
 -syntax diff
 
 *
++Index: \*\ndiff\*\n--- \*\n+++\[ ]
+-highlight
+-syntax diff
+
+*
 +\[=?]\*\n--- \*\n+++\[ ]
 -highlight
 -syntax diff
 
 *
 +diff\*\n--- \*\n+++\[ ]
+-highlight
+-syntax diff
+
+*
++diff --git\*\nindex\*\n--- \*\n+++\[ ]
 -highlight
 -syntax diff
 
