@@ -662,7 +662,8 @@ Other requests:
 • bracketed paste mode should disable autoindent, wordwrap,
   updating the status line, …(?) ⇐ implemented using a “paste”
   labeled ftype that is switched to using the UI (command)
+• ^Q] should work for “'” and “"” too
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.18 2013/01/05 22:03:21 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.19 2013/02/19 19:32:20 tg Exp $
