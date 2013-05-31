@@ -1,9 +1,10 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.73 2013/02/15 19:38:44 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.74 2013/05/31 23:27:16 tg Exp $
 ------------------------------------------------------------------
 
 JOE-current
 
 - Better colouring of diffs; better support for CVS and git
+- New wcwidth code; aligned with Unicode 6.2.0
 
 JOE 3.1jupp24
 

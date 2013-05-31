@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/i18n.c,v 1.6 2012/09/01 23:46:44 tg Exp $ */
+/* $MirOS: contrib/code/jupp/i18n.c,v 1.7 2013/05/31 23:27:17 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 functions for JOE
  *	Copyright
@@ -21,283 +21,348 @@
 #include "utf8.h"
 #include "i18n.h"
 
-/*
- * This is an implementation of wcwidth() and wcswidth() (defined in
- * IEEE Std 1002.1-2001) for Unicode.
- *
- * http://www.opengroup.org/onlinepubs/007904975/functions/wcwidth.html
- * http://www.opengroup.org/onlinepubs/007904975/functions/wcswidth.html
- *
- * In fixed-width output devices, Latin characters all occupy a single
- * "cell" position of equal width, whereas ideographic CJK characters
- * occupy two such cells. Interoperability between terminal-line
- * applications and (teletype-style) character terminals using the
- * UTF-8 encoding requires agreement on which character should advance
- * the cursor by how many cell positions. No established formal
- * standards exist at present on which Unicode character shall occupy
- * how many cell positions on character terminals. These routines are
- * a first attempt of defining such behavior based on simple rules
- * applied to data provided by the Unicode Consortium.
- *
- * For some graphical characters, the Unicode standard explicitly
- * defines a character-cell width via the definition of the East Asian
- * FullWidth (F), Wide (W), Half-width (H), and Narrow (Na) classes.
- * In all these cases, there is no ambiguity about which width a
- * terminal shall use. For characters in the East Asian Ambiguous (A)
- * class, the width choice depends purely on a preference of backward
- * compatibility with either historic CJK or Western practice.
- * Choosing single-width for these characters is easy to justify as
- * the appropriate long-term solution, as the CJK practice of
- * displaying these characters as double-width comes from historic
- * implementation simplicity (8-bit encoded characters were displayed
- * single-width and 16-bit ones double-width, even for Greek,
- * Cyrillic, etc.) and not any typographic considerations.
- *
- * Much less clear is the choice of width for the Not East Asian
- * (Neutral) class. Existing practice does not dictate a width for any
- * of these characters. It would nevertheless make sense
- * typographically to allocate two character cells to characters such
- * as for instance EM SPACE or VOLUME INTEGRAL, which cannot be
- * represented adequately with a single-width glyph. The following
- * routines at present merely assign a single-cell width to all
- * neutral characters, in the interest of simplicity. This is not
- * entirely satisfactory and should be reconsidered before
- * establishing a formal standard in this area. At the moment, the
- * decision which Not East Asian (Neutral) characters should be
- * represented by double-width glyphs cannot yet be answered by
- * applying a simple rule from the Unicode database content. Setting
- * up a proper standard for the behavior of UTF-8 character terminals
- * will require a careful analysis not only of each Unicode character,
- * but also of each presentation form, something the author of these
- * routines has avoided to do so far.
- *
- * http://www.unicode.org/unicode/reports/tr11/
- *
- * Markus Kuhn -- 2007-05-26 (Unicode 5.0)
- *
- * Permission to use, copy, modify, and distribute this software
- * for any purpose and without fee is hereby granted. The author
- * disclaims all warranties with regard to this software.
- *
- * Latest version: http://www.cl.cam.ac.uk/~mgk25/ucs/wcwidth.c
- */
+/* From: X11/xc/programs/xterm/wcwidth.c,v 1.6 2013/05/31 23:27:09 tg Exp $ */
 
-struct interval {
-	int first;
-	int last;
+struct mb_ucsrange {
+	unsigned int beg;
+	unsigned int end;
 };
 
-static int bisearch(int ucs, const struct interval *table, int max)
-{
-	int min = 0;
-	int mid;
-
-	if (ucs < table[0].first || ucs > table[max].last)
-		return -1;
-	while (max >= min) {
-		mid = (min + max) / 2;
-		if (ucs > table[mid].last)
-			min = mid + 1;
-		else if (ucs < table[mid].first)
-			max = mid - 1;
-		else
-			return mid;
-	}
-
-	return -1;
-}
+static size_t mb_ucsbsearch(const struct mb_ucsrange arr[], size_t elems,
+    unsigned int val);
 
 /* Macro for generating joe_iswXXX functions */
 
 #define MAKE_ISW(x) \
 	int joe_isw##x(struct charmap *foo,int c) \
 	{ \
-		if (-1!=bisearch(c, data_wctype_##x, sizeof(data_wctype_##x)/sizeof(struct interval) - 1)) \
+		if (mb_ucsbsearch(data_wctype_##x, NELEM(data_wctype_##x), c) != (size_t)-1) \
 			return 1; \
 		else \
 			return 0; \
 	}
 
-/* The following function defines the column width of an ISO 10646
- * character as follows:
- *
- *    - The null character (U+0000) has a column width of 0.
- *
- *    - Other C0/C1 control characters and DEL will lead to a return
- *      value of -1.
- *
- *    - Non-spacing and enclosing combining characters (general
- *      category code Mn or Me in the Unicode database) have a
- *      column width of 0.
- *
- *    - SOFT HYPHEN (U+00AD) has a column width of 1.
- *
- *    - Other format characters (general category code Cf in the Unicode
- *      database) and ZERO WIDTH SPACE (U+200B) have a column width of 0.
- *
- *    - Hangul Jamo medial vowels and final consonants (U+1160-U+11FF)
- *      have a column width of 0.
- *
- *    - Spacing characters in the East Asian Wide (W) or East Asian
- *      Full-width (F) category as defined in Unicode Technical
- *      Report #11 have a column width of 2.
- *
- *    - All remaining characters (including all printable
- *      ISO 8859-1 and WGL4 characters, Unicode control characters,
- *      etc.) have a column width of 1.
- *
- * This implementation assumes that wchar_t characters are encoded
- * in ISO 10646.
+/*
+ * Generated by MirOS: contrib/code/Snippets/eawparse,v 1.1 2013/05/31 23:27:16 tg Exp $
+ * from Unicode 6.2.0
  */
+
+static const struct mb_ucsrange mb_ucs_combining[] = {
+	{ 0x0300, 0x036F },
+	{ 0x0483, 0x0489 },
+	{ 0x0591, 0x05BD },
+	{ 0x05BF, 0x05BF },
+	{ 0x05C1, 0x05C2 },
+	{ 0x05C4, 0x05C5 },
+	{ 0x05C7, 0x05C7 },
+	{ 0x0600, 0x0604 },
+	{ 0x0610, 0x061A },
+	{ 0x064B, 0x065F },
+	{ 0x0670, 0x0670 },
+	{ 0x06D6, 0x06DD },
+	{ 0x06DF, 0x06E4 },
+	{ 0x06E7, 0x06E8 },
+	{ 0x06EA, 0x06ED },
+	{ 0x070F, 0x070F },
+	{ 0x0711, 0x0711 },
+	{ 0x0730, 0x074A },
+	{ 0x07A6, 0x07B0 },
+	{ 0x07EB, 0x07F3 },
+	{ 0x0816, 0x0819 },
+	{ 0x081B, 0x0823 },
+	{ 0x0825, 0x0827 },
+	{ 0x0829, 0x082D },
+	{ 0x0859, 0x085B },
+	{ 0x08E4, 0x08FE },
+	{ 0x0900, 0x0902 },
+	{ 0x093A, 0x093A },
+	{ 0x093C, 0x093C },
+	{ 0x0941, 0x0948 },
+	{ 0x094D, 0x094D },
+	{ 0x0951, 0x0957 },
+	{ 0x0962, 0x0963 },
+	{ 0x0981, 0x0981 },
+	{ 0x09BC, 0x09BC },
+	{ 0x09C1, 0x09C4 },
+	{ 0x09CD, 0x09CD },
+	{ 0x09E2, 0x09E3 },
+	{ 0x0A01, 0x0A02 },
+	{ 0x0A3C, 0x0A3C },
+	{ 0x0A41, 0x0A42 },
+	{ 0x0A47, 0x0A48 },
+	{ 0x0A4B, 0x0A4D },
+	{ 0x0A51, 0x0A51 },
+	{ 0x0A70, 0x0A71 },
+	{ 0x0A75, 0x0A75 },
+	{ 0x0A81, 0x0A82 },
+	{ 0x0ABC, 0x0ABC },
+	{ 0x0AC1, 0x0AC5 },
+	{ 0x0AC7, 0x0AC8 },
+	{ 0x0ACD, 0x0ACD },
+	{ 0x0AE2, 0x0AE3 },
+	{ 0x0B01, 0x0B01 },
+	{ 0x0B3C, 0x0B3C },
+	{ 0x0B3F, 0x0B3F },
+	{ 0x0B41, 0x0B44 },
+	{ 0x0B4D, 0x0B4D },
+	{ 0x0B56, 0x0B56 },
+	{ 0x0B62, 0x0B63 },
+	{ 0x0B82, 0x0B82 },
+	{ 0x0BC0, 0x0BC0 },
+	{ 0x0BCD, 0x0BCD },
+	{ 0x0C3E, 0x0C40 },
+	{ 0x0C46, 0x0C48 },
+	{ 0x0C4A, 0x0C4D },
+	{ 0x0C55, 0x0C56 },
+	{ 0x0C62, 0x0C63 },
+	{ 0x0CBC, 0x0CBC },
+	{ 0x0CBF, 0x0CBF },
+	{ 0x0CC6, 0x0CC6 },
+	{ 0x0CCC, 0x0CCD },
+	{ 0x0CE2, 0x0CE3 },
+	{ 0x0D41, 0x0D44 },
+	{ 0x0D4D, 0x0D4D },
+	{ 0x0D62, 0x0D63 },
+	{ 0x0DCA, 0x0DCA },
+	{ 0x0DD2, 0x0DD4 },
+	{ 0x0DD6, 0x0DD6 },
+	{ 0x0E31, 0x0E31 },
+	{ 0x0E34, 0x0E3A },
+	{ 0x0E47, 0x0E4E },
+	{ 0x0EB1, 0x0EB1 },
+	{ 0x0EB4, 0x0EB9 },
+	{ 0x0EBB, 0x0EBC },
+	{ 0x0EC8, 0x0ECD },
+	{ 0x0F18, 0x0F19 },
+	{ 0x0F35, 0x0F35 },
+	{ 0x0F37, 0x0F37 },
+	{ 0x0F39, 0x0F39 },
+	{ 0x0F71, 0x0F7E },
+	{ 0x0F80, 0x0F84 },
+	{ 0x0F86, 0x0F87 },
+	{ 0x0F8D, 0x0F97 },
+	{ 0x0F99, 0x0FBC },
+	{ 0x0FC6, 0x0FC6 },
+	{ 0x102D, 0x1030 },
+	{ 0x1032, 0x1037 },
+	{ 0x1039, 0x103A },
+	{ 0x103D, 0x103E },
+	{ 0x1058, 0x1059 },
+	{ 0x105E, 0x1060 },
+	{ 0x1071, 0x1074 },
+	{ 0x1082, 0x1082 },
+	{ 0x1085, 0x1086 },
+	{ 0x108D, 0x108D },
+	{ 0x109D, 0x109D },
+	{ 0x1160, 0x11FF },
+	{ 0x135D, 0x135F },
+	{ 0x1712, 0x1714 },
+	{ 0x1732, 0x1734 },
+	{ 0x1752, 0x1753 },
+	{ 0x1772, 0x1773 },
+	{ 0x17B4, 0x17B5 },
+	{ 0x17B7, 0x17BD },
+	{ 0x17C6, 0x17C6 },
+	{ 0x17C9, 0x17D3 },
+	{ 0x17DD, 0x17DD },
+	{ 0x180B, 0x180D },
+	{ 0x18A9, 0x18A9 },
+	{ 0x1920, 0x1922 },
+	{ 0x1927, 0x1928 },
+	{ 0x1932, 0x1932 },
+	{ 0x1939, 0x193B },
+	{ 0x1A17, 0x1A18 },
+	{ 0x1A56, 0x1A56 },
+	{ 0x1A58, 0x1A5E },
+	{ 0x1A60, 0x1A60 },
+	{ 0x1A62, 0x1A62 },
+	{ 0x1A65, 0x1A6C },
+	{ 0x1A73, 0x1A7C },
+	{ 0x1A7F, 0x1A7F },
+	{ 0x1B00, 0x1B03 },
+	{ 0x1B34, 0x1B34 },
+	{ 0x1B36, 0x1B3A },
+	{ 0x1B3C, 0x1B3C },
+	{ 0x1B42, 0x1B42 },
+	{ 0x1B6B, 0x1B73 },
+	{ 0x1B80, 0x1B81 },
+	{ 0x1BA2, 0x1BA5 },
+	{ 0x1BA8, 0x1BA9 },
+	{ 0x1BAB, 0x1BAB },
+	{ 0x1BE6, 0x1BE6 },
+	{ 0x1BE8, 0x1BE9 },
+	{ 0x1BED, 0x1BED },
+	{ 0x1BEF, 0x1BF1 },
+	{ 0x1C2C, 0x1C33 },
+	{ 0x1C36, 0x1C37 },
+	{ 0x1CD0, 0x1CD2 },
+	{ 0x1CD4, 0x1CE0 },
+	{ 0x1CE2, 0x1CE8 },
+	{ 0x1CED, 0x1CED },
+	{ 0x1CF4, 0x1CF4 },
+	{ 0x1DC0, 0x1DE6 },
+	{ 0x1DFC, 0x1DFF },
+	{ 0x200B, 0x200F },
+	{ 0x202A, 0x202E },
+	{ 0x2060, 0x2064 },
+	{ 0x206A, 0x206F },
+	{ 0x20D0, 0x20F0 },
+	{ 0x2CEF, 0x2CF1 },
+	{ 0x2D7F, 0x2D7F },
+	{ 0x2DE0, 0x2DFF },
+	{ 0x302A, 0x302D },
+	{ 0x3099, 0x309A },
+	{ 0xA66F, 0xA672 },
+	{ 0xA674, 0xA67D },
+	{ 0xA69F, 0xA69F },
+	{ 0xA6F0, 0xA6F1 },
+	{ 0xA802, 0xA802 },
+	{ 0xA806, 0xA806 },
+	{ 0xA80B, 0xA80B },
+	{ 0xA825, 0xA826 },
+	{ 0xA8C4, 0xA8C4 },
+	{ 0xA8E0, 0xA8F1 },
+	{ 0xA926, 0xA92D },
+	{ 0xA947, 0xA951 },
+	{ 0xA980, 0xA982 },
+	{ 0xA9B3, 0xA9B3 },
+	{ 0xA9B6, 0xA9B9 },
+	{ 0xA9BC, 0xA9BC },
+	{ 0xAA29, 0xAA2E },
+	{ 0xAA31, 0xAA32 },
+	{ 0xAA35, 0xAA36 },
+	{ 0xAA43, 0xAA43 },
+	{ 0xAA4C, 0xAA4C },
+	{ 0xAAB0, 0xAAB0 },
+	{ 0xAAB2, 0xAAB4 },
+	{ 0xAAB7, 0xAAB8 },
+	{ 0xAABE, 0xAABF },
+	{ 0xAAC1, 0xAAC1 },
+	{ 0xAAEC, 0xAAED },
+	{ 0xAAF6, 0xAAF6 },
+	{ 0xABE5, 0xABE5 },
+	{ 0xABE8, 0xABE8 },
+	{ 0xABED, 0xABED },
+	{ 0xFB1E, 0xFB1E },
+	{ 0xFE00, 0xFE0F },
+	{ 0xFE20, 0xFE26 },
+	{ 0xFEFF, 0xFEFF },
+	{ 0xFFF9, 0xFFFB },
+	{ 0x101FD, 0x101FD },
+	{ 0x10A01, 0x10A03 },
+	{ 0x10A05, 0x10A06 },
+	{ 0x10A0C, 0x10A0F },
+	{ 0x10A38, 0x10A3A },
+	{ 0x10A3F, 0x10A3F },
+	{ 0x11001, 0x11001 },
+	{ 0x11038, 0x11046 },
+	{ 0x11080, 0x11081 },
+	{ 0x110B3, 0x110B6 },
+	{ 0x110B9, 0x110BA },
+	{ 0x110BD, 0x110BD },
+	{ 0x11100, 0x11102 },
+	{ 0x11127, 0x1112B },
+	{ 0x1112D, 0x11134 },
+	{ 0x11180, 0x11181 },
+	{ 0x111B6, 0x111BE },
+	{ 0x116AB, 0x116AB },
+	{ 0x116AD, 0x116AD },
+	{ 0x116B0, 0x116B5 },
+	{ 0x116B7, 0x116B7 },
+	{ 0x16F8F, 0x16F92 },
+	{ 0x1D167, 0x1D169 },
+	{ 0x1D173, 0x1D182 },
+	{ 0x1D185, 0x1D18B },
+	{ 0x1D1AA, 0x1D1AD },
+	{ 0x1D242, 0x1D244 },
+	{ 0xE0001, 0xE0001 },
+	{ 0xE0020, 0xE007F },
+	{ 0xE0100, 0xE01EF }
+};
+
+static const struct mb_ucsrange mb_ucs_fullwidth[] = {
+	{ 0x1100, 0x115F },
+	{ 0x2329, 0x232A },
+	{ 0x2E80, 0x303E },
+	{ 0x3040, 0xA4CF },
+	{ 0xA960, 0xA97F },
+	{ 0xAC00, 0xD7A3 },
+	{ 0xF900, 0xFAFF },
+	{ 0xFE10, 0xFE19 },
+	{ 0xFE30, 0xFE6F },
+	{ 0xFF00, 0xFF60 },
+	{ 0xFFE0, 0xFFE6 },
+	{ 0x1B000, 0x1B001 },
+	{ 0x1F200, 0x1F202 },
+	{ 0x1F210, 0x1F23A },
+	{ 0x1F240, 0x1F248 },
+	{ 0x1F250, 0x1F251 },
+	{ 0x20000, 0x2FFFD },
+	{ 0x30000, 0x3FFFD }
+};
+
+/* from mksh */
+#define NELEM(a)	(sizeof(a) / sizeof((a)[0]))
+
+/* simple binary search in ranges, with bounds optimisation */
+static size_t
+mb_ucsbsearch(const struct mb_ucsrange arr[], size_t elems, unsigned int val)
+{
+	size_t min = 0, mid, max = elems;
+
+	if (val < arr[min].beg || val > arr[max - 1].end)
+		return ((size_t)-1);
+
+	while (min < max) {
+		mid = (min + max) / 2;
+
+		if (val < arr[mid].beg)
+			max = mid;
+		else if (val > arr[mid].end)
+			min = mid + 1;
+		else
+			return (mid);
+	}
+	return ((size_t)-1);
+}
 
 /* Modified for JOE: returns printed width of control and other non-printable
    characters */
 
-int joe_wcwidth(int wide,int ucs)
-{
-	/* sorted list of non-overlapping intervals of non-spacing characters */
-	/* generated by "uniset +cat=Me +cat=Mn +cat=Cf -00AD +1160-11FF +200B c" */
-	static const struct interval combining[] = {
-		/* Unicode 6.1.0 Full Range */
-		{ 0x0300, 0x036F }, { 0x0483, 0x0489 }, { 0x0591, 0x05BD },
-		{ 0x05BF, 0x05BF }, { 0x05C1, 0x05C2 }, { 0x05C4, 0x05C5 },
-		{ 0x05C7, 0x05C7 }, { 0x0600, 0x0604 }, { 0x0610, 0x061A },
-		{ 0x064B, 0x065F }, { 0x0670, 0x0670 }, { 0x06D6, 0x06DD },
-		{ 0x06DF, 0x06E4 }, { 0x06E7, 0x06E8 }, { 0x06EA, 0x06ED },
-		{ 0x070F, 0x070F }, { 0x0711, 0x0711 }, { 0x0730, 0x074A },
-		{ 0x07A6, 0x07B0 }, { 0x07EB, 0x07F3 }, { 0x0816, 0x0819 },
-		{ 0x081B, 0x0823 }, { 0x0825, 0x0827 }, { 0x0829, 0x082D },
-		{ 0x0859, 0x085B }, { 0x08E4, 0x08FE }, { 0x0900, 0x0902 },
-		{ 0x093A, 0x093A }, { 0x093C, 0x093C }, { 0x0941, 0x0948 },
-		{ 0x094D, 0x094D }, { 0x0951, 0x0957 }, { 0x0962, 0x0963 },
-		{ 0x0981, 0x0981 }, { 0x09BC, 0x09BC }, { 0x09C1, 0x09C4 },
-		{ 0x09CD, 0x09CD }, { 0x09E2, 0x09E3 }, { 0x0A01, 0x0A02 },
-		{ 0x0A3C, 0x0A3C }, { 0x0A41, 0x0A42 }, { 0x0A47, 0x0A48 },
-		{ 0x0A4B, 0x0A4D }, { 0x0A51, 0x0A51 }, { 0x0A70, 0x0A71 },
-		{ 0x0A75, 0x0A75 }, { 0x0A81, 0x0A82 }, { 0x0ABC, 0x0ABC },
-		{ 0x0AC1, 0x0AC5 }, { 0x0AC7, 0x0AC8 }, { 0x0ACD, 0x0ACD },
-		{ 0x0AE2, 0x0AE3 }, { 0x0B01, 0x0B01 }, { 0x0B3C, 0x0B3C },
-		{ 0x0B3F, 0x0B3F }, { 0x0B41, 0x0B44 }, { 0x0B4D, 0x0B4D },
-		{ 0x0B56, 0x0B56 }, { 0x0B62, 0x0B63 }, { 0x0B82, 0x0B82 },
-		{ 0x0BC0, 0x0BC0 }, { 0x0BCD, 0x0BCD }, { 0x0C3E, 0x0C40 },
-		{ 0x0C46, 0x0C48 }, { 0x0C4A, 0x0C4D }, { 0x0C55, 0x0C56 },
-		{ 0x0C62, 0x0C63 }, { 0x0CBC, 0x0CBC }, { 0x0CBF, 0x0CBF },
-		{ 0x0CC6, 0x0CC6 }, { 0x0CCC, 0x0CCD }, { 0x0CE2, 0x0CE3 },
-		{ 0x0D41, 0x0D44 }, { 0x0D4D, 0x0D4D }, { 0x0D62, 0x0D63 },
-		{ 0x0DCA, 0x0DCA }, { 0x0DD2, 0x0DD4 }, { 0x0DD6, 0x0DD6 },
-		{ 0x0E31, 0x0E31 }, { 0x0E34, 0x0E3A }, { 0x0E47, 0x0E4E },
-		{ 0x0EB1, 0x0EB1 }, { 0x0EB4, 0x0EB9 }, { 0x0EBB, 0x0EBC },
-		{ 0x0EC8, 0x0ECD }, { 0x0F18, 0x0F19 }, { 0x0F35, 0x0F35 },
-		{ 0x0F37, 0x0F37 }, { 0x0F39, 0x0F39 }, { 0x0F71, 0x0F7E },
-		{ 0x0F80, 0x0F84 }, { 0x0F86, 0x0F87 }, { 0x0F8D, 0x0F97 },
-		{ 0x0F99, 0x0FBC }, { 0x0FC6, 0x0FC6 }, { 0x102D, 0x1030 },
-		{ 0x1032, 0x1037 }, { 0x1039, 0x103A }, { 0x103D, 0x103E },
-		{ 0x1058, 0x1059 }, { 0x105E, 0x1060 }, { 0x1071, 0x1074 },
-		{ 0x1082, 0x1082 }, { 0x1085, 0x1086 }, { 0x108D, 0x108D },
-		{ 0x109D, 0x109D }, { 0x1160, 0x11FF }, { 0x135D, 0x135F },
-		{ 0x1712, 0x1714 }, { 0x1732, 0x1734 }, { 0x1752, 0x1753 },
-		{ 0x1772, 0x1773 }, { 0x17B4, 0x17B5 }, { 0x17B7, 0x17BD },
-		{ 0x17C6, 0x17C6 }, { 0x17C9, 0x17D3 }, { 0x17DD, 0x17DD },
-		{ 0x180B, 0x180D }, { 0x18A9, 0x18A9 }, { 0x1920, 0x1922 },
-		{ 0x1927, 0x1928 }, { 0x1932, 0x1932 }, { 0x1939, 0x193B },
-		{ 0x1A17, 0x1A18 }, { 0x1A56, 0x1A56 }, { 0x1A58, 0x1A5E },
-		{ 0x1A60, 0x1A60 }, { 0x1A62, 0x1A62 }, { 0x1A65, 0x1A6C },
-		{ 0x1A73, 0x1A7C }, { 0x1A7F, 0x1A7F }, { 0x1B00, 0x1B03 },
-		{ 0x1B34, 0x1B34 }, { 0x1B36, 0x1B3A }, { 0x1B3C, 0x1B3C },
-		{ 0x1B42, 0x1B42 }, { 0x1B6B, 0x1B73 }, { 0x1B80, 0x1B81 },
-		{ 0x1BA2, 0x1BA5 }, { 0x1BA8, 0x1BA9 }, { 0x1BAB, 0x1BAB },
-		{ 0x1BE6, 0x1BE6 }, { 0x1BE8, 0x1BE9 }, { 0x1BED, 0x1BED },
-		{ 0x1BEF, 0x1BF1 }, { 0x1C2C, 0x1C33 }, { 0x1C36, 0x1C37 },
-		{ 0x1CD0, 0x1CD2 }, { 0x1CD4, 0x1CE0 }, { 0x1CE2, 0x1CE8 },
-		{ 0x1CED, 0x1CED }, { 0x1CF4, 0x1CF4 }, { 0x1DC0, 0x1DE6 },
-		{ 0x1DFC, 0x1DFF }, { 0x200B, 0x200F }, { 0x202A, 0x202E },
-		{ 0x2060, 0x2064 }, { 0x206A, 0x206F }, { 0x20D0, 0x20F0 },
-		{ 0x2CEF, 0x2CF1 }, { 0x2D7F, 0x2D7F }, { 0x2DE0, 0x2DFF },
-		{ 0x302A, 0x302D }, { 0x3099, 0x309A }, { 0xA66F, 0xA672 },
-		{ 0xA674, 0xA67D }, { 0xA69F, 0xA69F }, { 0xA6F0, 0xA6F1 },
-		{ 0xA802, 0xA802 }, { 0xA806, 0xA806 }, { 0xA80B, 0xA80B },
-		{ 0xA825, 0xA826 }, { 0xA8C4, 0xA8C4 }, { 0xA8E0, 0xA8F1 },
-		{ 0xA926, 0xA92D }, { 0xA947, 0xA951 }, { 0xA980, 0xA982 },
-		{ 0xA9B3, 0xA9B3 }, { 0xA9B6, 0xA9B9 }, { 0xA9BC, 0xA9BC },
-		{ 0xAA29, 0xAA2E }, { 0xAA31, 0xAA32 }, { 0xAA35, 0xAA36 },
-		{ 0xAA43, 0xAA43 }, { 0xAA4C, 0xAA4C }, { 0xAAB0, 0xAAB0 },
-		{ 0xAAB2, 0xAAB4 }, { 0xAAB7, 0xAAB8 }, { 0xAABE, 0xAABF },
-		{ 0xAAC1, 0xAAC1 }, { 0xAAEC, 0xAAED }, { 0xAAF6, 0xAAF6 },
-		{ 0xABE5, 0xABE5 }, { 0xABE8, 0xABE8 }, { 0xABED, 0xABED },
-		{ 0xFB1E, 0xFB1E }, { 0xFE00, 0xFE0F }, { 0xFE20, 0xFE26 },
-		{ 0xFEFF, 0xFEFF }, { 0xFFF9, 0xFFFB }, { 0x101FD, 0x101FD },
-		{ 0x10A01, 0x10A03 }, { 0x10A05, 0x10A06 }, { 0x10A0C, 0x10A0F },
-		{ 0x10A38, 0x10A3A }, { 0x10A3F, 0x10A3F }, { 0x11001, 0x11001 },
-		{ 0x11038, 0x11046 }, { 0x11080, 0x11081 }, { 0x110B3, 0x110B6 },
-		{ 0x110B9, 0x110BA }, { 0x110BD, 0x110BD }, { 0x11100, 0x11102 },
-		{ 0x11127, 0x1112B }, { 0x1112D, 0x11134 }, { 0x11180, 0x11181 },
-		{ 0x111B6, 0x111BE }, { 0x116AB, 0x116AB }, { 0x116AD, 0x116AD },
-		{ 0x116B0, 0x116B5 }, { 0x116B7, 0x116B7 }, { 0x16F8F, 0x16F92 },
-		{ 0x1D167, 0x1D169 }, { 0x1D173, 0x1D182 }, { 0x1D185, 0x1D18B },
-		{ 0x1D1AA, 0x1D1AD }, { 0x1D242, 0x1D244 }, { 0xE0001, 0xE0001 },
-		{ 0xE0020, 0xE007F }, { 0xE0100, 0xE01EF }
-	};
+static const struct mb_ucsrange joe_ctrlchars[] = {
+	{ 0x200B, 0x200F },
+	{ 0x2028, 0x202E },
+	{ 0x2060, 0x2063 },
+	{ 0x206A, 0x206F },
+	{ 0xFDD0, 0xFDEF },
+	{ 0xFEFF, 0xFEFF },
+	{ 0xFFF9, 0xFFFB },
+	{ 0xFFFE, 0xFFFF }
+};
 
+int joe_wcwidth(int wide, unsigned int ucs)
+{
 	/* If terminal is not UTF-8 or file is not UTF-8: width is 1 */
 	/* FIXME */
 	if (!locale_map->type || !wide)
-		return 1;
+		return (1);
 
-	/* Control characters are one column wide in JOE */
-	if (ucs < 32 || ucs == 0x7F)
-		return 1;
+	if ((wide = unictrl(ucs)))
+		return (wide);
 
-	/* More control characters... */
-	if (ucs >= 0x80 && ucs < 0xA0)
-		return 4;
+	/* combining characters use 0 screen columns */
+	if (mb_ucsbsearch(mb_ucs_combining, NELEM(mb_ucs_combining), ucs) != (size_t)-1)
+		return (0);
 
-	/* More control characters... */
-	/*XXX revisit all of these -mirabilos */
-	if (ucs >= 0x200B && ucs <= 0x206F) {
-		if (ucs <= 0x200F) return 6;
-		if (ucs >= 0x2028 && ucs <= 0x202E) return 6;
-		if (ucs >= 0x2060 && ucs <= 0x2063) return 6;
-		if (ucs >= 0x206A) return 6;
-	}
-
-	/* More control characters... */
-	if (ucs >= 0xFDD0 && ucs <= 0xFDEF)
-		return 6;
-
-	if (ucs == 0xFEFF)
-		return 6;
-
-	if (ucs >= 0xFFF9 && ucs <= 0xFFFB)
-		return 6;
-
-	if (ucs >= 0xFFFE && ucs <= 0xFFFF)
-		return 6;
-
-	/* binary search in table of non-spacing characters */
-	if (-1 != bisearch(ucs, combining, sizeof(combining) / sizeof(struct interval) - 1))
-		return 0;
-
-	/* if we arrive here, c is not a combining or C0/C1 control char */
-
-	return 1 +
-	  (ucs >= 0x1100 &&
-	   (ucs <= 0x115F ||                    /* Hangul Jamo init. consonants */
-	    ucs == 0x2329 || ucs == 0x232A ||
-	    (ucs >= 0x2E80 && ucs <= 0xA4CF &&
-	     ucs != 0x303F) ||                  /* CJK ... Yi */
-	    (ucs >= 0xAC00 && ucs <= 0xD7A3) || /* Hangul Syllables */
-	    (ucs >= 0xF900 && ucs <= 0xFAFF) || /* CJK Compatibility Ideographs */
-	    (ucs >= 0xFE10 && ucs <= 0xFE19) || /* Vertical forms */
-	    (ucs >= 0xFE30 && ucs <= 0xFE6F) || /* CJK Compatibility Forms */
-	    (ucs >= 0xFF00 && ucs <= 0xFF60) || /* Fullwidth Forms */
-	    (ucs >= 0xFFE0 && ucs <= 0xFFE6) ||
-	    (ucs >= 0x20000 && ucs <= 0x2FFFD) ||
-	    (ucs >= 0x30000 && ucs <= 0x3FFFD)));
+	/* all others use 1 or 2 screen columns */
+	if (mb_ucsbsearch(mb_ucs_fullwidth, NELEM(mb_ucs_fullwidth), ucs) != (size_t)-1)
+		return (2);
+	return (1);
 }
 
 /* MAKE_ISW functions... */
 
-static struct interval data_wctype_upper[]=
+static struct mb_ucsrange data_wctype_upper[]=
 {
 	{ 0x0041, 0x005A },
 	{ 0x00C0, 0x00D6 },
@@ -390,7 +455,7 @@ static struct interval data_wctype_upper[]=
 
 MAKE_ISW(upper)
 
-static struct interval data_wctype_lower[]=
+static struct mb_ucsrange data_wctype_lower[]=
 {
 	{ 0x0061, 0x007A },
 	{ 0x00B5, 0x00B5 },
@@ -504,7 +569,7 @@ static struct interval data_wctype_lower[]=
 
 MAKE_ISW(lower)
 
-struct interval data_wctype_alpha[]=
+struct mb_ucsrange data_wctype_alpha[]=
 {
 	{ 0x0041, 0x005A },
 	{ 0x005F, 0x005F },	/* Include _ for joe */
@@ -878,14 +943,14 @@ int joe_iswalnum_(struct charmap *foo,int c)
 		return joe_iswalpha(foo,c);
 }
 
-struct interval data_wctype_digit[]=
+struct mb_ucsrange data_wctype_digit[]=
 {
 	{ 0x0030, 0x0039 }
 };
 
 MAKE_ISW(digit)
 
-struct interval data_wctype_space[]=
+struct mb_ucsrange data_wctype_space[]=
 {
 	{ 0x0009, 0x000D },
 	{ 0x0020, 0x0020 },
@@ -900,7 +965,7 @@ struct interval data_wctype_space[]=
 
 MAKE_ISW(space)
 
-struct interval data_wctype_ctrl[]=
+struct mb_ucsrange data_wctype_ctrl[]=
 {
 	{ 0x0000, 0x001F },
 	{ 0x007F, 0x009F },
@@ -910,7 +975,7 @@ struct interval data_wctype_ctrl[]=
 
 MAKE_ISW(ctrl)
 
-struct interval data_wctype_punct[]=
+struct mb_ucsrange data_wctype_punct[]=
 {
 	{ 0x0021, 0x002F },
 	{ 0x003A, 0x0040 },
@@ -1165,7 +1230,7 @@ struct interval data_wctype_punct[]=
 
 MAKE_ISW(punct)
 
-struct interval data_wctype_graph[]=
+struct mb_ucsrange data_wctype_graph[]=
 {
 	{ 0x0021, 0x007E },
 	{ 0x00A0, 0x0220 },
@@ -1560,7 +1625,7 @@ struct interval data_wctype_graph[]=
 
 MAKE_ISW(graph)
 
-struct interval data_wctype_print[]=
+struct mb_ucsrange data_wctype_print[]=
 {
 	{ 0x0020, 0x007E },
 	{ 0x00A0, 0x0220 },
@@ -1954,7 +2019,7 @@ struct interval data_wctype_print[]=
 
 MAKE_ISW(print)
 
-struct interval data_wctype_xdigit[]=
+struct mb_ucsrange data_wctype_xdigit[]=
 {
 	{ 0x0030, 0x0039 },
 	{ 0x0041, 0x0046 },
@@ -1963,7 +2028,7 @@ struct interval data_wctype_xdigit[]=
 
 MAKE_ISW(xdigit)
 
-struct interval data_wctype_blank[]=
+struct mb_ucsrange data_wctype_blank[]=
 {
 	{ 0x0009, 0x0009 },
 	{ 0x0020, 0x0020 },
@@ -1978,7 +2043,7 @@ MAKE_ISW(blank)
 
 /* Conversion functions */
 
-static struct interval data_wctype_toupper[]=
+static struct mb_ucsrange data_wctype_toupper[]=
 {
 	{ 0x0061, 0x0041 },
 	{ 0x0062, 0x0042 },
@@ -2741,13 +2806,13 @@ static struct interval data_wctype_toupper[]=
 	{ 0x0001044D, 0x00010425 }
 };
 
-static struct interval *data_wctype_toupper_i;
+static struct mb_ucsrange *data_wctype_toupper_i;
 static int toupper_i_size;
 static int *toupper_cvt;
 
 int joe_towupper(struct charmap *foo,int c)
 {
-	int idx;
+	size_t idx;
 
 	if (c>=0x61 && c<=0x7A)
 		return c+0x41-0x61;
@@ -2758,31 +2823,31 @@ int joe_towupper(struct charmap *foo,int c)
 	if (!data_wctype_toupper_i) {
 		int x;
 		int y = -1;
-		data_wctype_toupper_i = (struct interval *)malloc(sizeof(data_wctype_toupper));
-		toupper_cvt = (int *)malloc(sizeof(data_wctype_toupper)/sizeof(struct interval)*sizeof(int));
+		data_wctype_toupper_i = (struct mb_ucsrange *)malloc(sizeof(data_wctype_toupper));
+		toupper_cvt = (int *)malloc(sizeof(data_wctype_toupper)/sizeof(struct mb_ucsrange)*sizeof(int));
 
-		for (x=0;x!=sizeof(data_wctype_toupper)/sizeof(struct interval);++x) {
-			if (y == -1 || data_wctype_toupper_i[y].first + 1 != data_wctype_toupper[x].first ||
-			    toupper_cvt[y] != data_wctype_toupper[x].last - data_wctype_toupper[x].first) {
+		for (x=0;x!=sizeof(data_wctype_toupper)/sizeof(struct mb_ucsrange);++x) {
+			if (y == -1 || data_wctype_toupper_i[y].beg + 1 != data_wctype_toupper[x].beg ||
+			    toupper_cvt[y] != data_wctype_toupper[x].end - data_wctype_toupper[x].beg) {
 				++y;
-				data_wctype_toupper_i[y].first = data_wctype_toupper[x].first;
-				data_wctype_toupper_i[y].last = data_wctype_toupper[x].first;
-				toupper_cvt[y] = data_wctype_toupper[x].last - data_wctype_toupper[x].first;
+				data_wctype_toupper_i[y].beg = data_wctype_toupper[x].beg;
+				data_wctype_toupper_i[y].end = data_wctype_toupper[x].beg;
+				toupper_cvt[y] = data_wctype_toupper[x].end - data_wctype_toupper[x].beg;
 			} else
-				++data_wctype_toupper_i[y].last;
+				++data_wctype_toupper_i[y].end;
 		}
-		toupper_i_size = y;
+		toupper_i_size = y + 1;
 	}
 
-	idx = bisearch(c, data_wctype_toupper_i, toupper_i_size);
+	idx = mb_ucsbsearch(data_wctype_toupper_i, toupper_i_size, c);
 
-	if (idx==-1)
+	if (idx == (size_t)-1)
 		return c;
 	else
 		return c+toupper_cvt[idx];
 }
 
-static struct interval data_wctype_tolower[]=
+static struct mb_ucsrange data_wctype_tolower[]=
 {
 	{ 0x0041, 0x0061 },
 	{ 0x0042, 0x0062 },
@@ -3535,13 +3600,13 @@ static struct interval data_wctype_tolower[]=
 	{ 0x00010425, 0x0001044D }
 };
 
-static struct interval *data_wctype_tolower_i;
+static struct mb_ucsrange *data_wctype_tolower_i;
 static int tolower_i_size;
 static int *tolower_cvt;
 
 int joe_towlower(struct charmap *foo,int c)
 {
-	int idx;
+	size_t idx;
 
 	if (c>=0x41 && c<=0x5A)
 		return c + 0x61 - 0x41;
@@ -3552,25 +3617,25 @@ int joe_towlower(struct charmap *foo,int c)
 	if (!data_wctype_tolower_i) {
 		int x;
 		int y = -1;
-		data_wctype_tolower_i = (struct interval *)malloc(sizeof(data_wctype_tolower));
-		tolower_cvt = (int *)malloc(sizeof(data_wctype_tolower)/sizeof(struct interval)*sizeof(int));
+		data_wctype_tolower_i = (struct mb_ucsrange *)malloc(sizeof(data_wctype_tolower));
+		tolower_cvt = (int *)malloc(sizeof(data_wctype_tolower)/sizeof(struct mb_ucsrange)*sizeof(int));
 
-		for (x=0;x!=sizeof(data_wctype_tolower)/sizeof(struct interval);++x) {
-			if (y == -1 || data_wctype_tolower_i[y].last + 1 != data_wctype_tolower[x].first ||
-			    tolower_cvt[y] != data_wctype_tolower[x].last - data_wctype_tolower[x].first) {
+		for (x=0;x!=sizeof(data_wctype_tolower)/sizeof(struct mb_ucsrange);++x) {
+			if (y == -1 || data_wctype_tolower_i[y].end + 1 != data_wctype_tolower[x].beg ||
+			    tolower_cvt[y] != data_wctype_tolower[x].end - data_wctype_tolower[x].beg) {
 				++y;
-				data_wctype_tolower_i[y].first = data_wctype_tolower[x].first;
-				data_wctype_tolower_i[y].last = data_wctype_tolower[x].first;
-				tolower_cvt[y] = data_wctype_tolower[x].last - data_wctype_tolower[x].first;
+				data_wctype_tolower_i[y].beg = data_wctype_tolower[x].beg;
+				data_wctype_tolower_i[y].end = data_wctype_tolower[x].beg;
+				tolower_cvt[y] = data_wctype_tolower[x].end - data_wctype_tolower[x].beg;
 			} else
-				++data_wctype_tolower_i[y].last;
+				++data_wctype_tolower_i[y].end;
 		}
-		tolower_i_size = y;
+		tolower_i_size = y + 1;
 	}
 
-	idx = bisearch(c, data_wctype_tolower_i, tolower_i_size);
+	idx = mb_ucsbsearch(data_wctype_tolower_i, tolower_i_size, c);
 
-	if (idx==-1)
+	if (idx == (size_t)-1)
 		return c;
 	else
 		return c+tolower_cvt[idx];
@@ -3601,37 +3666,22 @@ main(int argc,char *argv[])
 */
 
 /* Return true if c is a control character which should not be displayed */
-/* This should match mk_wcwidth() */
-
-int unictrl(int ucs)
+int unictrl(unsigned int ucs)
 {
-	/* Control characters are one column wide in JOE */
+	/* C0 Control characters are one column wide in JOE */
 	if (ucs < 32 || ucs == 0x7F)
-		return 1;
+		return (1);
 
-	if (ucs >= 0x80 && ucs <= 0x9F)
-		return 4;
-
-	/* More control characters... */
-	if (ucs>=0x200b && ucs<=0x206f) {
-		if (ucs<=0x200f) return 6;
-		if (ucs>=0x2028 && ucs<=0x202E) return 6;
-		if (ucs>=0x2060 && ucs<=0x2063) return 6;
-		if (ucs>=0x206a) return 6;
-	}
+	/* C1 control characters... */
+	if (ucs >= 0x80 && ucs < 0xA0)
+		return (4);
 
 	/* More control characters... */
-	if (ucs>=0xFDD0 && ucs<=0xFDEF)
-		return 6;
+	if (mb_ucsbsearch(joe_ctrlchars, NELEM(joe_ctrlchars), ucs) != (size_t)-1)
+		return (6);
 
-	if (ucs==0xFEFF)
-		return 6;
+	if ((ucs & 0xFFFE) == 0xFFFE)
+		return (ucs > 0xFFFFF ? 8 : 7);
 
-	if (ucs>=0xFFF9 && ucs<=0xFFFB)
-		return 6;
-
-	if (ucs>=0xFFFE && ucs<=0xFFFF)
-		return 6;
-
-	return 0;
+	return (0);
 }

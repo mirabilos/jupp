@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/i18n.h,v 1.2 2008/05/13 13:08:22 tg Exp $ */
+/* $MirOS: contrib/code/jupp/i18n.h,v 1.3 2013/05/31 23:27:18 tg Exp $ */
 
 #ifndef _Ii18n
 #define _Ii18n 1
@@ -24,12 +24,12 @@ int joe_iswprint PARAMS((struct charmap *,int c));
 int joe_iswxdigit PARAMS((struct charmap *,int c));
 int joe_iswblank PARAMS((struct charmap *,int c));
 
-int joe_wcwidth PARAMS((int wide,int c));
+int joe_wcwidth PARAMS((int wide, unsigned int c));
 /* Looking for wswidth? Take a look at scrn.c/txtwidth() */
 
 int joe_towupper PARAMS((struct charmap *,int c));
 int joe_towlower PARAMS((struct charmap *,int c));
 
-int unictrl PARAMS((int c));
+int unictrl PARAMS((unsigned int c));
 
 #endif
