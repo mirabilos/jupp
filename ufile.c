@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ufile.c,v 1.8 2012/12/20 21:39:28 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ufile.c,v 1.9 2013/08/19 22:14:51 tg Exp $ */
 /*
  * 	User file operations
  *	Copyright
@@ -246,38 +246,21 @@ backup(BW *bw)
 		joe_snprintf_2((char *)name, sizeof(name), "%s%s", bw->b->name, simple_backup_suffix);
 	}
 
-#ifdef HAVE_MKSTEMP
 	/* Securely generate a backup file temporary file */
-	joe_snprintf_1((char *)tmp, sizeof(tmp), "%s.XXXXXXXXXX", name);
-	if ((fd = mkstemp((char *)tmp)) < 0) {
+	simple_backup_suffix = dirprt(name);
+	if ((simple_backup_suffix = mktmp(simple_backup_suffix, &fd)) == NULL)
 		return (1);
-	}
-#endif
 
 	/* Attempt to delete backup file first */
 	unlink((char *)name);
 
-#ifdef HAVE_MKSTEMP
 	/* Copy original file to backup file securely */
-	if (cp(bw->b->name, fd, tmp, name)) {
+	if (cp(bw->b->name, fd, simple_backup_suffix, name)) {
 		close(fd);
-		unlink((char *)tmp);
+		unlink((char *)simple_backup_suffix);
 		return (1);
 	}
-#else
-	/* Yeowch! */
-	if ((fd = creat((char *)name, 0600)) < 0) {
-		return (1);
-	}
-#warning "TOCTOU temp file race here! Consider getting mkstemp!"
 
-	/* Copy original file to backup file */
-	if (cp(bw->b->name, fd, NULL, name)) {
-		close(fd);
-		unlink((char *)name);
-		return (1);
-	}
-#endif
 	bw->b->backup = 1;
 	return (0);
 }
