@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/path.c,v 1.9 2013/08/19 22:03:19 tg Exp $ */
+/* $MirOS: contrib/code/jupp/path.c,v 1.10 2013/08/19 22:48:32 tg Exp $ */
 /* 
  *	Directory and path functions
  *	Copyright
@@ -132,7 +132,7 @@ unsigned char *namepart(unsigned char *tmp, unsigned char *path)
 	return (tmp);
 }
 /********************************************************************/
-unsigned char *dirprt(unsigned char *path)
+unsigned char *dirprt_ptr(unsigned char *path)
 {
 	unsigned char *b = path;
 	unsigned char *z = path + slen(path);
@@ -140,7 +140,11 @@ unsigned char *dirprt(unsigned char *path)
 	skip_drive_letter(b);
 	while ((z != b) && (z[-1] != '/'))
 		--z;
-	return vsncpy(NULL, 0, path, z - path);
+	return (z);
+}
+unsigned char *dirprt(unsigned char *path)
+{
+	return vsncpy(NULL, 0, path, dirprt_ptr(path) - path);
 }
 /********************************************************************/
 unsigned char *begprt(unsigned char *path)

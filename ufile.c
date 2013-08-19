@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ufile.c,v 1.9 2013/08/19 22:14:51 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ufile.c,v 1.10 2013/08/19 22:48:33 tg Exp $ */
 /*
  * 	User file operations
  *	Copyright
@@ -247,8 +247,17 @@ backup(BW *bw)
 	}
 
 	/* Securely generate a backup file temporary file */
-	simple_backup_suffix = dirprt(name);
-	if ((simple_backup_suffix = mktmp(simple_backup_suffix, &fd)) == NULL)
+	*tmp = '\0';
+	if (*name != '/') {
+		/* relative pathname */
+		if (!getcwd((char *)tmp, sizeof(tmp)) ||
+		    strlcat((char *)tmp, "/", sizeof(tmp)) >= sizeof(tmp))
+			return (1);
+	}
+	if (strlcat((char *)tmp, (char *)name, sizeof(tmp)) >= sizeof(tmp))
+		return (1);
+	*(dirprt_ptr(tmp)) = '\0';
+	if ((simple_backup_suffix = mktmp(tmp, &fd)) == NULL)
 		return (1);
 
 	/* Attempt to delete backup file first */

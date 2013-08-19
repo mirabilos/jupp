@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/path.h,v 1.7 2013/08/19 22:03:20 tg Exp $ */
+/* $MirOS: contrib/code/jupp/path.h,v 1.8 2013/08/19 22:48:33 tg Exp $ */
 /*
  *	Directory and path functions
  *	Copyright
@@ -32,8 +32,11 @@ unsigned char *namepart PARAMS((unsigned char *tmp, unsigned char *path))
  * The directory part of "/hello/there" is "/hello/"
  * The directory part of "/hello/" is "/hello/"
  * The directory part of "/" is "/"
+ *
+ * dirprt_ptr points to just beyond what dirprt returns.
  */
 unsigned char *dirprt PARAMS((unsigned char *path));
+unsigned char *dirprt_ptr PARAMS((unsigned char *path));
 
 /* char *begprt(char *path);
  * Return the beginning part of a path.
