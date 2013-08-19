@@ -1,10 +1,11 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.74 2013/05/31 23:27:16 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.75 2013/08/19 18:25:44 tg Exp $
 ------------------------------------------------------------------
 
 JOE-current
 
 - Better colouring of diffs; better support for CVS and git
 - New wcwidth code; aligned with Unicode 6.2.0
+- On SIGWINCH, resize menu to avoid using stale columns information
 
 JOE 3.1jupp24
 

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/types.h,v 1.11 2012/12/30 21:45:17 tg Exp $ */
+/* $MirOS: contrib/code/jupp/types.h,v 1.12 2013/08/19 18:25:44 tg Exp $ */
 
 #ifndef _JOE_TYPES_H
 #define _JOE_TYPES_H
@@ -329,6 +329,7 @@ struct menu {
 	int	width;		/* Width of widest item, up to 'w' max */
 	int	perline;	/* Number of items on each line */
 	int	nitems;		/* No. items in list */
+	int	saved_co;	/* Saved #columns of screen */
 	SCREEN	*t;		/* Screen we're on */
 	int	h, w, x, y;
 	int	(*abrt) ();	/* Abort callback function */

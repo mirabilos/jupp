@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/menu.c,v 1.5 2012/12/22 00:06:13 tg Exp $ */
+/* $MirOS: contrib/code/jupp/menu.c,v 1.6 2013/08/19 18:25:44 tg Exp $ */
 /*
  *	Menu selection window
  *	Copyright
@@ -20,6 +20,8 @@
 
 extern int dostaupd;
 
+static void mconfig(MENU *);
+
 static void menufllw(MENU *m)
 {
 	if (m->cursor < m->top)
@@ -38,6 +40,9 @@ static void menudisp(MENU *m)
 	struct utf8_sm sm;
 
 	utf8_init(&sm);
+
+	if (m->t->t->co != m->saved_co)
+		mconfig(m);
 
 	for (y = 0; y != m->h; ++y) {
 		col = 0;
@@ -140,6 +145,8 @@ static void mconfig(MENU *m)
 		m->perline = m->w / (m->width + 1);
 
 		/* lines = (m->nitems + m->perline - 1) / m->perline; */
+
+		m->saved_co = m->t->t->co;
 	}
 }
 
@@ -427,6 +434,7 @@ MENU *mkmenu(W *w, unsigned char **s, int (*func) (/* ??? */), int (*abrt) (/* ?
 	m->x = new->x;
 	m->y = new->y;
 	m->top = 0;
+	m->saved_co = 0;
 	ldmenu(m, s, cursor);
 	w->t->curwin = new;
 	return m;
