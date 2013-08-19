@@ -81,6 +81,9 @@ properly fit.  If this doesn't work, either ttgtsz() (in tty.c) is not
 reading the size properly, or the SIGWINCH signal is not being received
 by JOE (the handler is winchd() in tty.c).
 
+JOE requires a certain minimum window size, which differs between the
+functions needing it. Do not complain if your window is *much* too small.
+
 Baud rate:
 ----------
 
@@ -427,4 +430,4 @@ joe's stdin/stdout to /dev/tty:
 	joe filename  </dev/tty >/dev/tty
 
 ___________________________________________________________________
-$MirOS: contrib/code/jupp/README,v 1.4 2012/08/23 19:55:07 tg Exp $
+$MirOS: contrib/code/jupp/README,v 1.5 2013/08/19 23:05:08 tg Exp $

@@ -1,11 +1,21 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.75 2013/08/19 18:25:44 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.76 2013/08/19 23:05:07 tg Exp $
 ------------------------------------------------------------------
 
-JOE-current
+JOE 3.1jupp25
 
 - Better colouring of diffs; better support for CVS and git
 - New wcwidth code; aligned with Unicode 6.2.0
+- Prevent accidentally freeing an environment string
 - On SIGWINCH, resize menu to avoid using stale columns information
+- msg command with empty argument now clears message buffer
+- New "nop" command
+- Permit changing keymap for prompt windows
+- Fix CUA keymap paste mode
+- Handle xterm bracketed paste for prompt windows
+- In prompt windows (paste or regular), ^L is now nop (screen refresh)
+- Honour TMPDIR environment variable (before TEMP)
+- Sanitise handling of temporary files, somewhat
+- Fix subprocess (pipe) corruption of data (LP#1198221)
 
 JOE 3.1jupp24
 
