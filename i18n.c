@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/i18n.c,v 1.7 2013/05/31 23:27:17 tg Exp $ */
+/* $MirOS: contrib/code/jupp/i18n.c,v 1.8 2013/08/19 17:39:29 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 functions for JOE
  *	Copyright
@@ -2828,7 +2828,7 @@ int joe_towupper(struct charmap *foo,int c)
 
 		for (x=0;x!=sizeof(data_wctype_toupper)/sizeof(struct mb_ucsrange);++x) {
 			if (y == -1 || data_wctype_toupper_i[y].beg + 1 != data_wctype_toupper[x].beg ||
-			    toupper_cvt[y] != data_wctype_toupper[x].end - data_wctype_toupper[x].beg) {
+			    toupper_cvt[y] != (int)(data_wctype_toupper[x].end - data_wctype_toupper[x].beg)) {
 				++y;
 				data_wctype_toupper_i[y].beg = data_wctype_toupper[x].beg;
 				data_wctype_toupper_i[y].end = data_wctype_toupper[x].beg;
@@ -3622,7 +3622,7 @@ int joe_towlower(struct charmap *foo,int c)
 
 		for (x=0;x!=sizeof(data_wctype_tolower)/sizeof(struct mb_ucsrange);++x) {
 			if (y == -1 || data_wctype_tolower_i[y].end + 1 != data_wctype_tolower[x].beg ||
-			    tolower_cvt[y] != data_wctype_tolower[x].end - data_wctype_tolower[x].beg) {
+			    tolower_cvt[y] != (int)(data_wctype_tolower[x].end - data_wctype_tolower[x].beg)) {
 				++y;
 				data_wctype_tolower_i[y].beg = data_wctype_tolower[x].beg;
 				data_wctype_tolower_i[y].end = data_wctype_tolower[x].beg;
