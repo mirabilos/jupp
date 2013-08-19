@@ -15,6 +15,9 @@ Disable the following warnings; the code doesn't cope with it:
 -Wno-cast-qual
 -Wno-missing-prototypes -Wno-missing-declarations
 
+Additionally, -Wstrict-overflow bitches around if you enable it.
+This needs verification and possibly fixes.
+
 UTF-8
 -----
 
@@ -128,4 +131,4 @@ will not insert.
 - Search, incremental search, and search & replace all operate as usual.
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/HINTS,v 1.6 2011/10/04 22:47:50 tg Exp $
+$MirOS: contrib/code/jupp/HINTS,v 1.7 2013/08/19 22:04:14 tg Exp $

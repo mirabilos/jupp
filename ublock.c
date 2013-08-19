@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ublock.c,v 1.9 2013/07/05 15:16:05 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ublock.c,v 1.10 2013/08/19 22:04:15 tg Exp $ */
 /*
  * 	Highlighted block functions
  *	Copyright
@@ -29,6 +29,7 @@
 #include "uedit.h"
 #include "utils.h"
 #include "vs.h"
+#include "path.h"
 #include "poshist.h"
 #include "ushell.h"
 #include "utf8.h"
@@ -938,11 +939,22 @@ int doinsf(BW *bw, unsigned char *s, void *object, int *notify)
 
 static int filtflg = 0;
 
+/*
+ * This isn't optimal, but until the home-brewn VM system is removed
+ * it is the best we can do: we cannot use bsavefd() in a concurrent
+ * child because it uses JOE's VM subsystem which then copies around
+ * content in file-backed memory that's not unshared, leading to da-
+ * ta corruption if the content is big enough.
+ *
+ * TBH, I'd rather love to see that VM system gone and revert to the
+ * JOE original code for dofilt... --mirabilos
+ */
 static int dofilt(BW *bw, unsigned char *s, void *object, int *notify)
 {
 	int fr[2];
-	int fw[2];
+	int fw;
 	int flg = 0;
+	unsigned char *tf;
 
 	if (notify)
 		*notify = 1;
@@ -956,17 +968,28 @@ static int dofilt(BW *bw, unsigned char *s, void *object, int *notify)
       ok:
 
 	if (pipe(fr)) {
- piperr:
 		msgnw(bw->parent, US "Pipe error");
 		return (-1);
 	}
-	if (pipe(fw)) {
+	if ((tf = mktmp(NULL, &fw)) == NULL) {
 		close(fr[0]);
 		close(fr[1]);
-		goto piperr;
+		msgnw(bw->parent, US "Cannot create temporary file");
+		return (-1);
 	}
+	unlink((char *)tf);
+	vsrm(tf);
 	npartial(bw->parent->t->t);
 	ttclsn();
+	if (square) {
+		B *tmp = pextrect(markb,
+				  markk->line - markb->line + 1,
+				  markk->xcol);
+
+		bsavefd(tmp->bof, fw, tmp->eof->byte);
+	} else
+		bsavefd(markb, fw, markk->byte - markb->byte);
+	lseek(fw, (off_t)0, SEEK_SET);
 	if (!fork()) {
 		const char *sh;
 #ifdef HAVE_PUTENV
@@ -978,12 +1001,11 @@ static int dofilt(BW *bw, unsigned char *s, void *object, int *notify)
 		close(1);
 		close(2);
 		/* these dups will not fail */
-		if (dup(fw[0])) {}
+		if (dup(fw)) {}
 		if (dup(fr[1])) {}
 		if (dup(fr[1])) {}
-		close(fw[0]);
+		close(fw);
 		close(fr[1]);
-		close(fw[1]);
 		close(fr[0]);
 #ifdef HAVE_PUTENV
 		fname = vsncpy(NULL, 0, sc("JOE_FILENAME="));
@@ -998,69 +1020,54 @@ static int dofilt(BW *bw, unsigned char *s, void *object, int *notify)
 		_exit(0);
 	}
 	close(fr[1]);
-	close(fw[0]);
-	if (fork()) {
-		close(fw[1]);
-		if (square) {
-			B *tmp;
-			long width = markk->xcol - markb->xcol;
-			long height;
-			int usetabs = ptabrect(markb,
-					       markk->line - markb->line + 1,
-					       markk->xcol);
+	close(fw);
+	if (square) {
+		B *tmp;
+		long width = markk->xcol - markb->xcol;
+		long height;
+		int usetabs = ptabrect(markb,
+				       markk->line - markb->line + 1,
+				       markk->xcol);
 
-			tmp = bread(fr[0], MAXLONG);
-			if (piscol(tmp->eof))
-				height = tmp->eof->line + 1;
-			else
-				height = tmp->eof->line;
-			if (bw->o.overtype) {
-				pclrrect(markb, markk->line - markb->line + 1, markk->xcol, usetabs);
-				pdelrect(markb, long_max(height, markk->line - markb->line + 1), width + markb->xcol);
-			} else
-				pdelrect(markb, markk->line - markb->line + 1, markk->xcol);
-			pinsrect(markb, tmp, width, usetabs);
-			pdupown(markb, &markk);
-			markk->xcol = markb->xcol;
-			if (height) {
-				pline(markk, markk->line + height - 1);
-				pcol(markk, markb->xcol + width);
-				markk->xcol = markb->xcol + width;
-			}
-			if (lightoff)
-				unmark(bw);
-			brm(tmp);
-			updall();
-		} else {
-			P *p = pdup(markk);
-			if (!flg)
-				prgetc(p);
-			bdel(markb, p);
-			binsb(p, bread(fr[0], MAXLONG));
-			if (!flg) {
-				pset(p,markk);
-				prgetc(p);
-				bdel(p,markk);
-			}
-			prm(p);
-			if (lightoff)
-				unmark(bw);
-		}
-		close(fr[0]);
-		wait(NULL);
-		wait(NULL);
-	} else {
-		if (square) {
-			B *tmp = pextrect(markb,
-					  markk->line - markb->line + 1,
-					  markk->xcol);
-
-			bsavefd(tmp->bof, fw[1], tmp->eof->byte);
+		tmp = bread(fr[0], MAXLONG);
+		if (piscol(tmp->eof))
+			height = tmp->eof->line + 1;
+		else
+			height = tmp->eof->line;
+		if (bw->o.overtype) {
+			pclrrect(markb, markk->line - markb->line + 1, markk->xcol, usetabs);
+			pdelrect(markb, long_max(height, markk->line - markb->line + 1), width + markb->xcol);
 		} else
-			bsavefd(markb, fw[1], markk->byte - markb->byte);
-		close(fw[1]);
-		_exit(0);
+			pdelrect(markb, markk->line - markb->line + 1, markk->xcol);
+		pinsrect(markb, tmp, width, usetabs);
+		pdupown(markb, &markk);
+		markk->xcol = markb->xcol;
+		if (height) {
+			pline(markk, markk->line + height - 1);
+			pcol(markk, markb->xcol + width);
+			markk->xcol = markb->xcol + width;
+		}
+		if (lightoff)
+			unmark(bw);
+		brm(tmp);
+		updall();
+	} else {
+		P *p = pdup(markk);
+		if (!flg)
+			prgetc(p);
+		bdel(markb, p);
+		binsb(p, bread(fr[0], MAXLONG));
+		if (!flg) {
+			pset(p,markk);
+			prgetc(p);
+			bdel(p,markk);
+		}
+		prm(p);
+		if (lightoff)
+			unmark(bw);
 	}
+	close(fr[0]);
+	wait(NULL);
 	vsrm(s);
 	ttopnn();
 	if (filtflg)
