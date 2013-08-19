@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/LIST,v 1.7 2012/12/30 21:45:11 tg Exp $
+$MirOS: contrib/code/jupp/LIST,v 1.8 2013/08/19 19:19:30 tg Exp $
 -----------------------------------------------------------------
 
 Joe commands grouped by function
@@ -185,7 +185,8 @@ math		Calculator
 mathins		Insert last math expression
 mathres		Insert last math result
 mode		Mode prompt
-msg		Display a message
+msg		Display a message (clear message if empty)
+nop		Do nothing
 notmod		Clear the modified flag
 retype		Refresh screen
 shell		Suspend process or execute a sub-shell

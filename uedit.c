@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/uedit.c,v 1.9 2009/10/18 16:02:02 tg Exp $ */
+/* $MirOS: contrib/code/jupp/uedit.c,v 1.10 2013/08/19 19:19:31 tg Exp $ */
 /*
  *	Basic user edit functions
  *	Copyright
@@ -1586,7 +1586,7 @@ static int domsg(BASE *b, unsigned char *s, void *object, int *notify)
 		*notify = 1;
 	strlcpy((char *)msgbuf, (char *)s, JOE_MSGBUFSIZE);
 	vsrm(s);
-	msgnw(b->parent, msgbuf);
+	msgnw(b->parent, *msgbuf ? msgbuf : NULL);
 	return 0;
 }
 

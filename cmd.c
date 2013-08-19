@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/cmd.c,v 1.11 2012/12/30 21:45:13 tg Exp $ */
+/* $MirOS: contrib/code/jupp/cmd.c,v 1.12 2013/08/19 19:19:30 tg Exp $ */
 /*
  *	Command execution
  *	Copyright
@@ -87,6 +87,11 @@ static int ukeymap(BW *bw)
 	return (-1);
 }
 
+static int unop(void)
+{
+	return (0);
+}
+
 CMD cmds[] = {
 	{US "abort", TYPETW + TYPEPW + TYPEMENU + TYPEQW, uabort, NULL, 0, NULL},
 	{US "abortbuf", TYPETW, uabortbuf, NULL, 0, NULL},
@@ -159,7 +164,7 @@ CMD cmds[] = {
 	{US "hprev", TYPETW + TYPEPW + TYPEQW, u_help_prev, NULL, 0, NULL},
 	{US "insc", TYPETW + TYPEPW + EFIXXCOL + EMOD, uinsc, NULL, 1, US "delch"},
 	{US "insf", TYPETW + TYPEPW + EMOD, uinsf, NULL, 0, NULL}, 
-	{US "keymap", TYPETW, ukeymap, NULL, 0, NULL},
+	{US "keymap", TYPETW + TYPEPW, ukeymap, NULL, 0, NULL},
 	{US "lindent", TYPETW + TYPEPW + EFIXXCOL + EMOD + EBLOCK, ulindent, NULL, 1, US "rindent"},
 	{US "line", TYPETW + TYPEPW, uline, NULL, 0, NULL},
 	{US "lose", TYPETW + TYPEPW, ulose, NULL, 0, NULL}, 
@@ -181,6 +186,7 @@ CMD cmds[] = {
 	{US "nextw", TYPETW + TYPEPW + TYPEMENU + TYPEQW, unextw, NULL, 1, US "prevw"},
 	{US "nextword", TYPETW + TYPEPW + EFIXXCOL, u_goto_next, NULL, 1, US "prevword"},
 	{US "nmark", TYPETW + TYPEPW, unmark, NULL, 0, NULL},
+	{US "nop", TYPETW + TYPEPW + TYPEMENU + TYPEQW, unop, NULL, 0, NULL},
 	{US "notmod", TYPETW, unotmod, NULL, 0, NULL},
 	{US "nxterr", TYPETW, unxterr, NULL, 1, US "prverr"},
 	{US "open", TYPETW + TYPEPW + EFIXXCOL + EMOD, uopen, NULL, 1, US "deleol"},

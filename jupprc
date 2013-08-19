@@ -489,7 +489,7 @@
 \i \i go to \uhttp://sf.net/projects/joe-editor/\u for upstream bug reports. JUPP 2.8 \i \i
 \i \i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\d(R)\d \i \i
 \i \i at \uhttp://mirbsd.de/jupp\u and by \bThorsten "\dmirabilos\d" Glaser <\utg@mirbsd.org\u>\b \i \i
-\i \i @(#) jupprc 2013-01-05; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
+\i \i @(#) jupprc 2013-08-19; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
 }
 
 {CharTable
@@ -563,6 +563,21 @@ msg,"Entered bracketed paste mode",rtn	^[ [ 2 0 0 ~
 helpcard,rtn,keymap,"main",rtn,msg,rtn	^[ [ 2 0 1 ~
 helpcard,rtn,keymap,"main",rtn		^D
 
+:Pastecua
+type					^@ TO ÿ
+rtn					^M
+msg,"Entered bracketed paste mode",rtn	^[ [ 2 0 0 ~
+helpcard,rtn,keymap,"cua",rtn,msg,rtn	^[ [ 2 0 1 ~
+helpcard,rtn,keymap,"cua",rtn		^D
+
+:Pasteprompt
+type					^@ TO ÿ
+nop					^L
+keymap,"prompt",rtn,msg,rtn,rtn		^M
+msg,"Entered bracketed paste mode",rtn	^[ [ 2 0 0 ~
+keymap,"prompt",rtn,msg,rtn		^[ [ 2 0 1 ~
+keymap,"prompt",rtn			^D
+
 :main
 :inherit windows
 bof,qrepl,"\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\+\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\$",rtn,rtn,rtn,"r",eof	^K ]
@@ -571,6 +586,7 @@ edit,rtn,filt,query,parserr	^[ c
 helpcard,"Paste",rtn,keymap,"Paste",rtn	^[ P
 helpcard,"Paste",rtn,keymap,"Paste",rtn	^[ p
 helpcard,"Paste",rtn,keymap,"Paste",rtn	^[ [ 2 0 0 ~
+nop					^[ [ 2 0 1 ~
 begin_marking,uparw,toggle_marking	^[ [ 1 ; 2 A
 begin_marking,dnarw,toggle_marking	^[ [ 1 ; 2 B
 begin_marking,rtarw,toggle_marking	^[ [ 1 ; 2 C
@@ -802,6 +818,10 @@ yankpop		^[ y
 :inherit main
 abort		^C
 complete	^I
+nop		^L
+keymap,"Pasteprompt",rtn,msg,"Entered bracketed paste mode",rtn	^[ P
+keymap,"Pasteprompt",rtn,msg,"Entered bracketed paste mode",rtn	^[ p
+keymap,"Pasteprompt",rtn,msg,"Entered bracketed paste mode",rtn	^[ [ 2 0 0 ~
 
 :menu
 :inherit windows
@@ -871,3 +891,6 @@ undo		^Z
 blkdel,nmark	^X
 copy		^C
 yank		^V
+helpcard,"Paste",rtn,keymap,"Pastecua",rtn	^[ P
+helpcard,"Paste",rtn,keymap,"Pastecua",rtn	^[ p
+helpcard,"Paste",rtn,keymap,"Pastecua",rtn	^[ [ 2 0 0 ~
