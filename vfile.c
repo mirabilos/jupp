@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/vfile.c,v 1.6 2012/06/07 22:30:49 tg Exp $ */
+/* $MirOS: contrib/code/jupp/vfile.c,v 1.7 2013/08/19 21:11:45 tg Exp $ */
 /*
  *	Software virtual memory system
  *	Copyright
@@ -66,7 +66,7 @@ void vflsh(void)
 				vfile->fd = open((char *)(vfile->name), O_RDWR);
 			lseek(vfile->fd, addr, 0);
 			if (addr + PGSIZE > vsize(vfile)) {
-				joe_write(vfile->fd, vlowest->data, (int) (vsize(vfile) - addr));
+				joe_write(vfile->fd, vlowest->data, vsize(vfile) - addr);
 				vfile->size = vsize(vfile);
 			} else {
 				joe_write(vfile->fd, vlowest->data, PGSIZE);
@@ -104,7 +104,7 @@ void vflshf(VFILE *vfile)
 		}
 		lseek(vfile->fd, addr, 0);
 		if (addr + PGSIZE > vsize(vfile)) {
-			joe_write(vfile->fd, vlowest->data, (int) (vsize(vfile) - addr));
+			joe_write(vfile->fd, vlowest->data, vsize(vfile) - addr);
 			vfile->size = vsize(vfile);
 		} else {
 			joe_write(vfile->fd, vlowest->data, PGSIZE);
@@ -127,7 +127,7 @@ unsigned char *vlock(VFILE *vfile, unsigned long addr)
 {
 	VPAGE *vp, *pp;
 	int x, y;
-	int ofst = (addr & (PGSIZE - 1));
+	long ofst = (addr & (PGSIZE - 1));
 
 	addr -= ofst;
 
@@ -211,7 +211,7 @@ unsigned char *vlock(VFILE *vfile, unsigned long addr)
 		}
 		lseek(vfile->fd, addr, 0);
 		if (addr + PGSIZE > (unsigned long)vfile->size) {
-			joe_read(vfile->fd, vp->data, (int) (vfile->size - addr));
+			joe_read(vfile->fd, vp->data, vfile->size - addr);
 			mset(vp->data + vfile->size - addr, 0, PGSIZE - (int) (vfile->size - addr));
 		} else
 			joe_read(vfile->fd, vp->data, PGSIZE);
