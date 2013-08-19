@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jstarrc.in,v 1.12 2013/02/15 19:38:45 tg Exp $
+ $MirOS: contrib/code/jupp/jstarrc.in,v 1.15 2013/08/19 19:20:22 tg Exp $
 
                          Initialization file for JOE
                            WordStar / Turbo-C Joe
@@ -763,10 +763,26 @@ msg,"Entered bracketed paste mode",rtn	^[ [ 2 0 0 ~
 helpcard,rtn,keymap,"main",rtn,msg,rtn	^[ [ 2 0 1 ~
 helpcard,rtn,keymap,"main",rtn		^D
 
+:Pastecua
+type					^@ TO ÿ
+rtn					^M
+msg,"Entered bracketed paste mode",rtn	^[ [ 2 0 0 ~
+helpcard,rtn,keymap,"cua",rtn,msg,rtn	^[ [ 2 0 1 ~
+helpcard,rtn,keymap,"cua",rtn		^D
+
+:Pasteprompt
+type					^@ TO ÿ
+nop					^L
+keymap,"prompt",rtn,msg,rtn,rtn		^M
+msg,"Entered bracketed paste mode",rtn	^[ [ 2 0 0 ~
+keymap,"prompt",rtn,msg,rtn		^[ [ 2 0 1 ~
+keymap,"prompt",rtn			^D
+
 :main			Text editing window
 :inherit windows
 
 helpcard,"Paste",rtn,keymap,"Paste",rtn	^[ [ 2 0 0 ~
+nop					^[ [ 2 0 1 ~
 
 begin_marking,uparw,toggle_marking	^[ [ 1 ; 2 A	xterm shift-up mark
 begin_marking,dnarw,toggle_marking	^[ [ 1 ; 2 B	xterm shift-down mark
@@ -1022,6 +1038,10 @@ upslide		^W
 :inherit main
 abort		^C
 complete	^I
+nop		^L
+keymap,"Pasteprompt",rtn,msg,"Entered bracketed paste mode",rtn	^[ P
+keymap,"Pasteprompt",rtn,msg,"Entered bracketed paste mode",rtn	^[ p
+keymap,"Pasteprompt",rtn,msg,"Entered bracketed paste mode",rtn	^[ [ 2 0 0 ~
 
 :menu			Selection menus
 :inherit windows
@@ -1101,3 +1121,6 @@ undo		^Z
 blkdel,nmark	^X
 copy		^C
 yank		^V
+helpcard,"Paste",rtn,keymap,"Pastecua",rtn	^[ P
+helpcard,"Paste",rtn,keymap,"Pastecua",rtn	^[ p
+helpcard,"Paste",rtn,keymap,"Pastecua",rtn	^[ [ 2 0 0 ~
