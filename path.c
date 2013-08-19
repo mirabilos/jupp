@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/path.c,v 1.8 2012/12/19 21:14:53 tg Exp $ */
+/* $MirOS: contrib/code/jupp/path.c,v 1.9 2013/08/19 22:03:19 tg Exp $ */
 /* 
  *	Directory and path functions
  *	Copyright
@@ -211,7 +211,7 @@ int mkpath(unsigned char *path)
 /********************************************************************/
 /* Create a temporary file */
 /********************************************************************/
-unsigned char *mktmp(unsigned char *where)
+unsigned char *mktmp(unsigned char *where, int *fdp)
 {
 #ifndef HAVE_MKSTEMP
 	static unsigned seq = 0;
@@ -220,6 +220,8 @@ unsigned char *mktmp(unsigned char *where)
 	int fd;
 	unsigned namesize;
 
+	if (!where)
+		where = (unsigned char *)getenv("TMPDIR");
 	if (!where)
 		where = (unsigned char *)getenv("TEMP");
 	if (!where)
@@ -231,30 +233,30 @@ unsigned char *mktmp(unsigned char *where)
 				   vsrm(); */
 #ifdef HAVE_MKSTEMP
 	joe_snprintf_1((char *)name, namesize, "%s/joe.tmp.XXXXXXXXXX", where);
-	if((fd = mkstemp((char *)name)) == -1)
-		return NULL;	/* FIXME: vflsh() and vflshf() */
+	if ((fd = mkstemp((char *)name)) == -1)
+		return (NULL);	/* FIXME: vflsh() and vflshf() */
 				/* expect mktmp() always succeed!!! */
-
-	fchmod(fd, 0600);       /* Linux glibc 2.0 mkstemp() creates it with */
+	fchmod(fd, 0600);	/* Linux glibc 2.0 mkstemp() creates it with */
 				/* 0666 mode --> change it to 0600, so nobody */
 				/* else sees content of temporary file */
-	close(fd);
-
 #else
-      loop:
+#warning "Waah, this is insane! Consider getting mkstemp!"
+ loop:
 	seq = (seq + 1) % 10000;
-	joe_snprintf_3(name, namesize, "%s/joe.tmp.%04u%05u", where, seq, (unsigned) time(NULL) % 100000);
+	joe_snprintf_3(name, namesize, "%s/joe.tmp.%04u%05u", where, seq,
+	    (unsigned)(time(NULL) % 100000));
 	if ((fd = open(name, O_RDONLY)) != -1) {
 		close(fd);
 		goto loop;	/* FIXME: possible endless loop --> DoS attack */
 	}
-#warning "Waah, this is insecure! Consider getting mkstemp!"
 	if ((fd = open(name, O_RDWR | O_CREAT | O_EXCL, 0600)) == -1)
-		return NULL;	/* FIXME: see above */
+		return (NULL);	/* FIXME: see above */
+#endif
+	if (fdp)
+		*fdp = fd;
 	else
 		close(fd);
-#endif
-	return name;
+	return (name);
 }
 /********************************************************************/
 int rmatch(unsigned char *a, unsigned char *b)

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/path.h,v 1.6 2011/07/02 22:49:12 tg Exp $ */
+/* $MirOS: contrib/code/jupp/path.h,v 1.7 2013/08/19 22:03:20 tg Exp $ */
 /*
  *	Directory and path functions
  *	Copyright
@@ -63,12 +63,13 @@ unsigned char *endprt PARAMS((unsigned char *path));
  */
 int mkpath PARAMS((unsigned char *path));
 
-/* char *mktmp(char *);
+/* char *mktmp(char *, int *);
  * Create an empty temporary file.  The file name created is the string passed
  * to this function postfixed with /joe.tmp.XXXXXX, where XXXXXX is some
  * string six chars long which makes this file unique.
+ * If second argument is not NULL, fd is kept open and stored there.
 */
-unsigned char *mktmp PARAMS((unsigned char *where));
+unsigned char *mktmp PARAMS((unsigned char *where, int *fdp));
 
 /* Change drive and directory */
 #define chddir chdir

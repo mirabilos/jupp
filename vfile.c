@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/vfile.c,v 1.7 2013/08/19 21:11:45 tg Exp $ */
+/* $MirOS: contrib/code/jupp/vfile.c,v 1.8 2013/08/19 22:03:20 tg Exp $ */
 /*
  *	Software virtual memory system
  *	Copyright
@@ -61,7 +61,8 @@ void vflsh(void)
 				}
 		if (vlowest) {
 			if (!vfile->name)
-				vfile->name = mktmp(NULL);
+				vfile->name = mktmp(NULL,
+				    vfile->fd ? NULL : &vfile->fd);
 			if (!vfile->fd)
 				vfile->fd = open((char *)(vfile->name), O_RDWR);
 			lseek(vfile->fd, addr, 0);
@@ -98,7 +99,8 @@ void vflshf(VFILE *vfile)
 			}
 	if (vlowest) {
 		if (!vfile->name)
-			vfile->name = mktmp(NULL);
+			vfile->name = mktmp(NULL,
+			    vfile->fd ? NULL : &vfile->fd);
 		if (!vfile->fd) {
 			vfile->fd = open((char *)(vfile->name), O_RDWR);
 		}
