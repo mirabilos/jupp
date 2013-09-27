@@ -1,5 +1,10 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.76 2013/08/19 23:05:07 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.77 2013/09/27 00:51:52 tg Exp $
 ------------------------------------------------------------------
+
+JUPP-current
+
+- Syntax files are now both parsed and applied on bytes, not characters;
+  matching on Unicode characters is possible using buffer/strings though
 
 JOE 3.1jupp25
 

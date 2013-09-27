@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/syntax.c,v 1.9 2012/12/22 00:06:14 tg Exp $ */
+/* $MirOS: contrib/code/jupp/syntax.c,v 1.10 2013/09/27 00:51:52 tg Exp $ */
 /*
  *	Syntax highlighting DFA interpreter
  *	Copyright
@@ -41,13 +41,9 @@ int parse(struct high_syntax *syntax,P *line,int state)
 	int ofst = 0;	/* record offset after we've stopped buffering */
 
 	/* Get next character */
-	while((c=pgetc(line))!=NO_MORE_DATA) {
+	while((c=pgetb(line))!=NO_MORE_DATA) {
 		struct high_cmd *cmd, *kw_cmd;
 		int x;
-
-		/* Hack so we can have UTF-8 characters without crashing */
-		if (c < 0 || c > 255)
-			c = 0x1F;
 
 		/* Expand attribute array if necessary */
 		if(attr==attr_end) {
