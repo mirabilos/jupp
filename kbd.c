@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/kbd.c,v 1.2 2008/05/13 13:08:23 tg Exp $ */
+/* $MirOS: contrib/code/jupp/kbd.c,v 1.3 2013/10/23 18:46:59 tg Exp $ */
 /*
  *	Key-map handler
  *	Copyright
@@ -44,6 +44,10 @@ void *dokey(KBD *kbd, int n)
 	/* If we were passed a negative character */
 	if (n < 0)
 		n += 256;
+
+	/* kmap->keys[KEYS]; */
+	if ((size_t)n >= (size_t)(KEYS))
+		return (NULL);
 
 	/* If we're starting from scratch, clear the keymap sequence buffer */
 	if (kbd->curmap == kbd->topmap)
