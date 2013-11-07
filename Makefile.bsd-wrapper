@@ -1,4 +1,6 @@
-# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.1 2013/08/19 17:40:16 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.2 2013/11/07 22:22:50 tg Exp $
+#-
+# make -f Makefile.bsd-wrapper CFPREFIX=/usr/mpkg sysconfjoesubdir=/joe
 
 MAN=		joe.1
 INST_TARGET=	INSTALL_MAN= install
