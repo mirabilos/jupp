@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.81 2013/11/07 21:56:05 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.82 2013/11/07 22:14:30 tg Exp $
 ------------------------------------------------------------------
 
 JUPP-current
@@ -9,6 +9,7 @@ JUPP-current
 - Fix m{,s}{old,new} operation when opening multiple files from cmdline
 - Update “visible spaces” while typing and fix it for nōn-UTF8 files
 - jupprc: No longer wordwrap *.{asc,doc,txt} by default
+- Add five or six hooks for modification to rc files (Natureshadow’s idea)
 
 JOE 3.1jupp25
 

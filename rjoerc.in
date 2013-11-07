@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/rjoerc.in,v 1.16 2013/11/07 21:56:06 tg Exp $
+ $MirOS: contrib/code/jupp/rjoerc.in,v 1.17 2013/11/07 22:14:32 tg Exp $
 
                          Initialization file for JOE
                             Restricted access Joe
@@ -222,6 +222,8 @@
 -smartbacks
 -tab 8
 --wordwrap
+
+ #HOOK#1 global/default flags
 
  === Generic files
  No '.' in filename?
@@ -588,6 +590,8 @@
 *.txt
 -wordwrap
 
+ #HOOK#2 filename matching
+
  THIRD SECTION: Named help screens:
 
  Use \i to turn on/off inverse video
@@ -658,6 +662,8 @@
 \i   Help Screen    \|turn off with ^KH    prev. screen ^[,                        \i
 \i \i For bug reports and other information, refer to: \uhttp://mirbsd.de/jupp\u      \|\i \i
 }
+
+ #HOOK#3 additional help screens
 
 {CharTable
 \i   Help Screen    turn off with ^J     prev. screen ^[,    \uCharacter Map\u       \i
@@ -738,6 +744,7 @@
  To define a command foo which will goto the beginning of the last line.
 
 :windows		Bindings common to all windows
+ #HOOK#4 common keybindings
 type		^@ TO ÿ		Type a character
 abort		^C		Abort window
 abort		^K Q
@@ -807,6 +814,8 @@ keymap,"prompt",rtn			^D
 
 helpcard,"Paste",rtn,keymap,"Paste",rtn	^[ [ 2 0 0 ~
 nop					^[ [ 2 0 1 ~
+
+ #HOOK#5 main keybindings
 
  Spell-check macros
 
@@ -1155,6 +1164,7 @@ type		^@ TO ÿ
 
 :cua			Undo/Cut/Copy/Paste, CUA style
 :inherit main
+ #HOOK#6 extra keybindings in CUA mode
 undo		^Z
 blkdel,nmark	^X
 copy		^C
