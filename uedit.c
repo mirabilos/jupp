@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/uedit.c,v 1.10 2013/08/19 19:19:31 tg Exp $ */
+/* $MirOS: contrib/code/jupp/uedit.c,v 1.11 2013/11/07 21:50:36 tg Exp $ */
 /*
  *	Basic user edit functions
  *	Copyright
@@ -1131,7 +1131,17 @@ int utypebw_raw(BW *bw, int k, int no_decode)
 			simple = 0;
 		if (simple && bw->parent->t->t->sary[bw->y + bw->cursor->line - bw->top->line])
 			simple = 0;
-		if (simple && k != '\t' && k != '\n' && !curmacro) {
+		else if (simple)
+			switch (k) {
+			case ' ':
+				if (bw->o.vispace)
+					/* FALLTHROUGH */
+			case '\t':
+			case '\n':
+				  simple = 0;
+				break;
+			}
+		if (simple && !curmacro) {
 			int atr = 0;
 			SCRN *t = bw->parent->t->t;
 			int y = bw->y + bw->cursor->line - bw->top->line;

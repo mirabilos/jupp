@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/utf8.c,v 1.9 2012/06/08 16:55:29 tg Exp $ */
+/* $MirOS: contrib/code/jupp/utf8.c,v 1.10 2013/11/07 21:50:36 tg Exp $ */
 /*
  *	UTF-8 Utilities
  *	Copyright
@@ -217,6 +217,8 @@ unsigned char *codeset;	/* Codeset of terminal */
 
 struct charmap *locale_map;
 			/* Character map of terminal */
+struct charmap *utf8_map;
+			/* Handy character map for UTF-8 */
 
 void
 joe_locale(void)
@@ -251,9 +253,10 @@ joe_locale(void)
 #endif
 	if (!locale_map)
 		locale_map = find_charmap(US "ascii");
+	utf8_map = find_charmap(US "utf-8");
 
 #ifdef defutf8
-	fdefault.charmap = find_charmap(US "utf-8");
+	fdefault.charmap = utf8_map;
 #else
 	fdefault.charmap = locale_map;
 #endif

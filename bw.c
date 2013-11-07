@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/bw.c,v 1.18 2012/12/30 21:45:12 tg Exp $ */
+/* $MirOS: contrib/code/jupp/bw.c,v 1.19 2013/11/07 21:50:35 tg Exp $ */
 /*
  *	Edit buffer window generation
  *	Copyright
@@ -309,8 +309,6 @@ void bwdel(BW *w, long int l, long int n, int flg)
 
 /* Update a single line */
 
-#define maybe_from_uni(map,ch) ((bw->b->o.charmap->type) ? (ch) : from_uni(map, ch))
-
 static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long int scr, long int from, long int to,int st,BW *bw)
         
       
@@ -418,10 +416,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 				ta = p->b->o.tab - col % p->b->o.tab;
 				if (ta + col > scr) {
 					ta -= scr - col;
-					tach1 = tach = ' ';
-					if (bw->o.vispace)
-						tach = maybe_from_uni(locale_map, 0x2192);
-					goto dota;
+					goto dota_tab;
 				}
 				if ((col += ta) == scr) {
 					--amnt;
@@ -456,7 +451,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 					} else if (col > scr) {
 						ta = col - scr;
 						tach1 = tach = '<';
-						goto dota;
+						goto dota_gen;
 					}
 				} else
 					--idx;	/* Get highlighting character again.. */
@@ -532,12 +527,13 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 			++byte;
 			if (bc == '\t') {
 				ta = p->b->o.tab - ((x - ox + scr) % p->b->o.tab);
+ dota_tab:
 				tach1 = tach = ' ';
 				if (bw->o.vispace)
-					tach = maybe_from_uni(locale_map, 0x2192);
-			      dota:
+					tach = 0x2192;
+ dota_gen:
 				do {
-					outatr(bw->b->o.charmap, t, screen + x, attr + x, x, y, tach, c1|atr);
+					outatr(utf8_map, t, screen + x, attr + x, x, y, tach, c1|atr);
 					tach = tach1;
 					if (ifhave)
 						goto bye;
@@ -587,9 +583,10 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 					} else if (utf8_char == 0x1000FFFE) while (wid--) {
 						outatr(bw->b->o.charmap, t, screen + x, attr + x, x, y, 0xFFFD, (c1|atr|UNDERLINE)^INVERSE);
 						x++;
+					} else if (bw->o.vispace && (utf8_char == 0x20)) {
+						outatr(utf8_map, t, screen + x, attr + x, x, y, 0xB7, c1|atr);
+						x += wid;
 					} else {
-						if (bw->o.vispace && (utf8_char == 0x20))
-							utf8_char = maybe_from_uni(locale_map, 0xB7);
 						outatr(bw->b->o.charmap, t, screen + x, attr + x, x, y, utf8_char, c1|atr);
 						x += wid;
 					}

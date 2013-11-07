@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.c,v 1.11 2012/12/30 21:45:17 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.c,v 1.12 2013/11/07 21:50:35 tg Exp $ */
 /*
  *	Device independant TTY interface for JOE
  *	Copyright
@@ -1860,7 +1860,7 @@ void genfield(SCRN *t,int *scrn,int *attr,int x,int y,int ofst,unsigned char *s,
 				if (x + wid > last_col) {
 					/* Character crosses end of field, so fill balance of field with '>' characters instead */
 					while (x < last_col) {
-						outatr(locale_map, t, scrn, attr, x, y, '>', my_atr);
+						outatr(utf8_map, t, scrn, attr, x, y, '>', my_atr);
 						++scrn;
 						++attr;
 						++x;
@@ -1877,7 +1877,7 @@ void genfield(SCRN *t,int *scrn,int *attr,int x,int y,int ofst,unsigned char *s,
 				wid -= ofst - col;
 				col = ofst;
 				while (wid) {
-					outatr(locale_map, t, scrn, attr, x, y, '<', my_atr);
+					outatr(utf8_map, t, scrn, attr, x, y, '<', my_atr);
 					++scrn;
 					++attr;
 					++x;
@@ -1890,7 +1890,7 @@ void genfield(SCRN *t,int *scrn,int *attr,int x,int y,int ofst,unsigned char *s,
 	}
 	/* Fill balance of field with spaces */
 	while (x < last_col) {
-		outatr(locale_map, t, scrn, attr, x, y, ' ', 0);
+		outatr(utf8_map, t, scrn, attr, x, y, ' ', 0);
 		++x;
 		++scrn;
 		++attr;
@@ -1995,7 +1995,7 @@ void genfmt(SCRN *t, int x, int y, int ofst, const unsigned char *s, int flg)
 						--wid;
 					}
 					while (wid) {
-						outatr(locale_map, t, scrn, attr, x, y, '<', atr);
+						outatr(utf8_map, t, scrn, attr, x, y, '<', atr);
 						++scrn;
 						++attr;
 						++x;
