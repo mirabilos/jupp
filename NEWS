@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.78 2013/10/23 18:46:58 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.79 2013/11/07 21:15:04 tg Exp $
 ------------------------------------------------------------------
 
 JUPP-current
@@ -6,6 +6,7 @@ JUPP-current
 - Syntax files are now both parsed and applied on bytes, not characters;
   matching on Unicode characters is possible using buffer/strings though
 - Prevent segfault on ‘`…’ (out-of-bounds keymap array access)
+- Fix m{,s}{old,new} operation when opening multiple files from cmdline
 
 JOE 3.1jupp25
 

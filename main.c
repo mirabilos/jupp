@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/main.c,v 1.21 2013/08/19 23:05:11 tg Exp $ */
+/* $MirOS: contrib/code/jupp/main.c,v 1.22 2013/11/07 21:15:04 tg Exp $ */
 
 #define JUPP_IS_COPYRIGHT_C_BY "2013 mirabilos"
 
@@ -187,7 +187,7 @@ int main(int argc, char **argv, char **envp)
 	unsigned char *s;
 	unsigned char *run;
 	SCRN *n;
-	int opened = 0;
+	W *opened = NULL;
 	int omid;
 	int backopt;
 	int c;
@@ -346,19 +346,23 @@ int main(int argc, char **argv, char **envp)
 				}
 				bw->b->o = bw->o;
 				bw->b->rdonly = bw->o.readonly;
-				if (!opened)
-					maint->curwin = bw->parent;
+				if (!opened || opened == (void *)&opened)
+					opened = bw->parent;
+				maint->curwin = bw->parent;
 				if (er == -1 && bw->o.mnew)
 					exemac(bw->o.mnew);
 				if (er == 0 && bw->o.mold)
 					exemac(bw->o.mold);
+				maint->curwin = opened;
 				if (lnum > 0)
 					pline(bw->cursor, lnum - 1);
 			}
-			opened = 1;
+			if (!opened)
+				opened = (void *)&opened;
 			backopt = 0;
 		}
 
+	maint->curwin = opened == (void *)&opened ? NULL : opened;
 	if (opened) {
 		wshowall(maint);
 		omid = mid;
