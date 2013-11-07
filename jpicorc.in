@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jpicorc.in,v 1.15 2013/08/19 19:20:22 tg Exp $
+ $MirOS: contrib/code/jupp/jpicorc.in,v 1.16 2013/11/07 21:56:06 tg Exp $
 
                          Initialization file for JOE
                                  Super Pico
@@ -551,16 +551,6 @@
 *.tcl
 -syntax tcl
 
- === Text
-*.asc
--wordwrap
-
-*.doc
--wordwrap
-
-*.txt
--wordwrap
-
  === Verilog
 *.v
 -syntax verilog
@@ -583,6 +573,16 @@
  === yacc
 *.y
 -syntax yacc
+
+ === Text (except in jupp)
+*.asc
+-wordwrap
+
+*.doc
+-wordwrap
+
+*.txt
+-wordwrap
 
  THIRD SECTION: Named help screens:
 

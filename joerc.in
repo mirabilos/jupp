@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/joerc.in,v 1.15 2013/08/19 19:20:21 tg Exp $
+ $MirOS: contrib/code/jupp/joerc.in,v 1.16 2013/11/07 21:56:05 tg Exp $
 
                          Initialization file for JOE
                                 Standard Joe
@@ -559,16 +559,6 @@
 *.tcl
 -syntax tcl
 
- === Text
-*.asc
--wordwrap
-
-*.doc
--wordwrap
-
-*.txt
--wordwrap
-
  === Verilog
 *.v
 -syntax verilog
@@ -591,6 +581,16 @@
  === yacc
 *.y
 -syntax yacc
+
+ === Text (except in jupp)
+*.asc
+-wordwrap
+
+*.doc
+-wordwrap
+
+*.txt
+-wordwrap
 
  THIRD SECTION: Named help screens:
 

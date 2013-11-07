@@ -379,16 +379,6 @@
 *.tcl
 -syntax tcl
 
- === Text
-*.asc
--wordwrap
-
-*.doc
--wordwrap
-
-*.txt
--wordwrap
-
  === Verilog
 *.v
 -syntax verilog
