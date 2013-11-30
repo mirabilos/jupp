@@ -1,5 +1,9 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.83 2013/11/07 22:19:02 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.84 2013/11/30 23:20:05 tg Exp $
 ------------------------------------------------------------------
+
+JUPP-current
+
+- Update wcwidth data to Unicode 6.3.0
 
 JOE 3.1jupp26
 
