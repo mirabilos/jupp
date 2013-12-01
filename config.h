@@ -1,9 +1,15 @@
-/* $MirOS: contrib/code/jupp/config.h,v 1.5 2011/07/16 21:57:56 tg Exp $ */
+/* $MirOS: contrib/code/jupp/config.h,v 1.6 2013/12/01 00:19:08 tg Exp $ */
 
 #ifndef _JOE_CONFIG_H
 #define _JOE_CONFIG_H
 
+#ifndef TEST
 #include "autoconf.h"
+#else
+#define HAVE_DECL_STRLCAT 1
+#define HAVE_DECL_STRLCPY 1
+#define PARAMS(protos) protos
+#endif
 
 #ifdef HAVE_SNPRINTF
 
