@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/bw.c,v 1.19 2013/11/07 21:50:35 tg Exp $ */
+/* $MirOS: contrib/code/jupp/bw.c,v 1.20 2014/03/04 23:04:11 tg Exp $ */
 /*
  *	Edit buffer window generation
  *	Copyright
@@ -20,6 +20,7 @@
 #endif
 
 #include "b.h"
+#include "bw.h"
 #include "blocks.h"
 #include "kbd.h"
 #include "rc.h"
@@ -712,9 +713,9 @@ void bwgenh(BW *w)
 		txt[76]=0;
 		if (!flg) {
 #if SIZEOF_LONG_LONG && SIZEOF_LONG_LONG == SIZEOF_OFF_T
-			snprintf((char *)bf,sizeof(bf),"%8llX ",(unsigned long long)q->byte);
+			joe_snprintf_1((char *)bf,sizeof(bf),"%8llX ",(unsigned long long)q->byte);
 #else
-			snprintf((char *)bf,sizeof(bf),"%8lX ",(unsigned long)q->byte);
+			joe_snprintf_1((char *)bf,sizeof(bf),"%8lX ",(unsigned long)q->byte);
 #endif
 			memcpy(txt,bf,9);
 			for (x=0; x!=8; ++x) {
@@ -730,7 +731,7 @@ void bwgenh(BW *w)
 				}
 				c = pgetb(q);
 				if (c >= 0) {
-					snprintf((char *)bf,sizeof(bf),"%2.2X",c);
+					joe_snprintf_1((char *)bf,sizeof(bf),"%2.2X",c);
 					txt[10+x*3] = bf[0];
 					txt[10+x*3+1] = bf[1];
 					if (c >= 0x20 && c <= 0x7E)
@@ -753,7 +754,7 @@ void bwgenh(BW *w)
 				}
 				c = pgetb(q);
 				if (c >= 0) {
-					snprintf((char *)bf,sizeof(bf),"%2.2X",c);
+					joe_snprintf_1((char *)bf,sizeof(bf),"%2.2X",c);
 					txt[11+x*3] = bf[0];
 					txt[11+x*3+1] = bf[1];
 					if (c >= 0x20 && c <= 0x7E)

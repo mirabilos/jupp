@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/bw.h,v 1.3 2009/10/18 14:52:56 tg Exp $ */
+/* $MirOS: contrib/code/jupp/bw.h,v 1.4 2014/03/04 23:04:11 tg Exp $ */
 /*
  *	Edit buffer window generation
  *	Copyright
@@ -24,6 +24,8 @@ BW *bwmk PARAMS((W *window, B *b, int prompt));
 void bwmove PARAMS((BW *w, int x, int y));
 void bwresz PARAMS((BW *w, int wi, int he));
 void bwrm PARAMS((BW *w));
+#undef ustat
+#define ustat ustat_j /* to avoid Linux libc4 conflict */
 int ustat PARAMS((BW *bw));
 int ucrawll PARAMS((BW *bw));
 int ucrawlr PARAMS((BW *bw));
