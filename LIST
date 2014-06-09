@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/LIST,v 1.8 2013/08/19 19:19:30 tg Exp $
+$MirOS: contrib/code/jupp/LIST,v 1.9 2014/06/09 16:06:45 tg Exp $
 -----------------------------------------------------------------
 
 Joe commands grouped by function
@@ -17,7 +17,6 @@ blkmove		Move marked block to cursor
 blksave		Save marked block into a file
 copy		Copy block to kill-ring
 drop		Set markb.  If it was already set, eliminate it.
-dropon          Set markb.  If it was already set, eliminate it.  Turn on marking mode.
 
 toggle_marking	If we're in a block: clear markb and markk.
 		If marking is off: set markb and turn on marking.

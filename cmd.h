@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/cmd.h,v 1.3 2008/07/28 00:12:06 tg Exp $ */
+/* $MirOS: contrib/code/jupp/cmd.h,v 1.4 2014/06/09 16:06:46 tg Exp $ */
 /*
  *	Command execution
  *	Copyright
@@ -26,7 +26,7 @@ extern int dobeep;
 #define EKILL		 64	/* Function is a kill */
 #define EMOD		128	/* Not allowed on readonly files */
 /* These use same bits as TYPE* in types.h */
-#define EBLOCK		0x4000	/* Finish block selection (call udropon) */
+#define EBLOCK		0x4000	/* Finish block selection */
 
 /* CMD *findcmd(char *s);
  * Return command address for given name
