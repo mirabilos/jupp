@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/joerc.in,v 1.17 2013/11/07 22:14:31 tg Exp $
+ $MirOS: contrib/code/jupp/joerc.in,v 1.18 2014/06/09 15:39:22 tg Exp $
 
                          Initialization file for JOE
                                 Standard Joe
@@ -363,11 +363,6 @@
 
 *
 +***\[ ]
--highlight
--syntax diff
-
-*
-+\[1-9]\+\[0-9]\[cda]
 -highlight
 -syntax diff
 

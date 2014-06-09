@@ -1,4 +1,4 @@
- "jupp" resource file for Jupp3.1*nix (c) 1997-2013 Thorsten Glaser
+ "jupp" resource file for Jupp3.1*nix (c) 1997-2014 Thorsten Glaser
  Provided that these terms and disclaimer and all copyright notices
  are retained or reproduced in an accompanying document, permission
  is granted to deal in this work without restriction, including un-
@@ -183,11 +183,6 @@
 
 *
 +***\[ ]
--highlight
--syntax diff
-
-*
-+\[1-9]\+\[0-9]\[cda]
 -highlight
 -syntax diff
 
@@ -483,7 +478,7 @@
 \i \i go to \uhttp://sf.net/projects/joe-editor/\u for upstream bug reports. JUPP 2.8 \i \i
 \i \i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\d(R)\d \i \i
 \i \i at \uhttp://mirbsd.de/jupp\u and by \bThorsten "\dmirabilos\d" Glaser <\utg@mirbsd.org\u>\b \i \i
-\i \i @(#) jupprc 2013-11-07; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
+\i \i @(#) jupprc 2014-06-09; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
 }
 
  #HOOK#3 additional help screens

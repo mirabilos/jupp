@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.86 2014/05/27 13:29:57 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.87 2014/06/09 15:39:22 tg Exp $
 ------------------------------------------------------------------
 
 JUPP-current
@@ -6,6 +6,7 @@ JUPP-current
 - Update complete internationalisation code and data to Unicode 6.3.0
 - Minor fixes to C language syntax highlighting
 - Fix compilation on SuSE Linux 1.0 (portability)
+- Stop trying to match ed(1) diffs for highlighting (false positives)
 
 JOE 3.1jupp26
 
