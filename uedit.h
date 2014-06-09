@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/uedit.h,v 1.3 2009/10/18 13:20:55 tg Exp $ */
+/* $MirOS: contrib/code/jupp/uedit.h,v 1.4 2014/06/09 16:32:55 tg Exp $ */
 /*
  *	Basic user edit functions
  *	Copyright
@@ -66,7 +66,7 @@ int unedge PARAMS((BW *bw));
 int upedge PARAMS((BW *bw));
 int ubyte PARAMS((BW *bw));
 int ucol PARAMS((BW *bw));
-int utxt PARAMS((BASE *bw));
+int utxt PARAMS((BW *bw));
 int uhome PARAMS((BW *bw));
 
 #endif
