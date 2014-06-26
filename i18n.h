@@ -1,10 +1,13 @@
-/* $MirOS: contrib/code/jupp/i18n.h,v 1.4 2013/12/01 00:19:08 tg Exp $ */
+/* $MirOS: contrib/code/jupp/i18n.h,v 1.5 2014/06/26 17:42:54 tg Exp $ */
 
 #ifndef _Ii18n
 #define _Ii18n 1
 
 #include "config.h"
 #include "types.h"
+
+/* from mksh */
+#define NELEM(a)	(sizeof(a) / sizeof((a)[0]))
 
 int joe_iswupper PARAMS((struct charmap *,int c));
 int joe_iswlower PARAMS((struct charmap *,int c));

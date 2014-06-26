@@ -1,7 +1,7 @@
 #if 0
 .if "0" == "1"
 #endif
-/* $MirOS: contrib/code/jupp/i18n.c,v 1.11 2014/06/24 19:53:20 tg Exp $ */
+/* $MirOS: contrib/code/jupp/i18n.c,v 1.12 2014/06/26 17:42:53 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 functions for JOE
  *	Copyright
@@ -330,9 +330,6 @@ static const struct mb_ucsrange mb_ucs_fullwidth[] = {
 	{ 0x20000, 0x2FFFD },
 	{ 0x30000, 0x3FFFD }
 };
-
-/* from mksh */
-#define NELEM(a)	(sizeof(a) / sizeof((a)[0]))
 
 /* simple binary search in ranges, with bounds optimisation */
 static size_t
