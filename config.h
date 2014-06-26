@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/config.h,v 1.6 2013/12/01 00:19:08 tg Exp $ */
+/* $MirOS: contrib/code/jupp/config.h,v 1.7 2014/06/26 18:15:17 tg Exp $ */
 
 #ifndef _JOE_CONFIG_H
 #define _JOE_CONFIG_H
@@ -8,6 +8,17 @@
 #else
 #define HAVE_DECL_STRLCAT 1
 #define HAVE_DECL_STRLCPY 1
+#define HAVE_GETCWD 1
+#define HAVE_MKSTEMP 1
+#define HAVE_SNPRINTF 1
+#define HAVE_SYS_TYPES_H 1
+#define HAVE_SYS_STAT_H 1
+#define HAVE_DIRENT_H 1
+#define HAVE_LIMITS_H 1
+#define HAVE_SIGNAL_H 1
+#define HAVE_STDLIB_H 1
+#define HAVE_UNISTD_H 1
+#define RETSIGTYPE void
 #define PARAMS(protos) protos
 #endif
 

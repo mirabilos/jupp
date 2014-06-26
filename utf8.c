@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/utf8.c,v 1.10 2013/11/07 21:50:36 tg Exp $ */
+/* $MirOS: contrib/code/jupp/utf8.c,v 1.11 2014/06/26 18:15:17 tg Exp $ */
 /*
  *	UTF-8 Utilities
  *	Copyright
@@ -255,12 +255,14 @@ joe_locale(void)
 		locale_map = find_charmap(US "ascii");
 	utf8_map = find_charmap(US "utf-8");
 
+#ifndef TEST
 #ifdef defutf8
 	fdefault.charmap = utf8_map;
 #else
 	fdefault.charmap = locale_map;
 #endif
 	pdefault.charmap = locale_map;
+#endif
 }
 
 void to_utf8(struct charmap *map,unsigned char *s,int c)

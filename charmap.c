@@ -1,4 +1,7 @@
-/* $MirOS: contrib/code/jupp/charmap.c,v 1.12 2014/06/26 17:51:14 tg Exp $ */
+#if 0
+.if "0" == "1"
+#endif
+/* $MirOS: contrib/code/jupp/charmap.c,v 1.13 2014/06/26 18:15:16 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 conversion utilities
  *	Copyright
@@ -1359,7 +1362,7 @@ find_charmap(const unsigned char *name)
 
 /* Test */
 
-#ifdef TEST
+#ifdef TEST_CHARMAP
 int
 main(int argc, char *argv[])
 {
@@ -1469,3 +1472,26 @@ joe_strtolower(unsigned char *s)
 		*t = joe_tolower(locale_map, *t);
 	return (s);
 }
+
+#if 0
+.endif
+
+PROG=		charmap
+SRCS=		charmap.c
+SRCS+=		i18n.c path.c utf8.c utils.c va.c vs.c
+NOMAN=		Yes
+CPPFLAGS+=	-DTEST -DTEST_CHARMAP
+CPPFLAGS+=	-D'JOERC="/etc/joe"'
+
+.include <bsd.own.mk>
+
+.ifdef __CRAZY
+xCOPTS+=		-Wno-unused-parameter \
+		-Wno-missing-field-initializers \
+		-Wno-old-style-definition -Wno-strict-prototypes \
+		-Wno-cast-qual \
+		-Wno-missing-prototypes -Wno-missing-declarations
+.endif
+
+.include <bsd.prog.mk>
+#endif

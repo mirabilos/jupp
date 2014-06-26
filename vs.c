@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/vs.c,v 1.5 2012/12/22 00:06:16 tg Exp $ */
+/* $MirOS: contrib/code/jupp/vs.c,v 1.6 2014/06/26 18:15:17 tg Exp $ */
 /*
  *	Variable length strings
  *	Copyright
@@ -105,7 +105,11 @@ sELEMENT *vsncpy(sELEMENT *vary, int pos, const sELEMENT *array, int len)
 	}
 	if (pos > olen)
 		vary = vsfill(vary, olen, sblank, pos - olen);
+#ifdef TEST
+	memmove(vary + pos, array, len * sizeof(sELEMENT));
+#else
 	mmove(vary + pos, array, len * sizeof(sELEMENT));
+#endif
 	return vary;
 }
 
