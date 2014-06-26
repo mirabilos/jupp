@@ -1,7 +1,7 @@
 #if 0
 .if "0" == "1"
 #endif
-/* $MirOS: contrib/code/jupp/i18n.c,v 1.12 2014/06/26 17:42:53 tg Exp $ */
+/* $MirOS: contrib/code/jupp/i18n.c,v 1.14 2014/06/26 18:02:30 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 functions for JOE
  *	Copyright
@@ -6505,7 +6505,7 @@ int joe_towlower(struct charmap *foo, int c)
 
 /* Test the functions */
 
-#ifdef TEST
+#ifdef TEST_I18N
 int
 main(int argc,char *argv[])
 {
@@ -6558,7 +6558,7 @@ int unictrl(unsigned int ucs)
 
 PROG=		i18n
 NOMAN=		Yes
-CPPFLAGS+=	-DTEST
+CPPFLAGS+=	-DTEST -DTEST_I18N
 
 .include <bsd.own.mk>
 
