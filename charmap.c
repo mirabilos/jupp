@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/charmap.c,v 1.11 2013/12/01 00:19:07 tg Exp $ */
+/* $MirOS: contrib/code/jupp/charmap.c,v 1.12 2014/06/26 17:51:14 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 conversion utilities
  *	Copyright
@@ -19,20 +19,23 @@
 
 /* Convert from byte code to unicode.  Returns -1 for unknown. */
 
-int to_uni(struct charmap *cset, int c)
+int
+to_uni(struct charmap *cset, int c)
 {
-	return cset->to_map[c];
+	return (cset->to_map[c]);
 }
 
 /* Convert from unicode to byte code.  Returns -1 for unknown. */
 
-int from_uni(struct charmap *cset, int c)
+int
+from_uni(struct charmap *cset, int c)
 {
 	int x, y, z;
 
 	x = 0;
 	y = cset->from_size-1;
 	z = -1;
+	/* this is not a bsearch and first/last are in reality from/to */
 	while (z != (x + y + 1) / 2) {
 		z = (x + y + 1) / 2;
 		if (c > cset->from_map[z].first)
@@ -40,9 +43,9 @@ int from_uni(struct charmap *cset, int c)
 		else if (c < cset->from_map[z].first)
 			y = z;
 		else
-			return cset->from_map[z].last;
+			return (cset->from_map[z].last);
 	}
-	return -1;
+	return (-1);
 }
 
 /* Builtin maps */
@@ -55,7 +58,7 @@ static const struct {
 } alias_table[] = {
 	{ US "c", US "ascii" },
 	{ US "posix", US "ascii" },
-	{ US "iso_646", US "ascii" },
+	{ US "iso646", US "ascii" },
 	{ US "8859-1", US "iso-8859-1" },
 	{ US "8859-2", US "iso-8859-2" },
 	{ US "8859-3", US "iso-8859-3" },
@@ -71,6 +74,7 @@ static const struct {
 	{ US "8859-14", US "iso-8859-14" },
 	{ US "8859-15", US "iso-8859-15" },
 	{ US "8859-16", US "iso-8859-16" },
+	{ US "oem", US "cp437" },
 	{ US "ansi", US "cp1252" },
 	{ US "latin1", US "iso-8859-1" },
 	{ US "latin2", US "iso-8859-2" },
@@ -91,16 +95,11 @@ static const struct {
 	{ 0, 0 }
 };
 
-/* I took all the ISO-8859- ones, plus any ones referenced by a locale */
-
-struct builtin_charmap {
+static const struct builtin_charmap {
 	const unsigned char *name;
 	int extra_b7, extra_2192;
 	int to_uni[256];
-};
-
-static const struct builtin_charmap builtin_charmaps[]=
-{
+} builtin_charmaps[] = {
 	{ US "ascii", 0x20, 0x20, {
 	0x0000, 0x0001, 0x0002, 0x0003, 0x0004, 0x0005, 0x0006, 0x0007,
 	0x0008, 0x0009, 0x000a, 0x000b, 0x000c, 0x000d, 0x000e, 0x000f,
@@ -827,39 +826,6 @@ static const struct builtin_charmap builtin_charmaps[]=
 	0x00e8, 0x00e9, 0x00ea, 0x00eb, 0x00ec, 0x00ed, 0x00ee, 0x00ef,
 	0x00f0, 0x00f1, 0x00f2, 0x00f3, 0x00f4, 0x00f5, 0x00f6, 0x00f7,
 	0x00f8, 0x00f9, 0x00fa, 0x00fb, 0x00fc, 0x00fd, 0x00fe, 0x00ff }},
-	{ US "cp1256", 0x20, 0x20, {
-	0x0000, 0x0001, 0x0002, 0x0003, 0x0004, 0x0005, 0x0006, 0x0007,
-	0x0008, 0x0009, 0x000a, 0x000b, 0x000c, 0x000d, 0x000e, 0x000f,
-	0x0010, 0x0011, 0x0012, 0x0013, 0x0014, 0x0015, 0x0016, 0x0017,
-	0x0018, 0x0019, 0x001a, 0x001b, 0x001c, 0x001d, 0x001e, 0x001f,
-	0x0020, 0x0021, 0x0022, 0x0023, 0x0024, 0x0025, 0x0026, 0x0027,
-	0x0028, 0x0029, 0x002a, 0x002b, 0x002c, 0x002d, 0x002e, 0x002f,
-	0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037,
-	0x0038, 0x0039, 0x003a, 0x003b, 0x003c, 0x003d, 0x003e, 0x003f,
-	0x0040, 0x0041, 0x0042, 0x0043, 0x0044, 0x0045, 0x0046, 0x0047,
-	0x0048, 0x0049, 0x004a, 0x004b, 0x004c, 0x004d, 0x004e, 0x004f,
-	0x0050, 0x0051, 0x0052, 0x0053, 0x0054, 0x0055, 0x0056, 0x0057,
-	0x0058, 0x0059, 0x005a, 0x005b, 0x005c, 0x005d, 0x005e, 0x005f,
-	0x0060, 0x0061, 0x0062, 0x0063, 0x0064, 0x0065, 0x0066, 0x0067,
-	0x0068, 0x0069, 0x006a, 0x006b, 0x006c, 0x006d, 0x006e, 0x006f,
-	0x0070, 0x0071, 0x0072, 0x0073, 0x0074, 0x0075, 0x0076, 0x0077,
-	0x0078, 0x0079, 0x007a, 0x007b, 0x007c, 0x007d, 0x007e, 0x007f,
-	0x20ac, 0x067e, 0x201a, 0x0192, 0x201e, 0x2026, 0x2020, 0x2021,
-	0x02c6, 0x2030, 0x0679, 0x2039, 0x0152, 0x0686, 0x0698, 0x0688,
-	0x06af, 0x2018, 0x2019, 0x201c, 0x201d, 0x2022, 0x2013, 0x2014,
-	0x06a9, 0x2122, 0x0691, 0x203a, 0x0153, 0x200c, 0x200d, 0x06ba,
-	0x00a0, 0x060c, 0x00a2, 0x00a3, 0x00a4, 0x00a5, 0x00a6, 0x00a7,
-	0x00a8, 0x00a9, 0x06be, 0x00ab, 0x00ac, 0x00ad, 0x00ae, 0x00af,
-	0x00b0, 0x00b1, 0x00b2, 0x00b3, 0x00b4, 0x00b5, 0x00b6, 0x00b7,
-	0x00b8, 0x00b9, 0x061b, 0x00bb, 0x00bc, 0x00bd, 0x00be, 0x061f,
-	0x06c1, 0x0621, 0x0622, 0x0623, 0x0624, 0x0625, 0x0626, 0x0627,
-	0x0628, 0x0629, 0x062a, 0x062b, 0x062c, 0x062d, 0x062e, 0x062f,
-	0x0630, 0x0631, 0x0632, 0x0633, 0x0634, 0x0635, 0x0636, 0x00d7,
-	0x0637, 0x0638, 0x0639, 0x063a, 0x0640, 0x0641, 0x0642, 0x0643,
-	0x00e0, 0x0644, 0x00e2, 0x0645, 0x0646, 0x0647, 0x0648, 0x00e7,
-	0x00e8, 0x00e9, 0x00ea, 0x00eb, 0x0649, 0x064a, 0x00ee, 0x00ef,
-	0x064b, 0x064c, 0x064d, 0x064e, 0x00f4, 0x064f, 0x0650, 0x00f7,
-	0x0651, 0x00f9, 0x0652, 0x00fb, 0x00fc, 0x200e, 0x200f, 0x06d2 }},
 	{ US "cp1255", 0x20, 0x20, {
 	0x0000, 0x0001, 0x0002, 0x0003, 0x0004, 0x0005, 0x0006, 0x0007,
 	0x0008, 0x0009, 0x000a, 0x000b, 0x000c, 0x000d, 0x000e, 0x000f,
@@ -893,6 +859,39 @@ static const struct builtin_charmap builtin_charmaps[]=
 	0x05d8, 0x05d9, 0x05da, 0x05db, 0x05dc, 0x05dd, 0x05de, 0x05df,
 	0x05e0, 0x05e1, 0x05e2, 0x05e3, 0x05e4, 0x05e5, 0x05e6, 0x05e7,
 	0x05e8, 0x05e9, 0x05ea,     -1,     -1, 0x200e, 0x200f,     -1 }},
+	{ US "cp1256", 0x20, 0x20, {
+	0x0000, 0x0001, 0x0002, 0x0003, 0x0004, 0x0005, 0x0006, 0x0007,
+	0x0008, 0x0009, 0x000a, 0x000b, 0x000c, 0x000d, 0x000e, 0x000f,
+	0x0010, 0x0011, 0x0012, 0x0013, 0x0014, 0x0015, 0x0016, 0x0017,
+	0x0018, 0x0019, 0x001a, 0x001b, 0x001c, 0x001d, 0x001e, 0x001f,
+	0x0020, 0x0021, 0x0022, 0x0023, 0x0024, 0x0025, 0x0026, 0x0027,
+	0x0028, 0x0029, 0x002a, 0x002b, 0x002c, 0x002d, 0x002e, 0x002f,
+	0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037,
+	0x0038, 0x0039, 0x003a, 0x003b, 0x003c, 0x003d, 0x003e, 0x003f,
+	0x0040, 0x0041, 0x0042, 0x0043, 0x0044, 0x0045, 0x0046, 0x0047,
+	0x0048, 0x0049, 0x004a, 0x004b, 0x004c, 0x004d, 0x004e, 0x004f,
+	0x0050, 0x0051, 0x0052, 0x0053, 0x0054, 0x0055, 0x0056, 0x0057,
+	0x0058, 0x0059, 0x005a, 0x005b, 0x005c, 0x005d, 0x005e, 0x005f,
+	0x0060, 0x0061, 0x0062, 0x0063, 0x0064, 0x0065, 0x0066, 0x0067,
+	0x0068, 0x0069, 0x006a, 0x006b, 0x006c, 0x006d, 0x006e, 0x006f,
+	0x0070, 0x0071, 0x0072, 0x0073, 0x0074, 0x0075, 0x0076, 0x0077,
+	0x0078, 0x0079, 0x007a, 0x007b, 0x007c, 0x007d, 0x007e, 0x007f,
+	0x20ac, 0x067e, 0x201a, 0x0192, 0x201e, 0x2026, 0x2020, 0x2021,
+	0x02c6, 0x2030, 0x0679, 0x2039, 0x0152, 0x0686, 0x0698, 0x0688,
+	0x06af, 0x2018, 0x2019, 0x201c, 0x201d, 0x2022, 0x2013, 0x2014,
+	0x06a9, 0x2122, 0x0691, 0x203a, 0x0153, 0x200c, 0x200d, 0x06ba,
+	0x00a0, 0x060c, 0x00a2, 0x00a3, 0x00a4, 0x00a5, 0x00a6, 0x00a7,
+	0x00a8, 0x00a9, 0x06be, 0x00ab, 0x00ac, 0x00ad, 0x00ae, 0x00af,
+	0x00b0, 0x00b1, 0x00b2, 0x00b3, 0x00b4, 0x00b5, 0x00b6, 0x00b7,
+	0x00b8, 0x00b9, 0x061b, 0x00bb, 0x00bc, 0x00bd, 0x00be, 0x061f,
+	0x06c1, 0x0621, 0x0622, 0x0623, 0x0624, 0x0625, 0x0626, 0x0627,
+	0x0628, 0x0629, 0x062a, 0x062b, 0x062c, 0x062d, 0x062e, 0x062f,
+	0x0630, 0x0631, 0x0632, 0x0633, 0x0634, 0x0635, 0x0636, 0x00d7,
+	0x0637, 0x0638, 0x0639, 0x063a, 0x0640, 0x0641, 0x0642, 0x0643,
+	0x00e0, 0x0644, 0x00e2, 0x0645, 0x0646, 0x0647, 0x0648, 0x00e7,
+	0x00e8, 0x00e9, 0x00ea, 0x00eb, 0x0649, 0x064a, 0x00ee, 0x00ef,
+	0x064b, 0x064c, 0x064d, 0x064e, 0x00f4, 0x064f, 0x0650, 0x00f7,
+	0x0651, 0x00f9, 0x0652, 0x00fb, 0x00fc, 0x200e, 0x200f, 0x06d2 }},
 	{ US "armscii-8", 0x20, 0x20, {
 	0x0000, 0x0001, 0x0002, 0x0003, 0x0004, 0x0005, 0x0006, 0x0007,
 	0x0008, 0x0009, 0x000a, 0x000b, 0x000c, 0x000d, 0x000e, 0x000f,
@@ -996,96 +995,107 @@ static const struct builtin_charmap builtin_charmaps[]=
 
 /* For qsort() */
 
-static int pair_cmp(struct pair *a,struct pair *b)
+static int
+pair_cmp(struct pair *a, struct pair *b)
 {
-	if (a->first>b->first)
-		return 1;
-	else if(a->first<b->first)
-		return -1;
+	if (a->first > b->first)
+		return (1);
+	else if (a->first < b->first)
+		return (-1);
 	else
-		return 0;
+		return (0);
 }
 
 /* Predicate and conversion functions for byte-oriented charmaps */
 
-int byte_ispunct(struct charmap *map,int c)
+int
+byte_ispunct(struct charmap *map, int c)
 {
-	int ofst = (c>>3);
-	int bitn = (1<<(c&7));
-	if (c<0 || c>255)
-		return 0;
-	return (map->print_map[ofst]&bitn) != 0 && (map->alnum__map[ofst]&bitn) == 0;
+	int ofst = (c >> 3);
+	int bitn = (1 << (c & 7));
+
+	if (c < 0 || c > 255)
+		return (0);
+	return (((map->print_map[ofst] & bitn) != 0) &&
+	    ((map->alnum__map[ofst] & bitn) == 0));
 }
 
-int byte_isprint(struct charmap *map,int c)
+int
+byte_isprint(struct charmap *map, int c)
 {
-	int ofst = (c>>3);
-	int bitn = (1<<(c&7));
-	if (c<0 || c>255)
-		return 0;
-	return (map->print_map[ofst]&bitn) != 0;
+	int ofst = (c >> 3);
+	int bitn = (1 << (c & 7));
+
+	if (c < 0 || c > 255)
+		return (0);
+	return ((map->print_map[ofst] & bitn) != 0);
 }
 
-int byte_isspace(struct charmap *map,int c)
+int
+byte_isspace(struct charmap *map, int c)
 {
-	return c==32 || (c >= 9 && c <= 13);
+	return (c == 32 || (c >= 9 && c <= 13));
 }
 
-int byte_isalpha_(struct charmap *map,int c)
+int
+byte_isalpha_(struct charmap *map, int c)
 {
-	int ofst = (c>>3);
-	int bitn = (1<<(c&7));
-	if (c<0 || c>255)
-		return 0;
-	return (map->alpha__map[ofst]&bitn) != 0;
+	int ofst = (c >> 3);
+	int bitn = (1 << (c & 7));
+
+	if (c < 0 || c > 255)
+		return (0);
+	return ((map->alpha__map[ofst] & bitn) != 0);
 }
 
-int byte_isalnum_(struct charmap *map,int c)
+int
+byte_isalnum_(struct charmap *map, int c)
 {
-	int ofst = (c>>3);
-	int bitn = (1<<(c&7));
-	if (c<0 || c>255)
-		return 0;
-	return (map->alnum__map[ofst]&bitn) != 0;
+	int ofst = (c >> 3);
+	int bitn = (1 << (c & 7));
+
+	if (c < 0 || c > 255)
+		return (0);
+	return ((map->alnum__map[ofst] & bitn) != 0);
 }
 
-int byte_tolower(struct charmap *map,int c)
+int
+byte_tolower(struct charmap *map, int c)
 {
-	if (c<0 || c>255)
-		return c;
-	else
-		return map->lower_map[c];
+	return ((c < 0 || c > 255) ? c : map->lower_map[c]);
 }
 
-int byte_toupper(struct charmap *map,int c)
+int
+byte_toupper(struct charmap *map, int c)
 {
-	if (c<0 || c>255)
-		return c;
-	else
-		return map->upper_map[c];
+	return ((c < 0 || c > 255) ? c : map->upper_map[c]);
 }
 
 /* Load built-in character maps */
 
-static void set_bit(unsigned char *map,int n)
+static void
+set_bit(unsigned char *map, int n)
 {
-	map[n>>3] |= (1<<(n&7));
+	map[n >> 3] |= (1 << (n & 7));
 }
 
-static int rtn_arg(struct charmap *map,int c)
+static int
+rtn_arg(struct charmap *map, int c)
 {
-	return c;
+	return (c);
 }
 
-static struct charmap *charmaps = NULL;	/* Loaded character sets */
+/* loaded character sets */
+static struct charmap *charmaps = NULL;
 
 /* Process a byte-oriented character map and add it to database.
    Consults unicode database "i18n.c" to determine which characters are
    uppercase, etc. */
 
-static struct charmap *process_builtin(const struct builtin_charmap *builtin)
+static struct charmap *
+process_builtin(const struct builtin_charmap *builtin)
 {
-	int x, extra_b7, extra_2192;
+	int x, c, extra_b7, extra_2192;
 	struct charmap *map;
 
 	extra_b7 = builtin->extra_b7;
@@ -1104,14 +1114,14 @@ static struct charmap *process_builtin(const struct builtin_charmap *builtin)
 	map->from_uni = from_uni;
 	map->from_size = 0;
 	map->to_map = builtin->to_uni;
-	for (x=0; x!=256; ++x) {
-		if (map->to_map[x]!=-1) {
-			map->from_map[map->from_size].first = map->to_map[x];
+	for (x = 0; x != 256; ++x) {
+		if ((c = map->to_map[x]) != -1) {
+			map->from_map[map->from_size].first = c;
 			map->from_map[map->from_size].last = x;
 			++map->from_size;
-			if (map->to_map[x] == 0xB7)
+			if (c == 0xB7)
 				extra_b7 = -1;
-			if (map->to_map[x] == 0x2192)
+			if (c == 0x2192)
 				extra_2192 = -1;
 		}
 	}
@@ -1126,71 +1136,60 @@ static struct charmap *process_builtin(const struct builtin_charmap *builtin)
 		++map->from_size;
 	}
 
-	qsort(map->from_map,map->from_size,sizeof(struct pair), (int (*)(const void *, const void *))pair_cmp);
+	qsort(map->from_map, map->from_size, sizeof(struct pair),
+	    (int (*)(const void *, const void *))pair_cmp);
 
-	/* Fill in print, alpha and alnum bit maps */
-
-	for (x=0;x!=32;++x) {
+	for (x = 0; x != 32; ++x) {
 		map->print_map[x] = 0;
 		map->alpha__map[x] = 0;
 		map->alnum__map[x] = 0;
 	}
 
-	for (x=0; x!=256; ++x)
-		if (map->to_map[x] != -1) {
-			if (joe_iswprint(NULL,map->to_map[x]))
-				set_bit(map->print_map,x);
-			if (joe_iswalpha(NULL,map->to_map[x])) {
-				set_bit(map->alpha__map,x);
-				set_bit(map->alnum__map,x);
+	for (x = 0; x != 256; ++x) {
+		map->lower_map[x] = x;
+		map->upper_map[x] = x;
+		if ((c = map->to_map[x]) != -1) {
+			int y, z;
+
+			if (joe_iswprint(NULL, c))
+				set_bit(map->print_map, x);
+			if (joe_iswalpha(NULL, c)) {
+				set_bit(map->alpha__map, x);
+				set_bit(map->alnum__map, x);
 			}
+
+			y = joe_towlower(NULL, c);
+			if ((z = from_uni(map, y)) != -1)
+				map->lower_map[x] = z;
+
+			y = joe_towupper(NULL, c);
+			if ((z = from_uni(map, y)) != -1)
+				map->upper_map[x] = z;
 		}
+	}
 
 	/* Set underbar <U+005F> */
 
-	x = from_uni(map,0x5F);
-	if (x != -1) {
-		set_bit(map->alpha__map,x);
-		set_bit(map->alnum__map,x);
+	if ((c = from_uni(map, 0x5F)) != -1) {
+		set_bit(map->alpha__map, c);
+		set_bit(map->alnum__map, c);
 	}
 
-	/* Put digits in alnum map */
+	/* Put digits into alnum map */
 
-	for (x=0x30; x!=0x3A; ++x) {
-		int y = from_uni(map,x);
-		if (y != -1)
-			set_bit(map->alnum__map,y);
-	}
-
-	/* Build case conversion tables */
-
-	for (x=0; x!=256; ++x) {
-		map->lower_map[x] = x;
-		if (map->to_map[x] != -1) {
-			int y = joe_towlower(NULL,map->to_map[x]);
-			int z = from_uni(map,y);
-			if (z != -1)
-				map->lower_map[x] = z;
-		}
-	}
-
-	for (x=0; x!=256; ++x) {
-		map->upper_map[x] = x;
-		if (map->to_map[x] != -1) {
-			int y = joe_towupper(NULL,map->to_map[x]);
-			int z = from_uni(map,y);
-			if (z != -1)
-				map->upper_map[x] = z;
-		}
+	for (x = 0x30; x != 0x3A; ++x) {
+		if ((c = from_uni(map, x)) != -1)
+			set_bit(map->alnum__map, c);
 	}
 
 	map->next = charmaps;
 	charmaps = map;
 
-	return map;
+	return (map);
 }
 
-static void load_builtins(void)
+static void
+load_builtins(void)
 {
 	struct charmap *map;
 
@@ -1209,113 +1208,101 @@ static void load_builtins(void)
 	map->to_upper = joe_towupper;
 	map->next = charmaps;
 	charmaps = map;
-
-	/* Load all built-in byte maps */
-	/*
-	for (y=0; y!=sizeof(builtin_charmaps)/sizeof(struct builtin_charmap); ++y)
-		process_builtin(builtin_charmaps + y);
-	*/
 }
 
 /* Parse character map file */
 
-static struct builtin_charmap *parse_charmap(const unsigned char *name,FILE *f)
+static struct builtin_charmap *
+parse_charmap(const unsigned char *name, FILE *f)
 {
 	unsigned char buf[1024];
 	unsigned char bf1[1024];
 	unsigned comment_char = '#';
 	int in_map = 0;
 	int x;
-
 	struct builtin_charmap *b;
 
 	if (!f)
-		return 0;
+		return (NULL);
 
 	b = malloc(sizeof(struct builtin_charmap));
-
 	b->name = (unsigned char *)strdup((char *)name);
 
-	for (x=0; x!=256; ++x)
-		b->to_uni[x]= -1;
+	for (x = 0; x != 256; ++x)
+		b->to_uni[x] = -1;
 
 	/* This is a _really_bad_ parser.  The file has to be perfect. */
-	while (fgets((char *)buf,1023,f)) {
+	while (fgets((char *)buf, 1023, f)) {
 		unsigned char *p = buf;
+
 		parse_ws(&p, comment_char);
 		parse_tows(&p, bf1);
-		if (!strcmp((char *)bf1,"<comment_char>")) {
+		if (!strcmp((char *)bf1, "<comment_char>")) {
 			parse_ws(&p, comment_char);
 			parse_tows(&p, bf1);
 			comment_char = bf1[0];
-		} else if (!strcmp((char *)bf1,"<escape_char>")) {
+		} else if (!strcmp((char *)bf1, "<escape_char>")) {
 			parse_ws(&p, comment_char);
 			parse_tows(&p, bf1);
-		} else if (!strcmp((char *)bf1,"CHARMAP")) {
+		} else if (!strcmp((char *)bf1, "CHARMAP")) {
 			in_map = 1;
-		} else if (!strcmp((char *)bf1,"END")) {
+		} else if (!strcmp((char *)bf1, "END")) {
 			in_map = 0;
-		} else if (in_map && bf1[0]=='<' && bf1[1]=='U') {
+		} else if (in_map && bf1[0] == '<' && bf1[1] == 'U') {
 			int uni;
 			int byt;
-			sscanf((char *)bf1+2,"%x",&uni);
+
+			sscanf((char *)bf1+2, "%x", &uni);
 			parse_ws(&p, comment_char);
 			parse_tows(&p, bf1);
-			sscanf((char *)bf1+2,"%x",&byt);
-			b->to_uni[byt]=uni;
+			sscanf((char *)bf1+2, "%x", &byt);
+			b->to_uni[byt] = uni;
 		}
 	}
 
-	/* For generating builtin maps from /usr/share/i18n/charmaps/ */
-/*
-	printf("	{ \"%s\"\n",name);
-	for (y=0;y!=256;y+=8) {
-		printf("\t");
-		for(x=0;x!=8;++x) {
-			if (b->to_uni[y+x]==-1)
-				printf("    -1, ");
-			else
-				printf("0x%4.4X, ",b->to_uni[y+x]);
-		}
-		printf("\n");
-	}
-*/
 	fclose(f);
-	return b;
+	return (b);
 }
 
 /* Byte wide character map to unicode conversion */
 
-/* Compare character map names.  Ignores '-'s and terminates string on '.' */
-/* Chicken and egg problem here.. */
+/*
+ * Compare character map names.
+ * Ignores '-'s and '_'s and terminates string on '.'.
+ * Chicken and egg problem here...
+ */
 
-static int map_up(int c)
+static int
+map_up(int c)
 {
-	if (c>='a' && c<='z')
-		return c+'A'-'a';
-	else
-		return c;
+	return ((c >= 'a' && c <= 'z') ? (c + 'A' - 'a') : c);
 }
 
-int map_name_cmp(const unsigned char *a, const unsigned char *b)
+int
+map_name_cmp(const unsigned char *a, const unsigned char *b)
 {
-	while (*a=='-') ++a;
-	while (*b=='-') ++b;
-	while (*a && *b && map_up(*a)==map_up(*b)) {
+	unsigned char ca, cb;
+
+	goto into_the_loop;
+ loop_beg:
+	if (!(ca = *a) || !(cb = *b) || (map_up(ca) != map_up(cb)))
+		goto loop_end;
+	++a;
+	++b;
+ into_the_loop:
+	while ((ca = *a) == '-' || ca == '_')
 		++a;
+	while ((cb = *b) == '-' || ca == '_')
 		++b;
-		while (*a=='-') ++a;
-		while (*b=='-') ++b;
-	}
-	if (!*a && (*b=='.' || !*b))
-		return 0;
-	else
-		return 1;
+	goto loop_beg;
+ loop_end:
+	return ((!*a && (*b == '.' || !*b)) ? 0 : 1);
 }
 
 /* Find a character map */
 
-struct charmap *find_charmap(const unsigned char *name)
+struct charmap *
+find_charmap(const unsigned char *name)
 {
 	unsigned char buf[1024];
 	unsigned char *p;
@@ -1325,62 +1312,69 @@ struct charmap *find_charmap(const unsigned char *name)
 	int y;
 
 	if (!name)
-		return 0;
+		return (0);
 
 	/* Install some initial character maps */
 	if (!charmaps)
 		load_builtins();
 
 	/* Alias? */
-	for (y=0; alias_table[y].alias; ++y)
-		if (!map_name_cmp(alias_table[y].alias,name)) {
+	for (y = 0; alias_table[y].alias; ++y)
+		if (!map_name_cmp(alias_table[y].alias, name)) {
 			name = alias_table[y].builtin;
 			break;
 		}
 
 	/* Already loaded? */
-	for (m=charmaps; m; m=m->next)
-		if (!map_name_cmp(m->name,name))
-			return m;
+	for (m = charmaps; m; m = m->next)
+		if (!map_name_cmp(m->name, name))
+			return (m);
 
 	/* Check ~/.joe/charmaps */
 	p = (unsigned char *)getenv("HOME");
 	if (p) {
-		joe_snprintf_2((char *)buf,sizeof(buf),"%s/.joe/charmaps/%s",p,name);
-		f = fopen((char *)buf,"r");
+		joe_snprintf_2((char *)buf, sizeof(buf),
+		    "%s/.joe/charmaps/%s", p, name);
+		f = fopen((char *)buf, "r");
 	}
 
 	/* Check JOERCcharmaps */
 	if (!f) {
-		joe_snprintf_2((char *)buf,sizeof(buf),"%scharmaps/%s",JOERC,name);
-		f = fopen((char *)buf,"r");
+		joe_snprintf_2((char *)buf, sizeof(buf),
+		    "%scharmaps/%s", JOERC, name);
+		f = fopen((char *)buf, "r");
 	}
 
 	/* Parse and install character map from file */
-	if (f && (b = parse_charmap(name,f)))
-		return process_builtin(b);
+	if (f && (b = parse_charmap(name, f)))
+		return (process_builtin(b));
 
 	/* Check builtin sets */
-	for (y=0; y!=sizeof(builtin_charmaps)/sizeof(struct builtin_charmap); ++y)
-		if (!map_name_cmp(builtin_charmaps[y].name,name))
-			return process_builtin(builtin_charmaps + y);
+	for (y = 0; y != NELEM(builtin_charmaps); ++y)
+		if (!map_name_cmp(builtin_charmaps[y].name, name))
+			return (process_builtin(builtin_charmaps + y));
 
-	return NULL;
+	return (NULL);
 }
 
 /* Test */
 
-#if 0
-main(int argc,char *argv[])
+#ifdef TEST
+int
+main(int argc, char *argv[])
 {
-	struct charmap *map=find_charmap(argv[1]);
+	struct charmap *map;
 	int u;
 	int uni;
-	if (!map)
+
+	if (!argv[1] || !argv[2] || !(map = find_charmap(argv[1]))) {
 		printf("Not found\n");
-	sscanf(argv[2],"%x",&u);
-	printf("Unicode=%X\n",uni=to_uni(map,u));
-	printf("Local=%X\n",from_uni(map,uni));
+		return (1);
+	}
+	sscanf(argv[2], "%x", &u);
+	printf("Unicode=%X\n", uni = to_uni(map, u));
+	printf("Local=%X\n", from_uni(map, uni));
+	return (0);
 }
 #endif
 
@@ -1399,35 +1393,34 @@ get_encodings(void)
 
 	/* Builtin maps */
 
-	r = vsncpy(NULL,0,sc("utf-8"));
+	r = vsncpy(NULL, 0, sc("utf-8"));
 	encodings = vaadd(encodings, r);
 
-	for (y=0; y!=sizeof(builtin_charmaps)/sizeof(struct builtin_charmap); ++y) {
-		r = vsncpy(NULL,0,sz(builtin_charmaps[y].name));
+	for (y = 0; y != NELEM(builtin_charmaps); ++y) {
+		r = vsncpy(NULL, 0, sz(builtin_charmaps[y].name));
 		encodings = vaadd(encodings, r);
 	}
 
 	/* Aliases */
 
-	for (y=0; alias_table[y].alias; ++y) {
-		r = vsncpy(NULL,0,sz(alias_table[y].alias));
+	for (y = 0; alias_table[y].alias; ++y) {
+		r = vsncpy(NULL, 0, sz(alias_table[y].alias));
 		encodings = vaadd(encodings, r);
 	}
 
 	/* External maps */
 
-	p = (unsigned char *)getenv("HOME");
-	if (p) {
-		joe_snprintf_1((char *)buf,sizeof(buf),"%s/.joe/charmaps",p);
+	if ((p = (unsigned char *)getenv("HOME"))) {
+		joe_snprintf_1((char *)buf, sizeof(buf), "%s/.joe/charmaps", p);
 		if (!chpwd(buf) && (t = rexpnd(US "*"))) {
 			for (x = 0; x != aLEN(t); ++x)
-				if (strcmp(t[x],"..")) {
+				if (strcmp(t[x], "..")) {
 					for (y = 0; y != aLEN(encodings); ++y)
-						if (!strcmp(t[x],encodings[y]))
+						if (!strcmp(t[x], encodings[y]))
 							break;
 					if (y == aLEN(encodings)) {
-						r = vsncpy(NULL,0,sv(t[x]));
-						encodings = vaadd(encodings,r);
+						r = vsncpy(NULL, 0, sv(t[x]));
+						encodings = vaadd(encodings, r);
 					}
 				}
 			varm(t);
@@ -1436,13 +1429,13 @@ get_encodings(void)
 
 	if (!chpwd(US (JOERC "charmaps")) && (t = rexpnd(US "*"))) {
 		for (x = 0; x != aLEN(t); ++x)
-			if (strcmp(t[x],"..")) {
+			if (strcmp(t[x], "..")) {
 				for (y = 0; y != aLEN(encodings); ++y)
-					if (!strcmp(t[x],encodings[y]))
+					if (!strcmp(t[x], encodings[y]))
 						break;
 				if (y == aLEN(encodings)) {
-					r = vsncpy(NULL,0,sv(t[x]));
-					encodings = vaadd(encodings,r);
+					r = vsncpy(NULL, 0, sv(t[x]));
+					encodings = vaadd(encodings, r);
 				}
 			}
 		varm(t);
@@ -1450,82 +1443,29 @@ get_encodings(void)
 
 	chpwd(oldpwd);
 
-	return encodings;
+	return (encodings);
 }
-
-#if 0
-
-/* Convert to uppercase via unicode.  Returns original
-   character if there was no conversion. */
-
-int joe_toupper(struct charmap *map,int c)
-{
-	int d;
-
-	/* This appears to always be true */
-	if (c>='a' && c<='z')
-		return c+'A'-'a';
-	else if (c<128)
-		return c;
-
-	/* Slow... */
-	d = to_uni(map,c);
-	if (d== -1)
-		return c;
-	d = joe_towupper(d);
-	if (d== -1)
-		return c;
-	d = from_uni(map,d);
-	if (d== -1)
-		return c;
-	else
-		return d;
-}
-
-/* Convert to uppercase via unicode.  Returns original
-   character if there was no conversion. */
-
-int joe_tolower(struct charmap *map,int c)
-{
-	int d;
-
-	/* This appears to always be true */
-	if (c>='A' && c<='Z')
-		return c+'a'-'A';
-	else if (c<128)
-		return c;
-
-	/* Slow... */
-	d = to_uni(map,c);
-	if (d== -1)
-		return c;
-	d = joe_towlower(d);
-	if (d== -1)
-		return c;
-	d = from_uni(map,d);
-	if (d== -1)
-		return c;
-	else
-		return d;
-}
-#endif
 
 /* This is not correct... (EBCDIC for example) */
 
-int joe_isblank(struct charmap *map,int c)
+int
+joe_isblank(struct charmap *map, int c)
 {
-	return c==32 || c==9;
+	return (c == 32 || c == 9);
 }
 
-int joe_isspace_eof(struct charmap *map,int c)
+int
+joe_isspace_eof(struct charmap *map, int c)
 {
-	return (c==0) || joe_isspace(map,c);
+	return ((c == 0) || joe_isspace(map, c));
 }
 
-unsigned char *lowerize(unsigned char *s)
+unsigned char *
+joe_strtolower(unsigned char *s)
 {
 	unsigned char *t;
-	for (t=s;*t;t++)
-		*t = joe_tolower(locale_map,*t);
-	return s;
+
+	for (t = s; *t; t++)
+		*t = joe_tolower(locale_map, *t);
+	return (s);
 }

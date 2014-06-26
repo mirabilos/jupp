@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/syntax.c,v 1.10 2013/09/27 00:51:52 tg Exp $ */
+/* $MirOS: contrib/code/jupp/syntax.c,v 1.11 2014/06/26 17:51:14 tg Exp $ */
 /*
  *	Syntax highlighting DFA interpreter
  *	Copyright
@@ -63,7 +63,9 @@ int parse(struct high_syntax *syntax,P *line,int state)
 			/* Get command for this character */
 			cmd = h->cmd[c];
 			/* Determine new state */
-			if (cmd->keywords && (cmd->ignore ? (kw_cmd=htfind(cmd->keywords,lowerize(buf))) : (kw_cmd=htfind(cmd->keywords,buf)))) {
+			if (cmd->keywords && (cmd->ignore ?
+			    (kw_cmd = htfind(cmd->keywords, joe_strtolower(buf))) :
+			    (kw_cmd = htfind(cmd->keywords, buf)))) {
 				cmd = kw_cmd;
 				h = cmd->new_state;
 				/* Recolor keyword */
@@ -332,7 +334,7 @@ struct high_syntax *load_dfa(unsigned char *name)
 										if(!parse_string(&p,bf,255)) {
 											parse_ws(&p,'#');
 											if (cmd->ignore)
-												lowerize(bf);
+												joe_strtolower(bf);
 											if(!parse_ident(&p,bf1,255)) {
 												struct high_cmd *kw_cmd=mkcmd();
 												kw_cmd->noeat=1;

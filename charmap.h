@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/charmap.h,v 1.4 2010/01/03 18:22:04 tg Exp $ */
+/* $MirOS: contrib/code/jupp/charmap.h,v 1.5 2014/06/26 17:51:14 tg Exp $ */
 /*
  *	Character sets
  *	Copyright
@@ -76,7 +76,7 @@ int joe_isspace_eof PARAMS((struct charmap *map,int c));
 #define joe_toupper(map,c) ((map)->to_upper((map),(c)))
 #define joe_to_uni(map,c) ((map)->to_uni((map),(c)))
 #define joe_from_uni(map,c) ((map)->from_uni((map),(c)))
-unsigned char *lowerize PARAMS((unsigned char *s));
+unsigned char *joe_strtolower PARAMS((unsigned char *s));
 
 /* Find (load if necessary) a character set */
 struct charmap *find_charmap PARAMS((const unsigned char *name));
