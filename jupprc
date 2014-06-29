@@ -135,6 +135,10 @@
 *.m
 -syntax c
 
+*.nxc
+--highlight
+-syntax c
+
  === C Shell
 *.csh
 -syntax csh

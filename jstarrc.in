@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jstarrc.in,v 1.18 2014/06/09 15:39:23 tg Exp $
+ $MirOS: contrib/code/jupp/jstarrc.in,v 1.19 2014/06/29 10:58:45 tg Exp $
 
                          Initialization file for JOE
                            WordStar / Turbo-C Joe
@@ -284,6 +284,10 @@
 -syntax c
 
 *.m
+-syntax c
+
+*.nxc
+--highlight
 -syntax c
 
  === C Shell

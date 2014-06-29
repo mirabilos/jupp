@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/joerc.in,v 1.19 2014/06/26 17:18:54 tg Exp $
+ $MirOS: contrib/code/jupp/joerc.in,v 1.20 2014/06/29 10:58:44 tg Exp $
 
                          Initialization file for JOE
                                 Standard Joe
@@ -315,6 +315,10 @@
 -syntax c
 
 *.m
+-syntax c
+
+*.nxc
+--highlight
 -syntax c
 
  === C Shell

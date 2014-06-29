@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jmacsrc.in,v 1.18 2014/06/09 15:39:22 tg Exp $
+ $MirOS: contrib/code/jupp/jmacsrc.in,v 1.19 2014/06/29 10:58:44 tg Exp $
 
                          Initialization file for JOE
                                 GNU-Emacs Joe
@@ -288,6 +288,10 @@
 -syntax c
 
 *.m
+-syntax c
+
+*.nxc
+--highlight
 -syntax c
 
  === C Shell
