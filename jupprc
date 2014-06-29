@@ -1,4 +1,4 @@
- "jupp" resource file for JOE 2.8/DOS (c) 1997-2012 Thorsten Glaser
+ "jupp" resource file for JOE 2.8/DOS (c) 1997-2014 Thorsten Glaser
  Provided that these terms and disclaimer and all copyright notices
  are retained or reproduced in an accompanying document, permission
  is granted to deal in this work without restriction, including un-
@@ -33,6 +33,8 @@
 -rmargin 73
 -tab 8
 --wordwrap
+
+ #HOOK#2801 global/default flags
 
 {Basic
 \i   Help Screen    turn off with ^J     more help with ESC . (^[.)              \i
@@ -110,8 +112,10 @@
 \i \i go to \uhttp://sf.net/projects/joe-editor/\u for upstream bug reports. JUPP 2.8 \i \i
 \i \i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\d(R)\d \i \i
 \i \i at \uhttp://mirbsd.de/jupp\u and by \bThorsten "\dmirabilos\d" Glaser <\utg@mirbsd.org\u>\b \i \i
-\i \i @(#) jupprc 2012-12-20; 2.8; CR-LF on; UTF-8 not supported (for 16-bit DOS) \i \i
+\i \i @(#) jupprc 2014-06-29; 2.8; CR-LF on; UTF-8 not supported (for 16-bit DOS) \i \i
 }
+
+ #HOOK#2802 additional help screens
 
 {CharTable
 \i   Help Screen    turn off with ^J     prev. screen ^[,    \uCharacter Map\u       \i
@@ -128,6 +132,7 @@
 }
 
 :windows
+ #HOOK#2803 common keybindings
 type		^@ TO ÿ
 abort		^K Q
 abort		^K ^Q
@@ -172,6 +177,7 @@ stop		^[ )
 
 :main
 :inherit windows
+ #HOOK#2804 main keybindings
 bof,qrepl,"\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\+\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\$",rtn,rtn,rtn,"r",eof	^K ]
 edit,rtn,filt,query,parserr	^[ C
 edit,rtn,filt,query,parserr	^[ c
