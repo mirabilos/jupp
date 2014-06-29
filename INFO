@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/INFO,v 1.10 2011/10/04 22:47:51 tg Exp $
+$MirOS: contrib/code/jupp/INFO,v 1.11 2014/06/29 11:39:50 tg Exp $
 ------------------------------------------------------------------
 
                                     Jupp
@@ -29,7 +29,7 @@ UNIX-integration features of VI.
 
 	JOE's initialization file determines much of JOE's personality and
 the name of the initialization file is simply the name of the editor
-executable followed by "rc".  JOE comes with four "rc" files in addition to
+executable followed by "rc".  JOE comes with five "rc" files in addition to
 the basic "joerc", which allow it to emulate these editors:
 
 	JPICO	- An enhanced version of the Pine mailer system's PICO

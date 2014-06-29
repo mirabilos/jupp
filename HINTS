@@ -21,6 +21,9 @@ This needs verification and possibly fixes.
 UTF-8
 -----
 
+Do note that the joerc files must be written using the 8-bit encoding
+(probably ISO-8859-1), not UTF-8.
+
 JOE now handles two classes of character sets: UTF-8 and byte coded (like
 ISO-8859-1).  It can not yet handle other major classes such as UTF-16 or
 GB2312. There are other restrictions: character sets must use LF (0x0A) or
@@ -131,4 +134,4 @@ will not insert.
 - Search, incremental search, and search & replace all operate as usual.
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/HINTS,v 1.7 2013/08/19 22:04:14 tg Exp $
+$MirOS: contrib/code/jupp/HINTS,v 1.8 2014/06/29 11:39:50 tg Exp $
