@@ -47,7 +47,7 @@
 -tab 8
 --wordwrap
 
- #HOOK#1 global/default flags
+ #HOOK#3101 global/default flags
 
  === Generic files
  No '.' in filename?
@@ -403,7 +403,7 @@
 *.y
 -syntax yacc
 
- #HOOK#2 filename matching
+ #HOOK#3102 filename matching
 
 {Basic
 \i   Help Screen    turn off with ^J     more help with ESC . (^[.)              \i
@@ -482,10 +482,10 @@
 \i \i go to \uhttp://sf.net/projects/joe-editor/\u for upstream bug reports. JUPP 2.8 \i \i
 \i \i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\d(R)\d \i \i
 \i \i at \uhttp://mirbsd.de/jupp\u and by \bThorsten "\dmirabilos\d" Glaser <\utg@mirbsd.org\u>\b \i \i
-\i \i @(#) jupprc 2014-06-09; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
+\i \i @(#) jupprc 2014-06-29; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
 }
 
- #HOOK#3 additional help screens
+ #HOOK#3103 additional help screens
 
 {CharTable
 \i   Help Screen    turn off with ^J     prev. screen ^[,    \uCharacter Map\u       \i
@@ -507,7 +507,7 @@
 }
 
 :windows
- #HOOK#4 common keybindings
+ #HOOK#3104 common keybindings
 type		^@ TO ÿ
 abort		^K Q
 abort		^K ^Q
@@ -576,7 +576,7 @@ keymap,"prompt",rtn			^D
 
 :main
 :inherit windows
- #HOOK#5 main keybindings
+ #HOOK#3105 main keybindings
 bof,qrepl,"\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\+\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\$",rtn,rtn,rtn,"r",eof	^K ]
 edit,rtn,filt,query,parserr	^[ C
 edit,rtn,filt,query,parserr	^[ c
@@ -884,7 +884,7 @@ type		^@ TO ÿ
 
 :cua
 :inherit main
- #HOOK#6 extra keybindings in CUA mode
+ #HOOK#3106 extra keybindings in CUA mode
 undo		^Z
 blkdel,nmark	^X
 copy		^C

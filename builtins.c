@@ -8,8 +8,7 @@
 
 #include "types.h"
 
-const unsigned char * const builtins[]=
-{
+const unsigned char * const builtins[] = {
 	US "jupprc", US
 		"-asis\n"
 		"-assume_color\n"
@@ -142,9 +141,8 @@ const unsigned char * const builtins[]=
 		"\\i \\i go to \\uhttp://sf.net/projects/joe-editor/\\u for upstream bug reports. JUPP 2.8 \\i \\i\n"
 		"\\i \\i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\\d(R)\\d \\i \\i\n"
 		"\\i \\i at \\uhttp://mirbsd.de/jupp\\u and by \\bThorsten \"\\dmirabilos\\d\" Glaser <\\utg@mirbsd.org\\u>\\b \\i \\i\n"
-		"\\i \\i @(#) blt_in 2013-11-07; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \\i \\i\n"
+		"\\i \\i @(#) blt_in 2014-06-29; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \\i \\i\n"
 		"}\n"
-		"\n"
 		"\n"
 		"{CharTable\n"
 		"\\i   Help Screen    turn off with ^J     prev. screen ^[,    \\uCharacter Map\\u       \\i\n"
@@ -532,5 +530,5 @@ const unsigned char * const builtins[]=
 		":querysr\n"
 		"type		^@ TO \xFF\n"
 ,	NULL
-,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.18 2013/11/07 22:19:02 tg Exp $"
+,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.19 2014/06/29 11:27:26 tg Exp $"
 };
