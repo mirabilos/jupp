@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jstarrc.in,v 1.19 2014/06/29 10:58:45 tg Exp $
+ $MirOS: contrib/code/jupp/jstarrc.in,v 1.20 2014/07/13 12:58:52 tg Exp $
 
                          Initialization file for JOE
                            WordStar / Turbo-C Joe
@@ -34,6 +34,7 @@
  -pg nnn	No. lines to keep for PgUp/PgDn
  -csmode	^KF after a pervious search does a ^L instead
  -backpath path Directory to store backup files
+		(do not use quotes, and remove the comment after path)
  -nonotice	Disable copyright notice
 -noxon		Attempt to turn off ^S/^Q processing
  -orphan	Put extra files given on command line in orphaned buffers
