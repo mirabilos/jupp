@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/w.c,v 1.5 2012/12/30 21:45:18 tg Exp $ */
+/* $MirOS: contrib/code/jupp/w.c,v 1.6 2014/07/25 21:26:45 tg Exp $ */
 /*
  *	Window system
  *	Copyright
@@ -78,10 +78,12 @@ static int geth(W *w)
 static void seth(W *w, int h)
 {
 	long tmp;
+	int tmpb;
 
 	w->reqh = h;
 	tmp = 1000L * h;
-	w->hh = tmp / (w->t->h - w->t->wind) + (tmp % (w->t->h - w->t->wind) ? 1 : 0);
+	tmpb = w->t->h - w->t->wind;
+	w->hh = (tmp + (tmpb - 1)) / tmpb;
 }
 
 /* Determine height of a family of windows.  Uses 'reqh' if it's set */
