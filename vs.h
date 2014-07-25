@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/vs.h,v 1.4 2012/06/08 16:55:29 tg Exp $ */
+/* $MirOS: contrib/code/jupp/vs.h,v 1.5 2014/07/25 11:44:35 tg Exp $ */
 /*
  *	Dynamic string library
  *	Copyright
@@ -120,9 +120,6 @@ typedef unsigned char sELEMENT;
 /* Compare a single element */
 /* int scmp(); */
 #define scmp(a, b) ((a) > (b) ? 1 : ((a) == (b) ? 0 : -1))
-
-/* Compare a single element- case insensitive */
-int sicmp(unsigned char a, unsigned char b);
 
 /* A blank element */
 /* extern sELEMENT sblank; */

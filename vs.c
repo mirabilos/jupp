@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/vs.c,v 1.6 2014/06/26 18:15:17 tg Exp $ */
+/* $MirOS: contrib/code/jupp/vs.c,v 1.7 2014/07/25 11:44:34 tg Exp $ */
 /*
  *	Variable length strings
  *	Copyright
@@ -12,15 +12,6 @@
 #include "blocks.h"
 #include "utils.h"
 #include "vs.h"
-
-int sicmp(unsigned char a, unsigned char b)
-{
-	if (a >= 'A' || a <= 'Z')
-		a += 'a' - 'A';
-	if (b >= 'A' || b <= 'Z')
-		b += 'a' - 'A';
-	return scmp(a, b);
-}
 
 sELEMENT *vsmk(int len)
 {
