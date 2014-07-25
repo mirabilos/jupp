@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.c,v 1.18 2012/12/30 18:18:06 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.c,v 1.19 2014/07/25 21:46:16 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright
@@ -174,8 +174,8 @@ unsigned long upc;		/* Microseconds per character */
  */
 
 static int speeds[] = {
-	B50, 50, B75, 75, B110, 110, B134, 134, B150, 150, B200, 200, B300,
-	300, B600, 600,
+	B50, 50, B75, 75, B110, 110, B134, 134, B150, 150, B200, 200,
+	B300, 300, B600, 600,
 	B1200, 1200, B1800, 1800, B2400, 2400, B4800, 4800, B9600, 9600
 #ifdef EXTA
 	    , EXTA, 19200
@@ -391,15 +391,16 @@ void ttopnn(void)
 static void
 baud_reset(int bbaud)
 {
-	int x;
+	int x = 0;
 
 	baud = 9600;
 	upc = 0;
-	for (x = 0; x != 30; x += 2)
+	while (x < NELEM(speeds))
 		if (bbaud == speeds[x]) {
 			baud = speeds[x + 1];
 			break;
-		}
+		} else
+			x += 2;
 	if (Baud >= 50)
 		baud = Baud;
 	else
