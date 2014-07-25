@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.c,v 1.12 2013/11/07 21:50:35 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.c,v 1.13 2014/07/25 20:43:01 tg Exp $ */
 /*
  *	Device independant TTY interface for JOE
  *	Copyright
@@ -304,7 +304,7 @@ void outatr(struct charmap *map,SCRN *t,int *scrn,int *attrf,int xx,int yy,int c
 			}
 
 			c = to_uni(map,c);
-			if (c == -1 || c < 32 || (c >= 0x7F && c < 0xA0)) {
+			if (c < 32 || (c >= 0x7F && c < 0xA0)) {
 				c = 0x1000FFFE;
 				a = (a | UNDERLINE) ^ INVERSE;
 			}
