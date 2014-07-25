@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/types.h,v 1.12 2013/08/19 18:25:44 tg Exp $ */
+/* $MirOS: contrib/code/jupp/types.h,v 1.13 2014/07/25 21:41:49 tg Exp $ */
 
 #ifndef _JOE_TYPES_H
 #define _JOE_TYPES_H
@@ -17,6 +17,9 @@
 #else
 #define mkssert(e)	((void)0)
 #endif
+
+/* from mksh */
+#define NELEM(a)	(sizeof(a) / sizeof((a)[0]))
 
 #define LINK(type) struct { type *next; type *prev; }
 
