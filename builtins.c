@@ -108,6 +108,7 @@ const unsigned char * const builtins[] = {
 		"\\i \\i^QP previous place    \\u\\bGOTO AFTER COMPILING\\b\\u         ^KA center   \\u\\bINSERT MATH\\b\\u  \\i \\i\n"
 		"\\i \\i^K= next place        ^[N previous error    \\u\\bSPECIAL\\b\\u             ^[# equation \\i \\i\n"
 		"\\i \\i^Q[ matching brace    ^[M next error        ^[- exec. juppcmd   ^[= result   \\i \\i\n"
+		"\\i \\i \\b\\uFreedroidz\\u:\\b ^KF save current *.nxc file, compile, transfer to the NXT brick \\i \\i\n"
 		"}\n"
 		"\n"
 		"{Search\n"
@@ -141,7 +142,7 @@ const unsigned char * const builtins[] = {
 		"\\i \\i go to \\uhttp://sf.net/projects/joe-editor/\\u for upstream bug reports. JUPP 2.8 \\i \\i\n"
 		"\\i \\i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\\d(R)\\d \\i \\i\n"
 		"\\i \\i at \\uhttp://mirbsd.de/jupp\\u and by \\bThorsten \"\\dmirabilos\\d\" Glaser <\\utg@mirbsd.org\\u>\\b \\i \\i\n"
-		"\\i \\i @(#) blt_in 2014-06-29; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \\i \\i\n"
+		"\\i \\i @(#) blt_in 2014-10-23; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \\i \\i\n"
 		"}\n"
 		"\n"
 		"{CharTable\n"
@@ -226,6 +227,9 @@ const unsigned char * const builtins[] = {
 		":main\n"
 		":inherit windows\n"
 		"bof,qrepl,\"\\\\[\",quote,\"i\",quote,\"k\",quote,\"l\",quote,\"m ]\\\\+\\\\[\",quote,\"i\",quote,\"k\",quote,\"l\",quote,\"m ]\\\\$\",rtn,rtn,rtn,\"r\",eof	^K ]\n"
+		"splitw,prevw,scratch,\"nbc-Output\",rtn,nextw,save,markk,bol,markb,prevw,prevw,blkcpy,nextw,nextw,rtn,prevw,eol,\"'\",bol,qrepl,\"'\",rtn,rtn,\"'\\\\\\\\''\",rtn,\"r\",backs,backs,backs,bol,\"fn='\",eol,rtn,\"case $fn in\",rtn,\"*.nxc) ;;\",rtn,\"*) echo '==> Error: filename not *.nxc'; exit ;;\",rtn,\"esac\",rtn,\"nbc -d \\\"$fn\\\"; x=$?\",rtn,\"if test $x = 0; then echo '==> OK'; else echo '==> Error code:' $x; fi\",rtn,nmark,filt,\"sh\",rtn,rtn,\"Press ^KQ to close this window!\",rtn	^K F\n"
+		"splitw,prevw,scratch,\"nbc-Output\",rtn,nextw,save,markk,bol,markb,prevw,prevw,blkcpy,nextw,nextw,rtn,prevw,eol,\"'\",bol,qrepl,\"'\",rtn,rtn,\"'\\\\\\\\''\",rtn,\"r\",backs,backs,backs,bol,\"fn='\",eol,rtn,\"case $fn in\",rtn,\"*.nxc) ;;\",rtn,\"*) echo '==> Error: filename not *.nxc'; exit ;;\",rtn,\"esac\",rtn,\"nbc -d \\\"$fn\\\"; x=$?\",rtn,\"if test $x = 0; then echo '==> OK'; else echo '==> Error code:' $x; fi\",rtn,nmark,filt,\"sh\",rtn,rtn,\"Press ^KQ to close this window!\",rtn	^K f\n"
+		"splitw,prevw,scratch,\"nbc-Output\",rtn,nextw,save,markk,bol,markb,prevw,prevw,blkcpy,nextw,nextw,rtn,prevw,eol,\"'\",bol,qrepl,\"'\",rtn,rtn,\"'\\\\\\\\''\",rtn,\"r\",backs,backs,backs,bol,\"fn='\",eol,rtn,\"case $fn in\",rtn,\"*.nxc) ;;\",rtn,\"*) echo '==> Error: filename not *.nxc'; exit ;;\",rtn,\"esac\",rtn,\"nbc -d \\\"$fn\\\"; x=$?\",rtn,\"if test $x = 0; then echo '==> OK'; else echo '==> Error code:' $x; fi\",rtn,nmark,filt,\"sh\",rtn,rtn,\"Press ^KQ to close this window!\",rtn	^K ^F\n"
 		"edit,rtn,filt,query,parserr	^[ C\n"
 		"edit,rtn,filt,query,parserr	^[ c\n"
 		"helpcard,\"Paste\",rtn,keymap,\"Paste\",rtn	^[ P\n"
@@ -530,5 +534,5 @@ const unsigned char * const builtins[] = {
 		":querysr\n"
 		"type		^@ TO \xFF\n"
 ,	NULL
-,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.19 2014/06/29 11:27:26 tg Exp $"
+,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.20 2014/10/23 16:34:18 tg Exp $"
 };
