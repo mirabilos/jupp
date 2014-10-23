@@ -1,7 +1,7 @@
 #if 0
 .if "0" == "1"
 #endif
-/* $MirOS: contrib/code/jupp/charmap.c,v 1.14 2014/06/26 19:05:28 tg Exp $ */
+/* $MirOS: contrib/code/jupp/charmap.c,v 1.15 2014/10/23 17:10:44 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 conversion utilities
  *	Copyright
@@ -9,6 +9,8 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
+
+#include "config.h"
 
 #include <stdio.h>
 #include <stdlib.h>

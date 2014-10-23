@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.91 2014/10/23 16:27:25 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.92 2014/10/23 17:10:44 tg Exp $
 ------------------------------------------------------------------
 
 JUPP-current
@@ -16,6 +16,7 @@ JOE 3.1jupp28
 - Better const-cleanliness of code
 - Quell New File message for scratch buffers
 - Fix URI in ChangeLog file
+- Actually build with LFS on GNU/Linux
 
 JOE 3.1jupp27
 
