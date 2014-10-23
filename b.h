@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/b.h,v 1.3 2010/04/08 15:31:00 tg Exp $ */
+/* $MirOS: contrib/code/jupp/b.h,v 1.4 2014/10/23 16:10:28 tg Exp $ */
 /*
  *	Editor engine
  *	Copyright
@@ -20,7 +20,7 @@ extern int tabwidth;		/* Default tab width */
 
 extern VFILE *vmem;		/* Virtual memory file used for buffer system */
 
-extern unsigned char *msgs[];
+extern const unsigned char *msgs[];
 
 B *bmk PARAMS((B *prop));
 void brm PARAMS((B *b));

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ufile.c,v 1.10 2013/08/19 22:48:33 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ufile.c,v 1.11 2014/10/23 16:10:28 tg Exp $ */
 /*
  * 	User file operations
  *	Copyright
@@ -665,11 +665,9 @@ int doscratch(BW *bw, unsigned char *s, void *obj, int *notify)
 			bw = (BW *) maint->curwin->object;
 		}
 	}
-	if (er) {
+	if (er && er != -1) {
 		msgnwt(bw->parent, msgs[-er]);
-		if (er != -1) {
-			ret = -1;
-		}
+		ret = -1;
 	}
 	object = bw->object;
 	w = bw->parent;
