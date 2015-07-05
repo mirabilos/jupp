@@ -664,7 +664,12 @@ Other requests:
   labeled ftype that is switched to using the UI (command)
 • ^Q] should work for “'” and “"” too
 • switch from autoconf to mirtoconf2
+• opening “foo\ bar/baz” opens “foo/ bar/baz” instead (DOSism?)
+• tab-completing “foo bar/baz” is completely broken (open works)
+  – ⚠ by design
+  – it begins to complete after the last space (i.e. “bar/*”)
+  – escaping is broken, see point above this one
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.20 2014/10/23 16:27:25 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.21 2015/07/05 13:18:46 tg Exp $
