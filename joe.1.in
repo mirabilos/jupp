@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.14 2012/12/30 21:45:13 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.15 2016/01/16 23:03:40 tg Exp $
 .\"-
 .TH JOE 1
 .SH Name
@@ -36,7 +36,7 @@ determines the personality of the editor.
 
 JUPP is free software; you can distribute it and/or modify it under the
 terms of the GNU General Public License, Version 1, as published by the
-Free Software Foundation.
+Free Software Foundation.  (main.c contains more detailled exceptions.)
 I have no plans for turning JOE into a commercial or share-ware product.
 See the source code for exact authorship and licencing information.
 JOE is available over the Internet from \fBhttp://joe-editor.sf.net/\fR.

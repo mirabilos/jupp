@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/main.c,v 1.23 2014/03/04 23:04:11 tg Exp $ */
+/* $MirOS: contrib/code/jupp/main.c,v 1.24 2016/01/16 23:03:40 tg Exp $ */
 
 #define JUPP_IS_COPYRIGHT_C_BY "2014 mirabilos"
 
@@ -16,7 +16,7 @@
  * example libraries or when using crunchgen, into a combined binary,
  * that may be conveyed under any version of the GPL, as published by
  * the Free Software Foundation, and any compatible licence permitted
- * by the GPL.
+ * by any version of the GPL, as above.
  *
  * This work is provided "AS IS" and WITHOUT WARRANTY of any kind, to
  * the utmost extent permitted by applicable law, neither express nor
