@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jstarrc.in,v 1.20 2014/07/13 12:58:52 tg Exp $
+ $MirOS: contrib/code/jupp/jstarrc.in,v 1.21 2016/02/16 21:53:37 tg Exp $
 
                          Initialization file for JOE
                            WordStar / Turbo-C Joe
@@ -950,6 +950,9 @@ bos,eol		^Q X
 bos,eol		^Q ^X
 bos,eol		^Q x
 bos,eol		^Q .kd
+execmd		^[ x		Prompt for command to execute
+execmd		^[ X		Prompt for command to execute
+execmd		^[ ^X		Prompt for command to execute
 exsave		^K X		Save and exit
 exsave		^K ^X
 exsave		^K x

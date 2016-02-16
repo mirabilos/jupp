@@ -1,9 +1,10 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.92 2014/10/23 17:10:44 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.93 2016/02/16 21:53:37 tg Exp $
 ------------------------------------------------------------------
 
 JUPP-current
 
 - …
+- Bind execmd in jstarrc, so all flavours bind it
 
 JOE 3.1jupp28
 
