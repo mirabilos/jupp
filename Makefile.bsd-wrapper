@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.2 2013/11/07 22:22:50 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.3 2016/03/04 15:00:32 tg Exp $
 #-
 # make -f Makefile.bsd-wrapper CFPREFIX=/usr/mpkg sysconfjoesubdir=/joe
 
@@ -16,6 +16,7 @@ CFETC?=		/etc
 sysconfjoesubdir?=/jupp
 
 CFARGS+=	--prefix=${CFPREFIX:Q} \
+		--bindir=${CFPREFIX:Q}/bin \
 		--mandir=${CFMANDIR:Q} \
 		--sysconfdir=${CFETC:Q}
 XARGS+=		sysconfjoesubdir=${sysconfjoesubdir:Q}
@@ -32,5 +33,30 @@ COPTS+=		-Wno-unused-parameter \
 .endif
 
 joe.1: config.status
+
+
+.ifmake joe.pdf
+V_GROFF!=	pkg_info -e 'groff-*'
+V_GHOSTSCRIPT!=	pkg_info -e 'ghostscript-*'
+.  if empty(V_GROFF) || empty(V_GHOSTSCRIPT)
+.    error empty V_GROFF=${V_GROFF} or V_GHOSTSCRIPT=${V_GHOSTSCRIPT}
+.  endif
+.endif
+
+CLEANFILES+=	joe.ps1 joe.pdf
+CATS_KW=	jmacs, joe, jpico, jstar, jupp, rjoe
+CATS_TITLE_joe_1=joe - Joe's Own Editor
+joe.pdf: joe.ps1
+	x=$$(ident joe.1 | \
+	    awk '/Mir''OS:/ { print $$4$$5; }' | \
+	    tr -dc 0-9); (( $${#x} == 14 )) || exit 1; exec \
+	    ${MKSH} ${BSDSRCDIR:Q}/contrib/hosted/tg/ps2pdfmir -p pa4 -c \
+	    -o joe.pdf '[' /Author '(The MirOS Project)' \
+	    /Title '('${CATS_TITLE_joe_1:Q}')' \
+	    /Subject '(BSD Reference Manual)' /ModDate "(D:$$x)" \
+	    /Creator '(GNU groff version ${V_GROFF:S/groff-//} \(MirPorts\))' \
+	    /Producer '(Artifex Ghostscript ${V_GHOSTSCRIPT:S/ghostscript-//:S/-artifex//} \(MirPorts\))' \
+	    /Keywords '('${CATS_KW:Q}')' /DOCINFO pdfmark \
+	    -f joe.ps1
 
 .include <bsd.cfwrap.mk>

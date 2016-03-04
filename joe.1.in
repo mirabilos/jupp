@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.15 2016/01/16 23:03:40 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.16 2016/03/04 15:00:32 tg Exp $
 .\"-
 .TH JOE 1
 .SH Name
@@ -85,7 +85,7 @@ ESC .).  Use \fB^K H\fR to dismiss the help window.
 
 You can customize the keyboard layout, the help screens and a number of
 behavior defaults by copying JOE's initialization file (usually
-\fB@sysconfdir@/joerc\fR) to \fB.joerc\fR in your home directory and then
+\fB@sysconfdir@/joe/joerc\fR) to \fB.joerc\fR in your home directory and then
 by modifying it.  See the section \fBjoerc\fR below.
 
 To have JOE used as your default editor for e-mail and News, you need to set
@@ -805,7 +805,7 @@ quota.
 .SH The\ joerc file
 \fB^T\fR options, the help screens and the key-sequence to editor command
 bindings are all defined in JOE's initialization file.  If you make a copy
-of this file (which normally resides in \fB@sysconfdir@/joerc\fR) to
+of this file (which normally resides in \fB@sysconfdir@/joe/joerc\fR) to
 \fB$HOME/.joerc\fR, you can customize these setting to your liking.  The
 syntax of the initialization file should be fairly obvious and there are
 further instruction in it.
