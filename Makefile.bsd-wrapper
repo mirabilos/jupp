@@ -1,10 +1,10 @@
-# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.3 2016/03/04 15:00:32 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.4 2016/03/06 18:52:28 tg Exp $
 #-
 # make -f Makefile.bsd-wrapper CFPREFIX=/usr/mpkg sysconfjoesubdir=/joe
 
 MAN=		joe.1
 INST_TARGET=	INSTALL_MAN= install
-CLEANFILES+=	charmaps syntax
+CLEANFILES+=	.deps charmaps syntax
 
 CFPREFIX?=	/usr/local
 .if ${CFPREFIX} == "/usr"
@@ -43,9 +43,12 @@ V_GHOSTSCRIPT!=	pkg_info -e 'ghostscript-*'
 .  endif
 .endif
 
-CLEANFILES+=	joe.ps1 joe.pdf
+CLEANFILES+=	joe.htm joe.ps1 joe.pdf
 CATS_KW=	jmacs, joe, jpico, jstar, jupp, rjoe
 CATS_TITLE_joe_1=joe - Joe's Own Editor
+joe.htm: joe.cat1
+	set -e; . ${BSDSRCDIR:Q}/scripts/roff2htm; set_target_absolute; \
+	    do_conversion_verbose joe 1 joe.cat1 joe.htm
 joe.pdf: joe.ps1
 	x=$$(ident joe.1 | \
 	    awk '/Mir''OS:/ { print $$4$$5; }' | \
