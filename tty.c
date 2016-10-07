@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.c,v 1.20 2014/07/25 22:10:23 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.c,v 1.21 2016/10/07 19:38:22 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright
@@ -1014,7 +1014,7 @@ MPX *mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args, void (*fu
 	int comm[2];
 	pid_t pid;
 	int x;
-	MPX *m;
+	MPX *m = NULL;
 	unsigned char *name;
 
 	/* Get pty/tty pair */
