@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/b.c,v 1.12 2014/10/23 16:10:27 tg Exp $ */
+/* $MirOS: contrib/code/jupp/b.c,v 1.14 2016/10/07 19:37:45 tg Exp $ */
 /*
  *	Editor engine
  *	Copyright
@@ -567,7 +567,7 @@ int pgetb(P *p)
 int pgetc(P *p)
 {
 	if (p->b->o.charmap->type) {
-		int val, c, d, n, wid;
+		int val, c, n, wid;
 		/* int m, oc; */
 
 		val = p->valcol;	/* Remember if column number was valid */
@@ -603,14 +603,15 @@ int pgetc(P *p)
 		/* m = n; */
 
 		if (n) {
-			while (n) {
+			int d;
+
+			do {
 				d = brc(p);
 				if (d == NO_MORE_DATA || (d&0xC0)!=0x80)
 					break;
 				pgetb(p);
 				c = ((c<<6)|(d&0x3F));
-				--n;
-			}
+			} while (--n);
 			if (n) { /* FIXME: there was a bad UTF-8 sequence */
 				/* How to represent this? */
 				/* pbkwd(p,m-n);
