@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.95 2016/09/01 12:54:41 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.96 2016/10/07 10:44:39 tg Exp $
 ------------------------------------------------------------------
 
 JUPP-current
@@ -7,6 +7,7 @@ JUPP-current
 - Update internationalisation data to Unicode 9.0.0
 - Bind execmd in jstarrc, so all flavours bind it
 - Fix paths in joe(1) manpage
+- jupprc: ^Q= searches for merge conflict markers (CVS, git)
 
 JOE 3.1jupp28
 
