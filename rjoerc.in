@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/rjoerc.in,v 1.20 2014/07/13 12:58:52 tg Exp $
+ $MirOS: contrib/code/jupp/rjoerc.in,v 1.21 2016/10/07 10:57:07 tg Exp $
 
                          Initialization file for JOE
                             Restricted access Joe
@@ -556,6 +556,16 @@
  === TCL
 *.tcl
 -syntax tcl
+
+ === TeX
+*.cls
+-syntax tex
+
+*.sty
+-syntax tex
+
+*.tex
+-syntax tex
 
  === Verilog
 *.v

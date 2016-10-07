@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.46 2014/10/23 16:27:26 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.47 2016/10/07 10:57:06 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -206,5 +206,5 @@ syntax/c.jsf syntax/perl.jsf syntax/verilog.jsf syntax/sh.jsf syntax/python.jsf
 syntax/conf.jsf syntax/php.jsf syntax/mail.jsf syntax/pascal.jsf syntax/html.jsf
 syntax/vhdl.jsf syntax/fortran.jsf syntax/java.jsf syntax/xml.jsf syntax/tcl.jsf
 charmaps/klingon syntax/lisp.jsf syntax/csh.jsf syntax/mason.jsf syntax/diff.jsf
-syntax/asm.jsf])
+syntax/asm.jsf syntax/tex.jsf])
 AC_OUTPUT
