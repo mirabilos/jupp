@@ -453,14 +453,14 @@
 
 {Programs
 \i   Help Screen    turn off with ^J     prev. screen ^[,    next screen ^[.     \i
-\i \i\u\bGOTO\b\u                  \u\bCOMPILING\b\u                    \u\bINDENT\b\u       \u\bSLIDING\b\u      \i \i
-\i \i^Q- to column number  ^[C Compile & parse errors   ^K. more     ^W up        \i \i
-\i \i^QI to line number    ^[E Parse errors             ^K, less     ^Z down      \i \i
-\i \i^QP previous place    \u\bGOTO AFTER COMPILING\b\u         ^KA center   \u\bINSERT MATH\b\u  \i \i
-\i \i^K= next place        ^[N previous error    \u\bSPECIAL\b\u             ^[# equation \i \i
-\i \i^Q] matching brace    ^[M next error        ^[- exec. juppcmd   ^[= result   \i \i
-\i \i \b\uSpecial\u:\b ^K] delete whitespace at EOL; ^Q= search for merge conflict marker \i \i
-\i \i \b\uFreedroidz\u:\b ^KF save current *.nxc file, compile, transfer to the NXT brick \i \i
+\i \i\u\bGOTO\b\u                               \u\bCOMPILING\b\u                    \u\bSLIDING\b\u      \i \i
+\i \i^Q] matching brace, ^Q[ reverse    ^[C compile & parse errors   ^W up        \i \i
+\i \i^Q= merge conflict marker          ^[E parse errors             ^Z down      \i \i
+\i \i^Q- to column number  \u\bINDENT\b\u       ^KF save, compile & upload to NXT brick   \i \i
+\i \i^QI to line number    ^K. more     \u\bGOTO AFTER COMPILING\b\u         \u\bINSERT MATH\b\u  \i \i
+\i \i^QP previous place    ^K, less     ^[N previous error           ^[# equation \i \i
+\i \i^K= next place        ^KA centre   ^[M next error      \u\bSPECIAL\b\u  ^[= result   \i \i
+\i \i                      ^K] kill whitespace at EOL       ^[- jupp command line \i \i
 }
 
 {Search
@@ -494,7 +494,7 @@
 \i \i go to \uhttp://sf.net/projects/joe-editor/\u for upstream bug reports. JUPP 2.8 \i \i
 \i \i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\d(R)\d \i \i
 \i \i at \uhttp://mirbsd.de/jupp\u and by \bThorsten "\dmirabilos\d" Glaser <\utg@mirbsd.org\u>\b \i \i
-\i \i @(#) jupprc 2016-10-07; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
+\i \i @(#) jupprc 2016-10-08; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
 }
 
  #HOOK#3103 additional help screens
