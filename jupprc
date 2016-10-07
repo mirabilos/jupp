@@ -1,4 +1,4 @@
- "jupp" resource file for JOE 2.8/DOS (c) 1997-2014 Thorsten Glaser
+ "jupp" resource file for JOE 2.8/DOS (c) 1997-2016 Thorsten Glaser
  Provided that these terms and disclaimer and all copyright notices
  are retained or reproduced in an accompanying document, permission
  is granted to deal in this work without restriction, including un-
@@ -44,7 +44,7 @@
 \i \i^A previous word ^QS beg. of line ^KY kill ^T  >word ^QL refresh  ^KZ shell  \i \i
 \i \i^F next word     ^QD end of line  ^K/ pipe ^QY >line ^O  options  \u\bFILE\b\u       \i \i
 \i \i\u\bSEARCH\b\u           ^QR top of file  ^KB begin          \u\bBUFFER\b\u       ^KE new    \i \i
-\i \i^QF find first   ^QC end of file  ^KK end  ^K] space ^U undo      ^KR import \i \i
+\i \i^QF find first   ^QC end of file  ^KK end            ^U undo      ^KR import \i \i
 \i \i^L  find next    ^QO byte offset  ^KD reformat       ^^ redo      ^KW export \i \i
 }
 
@@ -79,6 +79,7 @@
 \i \i^QI to line number    ^[E Parse errors              ^K, less     ^Z down     \i \i
 \i \i^QP previous place    ^[N goto previous error       ^KA center   \u\bSPECIAL\b\u     \i \i
 \i \i^K= next place        ^[M next error     ^Q[ matching brace      ^[- jexecmd \i \i
+\i \i \b\uSpecial\u:\b ^K] delete whitespace at EOL; ^Q= search for merge conflict marker \i \i
 }
 
 {Search
@@ -112,7 +113,7 @@
 \i \i go to \uhttp://sf.net/projects/joe-editor/\u for upstream bug reports. JUPP 2.8 \i \i
 \i \i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\d(R)\d \i \i
 \i \i at \uhttp://mirbsd.de/jupp\u and by \bThorsten "\dmirabilos\d" Glaser <\utg@mirbsd.org\u>\b \i \i
-\i \i @(#) jupprc 2014-06-29; 2.8; CR-LF on; UTF-8 not supported (for 16-bit DOS) \i \i
+\i \i @(#) jupprc 2016-10-07; 2.8; CR-LF on; UTF-8 not supported (for 16-bit DOS) \i \i
 }
 
  #HOOK#2802 additional help screens
@@ -179,6 +180,7 @@ stop		^[ )
 :inherit windows
  #HOOK#2804 main keybindings
 bof,qrepl,"\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\+\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\$",rtn,rtn,rtn,"r",eof	^K ]
+ffirst,"\\^\\[<>=]\\[<>=]\\[<>=]\\[<>=]\\[<>=]\\[<>=]\\[<>=]\\[ \\n]",rtn,rtn,ltarw							^Q =
 edit,rtn,filt,query,parserr	^[ C
 edit,rtn,filt,query,parserr	^[ c
 backs		^?
