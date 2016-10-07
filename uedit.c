@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/uedit.c,v 1.13 2016/10/07 20:07:50 tg Exp $ */
+/* $MirOS: contrib/code/jupp/uedit.c,v 1.14 2016/10/07 20:36:41 tg Exp $ */
 /*
  *	Basic user edit functions
  *	Copyright
@@ -37,7 +37,7 @@ int pgamnt = -1;		/* No. of PgUp/PgDn lines to keep */
 
 /******** i don't like global var ******/
 
-/* 
+/*
  * Move cursor to beginning of line
  */
 int u_goto_bol(BW *bw)
@@ -65,7 +65,7 @@ int uhome(BW *bw)
 	p = pdup(bw->cursor);
 
 	if (bw->o.indentfirst) {
-		if ((bw->o.smarthome) && (piscol(p) > pisindent(p))) { 
+		if ((bw->o.smarthome) && (piscol(p) > pisindent(p))) {
 			p_goto_bol(p);
 			while (joe_isblank(p->b->o.charmap,brc(p)))
 				pgetc(p);
@@ -180,7 +180,7 @@ int u_goto_right(BW *bw)
 }
 
 /*
- * Move cursor to beginning of previous word or if there isn't 
+ * Move cursor to beginning of previous word or if there isn't
  * previous word then go to beginning of the file
  *
  * WORD is a sequence non-white-space characters
@@ -216,7 +216,7 @@ int u_goto_prev(BW *bw)
 }
 
 /*
- * Move cursor to end of next word or if there isn't 
+ * Move cursor to end of next word or if there isn't
  * next word then go to end of the file
  *
  * WORD is a sequence non-white-space characters
@@ -324,6 +324,8 @@ utomatch_i(BW *bw, int dir)
 	int d;
 	int c;			/* character under cursor */
 	int f;			/* character to find */
+	P *p;
+	int cnt = 0;		/* delimiter depth */
 
 	switch (c = brch(bw->cursor)) {
 	case '(':
@@ -354,10 +356,6 @@ utomatch_i(BW *bw, int dir)
 		f = '{';
 		dir = -1;
 		break;
-	case '\'':
-		f = '`';
-		dir = -1;
-		break;
 	case '>':
 		f = '<';
 		dir = -1;
@@ -371,39 +369,32 @@ utomatch_i(BW *bw, int dir)
 		return -1;
 	}
 
+	p = pdup(bw->cursor);
 	if (dir == 1) {
-		P *p = pdup(bw->cursor);
-		int cnt = 0;	/* No. levels of delimiters we're in */
-
 		while ((d = pgetc(p)) != NO_MORE_DATA) {
-			if (d == c)
-				++cnt;
-			else if (d == f && !--cnt) {
+			if (d == f && f != c && !--cnt) {
 				prgetc(p);
-				pset(bw->cursor, p);
-				break;
+				goto match_found;
+			} else if (d == c) {
+				++cnt;
+				if (f == c)
+					c = NO_MORE_DATA;
 			}
 		}
-		prm(p);
 	} else {
-		P *p = pdup(bw->cursor);
-		int cnt = 0;	/* No. levels of delimiters we're in */
-
 		while ((d = prgetc(p)) != NO_MORE_DATA) {
-			if (d == c)
+			if (d == f && !cnt--)
+				goto match_found;
+			else if (d == c)
 				++cnt;
-			else if (d == f)
-				if (!cnt--) {
-					pset(bw->cursor, p);
-					break;
-				}
 		}
-		prm(p);
 	}
-	if (d == NO_MORE_DATA)
-		return -1;
-	else
-		return 0;
+	if (/* CONSTCOND */ 0) {
+ match_found:
+		pset(bw->cursor, p);
+	}
+	prm(p);
+	return ((d == NO_MORE_DATA) ? -1 : 0);
 }
 
 int utomatch(BW *bw)
@@ -827,7 +818,7 @@ int ubacks(BW *bw, int k)
 		   is a multiple of indentation width, we're not at beginning of line,
 		   'smarthome' option is enabled, and indentation is purely made out of
 		   indent characters (or purify indents is enabled). */
-		
+
 		/* Ignore purify for backspace */
 		if (col == indent && (col%indwid)==0 && col!=0 && bw->o.smartbacks) {
 			P *p;
@@ -865,7 +856,7 @@ int ubacks(BW *bw, int k)
 		return -1;
 }
 
-/* 
+/*
  * Delete sequence of characters (alphabetic, numeric) or (white-space)
  *	if cursor is on the white-space it will delete all white-spaces
  *		until alphanumeric character
@@ -1116,7 +1107,7 @@ int utypebw_raw(BW *bw, int k, int no_decode)
 					k = utf8_decode_string(buf);
 				}
 			}
-			
+
 			binsc(bw->cursor, k);
 		}
 
