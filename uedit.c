@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/uedit.c,v 1.11 2013/11/07 21:50:36 tg Exp $ */
+/* $MirOS: contrib/code/jupp/uedit.c,v 1.12 2016/10/07 19:52:25 tg Exp $ */
 /*
  *	Basic user edit functions
  *	Copyright
@@ -338,10 +338,6 @@ int utomatch(BW *bw)
 		f = '}';
 		dir = 1;
 		break;
-	case '`':
-		f = '\'';
-		dir = 1;
-		break;
 	case '<':
 		f = '>';
 		dir = 1;
@@ -365,6 +361,12 @@ int utomatch(BW *bw)
 	case '>':
 		f = '<';
 		dir = -1;
+		break;
+	case '"':
+	case '\'':
+	case '`':
+		f = c;
+		dir = 1;
 		break;
 	default:
 		return -1;

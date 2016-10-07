@@ -662,7 +662,6 @@ Other requests:
 • bracketed paste mode should disable autoindent, wordwrap,
   updating the status line, …(?) ⇐ implemented using a “paste”
   labeled ftype that is switched to using the UI (command)
-• ^Q] should work for “'” and “"” too
 • switch from autoconf to mirtoconf2
 • opening “foo\ bar/baz” opens “foo/ bar/baz” instead (DOSism?)
 • tab-completing “foo bar/baz” is completely broken (open works)
@@ -676,4 +675,4 @@ Other requests:
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.22 2016/03/06 18:52:38 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.23 2016/10/07 19:52:25 tg Exp $

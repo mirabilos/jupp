@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.98 2016/10/07 19:43:55 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.99 2016/10/07 19:52:25 tg Exp $
 ------------------------------------------------------------------
 
 JUPP-current
@@ -10,6 +10,7 @@ JUPP-current
 - jupprc: ^Q= searches for merge conflict markers (CVS, git)
 - Add syntax file for tex (LaTeX; *.cls *.sty *.tex)
 - Make syntax highlighting code use UTF-8 by individual octets
+- ^Q] now also works for ASCII quotation marks
 
 JOE 3.1jupp28
 
