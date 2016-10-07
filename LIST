@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/LIST,v 1.9 2014/06/09 16:06:45 tg Exp $
+$MirOS: contrib/code/jupp/LIST,v 1.10 2016/10/07 20:07:49 tg Exp $
 -----------------------------------------------------------------
 
 Joe commands grouped by function
@@ -80,6 +80,7 @@ pedge		Move cursor to previous edge
 prevpos		Move cursor to previous position in cursor position history
 prevword	Move cursor to beginning of previous word
 rtarw		Move cursor right
+rvmatch		Move cursor to matching delimiter, ambiguous to the left
 setmark		Set a bookmark
 tomatch		Move cursor to matching delimiter
 tos		Move cursor to top of screen

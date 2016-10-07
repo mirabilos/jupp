@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/uedit.c,v 1.12 2016/10/07 19:52:25 tg Exp $ */
+/* $MirOS: contrib/code/jupp/uedit.c,v 1.13 2016/10/07 20:07:50 tg Exp $ */
 /*
  *	Basic user edit functions
  *	Copyright
@@ -318,12 +318,12 @@ int unedge(BW *bw)
 
 /* Move cursor to matching delimiter */
 
-int utomatch(BW *bw)
+static int
+utomatch_i(BW *bw, int dir)
 {
 	int d;
-	int c,			/* Character under cursor */
-	 f,			/* Character to find */
-	 dir;			/* 1 to search forward, -1 to search backward */
+	int c;			/* character under cursor */
+	int f;			/* character to find */
 
 	switch (c = brch(bw->cursor)) {
 	case '(':
@@ -366,7 +366,6 @@ int utomatch(BW *bw)
 	case '\'':
 	case '`':
 		f = c;
-		dir = 1;
 		break;
 	default:
 		return -1;
@@ -405,6 +404,16 @@ int utomatch(BW *bw)
 		return -1;
 	else
 		return 0;
+}
+
+int utomatch(BW *bw)
+{
+	return (utomatch_i(bw, 1));
+}
+
+int urvmatch(BW *bw)
+{
+	return (utomatch_i(bw, -1));
 }
 
 /* Move cursor up */

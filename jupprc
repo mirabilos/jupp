@@ -458,7 +458,7 @@
 \i \i^QI to line number    ^[E Parse errors             ^K, less     ^Z down      \i \i
 \i \i^QP previous place    \u\bGOTO AFTER COMPILING\b\u         ^KA center   \u\bINSERT MATH\b\u  \i \i
 \i \i^K= next place        ^[N previous error    \u\bSPECIAL\b\u             ^[# equation \i \i
-\i \i^Q[ matching brace    ^[M next error        ^[- exec. juppcmd   ^[= result   \i \i
+\i \i^Q] matching brace    ^[M next error        ^[- exec. juppcmd   ^[= result   \i \i
 \i \i \b\uSpecial\u:\b ^K] delete whitespace at EOL; ^Q= search for merge conflict marker \i \i
 \i \i \b\uFreedroidz\u:\b ^KF save current *.nxc file, compile, transfer to the NXT brick \i \i
 }
@@ -807,11 +807,11 @@ tomarkk		^Q K
 tomarkk		^Q ^K
 tomarkk		^Q k
 tomarkk		^[ q k
-tomatch		^Q [
+rvmatch		^Q [
 tomatch		^Q ]
-tomatch		^Q ^[
+rvmatch		^Q ^[
 tomatch		^Q ^]
-tomatch		^[ q [
+rvmatch		^[ q [
 tomatch		^[ q ]
 tos		^Q E
 tos		^Q ^E

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/uedit.h,v 1.4 2014/06/09 16:32:55 tg Exp $ */
+/* $MirOS: contrib/code/jupp/uedit.h,v 1.5 2016/10/07 20:07:50 tg Exp $ */
 /*
  *	Basic user edit functions
  *	Copyright
@@ -31,6 +31,7 @@ int u_goto_next PARAMS((BW *bw));	/* move cursor to next word, edge,
 					   or end of line */
 
 int utomatch PARAMS((BW *bw));
+int urvmatch PARAMS((BW *bw));
 int uuparw PARAMS((BW *bw));
 int udnarw PARAMS((BW *bw));
 int utos PARAMS((BW *bw));

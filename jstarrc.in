@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jstarrc.in,v 1.22 2016/10/07 10:57:07 tg Exp $
+ $MirOS: contrib/code/jupp/jstarrc.in,v 1.23 2016/10/07 20:07:50 tg Exp $
 
                          Initialization file for JOE
                            WordStar / Turbo-C Joe
@@ -1044,8 +1044,8 @@ tomarkb		^Q b
 tomarkk		^Q K		Go to end of marked block
 tomarkk		^Q ^K
 tomarkk		^Q k
-tomatch		^Q [		Goto matching parenthasis
-tomatch		^Q ^[
+rvmatch		^Q [		Goto matching parenthasis
+rvmatch		^Q ^[
 tomatch		^Q ]
 tomatch		^Q ^]
 undo		^U		Undo changes
