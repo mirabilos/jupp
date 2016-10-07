@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/syntax.h,v 1.2 2008/05/13 13:08:26 tg Exp $ */
+/* $MirOS: contrib/code/jupp/syntax.h,v 1.3 2016/10/07 19:43:55 tg Exp $ */
 
 #ifndef _Isyntax
 #define _Isyntax 1
@@ -17,7 +17,7 @@
 
 struct high_color {
 	struct high_color *next;
-	unsigned char *name;		/* Symbolic name of color */
+	const unsigned char *name;	/* Symbolic name of color */
 	int color;			/* Color value */
 };
 
@@ -25,7 +25,7 @@ struct high_color {
 
 struct high_state {
 	int no;				/* State number */
-	unsigned char *name;		/* Highlight state name */
+	const unsigned char *name;	/* Highlight state name */
 	int color;			/* Color for this state */
 	struct high_cmd *cmd[256];	/* Character table */
 };
@@ -33,20 +33,20 @@ struct high_state {
 /* Command (transition) */
 
 struct high_cmd {
-	int noeat;			/* Set to give this character to next state */
-	int recolor;			/* No. chars to recolor if <0. */
-	int start_buffering;		/* Set if we should start buffering */
-	int stop_buffering;		/* Set if we should stop buffering */
 	struct high_state *new_state;	/* The new state */
 	HASH *keywords;			/* Hash table of keywords */
-	int ignore;			/* Set to ignore case */
+	int recolor;			/* No. chars to recolor if <0. */
+	unsigned noeat : 1;		/* Set to give this character to next state */
+	unsigned start_buffering : 1;	/* Set if we should start buffering */
+	unsigned stop_buffering : 1;	/* Set if we should stop buffering */
+	unsigned ignore : 1;		/* Set to ignore case */
 };
 
 /* Loaded form of syntax file */
 
 struct high_syntax {
 	struct high_syntax *next;	/* Linked list of loaded syntaxes */
-	unsigned char *name;			/* Name of this syntax */
+	const unsigned char *name;	/* Name of this syntax */
 	struct high_state **states;	/* The states of this syntax.  states[0] is idle state */
 	int nstates;			/* No. states */
 	int szstates;			/* Malloc size of states array */
@@ -57,11 +57,11 @@ struct high_syntax {
 
 /* Find a syntax.  Load it if necessary. */
 
-struct high_syntax *load_dfa(unsigned char *name);
+struct high_syntax *load_dfa(const unsigned char *name);
 
 /* Parse a lines.  Returns new state. */
 
 extern int *attr_buf;
-int parse(struct high_syntax *syntax,P *line,int state);
+int parse(struct high_syntax *syntax, P *line, int state);
 
 #endif

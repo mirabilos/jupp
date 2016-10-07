@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/syntax.c,v 1.11 2014/06/26 17:51:14 tg Exp $ */
+/* $MirOS: contrib/code/jupp/syntax.c,v 1.12 2016/10/07 19:43:55 tg Exp $ */
 /*
  *	Syntax highlighting DFA interpreter
  *	Copyright
@@ -18,6 +18,85 @@
 #include "charmap.h"
 #include "syntax.h"
 
+static struct {
+	unsigned char buf[6];
+	unsigned char start;
+	unsigned char limit;
+	unsigned eaten : 1;
+	unsigned ebbed : 1;
+	unsigned unget : 1;
+	unsigned first : 1;
+} utfstate;
+
+static int
+utfoctet(P *p)
+{
+	int c;
+
+	utfstate.first = 0;
+	if (utfstate.eaten) {
+ ate:
+		if (utfstate.start < utfstate.limit)
+			return (utfstate.buf[utfstate.start++]);
+		if (utfstate.ebbed)
+			return (NO_MORE_DATA);
+		utfstate.eaten = utfstate.limit = 0;
+	}
+	if (!utfstate.limit) {
+		utfstate.first = 1;
+		if (utfstate.unget) {
+			c = utfstate.buf[utfstate.start];
+			utfstate.unget = 0;
+		} else
+			c = pgetb(p);
+		if ((c == NO_MORE_DATA) || (c < 0x80))
+			return (c);
+		if ((c < 0xC2) || (c >= 0xFE))
+			return (0xFF);
+		utfstate.start = 0;
+		utfstate.buf[utfstate.start++] = (unsigned char)c;
+		utfstate.limit = (c < 0xE0) ? 2 : (c < 0xF0) ? 3 :
+		    (c < 0xF8) ? 4 : (c < 0xFC) ? 5 : 6;
+	}
+	while (utfstate.start < utfstate.limit) {
+		if (((c = pgetb(p)) == NO_MORE_DATA) || ((c ^ 0x80) > 0x3F)) {
+			/* invalid follow byte, invalidate all previous ones */
+			utfstate.limit = 0;
+			while (utfstate.limit < utfstate.start)
+				utfstate.buf[utfstate.limit++] = 0xFF;
+			/* append this as ungetch unless the well is dry */
+			if (c == NO_MORE_DATA)
+				utfstate.ebbed = 1;
+			else {
+				utfstate.buf[utfstate.limit] = (unsigned char)c;
+				utfstate.unget = 1;
+			}
+			/* now return those bytes */
+			break;
+		}
+		utfstate.buf[utfstate.start++] = (unsigned char)c;
+	}
+	utfstate.start = 0;
+	utfstate.eaten = 1;
+	goto ate;
+}
+
+static int
+octetutf(P *p)
+{
+	int c;
+
+	if (!(utfstate.start < utfstate.limit)) {
+		if ((c = pgetb(p)) == NO_MORE_DATA)
+			return (NO_MORE_DATA);
+
+		utfstate.limit = utf8_encode(utfstate.buf,
+		    to_uni(p->b->o.charmap, c));
+		utfstate.start = 0;
+	}
+	return (utfstate.buf[utfstate.start++]);
+}
+
 /* Parse one line.  Returns new state.
    'syntax' is the loaded syntax definition for this buffer.
    'line' is advanced to start of next line.
@@ -28,20 +107,25 @@
 int *attr_buf = 0;
 int attr_size = 0;
 
-int parse(struct high_syntax *syntax,P *line,int state)
+int parse(struct high_syntax *syntax, P *line, int state)
 {
 	struct high_state *h = syntax->states[state];
 			/* Current state */
 	unsigned char buf[20];	/* Name buffer (trunc after 19 characters) */
-	int buf_idx=0;	/* Index into buffer */
-	int c;		/* Current character */
+	int buf_idx = 0;	/* Index into buffer */
+	int buf_len = 0;	/* counts only starting characters */
+	int buf_en = 0;		/* Set for name buffering */
 	int *attr_end = attr_buf+attr_size;
 	int *attr = attr_buf;
-	int buf_en = 0;	/* Set for name buffering */
-	int ofst = 0;	/* record offset after we've stopped buffering */
+	int c;			/* Current character */
+	int ofst = 0;	/* record length after we've stopped buffering */
+	int (*getoctet)(P *) = line->b->o.charmap->type ? utfoctet : octetutf;
+
+	memset(&utfstate, 0, sizeof(utfstate));
+	buf[0] = 0;
 
 	/* Get next character */
-	while((c=pgetb(line))!=NO_MORE_DATA) {
+	while((c = getoctet(line)) != NO_MORE_DATA) {
 		struct high_cmd *cmd, *kw_cmd;
 		int x;
 
@@ -54,7 +138,8 @@ int parse(struct high_syntax *syntax,P *line,int state)
 		}
 
 		/* Advance to next attribute position (note attr[-1] below) */
-		attr++;
+		if (utfstate.first)
+			attr++;
 
 		/* Loop while noeat */
 		do {
@@ -69,8 +154,8 @@ int parse(struct high_syntax *syntax,P *line,int state)
 				cmd = kw_cmd;
 				h = cmd->new_state;
 				/* Recolor keyword */
-				for(x= -(buf_idx+1);x<-1;++x)
-					attr[x-ofst] = h -> color;
+				for (x = -(buf_len + 1); x < -1; ++x)
+					attr[x - ofst] = h->color;
 			} else {
 				h = cmd->new_state;
 			}
@@ -84,6 +169,7 @@ int parse(struct high_syntax *syntax,P *line,int state)
 			/* Start buffering? */
 			if (cmd->start_buffering) {
 				buf_idx = 0;
+				buf_len = 0;
 				buf_en = 1;
 				ofst = 0;
 			}
@@ -94,13 +180,15 @@ int parse(struct high_syntax *syntax,P *line,int state)
 		} while(cmd->noeat);
 
 		/* Save character in buffer */
-		if (buf_idx<19 && buf_en)
-			buf[buf_idx++]=c;
 		if (!buf_en)
-			++ofst;
-		buf[buf_idx] = 0;
+			ofst += utfstate.first;
+		else if (buf_idx < 19) {
+			buf[buf_idx++] = c;
+			buf[buf_idx] = 0;
+			buf_len += utfstate.first;
+		}
 
-		if(c=='\n')
+		if (c == '\n')
 			break;
 	}
 	/* Return new state number */
@@ -109,7 +197,7 @@ int parse(struct high_syntax *syntax,P *line,int state)
 
 /* Subroutines for load_dfa() */
 
-static struct high_state *find_state(struct high_syntax *syntax,unsigned char *name)
+static struct high_state *find_state(struct high_syntax *syntax, const unsigned char *name)
 {
 	int x;
 	struct high_state *state;
@@ -123,7 +211,7 @@ static struct high_state *find_state(struct high_syntax *syntax,unsigned char *n
 	if(x==syntax->nstates) {
 		int y;
 		state=malloc(sizeof(struct high_state));
-		state->name=(unsigned char *)strdup((char *)name);
+		state->name=(const unsigned char *)strdup((const char *)name);
 		state->no=syntax->nstates;
 		state->color=FG_WHITE;
 		if(!syntax->nstates)
@@ -159,7 +247,7 @@ mkcmd(void)
 
 struct high_syntax *syntax_list;
 
-struct high_syntax *load_dfa(unsigned char *name)
+struct high_syntax *load_dfa(const unsigned char *name)
 {
 	unsigned char buf[1024];
 	unsigned char bf[256];
@@ -203,7 +291,7 @@ struct high_syntax *load_dfa(unsigned char *name)
 
 	/* Create new one */
 	syntax = malloc(sizeof(struct high_syntax));
-	syntax->name = (unsigned char *)strdup((char *)name);
+	syntax->name = (const unsigned char *)strdup((const char *)name);
 	syntax->next = syntax_list;
 	syntax_list = syntax;
 	syntax->nstates = 0;

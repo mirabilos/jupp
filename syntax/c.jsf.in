@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/syntax/c.jsf.in,v 1.6 2013/12/24 22:50:07 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/c.jsf.in,v 1.7 2016/10/07 19:43:56 tg Exp $
 #-
 # JOE syntax highlight file for C and C++
 
@@ -64,6 +64,12 @@
 # Weirdness: only states have colors, not transitions.  This means that you
 # sometimes have to make dummy states with '* next-state noeat' just to get
 # a color specification.
+#
+# Encoding: everything is handled as UTF-8 by octets, that is, you can have
+# individual octets change states (the colour of the last octet applies).
+# The JSF files themselves must accordingly be encoded in UTF-8. When a raw
+# octet or an invalid UTF-8 sequence is read, a number of \xFF octets are
+# matched on.
 
 
 # Define no. sync lines
@@ -121,7 +127,7 @@ done
 	*		preinc
 	" \t"		preinc_ws
 	"\n"		reset
-	
+
 :preinc_ws Preproc
 	*		prebad		recolor=-1
 	" \t"		preinc_ws
@@ -131,12 +137,12 @@ done
 :preinc_local IncLocal
 	*		preinc_local
 	"\"\n"		reset
-	
+
 :preinc_system IncSystem
 	*		preinc_system
 	">\n"		reset
 
-:prebad	Bad	
+:prebad	Bad
 	*		prebad
 	"\n"		reset
 
@@ -145,7 +151,7 @@ done
 	*		predef
 	" \t"		predef_ws
 	"\n"		reset
-	
+
 :predef_ws Preproc
 	*		prebad		recolor=-1
 	" \t"		predef_ws
@@ -161,12 +167,12 @@ done
 	"\n"		reset
 	"\\"		preproc_cont
 	"/"		preproc_slash
-	
+
 :preproc_slash Preproc
 	*		preproc		noeat
 	"*"		comment		recolor=-2
 	"/"		line_comment	recolor=-2
-	
+
 :preproc_cont Preproc
 	*		preproc_cont
 	"\n"		preproc
