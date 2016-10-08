@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/b.c,v 1.14 2016/10/07 19:37:45 tg Exp $ */
+/* $MirOS: contrib/code/jupp/b.c,v 1.15 2016/10/08 17:42:12 tg Exp $ */
 /*
  *	Editor engine
  *	Copyright
@@ -2143,7 +2143,9 @@ B *bload(unsigned char *s)
 			mod_time = sbuf.st_mtime;
 		}
 	}
+#if HAVE_BACKSLASH_PATHS
 	joesep(n);
+#endif
 
 	/* Abort if couldn't open */
 	if (!fi) {
@@ -2457,7 +2459,9 @@ int bsave(P *p, unsigned char *s, long int size, int flag)
 		f = fopen((char *)s, "w");
 		norm = 1;
 	}
+#if HAVE_BACKSLASH_PATHS
 	joesep(s);
+#endif
 
 	if (!f) {
 		error = -4;
