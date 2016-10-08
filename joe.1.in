@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.17 2016/10/08 17:44:18 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.18 2016/10/08 19:28:44 tg Exp $
 .\"-
 .TH JOE 1
 .SH Name
@@ -607,9 +607,9 @@ type \fB^K / tr a-z A-Z\fR, then all of the letters in the highlighted block
 will be converted to uppercase.
 
 After you are finished with some block operations, you can just leave the
-highlighting on if you don't mind it (of course, if you accidently hit \fB^K
-Y\fR without noticing...).  If it really bothers you, however, just hit
-\fB^K B ^K K\fR, to turn the highlighting off.
+highlighting on if you don't mind it (of course, if you accidentally hit
+\fB^K Y\fR without noticing...).  If it really bothers you, however, just
+hit \fB^K B ^K K\fR, to turn the highlighting off.
 
 .SS Indenting program blocks
 Auto-indent mode toggled with the \fB^T I\fR command.  The

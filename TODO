@@ -650,6 +650,9 @@ Other requests:
 │ jupp TODO │
 └───────────┘
 
+• do not let configure handle expansion for the manpage,
+  currently @joeresides@ expands to ${exec_prefix}/bin
+  (unexpanded); a Makefile can correct that
 • merge syntax handling code from joe-3.7+
 • merge math from joe-3.7+
 • add group support to regex code
@@ -671,4 +674,4 @@ Other requests:
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.25 2016/10/08 16:42:00 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.26 2016/10/08 19:28:44 tg Exp $
