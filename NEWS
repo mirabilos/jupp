@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.101 2016/10/08 14:58:45 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.102 2016/10/08 16:42:00 tg Exp $
 -------------------------------------------------------------------
 
 JUPP-current
@@ -13,6 +13,7 @@ JUPP-current
 - ^Q] now also works for ASCII quotation marks (jupp, jstar)
 - ^Q[ is distinct from ^Q] when ambiguous (jupp, jstar)
 - Unbreak tab-completing filenames with spaces
+- Fix filenames with backslashes
 
 JOE 3.1jupp28
 

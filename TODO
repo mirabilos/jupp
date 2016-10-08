@@ -481,7 +481,8 @@ New features:
 Math: octal(?), more functions. (-lm?)
 
 Perl compatible regex search.
-(Ugh. But grouping lile \+\(foo\+ \) would be cool.)
+(Ugh. But grouping like \+\(foo\+ \) would be cool.)
+(Also, alternatives and/or backreferences, think ^Q=)
 
 Improvements for regular text
 -----------------------------
@@ -663,7 +664,6 @@ Other requests:
   updating the status line, …(?) ⇐ implemented using a “paste”
   labeled ftype that is switched to using the UI (command)
 • switch from autoconf to mirtoconf2
-• opening “foo\ bar/baz” opens “foo/ bar/baz” instead (DOSism?)
 • asarch requests merging the .joe_state file code, although
   it must be disabled by default like mksh’s HISTFILE is:
   18:48⎜«asarch» That would be for a wish list then: to keep the
@@ -671,4 +671,4 @@ Other requests:
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.24 2016/10/08 14:58:45 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.25 2016/10/08 16:42:00 tg Exp $

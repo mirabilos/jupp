@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tw.c,v 1.8 2012/06/07 22:16:09 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tw.c,v 1.9 2016/10/08 16:42:00 tg Exp $ */
 /* 
  *	Text editing windows
  *	Copyright
@@ -239,9 +239,24 @@ static unsigned char *stagen(unsigned char *stalin, BW *bw, unsigned char *s, in
 				else
 					stalin = vsadd(stalin, fill);
 				break;
-			case 'n':
-				stalin = vsncpy(sv(stalin), sz(bw->b->name ? bw->b->name : (unsigned char *)"Unnamed"));
+			case 'n': {
+				unsigned char fnc;
+				const unsigned char *fn = bw->b->name ? bw->b->name :
+				    (const unsigned char *)"Unnamed";
+
+ escape_loop:
+				switch ((fnc = *fn++)) {
+				case '\\':
+					stalin = vsadd(stalin, fnc);
+					/* FALLTHROUGH */
+				default:
+					stalin = vsadd(stalin, fnc);
+					goto escape_loop;
+				case '\0':
+					break;
+				}
 				break;
+			    }
 			case 'm':
 				if (bw->b->changed)
 					stalin = vsncpy(sv(stalin), sc("(Modified)"));

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/path.h,v 1.9 2016/10/08 16:26:00 tg Exp $ */
+/* $MirOS: contrib/code/jupp/path.h,v 1.10 2016/10/08 16:42:00 tg Exp $ */
 /*
  *	Directory and path functions
  *	Copyright
@@ -17,7 +17,7 @@
 #define HAVE_BACKSLASH_PATHS 1
 #define HAVE_DRIVE_LETTERS 1
 #else
-#define HAVE_BACKSLASH_PATHS 1
+#define HAVE_BACKSLASH_PATHS 0
 #define HAVE_DRIVE_LETTERS 0
 #endif
 
