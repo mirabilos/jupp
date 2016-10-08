@@ -1,11 +1,11 @@
- $MirOS: contrib/code/jupp/jpicorc.in,v 1.21 2016/10/07 10:57:07 tg Exp $
+ $MirOS: contrib/code/jupp/jpicorc.in,v 1.22 2016/10/08 17:44:19 tg Exp $
 
                          Initialization file for JOE
                                  Super Pico
 
  JOE looks for this file in:
 	1 - $HOME/.jpicorc
-	2 - @sysconfdir@/jpicorc
+	2 - @jrcbefore@jpicorc@jrcafter@
 
  This file can include other files by placing the following include command
  in the first column:

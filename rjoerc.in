@@ -1,11 +1,11 @@
- $MirOS: contrib/code/jupp/rjoerc.in,v 1.21 2016/10/07 10:57:07 tg Exp $
+ $MirOS: contrib/code/jupp/rjoerc.in,v 1.22 2016/10/08 17:44:19 tg Exp $
 
                          Initialization file for JOE
                             Restricted access Joe
 
  JOE looks for this file in:
 	1 - $HOME/.rjoerc
-	2 - @sysconfdir@/rjoerc
+	2 - @jrcbefore@rjoerc@jrcafter@
 
  This file can include other files by placing the following include command
  in the first column:

@@ -1,11 +1,11 @@
- $MirOS: contrib/code/jupp/jmacsrc.in,v 1.21 2016/10/07 10:57:06 tg Exp $
+ $MirOS: contrib/code/jupp/jmacsrc.in,v 1.22 2016/10/08 17:44:18 tg Exp $
 
                          Initialization file for JOE
                                 GNU-Emacs Joe
 
  JOE looks for this file in:
 	1 - $HOME/.jmacsrc
-	2 - @sysconfdir@/jmacsrc
+	2 - @jrcbefore@jmacsrc@jrcafter@
 
  This file can include other files by placing the following include command
  in the first column:

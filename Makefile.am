@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/Makefile.am,v 1.9 2016/10/07 10:57:06 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.am,v 1.10 2016/10/08 17:44:17 tg Exp $
 
 AUTOMAKE_OPTIONS = foreign
 
@@ -13,7 +13,7 @@ EXTRA_DIST = COPYING INFO LIST NEWS README README.cvs TODO docs/help-system.html
 
 JOE_ALIASES = jmacs jpico jstar jupp rjoe
 
-sysconfjoesubdir = /joe
+sysconfjoesubdir = @sysconfjoesubdir@
 sysconf_joedir = $(sysconfdir)$(sysconfjoesubdir)
 sysconf_joe_DATA = joerc jmacsrc jstarrc rjoerc jpicorc jupprc
 

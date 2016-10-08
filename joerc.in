@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/joerc.in,v 1.22 2016/10/07 10:57:06 tg Exp $
+ $MirOS: contrib/code/jupp/joerc.in,v 1.23 2016/10/08 17:44:18 tg Exp $
 
                          Initialization file for JOE
                                 Standard Joe
@@ -7,7 +7,7 @@
 
  JOE looks for this file in:
 	1 - $HOME/.joerc
-	2 - @sysconfdir@/joerc
+	2 - @jrcbefore@joerc@jrcafter@
 
  This file can include other files by placing the following include command
  in the first column:

@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.47 2016/10/07 10:57:06 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.48 2016/10/08 17:44:17 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -6,7 +6,7 @@
 AC_PREREQ(2.54)
 
 #### Here's the only place where to change version number ####
-AC_INIT(joe, 3.1jupp28)
+AC_INIT(joe, 3.1jupp29~pre1)
 #### But see main.c for the Copyright (c) owner and year! ####
 AC_CONFIG_SRCDIR([b.c])
 
@@ -94,6 +94,45 @@ AC_ARG_ENABLE([termidx],
 [  --disable-termidx       do not build the termidx binary],
 	termidx=$enableval, termidx=yes)
 AM_CONDITIONAL([WANT_TERMIDX], [test x"$termidx" != x"no"])
+
+AC_ARG_ENABLE([sysconfjoesubdir],
+[  --enable-sysconfjoesubdir=/joe  (default value)],
+	[sysconfjoesubdir=$enableval], [sysconfjoesubdir=yes])
+if test x"$sysconfjoesubdir" = x"yes"; then
+	sysconfjoesubdir=/joe
+elif test x"$sysconfjoesubdir" = x"no"; then
+	sysconfjoesubdir=
+fi
+AC_SUBST(sysconfjoesubdir)
+
+AC_ARG_ENABLE([win32reloc],
+[  --enable-win32reloc     enable win32 self-relocation],
+	[win32reloc=$enableval], [win32reloc=auto])
+test x"$win32reloc" = x"old" || win32reloc=no # currently not implemented
+if test x"$win32reloc" = x"yes"; then
+	joeinitfile='\fBjoerc\fR in the same directory as the binary resides in'
+	joeinitcopy='which resides in the same directory as the binary'
+	joeresides='C:\eProgram\ Files\ejupp32\ejoe.exe'
+	jrcbefore=''
+	jrcafter=' in the same directory as the binary'
+elif test x"$win32reloc" = x"old"; then
+	joeinitfile='\fBc:/windows/system32/joe/joerc\fR'
+	joeinitcopy='which resides in \fBc:/windows/system32/joe/joerc\fR'
+	joeresides='c:/windows/system32/joe.exe'
+	jrcbefore='c:/windows/system32/joe/'
+	jrcafter=''
+else
+	joeinitfile='usually \fB'$sysconfdir$sysconfjoesubdir'/joerc\fR'
+	joeinitcopy='which normally resides in \fB'$sysconfdir$sysconfjoesubdir'/joerc\fR'
+	joeresides=$bindir'/joe'
+	jrcbefore=$sysconfdir$sysconfjoesubdir/
+	jrcafter=''
+fi
+AC_SUBST(joeinitfile)
+AC_SUBST(joeinitcopy)
+AC_SUBST(joeresides)
+AC_SUBST(jrcbefore)
+AC_SUBST(jrcafter)
 
 
 # Checks for header files.

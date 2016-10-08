@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.16 2016/03/04 15:00:32 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.17 2016/10/08 17:44:18 tg Exp $
 .\"-
 .TH JOE 1
 .SH Name
@@ -84,14 +84,14 @@ is on.  To page through other topics, hit ^[, and ^[. (that is, ESC , and
 ESC .).  Use \fB^K H\fR to dismiss the help window.
 
 You can customize the keyboard layout, the help screens and a number of
-behavior defaults by copying JOE's initialization file (usually
-\fB@sysconfdir@/joe/joerc\fR) to \fB.joerc\fR in your home directory and then
-by modifying it.  See the section \fBjoerc\fR below.
+behavior defaults by copying JOE's initialisation file (@joeinitfile@)
+to \fB.joerc\fR in your home directory and then by modifying it.
+See the section \fBjoerc\fR below.
 
 To have JOE used as your default editor for e-mail and News, you need to set
 the \fBEDITOR\fR and \fBVISUAL\fR environment variables in your shell
-initialization file (\fB.cshrc\fR or \fB.profile\fR) to refer to JOE (joe
-usually resides as \fB@bindir@/joe\fR).
+initialization file (\fB.cshrc\fR or \fB.profile\fR) to refer to JOE (the
+joe binary usually resides as \fB@joeresides@\fR).
 
 There are a number of other obscure invocation parameters which may have to
 be set, particularly if your terminal screen is not updating as you think it
@@ -804,15 +804,20 @@ quota.
 
 .SH The\ joerc file
 \fB^T\fR options, the help screens and the key-sequence to editor command
-bindings are all defined in JOE's initialization file.  If you make a copy
-of this file (which normally resides in \fB@sysconfdir@/joe/joerc\fR) to
-\fB$HOME/.joerc\fR, you can customize these setting to your liking.  The
-syntax of the initialization file should be fairly obvious and there are
-further instruction in it.
+bindings are all defined in JOE's initialization file.
+If you make a copy of this file (@joeinitcopy@) to \fB$HOME/.joerc\fR,
+you can customise these settings to your liking.
+The syntax of the initialization file should be fairly obvious,
+and there are further instruction in it.
 
 .SH Acknowledgments
-JOE was written by Joseph H. Allen.  If you have bug reports or questions,
-e-mail them to jhallen@world.std.com.  Larry Foard (entropy@world.std.com)
-and Gary Gray (ggray@world.std.com) also helped with the creation of JOE.
-Thorsten Glaser (tg@mirbsd.org) created JUPP, and the 16-bit MS-DOS version
-of JUPP 2.8 was compiled by Andreas Totlis (atotlis@t-online.de).
+JOE was written by Joseph H. Allen.
+If you have bug reports or questions, e-mail them to jhallen@world.std.com.
+Larry Foard (entropy@world.std.com) and Gary Gray (ggray@world.std.com)
+also helped with the creation of JOE.
+Thorsten "mirabilos" Glaser (tg@mirbsd.org) created JUPP, and the 16-bit MS-DOS
+version of JUPP 2.8 was compiled by Andreas Totlis (atotlis@t-online.de).
+
+.SH Bugs
+This manual page describes only the JOE flavour; documentation for JUPP is
+especially missing.

@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.102 2016/10/08 16:42:00 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.103 2016/10/08 17:44:17 tg Exp $
 -------------------------------------------------------------------
 
 JUPP-current
@@ -14,6 +14,7 @@ JUPP-current
 - ^Q[ is distinct from ^Q] when ambiguous (jupp, jstar)
 - Unbreak tab-completing filenames with spaces
 - Fix filenames with backslashes
+- configure --enable-sysconfjoesubdir to also get the manual page
 
 JOE 3.1jupp28
 
