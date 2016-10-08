@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/rc.c,v 1.19 2012/12/30 21:45:16 tg Exp $ */
+/* $MirOS: contrib/code/jupp/rc.c,v 1.20 2016/10/08 19:28:54 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
@@ -984,7 +984,7 @@ int procrc(CAP *cap, unsigned char *name)
 					/* do nothing */;
 				if (buf[0] != '}') {
 					err = 1;
-					fprintf(stderr, "\n%s:%d: End of joerc file occured before end of help text\n", name, line);
+					fprintf(stderr, "\n%s:%d: End of joerc file occurred before end of help text\n", name, line);
 					break;
 				}
 			}
