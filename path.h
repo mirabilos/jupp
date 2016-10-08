@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/path.h,v 1.8 2013/08/19 22:48:33 tg Exp $ */
+/* $MirOS: contrib/code/jupp/path.h,v 1.9 2016/10/08 16:26:00 tg Exp $ */
 /*
  *	Directory and path functions
  *	Copyright
@@ -11,7 +11,21 @@
 
 #include "config.h"
 
+#if defined(__MSDOS__) || defined(__DJGPP__) || defined(__EMX__) || \
+    defined(__CYGWIN__) || defined(_WIN32)
+/*XXX check this for all platforms */
+#define HAVE_BACKSLASH_PATHS 1
+#define HAVE_DRIVE_LETTERS 1
+#else
+#define HAVE_BACKSLASH_PATHS 1
+#define HAVE_DRIVE_LETTERS 0
+#endif
+
+#if HAVE_BACKSLASH_PATHS
 unsigned char *joesep PARAMS((unsigned char *path));
+#else
+#define joesep(path) (path)
+#endif
 
 /* char *namprt(char *path);
  * Return name part of a path.  There is no name if the last character

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/path.c,v 1.10 2013/08/19 22:48:32 tg Exp $ */
+/* $MirOS: contrib/code/jupp/path.c,v 1.11 2016/10/08 16:25:59 tg Exp $ */
 /* 
  *	Directory and path functions
  *	Copyright
@@ -74,14 +74,16 @@
 #  endif
 #endif
 
-#ifdef __MSDOS__	/* paths in MS-DOS can include a drive letter followed by semicolon */
-#define	do_if_drive_letter(path, command) do { \
-						if ((path)[0] && (path)[1] == ':') { \
-							command; \
-						} \
-					} while(0)
+#if HAVE_DRIVE_LETTERS
+#define do_if_drive_letter(path, command) do {		\
+	if ((path)[1] == ':' && (			\
+	    ((path)[0] >= 'a' && (path)[0] <= 'z') ||	\
+	    ((path)[0] >= 'A' && (path)[0] <= 'Z'))) {	\
+		command;				\
+	}						\
+} while (/* CONSTCOND */ 0)
 #else
-#define do_if_drive_letter(path, command)	do { } while(0)
+#define do_if_drive_letter(path, command) do { } while (/* CONSTCOND */ 0)
 #endif
 #define skip_drive_letter(path)	do_if_drive_letter((path), (path) += 2)
 
@@ -99,6 +101,7 @@
 #endif
 
 /********************************************************************/
+#if HAVE_BACKSLASH_PATHS
 unsigned char *joesep(unsigned char *path)
 {
 	int x;
@@ -108,6 +111,7 @@ unsigned char *joesep(unsigned char *path)
 			path[x] = '/';
 	return path;
 }
+#endif
 /********************************************************************/
 unsigned char *namprt(unsigned char *path)
 {
