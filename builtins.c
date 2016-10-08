@@ -1,7 +1,9 @@
 /* Built-in files */
 
 /*
-	<jupprc LC_ALL=C grep -v $'^[\t ]' | while IFS= read -r x; do
+	LC_ALL=C grep -ve $'^[\t ]' -e '^-syntax' jupprc | sed \
+	    -e '/^:cua/,$d' -e '/^:Pastecua/,/^$/d' -e 1d \
+	    -e 's/@(#) jupprc/@(#) blt_in/' | cat -s | while IFS= read -r x; do
 		x=${x//\\/\\\\}; print -r -- $'\t\t'\""${x//\"/\\\"}\n"\";
 	done | perl -pe 's/[^\ca-~]/sprintf "\\x%02X", unpack("U", $&)/eg'
  */
@@ -102,14 +104,14 @@ const unsigned char * const builtins[] = {
 		"\n"
 		"{Programs\n"
 		"\\i   Help Screen    turn off with ^J     prev. screen ^[,    next screen ^[.     \\i\n"
-		"\\i \\i\\u\\bGOTO\\b\\u                  \\u\\bCOMPILING\\b\\u                    \\u\\bINDENT\\b\\u       \\u\\bSLIDING\\b\\u      \\i \\i\n"
-		"\\i \\i^Q- to column number  ^[C Compile & parse errors   ^K. more     ^W up        \\i \\i\n"
-		"\\i \\i^QI to line number    ^[E Parse errors             ^K, less     ^Z down      \\i \\i\n"
-		"\\i \\i^QP previous place    \\u\\bGOTO AFTER COMPILING\\b\\u         ^KA center   \\u\\bINSERT MATH\\b\\u  \\i \\i\n"
-		"\\i \\i^K= next place        ^[N previous error    \\u\\bSPECIAL\\b\\u             ^[# equation \\i \\i\n"
-		"\\i \\i^Q[ matching brace    ^[M next error        ^[- exec. juppcmd   ^[= result   \\i \\i\n"
-		"\\i \\i \\b\\uSpecial\\u:\\b ^K] delete whitespace at EOL; ^Q= search for merge conflict marker \\i \\i\n"
-		"\\i \\i \\b\\uFreedroidz\\u:\\b ^KF save current *.nxc file, compile, transfer to the NXT brick \\i \\i\n"
+		"\\i \\i\\u\\bGOTO\\b\\u                               \\u\\bCOMPILING\\b\\u                    \\u\\bSLIDING\\b\\u      \\i \\i\n"
+		"\\i \\i^Q] matching brace, ^Q[ reverse    ^[C compile & parse errors   ^W up        \\i \\i\n"
+		"\\i \\i^Q= merge conflict marker          ^[E parse errors             ^Z down      \\i \\i\n"
+		"\\i \\i^Q- to column number  \\u\\bINDENT\\b\\u       ^KF save, compile & upload to NXT brick   \\i \\i\n"
+		"\\i \\i^QI to line number    ^K. more     \\u\\bGOTO AFTER COMPILING\\b\\u         \\u\\bINSERT MATH\\b\\u  \\i \\i\n"
+		"\\i \\i^QP previous place    ^K, less     ^[N previous error           ^[# equation \\i \\i\n"
+		"\\i \\i^K= next place        ^KA centre   ^[M next error      \\u\\bSPECIAL\\b\\u  ^[= result   \\i \\i\n"
+		"\\i \\i                      ^K] kill whitespace at EOL       ^[- jupp command line \\i \\i\n"
 		"}\n"
 		"\n"
 		"{Search\n"
@@ -143,7 +145,7 @@ const unsigned char * const builtins[] = {
 		"\\i \\i go to \\uhttp://sf.net/projects/joe-editor/\\u for upstream bug reports. JUPP 2.8 \\i \\i\n"
 		"\\i \\i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\\d(R)\\d \\i \\i\n"
 		"\\i \\i at \\uhttp://mirbsd.de/jupp\\u and by \\bThorsten \"\\dmirabilos\\d\" Glaser <\\utg@mirbsd.org\\u>\\b \\i \\i\n"
-		"\\i \\i @(#) blt_in 2016-10-07; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \\i \\i\n"
+		"\\i \\i @(#) blt_in 2016-10-08; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \\i \\i\n"
 		"}\n"
 		"\n"
 		"{CharTable\n"
@@ -445,11 +447,11 @@ const unsigned char * const builtins[] = {
 		"tomarkk		^Q ^K\n"
 		"tomarkk		^Q k\n"
 		"tomarkk		^[ q k\n"
-		"tomatch		^Q [\n"
+		"rvmatch		^Q [\n"
 		"tomatch		^Q ]\n"
-		"tomatch		^Q ^[\n"
+		"rvmatch		^Q ^[\n"
 		"tomatch		^Q ^]\n"
-		"tomatch		^[ q [\n"
+		"rvmatch		^[ q [\n"
 		"tomatch		^[ q ]\n"
 		"tos		^Q E\n"
 		"tos		^Q ^E\n"
@@ -536,5 +538,5 @@ const unsigned char * const builtins[] = {
 		":querysr\n"
 		"type		^@ TO \xFF\n"
 ,	NULL
-,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.21 2016/10/07 10:44:39 tg Exp $"
+,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.22 2016/10/08 17:56:33 tg Exp $"
 };

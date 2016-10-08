@@ -14,8 +14,8 @@
 
 @SET_MAKE@
 
-# $MirOS: contrib/code/jupp/Makefile.in,v 1.12 2012/07/18 17:09:59 tg Exp $
-# $miros: contrib/code/jupp/Makefile.am,v 1.8 2012/06/07 22:16:07 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.in,v 1.13 2016/10/08 17:56:32 tg Exp $
+# $miros: contrib/code/jupp/Makefile.am,v 1.10 2016/10/08 17:44:17 tg Exp $
 
 
 
@@ -65,6 +65,7 @@ DIST_COMMON = README $(am__configure_deps) $(noinst_HEADERS) \
 	$(top_srcdir)/syntax/php.jsf.in \
 	$(top_srcdir)/syntax/python.jsf.in \
 	$(top_srcdir)/syntax/sh.jsf.in $(top_srcdir)/syntax/tcl.jsf.in \
+	$(top_srcdir)/syntax/tex.jsf.in \
 	$(top_srcdir)/syntax/verilog.jsf.in \
 	$(top_srcdir)/syntax/vhdl.jsf.in \
 	$(top_srcdir)/syntax/xml.jsf.in COPYING ChangeLog NEWS TODO \
@@ -86,7 +87,8 @@ CONFIG_CLEAN_FILES = joe.1 joerc jmacsrc jstarrc rjoerc jpicorc \
 	syntax/mail.jsf syntax/pascal.jsf syntax/html.jsf \
 	syntax/vhdl.jsf syntax/fortran.jsf syntax/java.jsf \
 	syntax/xml.jsf syntax/tcl.jsf charmaps/klingon syntax/lisp.jsf \
-	syntax/csh.jsf syntax/mason.jsf syntax/diff.jsf syntax/asm.jsf
+	syntax/csh.jsf syntax/mason.jsf syntax/diff.jsf syntax/asm.jsf \
+	syntax/tex.jsf
 @WANT_TERMIDX_TRUE@am__EXEEXT_1 = termidx$(EXEEXT)
 am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(man1dir)" \
 	"$(DESTDIR)$(sysconf_charmapsdir)" \
@@ -227,6 +229,11 @@ htmldir = @htmldir@
 includedir = @includedir@
 infodir = @infodir@
 install_sh = @install_sh@
+joeinitcopy = @joeinitcopy@
+joeinitfile = @joeinitfile@
+joeresides = @joeresides@
+jrcafter = @jrcafter@
+jrcbefore = @jrcbefore@
 libdir = @libdir@
 libexecdir = @libexecdir@
 localedir = @localedir@
@@ -241,6 +248,7 @@ psdir = @psdir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
+sysconfjoesubdir = @sysconfjoesubdir@
 target = @target@
 target_alias = @target_alias@
 target_cpu = @target_cpu@
@@ -254,10 +262,9 @@ EXTRA_DIST = COPYING INFO LIST NEWS README README.cvs TODO docs/help-system.html
 	syntax/pascal.jsf.in syntax/html.jsf.in syntax/vhdl.jsf.in syntax/fortran.jsf.in \
 	syntax/java.jsf.in syntax/xml.jsf.in syntax/tcl.jsf.in charmaps/klingon.in docs HINTS \
 	syntax/lisp.jsf.in syntax/csh.jsf.in syntax/mail.jsf.in syntax/mason.jsf.in \
-	syntax/diff.jsf.in syntax/asm.jsf.in
+	syntax/diff.jsf.in syntax/asm.jsf.in syntax/tex.jsf.in
 
 JOE_ALIASES = jmacs jpico jstar jupp rjoe
-sysconfjoesubdir = /joe
 sysconf_joedir = $(sysconfdir)$(sysconfjoesubdir)
 sysconf_joe_DATA = joerc jmacsrc jstarrc rjoerc jpicorc jupprc
 sysconf_syntaxdir = $(sysconf_joedir)/syntax
@@ -266,7 +273,7 @@ sysconf_syntax_DATA = syntax/c.jsf syntax/perl.jsf syntax/verilog.jsf \
 	syntax/mail.jsf syntax/pascal.jsf syntax/html.jsf syntax/vhdl.jsf \
 	syntax/fortran.jsf syntax/java.jsf syntax/xml.jsf syntax/tcl.jsf \
 	syntax/lisp.jsf syntax/csh.jsf syntax/mason.jsf syntax/diff.jsf \
-	syntax/asm.jsf
+	syntax/asm.jsf syntax/tex.jsf
 
 sysconf_charmapsdir = $(sysconf_joedir)/charmaps
 sysconf_charmaps_DATA = charmaps/klingon
@@ -395,6 +402,8 @@ syntax/mason.jsf: $(top_builddir)/config.status $(top_srcdir)/syntax/mason.jsf.i
 syntax/diff.jsf: $(top_builddir)/config.status $(top_srcdir)/syntax/diff.jsf.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 syntax/asm.jsf: $(top_builddir)/config.status $(top_srcdir)/syntax/asm.jsf.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
+syntax/tex.jsf: $(top_builddir)/config.status $(top_srcdir)/syntax/tex.jsf.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 install-binPROGRAMS:
 	@$(NORMAL_INSTALL)
@@ -894,7 +903,7 @@ uninstall-local:
 
 distclean-local:
 	rm -f *~
-	rm -f stamp-h.in charmaps/klingon syntax/asm.jsf syntax/c.jsf syntax/conf.jsf syntax/csh.jsf syntax/diff.jsf syntax/fortran.jsf syntax/html.jsf syntax/java.jsf syntax/lisp.jsf syntax/mail.jsf syntax/mason.jsf syntax/pascal.jsf syntax/perl.jsf syntax/php.jsf syntax/python.jsf syntax/sh.jsf syntax/tcl.jsf syntax/verilog.jsf syntax/vhdl.jsf syntax/xml.jsf
+	rm -f stamp-h.in charmaps/klingon syntax/asm.jsf syntax/c.jsf syntax/conf.jsf syntax/csh.jsf syntax/diff.jsf syntax/fortran.jsf syntax/html.jsf syntax/java.jsf syntax/lisp.jsf syntax/mail.jsf syntax/mason.jsf syntax/pascal.jsf syntax/perl.jsf syntax/php.jsf syntax/python.jsf syntax/sh.jsf syntax/tcl.jsf syntax/tex.jsf syntax/verilog.jsf syntax/vhdl.jsf syntax/xml.jsf
 
 .PHONY: termcap
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
