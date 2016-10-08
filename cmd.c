@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/cmd.c,v 1.14 2016/10/07 20:09:55 tg Exp $ */
+/* $MirOS: contrib/code/jupp/cmd.c,v 1.15 2016/10/08 14:58:45 tg Exp $ */
 /*
  *	Command execution
  *	Copyright
@@ -401,7 +401,8 @@ static int cmdcmplt(BW *bw)
 {
 	if (!scmds)
 		scmds = getcmds();
-	return simple_cmplt(bw,scmds);
+	/*XXX simple_cmplt does p_goto_bol, better only to last comma */
+	return simple_cmplt(bw, scmds);
 }
 
 static int docmd(BW *bw, unsigned char *s, void *object, int *notify)

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tab.c,v 1.4 2010/04/08 15:31:03 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tab.c,v 1.5 2016/10/08 14:58:46 tg Exp $ */
 /*
  *	File selection menu
  *	Copyright
@@ -288,17 +288,16 @@ static int tababrt(BW *bw, int cursor, TAB *tab)
 	return -1;
 }
 
-P *p_goto_start_of_path(P *p)
+static void p_goto_start_of_path(P *p)
 {
-	int c;
-	do
-		c = prgetc(p);
-	while (c!=NO_MORE_DATA && c!=' ' && c!='\n');
-
-	if (c!=NO_MORE_DATA)
-		pgetc(p);
-
-	return p;
+	while (/* CONSTCOND */ 1)
+		switch (prgetc(p)) {
+		case '\n':
+			pgetc(p);
+			/* FALLTHROUGH */
+		case NO_MORE_DATA:
+			return;
+		}
 }
 
 /*****************************************************************************/

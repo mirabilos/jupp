@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.100 2016/10/07 20:07:49 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.101 2016/10/08 14:58:45 tg Exp $
 -------------------------------------------------------------------
 
 JUPP-current
@@ -12,6 +12,7 @@ JUPP-current
 - Make syntax highlighting code use UTF-8 by individual octets
 - ^Q] now also works for ASCII quotation marks (jupp, jstar)
 - ^Q[ is distinct from ^Q] when ambiguous (jupp, jstar)
+- Unbreak tab-completing filenames with spaces
 
 JOE 3.1jupp28
 

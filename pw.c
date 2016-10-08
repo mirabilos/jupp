@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/pw.c,v 1.5 2009/10/18 14:52:56 tg Exp $ */
+/* $MirOS: contrib/code/jupp/pw.c,v 1.6 2016/10/08 14:58:46 tg Exp $ */
 /*
  *	Prompt windows
  *	Copyright
@@ -198,7 +198,7 @@ WATOM watompw = {
 
 /* Create a prompt window */
 
-BW *wmkpw(W *w, unsigned char *prompt, B **history, int (*func) (), unsigned char *huh, int (*abrt) (), int (*tab) (), void *object, int *notify,struct charmap *map)
+BW *wmkpw(W *w, unsigned char *prompt, B **history, int (*func) (), unsigned char *huh, int (*abrt) (), int (*tab) (), void *object, int *notify, struct charmap *map)
 {
 	W *new;
 	PW *pw;
@@ -244,9 +244,9 @@ BW *wmkpw(W *w, unsigned char *prompt, B **history, int (*func) (), unsigned cha
 unsigned char **regsub(unsigned char **z, int len, unsigned char *s)
 {
 	unsigned char **lst = NULL;
-	int x;
+	int x = -1;
 
-	for (x = 0; x != len; ++x)
+	while (++x < len)
 		if (rmatch(s, z[x]))
 			lst = vaadd(lst, vsncpy(NULL, 0, sz(z[x])));
 	return lst;
