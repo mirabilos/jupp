@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/termcap.c,v 1.9 2014/03/04 23:04:12 tg Exp $ */
+/* $MirOS: contrib/code/jupp/termcap.c,v 1.10 2016/10/29 21:08:23 tg Exp $ */
 /*
  *	TERMCAP/TERMINFO database interface
  *	Copyright
@@ -204,8 +204,11 @@ CAP *getcap(unsigned char *name, unsigned int baud, void (*out) (unsigned char *
 			} else
 				namebuf = NULL;
 			namebuf = vsncpy(sv(namebuf), sc(".termcap "));
-			namebuf = vsncpy(sv(namebuf), sc(JOERC));
-			namebuf = vsncpy(sv(namebuf), sc("termcap /etc/termcap"));
+			if (vsscan(sc(JOERC), sc("\t :")) == ~0) {
+				namebuf = vsncpy(sv(namebuf), sc(JOERC));
+				namebuf = vsncpy(sv(namebuf), sc("termcap "));
+			}
+			namebuf = vsncpy(sv(namebuf), sc("/etc/termcap"));
 		}
 	}
 
