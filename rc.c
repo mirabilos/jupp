@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/rc.c,v 1.20 2016/10/08 19:28:54 tg Exp $ */
+/* $MirOS: contrib/code/jupp/rc.c,v 1.21 2016/10/29 23:44:45 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
@@ -609,7 +609,7 @@ static int syntaxcmplt(BW *bw)
 		unsigned char *p;
 		int x, y;
 
-		if (chpwd(US (JOERC "syntax")))
+		if (chJpwd(US ("syntax")))
 			return -1;
 		t = rexpnd(US "*.jsf");
 		if (!t) {

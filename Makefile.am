@@ -1,29 +1,33 @@
-# $MirOS: contrib/code/jupp/Makefile.am,v 1.10 2016/10/08 17:44:17 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.am,v 1.11 2016/10/29 23:44:43 tg Exp $
 
 AUTOMAKE_OPTIONS = foreign
 
-EXTRA_DIST = COPYING INFO LIST NEWS README README.cvs TODO docs/help-system.html \
-	joerc.in jmacsrc.in jstarrc.in rjoerc.in jpicorc.in jupprc \
-	joe.1.in dir.c syntax/c.jsf.in syntax/perl.jsf.in syntax/verilog.jsf.in \
-	syntax/conf.jsf.in syntax/python.jsf.in syntax/php.jsf.in syntax/sh.jsf.in \
-	syntax/pascal.jsf.in syntax/html.jsf.in syntax/vhdl.jsf.in syntax/fortran.jsf.in \
-	syntax/java.jsf.in syntax/xml.jsf.in syntax/tcl.jsf.in charmaps/klingon.in docs HINTS \
-	syntax/lisp.jsf.in syntax/csh.jsf.in syntax/mail.jsf.in syntax/mason.jsf.in \
-	syntax/diff.jsf.in syntax/asm.jsf.in syntax/tex.jsf.in
+EXTRA_DIST = \
+	COPYING HINTS INFO LIST NEWS README README.cvs TODO dir.c \
+	win32.c jmacsrc.in joe.1.in joerc.in jpicorc.in jstarrc.in \
+	jupprc rjoerc.in charmaps/klingon.in docs/help-system.html \
+	syntax/asm.jsf.in syntax/c.jsf.in syntax/conf.jsf.in \
+	syntax/csh.jsf.in syntax/diff.jsf.in syntax/fortran.jsf.in \
+	syntax/html.jsf.in syntax/java.jsf.in syntax/lisp.jsf.in \
+	syntax/mail.jsf.in syntax/mason.jsf.in syntax/pascal.jsf.in \
+	syntax/perl.jsf.in syntax/php.jsf.in syntax/python.jsf.in \
+	syntax/sh.jsf.in syntax/tcl.jsf.in syntax/tex.jsf.in \
+	syntax/verilog.jsf.in syntax/vhdl.jsf.in syntax/xml.jsf.in
 
 JOE_ALIASES = jmacs jpico jstar jupp rjoe
 
 sysconfjoesubdir = @sysconfjoesubdir@
 sysconf_joedir = $(sysconfdir)$(sysconfjoesubdir)
-sysconf_joe_DATA = joerc jmacsrc jstarrc rjoerc jpicorc jupprc
+sysconf_joe_DATA = jmacsrc joerc jpicorc jstarrc jupprc rjoerc
 
 sysconf_syntaxdir = $(sysconf_joedir)/syntax
-sysconf_syntax_DATA = syntax/c.jsf syntax/perl.jsf syntax/verilog.jsf \
-	syntax/conf.jsf syntax/python.jsf syntax/php.jsf syntax/sh.jsf \
-	syntax/mail.jsf syntax/pascal.jsf syntax/html.jsf syntax/vhdl.jsf \
-	syntax/fortran.jsf syntax/java.jsf syntax/xml.jsf syntax/tcl.jsf \
-	syntax/lisp.jsf syntax/csh.jsf syntax/mason.jsf syntax/diff.jsf \
-	syntax/asm.jsf syntax/tex.jsf
+sysconf_syntax_DATA = \
+	syntax/asm.jsf syntax/c.jsf syntax/conf.jsf syntax/csh.jsf \
+	syntax/diff.jsf syntax/fortran.jsf syntax/html.jsf \
+	syntax/java.jsf syntax/lisp.jsf syntax/mail.jsf syntax/mason.jsf \
+	syntax/pascal.jsf syntax/perl.jsf syntax/php.jsf \
+	syntax/python.jsf syntax/sh.jsf syntax/tcl.jsf syntax/tex.jsf \
+	syntax/verilog.jsf syntax/vhdl.jsf syntax/xml.jsf
 
 sysconf_charmapsdir = $(sysconf_joedir)/charmaps
 sysconf_charmaps_DATA = charmaps/klingon
@@ -41,15 +45,25 @@ if WANT_TERMIDX
 bin_PROGRAMS += termidx
 endif
 
-INCLUDES = -DJOERC="\"$(sysconf_joedir)/\""
+if JUPP_WIN32RELOC
+joe_WIN32_SRCS = win32.c
+joe_WIN32_DEFS = -DJUPP_WIN32RELOC=1 -UJOERC
+else
+joe_WIN32_SRCS = # nothing
+joe_WIN32_DEFS = -DJUPP_WIN32RELOC=0 -DJOERC="\"$(sysconf_joedir)/\""
+endif
+
+INCLUDES = $(joe_WIN32_DEFS)
 
 # joe_LDADD = @REQRD_LIBS@
 
-joe_SOURCES = b.c blocks.c bw.c cmd.c hash.c help.c kbd.c macro.c main.c menu.c \
-	path.c poshist.c pw.c queue.c qw.c rc.c regex.c scrn.c tab.c termcap.c \
-	tty.c tw.c ublock.c uedit.c uerror.c ufile.c uformat.c uisrch.c umath.c \
-	undo.c usearch.c ushell.c utag.c va.c vfile.c vs.c w.c utils.c syntax.c \
-	utf8.c selinux.c i18n.c charmap.c builtin.c builtins.c compat.c
+joe_SOURCES = \
+	b.c blocks.c builtin.c builtins.c bw.c charmap.c cmd.c compat.c \
+	hash.c help.c i18n.c kbd.c macro.c main.c menu.c path.c \
+	poshist.c pw.c queue.c qw.c rc.c regex.c scrn.c selinux.c \
+	syntax.c tab.c termcap.c tty.c tw.c ublock.c uedit.c uerror.c \
+	ufile.c uformat.c uisrch.c umath.c undo.c usearch.c ushell.c \
+	utag.c utf8.c utils.c va.c vfile.c vs.c w.c $(joe_WIN32_SRCS)
 
 termidx_SOURCES = termidx.c
 

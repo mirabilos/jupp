@@ -1,11 +1,11 @@
 #!/bin/mksh
-# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.2 2016/10/29 22:28:48 tg Exp $
+# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.3 2016/10/29 23:44:43 tg Exp $
 
 export LC_ALL=C
 set -ex
 [[ -s configure && -s jupprc && -s charmaps/klingon.in ]]
 
-jupp=$(sed -n "/^PACKAGE_VERSION='3.1jupp\([0-9]*\)[~'].*\$/s//\1/p" configure)
+jupp=$(sed -n "/^PACKAGE_VERSION='3\.1jupp\([0-9]*\)[~'].*\$/s//\1/p" configure)
 jwin=
 while (( jupp > 34 )); do
 	jwin=${jwin}z
@@ -29,19 +29,34 @@ mksh ../../configure \
     --disable-termcap \
     --disable-getpwnam \
     --disable-termidx \
-    --enable-win32reloc=old
+    --enable-win32reloc
 make
 cp charmaps/* syntax/* ../$jtop/
 cp jmacsrc joerc jpicorc jstarrc ../$jtop/
 cp joe.exe ../$jtop/jupp32.exe
 cd ../..
 cp COPYING mkw32/$jtop/copying.txt
-cp …/cygwin1.dll mkw32/$jtop/
+cp /bin/cygwin1.dll mkw32/$jtop/
 cp joe.txt mkw32/$jtop/jupp32.txt
 cp jupprc mkw32/$jtop/jupp32rc
-sed "s!@jwin@!$jupp!g" <setup.inf >mkw32/$jtop/setup.inf
-cd mkw32
-chmod 444 $jtop/*
+cd mkw32/$jtop
+:>setup.inf
+for x in *; do
+	[[ $x = *[A-Z]* ]] || continue
+	mv "$x" ../_TMP
+	typeset -u uc
+	uc=$x
+	mv ../_TMP "$uc"
+done
+sed "s!@jwin@!$jupp!g" <../../setup.inf | while IFS= read -r line; do
+	if [[ $line = '@files@*' ]]; then
+		stat -c '%n=1,,%s' *
+	else
+		print -r -- "$line"
+	fi
+done >setup.inf
+chmod 444 *
+cd ..
 zip -D -X -9 -k ../JWIN31$jWIN.ZIP $jtop/*
 cd ..
 ls -l JWIN31$jWIN.ZIP

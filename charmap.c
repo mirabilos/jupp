@@ -1,7 +1,7 @@
 #if 0
 .if "0" == "1"
 #endif
-/* $MirOS: contrib/code/jupp/charmap.c,v 1.15 2014/10/23 17:10:44 tg Exp $ */
+/* $MirOS: contrib/code/jupp/charmap.c,v 1.16 2016/10/29 23:44:44 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 conversion utilities
  *	Copyright
@@ -1378,9 +1378,9 @@ find_charmap(const unsigned char *name)
 	}
 
 	/* Check JOERCcharmaps */
-	if (!f) {
+	if (!f && has_JOERC) {
 		joe_snprintf_2((char *)buf, sizeof(buf),
-		    "%scharmaps/%s", JOERC, name);
+		    "%scharmaps/%s", get_JOERC, name);
 		f = fopen((char *)buf, "r");
 	}
 
@@ -1466,7 +1466,7 @@ get_encodings(void)
 		}
 	}
 
-	if (!chpwd(US (JOERC "charmaps")) && (t = rexpnd(US "*"))) {
+	if (!chJpwd(US ("charmaps")) && (t = rexpnd(US "*"))) {
 		for (x = 0; x != aLEN(t); ++x)
 			if (strcmp(t[x], "..")) {
 				for (y = 0; y != aLEN(encodings); ++y)
@@ -1517,7 +1517,7 @@ SRCS=		charmap.c
 SRCS+=		i18n.c path.c utf8.c utils.c va.c vs.c
 NOMAN=		Yes
 CPPFLAGS+=	-DTEST -DTEST_CHARMAP
-CPPFLAGS+=	-D'JOERC="/etc/joe"'
+CPPFLAGS+=	-DJUPP_WIN32RELOC=0 -DJOERC=\"/etc/joe\"
 
 .include <bsd.own.mk>
 

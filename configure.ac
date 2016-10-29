@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.48 2016/10/08 17:44:17 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.49 2016/10/29 23:44:44 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -6,7 +6,7 @@
 AC_PREREQ(2.54)
 
 #### Here's the only place where to change version number ####
-AC_INIT(joe, 3.1jupp29~pre1)
+AC_INIT(joe, 3.1jupp29~pre2)
 #### But see main.c for the Copyright (c) owner and year! ####
 AC_CONFIG_SRCDIR([b.c])
 
@@ -107,8 +107,8 @@ AC_SUBST(sysconfjoesubdir)
 
 AC_ARG_ENABLE([win32reloc],
 [  --enable-win32reloc     enable win32 self-relocation],
-	[win32reloc=$enableval], [win32reloc=auto])
-test x"$win32reloc" = x"old" || win32reloc=no # currently not implemented
+	[win32reloc=$enableval], [win32reloc=no])
+AM_CONDITIONAL([JUPP_WIN32RELOC], [test x"$win32reloc" = x"yes"])
 if test x"$win32reloc" = x"yes"; then
 	joeinitfile='\fBjoerc\fR in the same directory as the binary resides in'
 	joeinitcopy='which resides in the same directory as the binary'

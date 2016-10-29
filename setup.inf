@@ -1,59 +1,26 @@
 ; Right-Click this and choose "_I_nstall" to install jupp!
 
-; © 2006, 2009, 2010, 2011, 2012
-;   by mirabilos <tg@mirbsd.org>
-; licence see jupprc and copying
-
-; copy and set up jupp for win32
-; must be in c:\windows\system32
+; © 2006, 2009, 2010, 2011, 2012, 2016
+;   by mirabilos <m@mirbsd.org>
+; see copying.txt and jupprc for legal
 
 [Version]
 Signature="$CHICAGO$"
-DriverVer=06/08/2012,3.1.@jwin@
+DriverVer=10/29/2016,3.1.@jwin@
 
 [SourceDisksNames]
 1="joe 3.1jupp@jwin@ Win32 installation floppy"
 
 [SourceDisksFiles]
-setup.inf=1
-copying.txt=1
-cygwin1.dll=1
-jupp32.exe=1
-jupp32.txt=1
-jmacsrc=1
-joerc=1
-jpicorc=1
-jstarrc=1
-jupp32rc=1
-klingon=1
-asm.jsf=1
-c.jsf=1
-conf.jsf=1
-csh.jsf=1
-diff.jsf=1
-fortran.jsf=1
-html.jsf=1
-java.jsf=1
-lisp.jsf=1
-mail.jsf=1
-mason.jsf=1
-pascal.jsf=1
-perl.jsf=1
-php.jsf=1
-python.jsf=1
-sh.jsf=1
-tcl.jsf=1
-verilog.jsf=1
-vhdl.jsf=1
-xml.jsf=1
+@files@
 
 [DefaultInstall]
 CopyFiles=jupp.Copy,jrc.Copy,jcm.Copy,jsy.Copy
+DelFiles=damage32.Undo,damage64.Undo
 AddReg=jupp.AddReg,fopenas.AddReg
 MediaType=SOFTWARE
 
 [jupp.Copy]
-cygwin1.dll
 jupp32.exe
 jupp32.txt
 ; copies of jupp32.exe so the other *rc files are usable
@@ -61,6 +28,8 @@ jmacs.exe,jupp32.exe
 joe.exe,jupp32.exe
 jpico.exe,jupp32.exe
 jstar.exe,jupp32.exe
+; sources at: http://www.mirbsd.org/MirOS/dist/gnu/cygwin32/
+cygwin1.dll
 
 [jrc.Copy]
 copying.txt
@@ -98,17 +67,35 @@ xml.jsf
 [jupp.AddReg]
 HKCR,"*\shell\jupp","",,"&jupp"
 HKCR,"*\shell\jupp","Version",,"jupp 3.1.@jwin@ (i486)"
-HKCR,"*\shell\jupp\command","",,"c:\windows\system32\jupp32.exe ""%L"""
+HKCR,"*\shell\jupp\command","",,"%24%\Programme\jupp32\jupp32.exe ""%L"""
 
 [fopenas.AddReg]
 HKCR,"*\shell\fopenas","",,"&Load with..."
 HKCR,"*\shell\fopenas\command","",,"rundll32 shell32,OpenAs_RunDLL %1"
 
-[DestinationDirs]
-DefaultDestDir=-1,C:\WINDOWS\system32
-jupp.Copy=-1,C:\WINDOWS\system32
-jrc.Copy=-1,C:\WINDOWS\system32\joe
-jcm.Copy=-1,C:\WINDOWS\system32\joe\charmaps
-jsy.Copy=-1,C:\WINDOWS\system32\joe\syntax
+[damage32.Undo]
+cygwin1.dll,,,1
+jupp32.exe,,,1
+jmacs.exe,,,1
+joe.exe,,,1
+jpico.exe,,,1
+jstar.exe,,,1
 
-; $MirOS: contrib/code/jupp/setup.inf,v 1.2 2016/10/29 22:28:48 tg Exp $
+[damage64.Undo]
+cygwin1.dll,,,1
+jupp32.exe,,,1
+jmacs.exe,,,1
+joe.exe,,,1
+jpico.exe,,,1
+jstar.exe,,,1
+
+[DestinationDirs]
+; possibly 16422,jupp32 but it's not documented since when this works;
+; it _is_ documented that the drive is wrong on some systems though...
+DefaultDestDir=24,Programme\jupp32
+damage32.Undo=-1,C:\WINDOWS\system32
+damage64.Undo=-1,C:\WINDOWS
+jcm.Copy=24,Programme\jupp32\charmaps
+jsy.Copy=24,Programme\jupp32\syntax
+
+; $MirOS: contrib/code/jupp/setup.inf,v 1.3 2016/10/29 23:44:45 tg Exp $

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/path.c,v 1.11 2016/10/08 16:25:59 tg Exp $ */
+/* $MirOS: contrib/code/jupp/path.c,v 1.12 2016/10/29 23:44:45 tg Exp $ */
 /* 
  *	Directory and path functions
  *	Copyright
@@ -386,7 +386,21 @@ unsigned char **rexpnd(unsigned char *word)
 	return lst;
 }
 /********************************************************************/
-int chpwd(unsigned char *path)
+int chJpwd(const unsigned char *path)
+{
+	unsigned char *fullpath;
+	int rv;
+
+	if (!has_JOERC)
+		return (-1);
+	fullpath = vsncpy(NULL, 0, sz(get_JOERC));
+	fullpath = vsncpy(sv(fullpath), sz(path));
+	rv = chpwd(fullpath);
+	vsrm(fullpath);
+	return (rv);
+}
+
+int chpwd(const unsigned char *path)
 {
 #ifdef __MSDOS__
 	unsigned char buf[256];
@@ -442,3 +456,26 @@ unsigned char *pwd(void)
 	return ((void *)wd);
 #endif
 }
+
+#if JUPP_WIN32RELOC
+unsigned char has_JOERC = 0;
+unsigned char *get_JOERC = NULL;
+
+extern char *cygwin32_argv0(void);
+
+void init_JOERC(void)
+{
+	struct stat sb;
+	char *sep;
+
+	if ((get_JOERC = (unsigned char *)cygwin32_argv0()) == NULL)
+		return;
+	joesep(get_JOERC);
+	if ((sep = strrchr((char *)get_JOERC, '/')) == NULL)
+		return;
+	if (stat(get_JOERC, &sb))
+		return;
+	sep[1] = '\0';
+	has_JOERC = 1;
+}
+#endif

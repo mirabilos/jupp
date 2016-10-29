@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/path.h,v 1.10 2016/10/08 16:42:00 tg Exp $ */
+/* $MirOS: contrib/code/jupp/path.h,v 1.11 2016/10/29 23:44:45 tg Exp $ */
 /*
  *	Directory and path functions
  *	Copyright
@@ -25,6 +25,15 @@
 unsigned char *joesep PARAMS((unsigned char *path));
 #else
 #define joesep(path) (path)
+#endif
+
+#if JUPP_WIN32RELOC
+extern unsigned char has_JOERC, *get_JOERC;
+void init_JOERC PARAMS((void));
+#else
+#define has_JOERC	1
+#define get_JOERC	JOERC
+#define init_JOERC()	/* nothing */
 #endif
 
 /* char *namprt(char *path);
@@ -117,7 +126,8 @@ int isreg PARAMS((unsigned char *s));
  */
 unsigned char **rexpnd PARAMS((unsigned char *word));
 
-int chpwd PARAMS((unsigned char *path));
+int chJpwd PARAMS((const unsigned char *path));
+int chpwd PARAMS((const unsigned char *path));
 unsigned char *pwd PARAMS((void));
 
 #endif

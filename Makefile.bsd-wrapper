@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.6 2016/10/29 22:41:10 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.7 2016/10/29 23:44:44 tg Exp $
 #-
 # make -f Makefile.bsd-wrapper CFPREFIX=/usr/mpkg sysconfjoesubdir=/joe
 
@@ -22,7 +22,7 @@ CFARGS+=	--prefix=${CFPREFIX:Q} \
 		--enable-sysconfjoesubdir=${sysconfjoesubdir:Q}
 
 .ifmake winman
-CFARGS+=	--enable-win32reloc=old
+CFARGS+=	--enable-win32reloc
 .endif
 
 .include <bsd.own.mk>
