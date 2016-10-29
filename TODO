@@ -661,8 +661,8 @@ Other requests:
 • use mirkev (better code for hashtables)
 • attach labels to ftypes; allow ftypes to inherit from these
   labels, instead of fdefault; add UI to apply an ftype, including
-  fdefault, to the current buffer
-• regex needs groups
+  fdefault, to the current buffer (requested by Wayne Cuddy)
+• regex needs groups like 「\+\(foo\)」
 • bracketed paste mode should disable autoindent, wordwrap,
   updating the status line, …(?) ⇐ implemented using a “paste”
   labeled ftype that is switched to using the UI (command)
@@ -671,7 +671,15 @@ Other requests:
   it must be disabled by default like mksh’s HISTFILE is:
   18:48⎜«asarch» That would be for a wish list then: to keep the
        ⎜    list of all opened files with their last position
+  Natureshadow agrees with me that this is a JOE antifeature
+• ANSI syntax highlighting; auto-turn it on in shell windows (‽)
+• proper redraw for lines that had combining characters in them
+• add a soft line break flag: display as line-wrapped, do not
+  save any newlines introduced by that
+• put all configuration files into /usr/share, allow the user
+  to override all of them (not just the rc files) from their
+  home directory (XDG config dirs)
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.26 2016/10/08 19:28:44 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.27 2016/10/29 20:54:39 tg Exp $
