@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/Makefile.am,v 1.11 2016/10/29 23:44:43 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.am,v 1.12 2016/10/29 23:51:23 tg Exp $
 
 AUTOMAKE_OPTIONS = foreign
 
@@ -66,6 +66,17 @@ joe_SOURCES = \
 	utag.c utf8.c utils.c va.c vfile.c vs.c w.c $(joe_WIN32_SRCS)
 
 termidx_SOURCES = termidx.c
+
+man_joeinitfile=@joeinitfile@
+man_joeresides=@joeresides@
+man_joeinitcopy=@joeinitcopy@
+joe.1: joe.1.in
+	sed \
+	    -e 's!@''joeinitfile''@!$(man_joeinitfile)!g' \
+	    -e 's!@''joeresides''@!$(man_joeresides)!g' \
+	    -e 's!@''joeinitcopy''@!$(man_joeinitcopy)!g' \
+	    <joe.1.in >$@~
+	mv -f $@~ $@
 
 install-exec-hook:
 	cd $(DESTDIR)$(bindir) && for i in $(JOE_ALIASES); do \

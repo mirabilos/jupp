@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.49 2016/10/29 23:44:44 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.50 2016/10/29 23:51:23 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -112,7 +112,7 @@ AM_CONDITIONAL([JUPP_WIN32RELOC], [test x"$win32reloc" = x"yes"])
 if test x"$win32reloc" = x"yes"; then
 	joeinitfile='\fBjoerc\fR in the same directory as the binary resides in'
 	joeinitcopy='which resides in the same directory as the binary'
-	joeresides='C:\eProgram\ Files\ejupp32\ejoe.exe'
+	joeresides='C:\eProgramme\ejupp32\ejoe.exe'
 	jrcbefore=''
 	jrcafter=' in the same directory as the binary'
 elif test x"$win32reloc" = x"old"; then
@@ -240,7 +240,7 @@ AH_VERBATIM([_PARAMS],[/* Check to see if we can use strict prototypes */
 # Check for programs..
 AC_CHECK_PROG(SPELL,aspell,aspell,ispell)
 
-AC_CONFIG_FILES([Makefile joe.1 joerc jmacsrc jstarrc rjoerc jpicorc
+AC_CONFIG_FILES([Makefile joerc jmacsrc jstarrc rjoerc jpicorc
 syntax/c.jsf syntax/perl.jsf syntax/verilog.jsf syntax/sh.jsf syntax/python.jsf
 syntax/conf.jsf syntax/php.jsf syntax/mail.jsf syntax/pascal.jsf syntax/html.jsf
 syntax/vhdl.jsf syntax/fortran.jsf syntax/java.jsf syntax/xml.jsf syntax/tcl.jsf

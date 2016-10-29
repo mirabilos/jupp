@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.7 2016/10/29 23:44:44 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.8 2016/10/29 23:51:23 tg Exp $
 #-
 # make -f Makefile.bsd-wrapper CFPREFIX=/usr/mpkg sysconfjoesubdir=/joe
 
@@ -37,6 +37,7 @@ COPTS+=		-Wno-unused-parameter \
 .endif
 
 joe.1: config.status
+	cd ${FSFOBJDIR} && ${FSFMAKE} $@
 
 all: jupplink
 jupplink: config.status
