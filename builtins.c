@@ -10,8 +10,12 @@
 
 #include "types.h"
 
+#ifndef JUPPRC_BUILTIN_NAME
+#define JUPPRC_BUILTIN_NAME "jupprc"
+#endif
+
 const unsigned char * const builtins[] = {
-	US "jupprc", US
+	US JUPPRC_BUILTIN_NAME, US
 		"-asis\n"
 		"-assume_color\n"
 		"-dopadding\n"
@@ -538,5 +542,5 @@ const unsigned char * const builtins[] = {
 		":querysr\n"
 		"type		^@ TO \xFF\n"
 ,	NULL
-,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.22 2016/10/08 17:56:33 tg Exp $"
+,	"@(#) $MirOS: contrib/code/jupp/builtins.c,v 1.23 2016/10/29 21:42:56 tg Exp $"
 };
