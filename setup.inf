@@ -1,0 +1,117 @@
+; Right-Click this and choose "_I_nstall" to install jupp!
+
+; © 2006, 2009, 2010, 2011, 2012
+;   by mirabilos <tg@mirbsd.org>
+; licence see jupprc and copying
+
+; copy and set up jupp for win32
+; must be in c:\windows\system32
+
+[Version]
+Signature="$CHICAGO$"
+DriverVer=06/08/2012,3.1.20
+
+[SourceDisksNames]
+1="joe 3.1jupp20 Win32 installation floppy"
+
+[SourceDisksFiles]
+jupp-w32.cfg=1
+jupp-w32.dif=1
+setup32.inf=1
+setup64.inf=1
+copying.txt=1
+cygwin1.dll=1
+jupp32.exe=1
+jupp32.txt=1
+jmacsrc=1
+joerc=1
+jpicorc=1
+jstarrc=1
+jupp32rc=1
+klingon=1
+asm.jsf=1
+c.jsf=1
+conf.jsf=1
+csh.jsf=1
+diff.jsf=1
+fortran.jsf=1
+html.jsf=1
+java.jsf=1
+lisp.jsf=1
+mail.jsf=1
+mason.jsf=1
+pascal.jsf=1
+perl.jsf=1
+php.jsf=1
+python.jsf=1
+sh.jsf=1
+tcl.jsf=1
+verilog.jsf=1
+vhdl.jsf=1
+xml.jsf=1
+
+[DefaultInstall]
+CopyFiles=jupp.Copy,jrc.Copy,jcm.Copy,jsy.Copy
+AddReg=jupp.AddReg,fopenas.AddReg
+MediaType=SOFTWARE
+
+[jupp.Copy]
+cygwin1.dll
+jupp32.exe
+jupp32.txt
+; copies of jupp32.exe so the other *rc files are usable
+jmacs.exe,jupp32.exe
+joe.exe,jupp32.exe
+jpico.exe,jupp32.exe
+jstar.exe,jupp32.exe
+
+[jrc.Copy]
+copying.txt
+jmacsrc
+joerc
+jpicorc
+jstarrc
+jupp32rc
+
+[jcm.Copy]
+klingon
+
+[jsy.Copy]
+asm.jsf
+c.jsf
+conf.jsf
+csh.jsf
+diff.jsf
+fortran.jsf
+html.jsf
+java.jsf
+lisp.jsf
+mail.jsf
+mason.jsf
+pascal.jsf
+perl.jsf
+php.jsf
+python.jsf
+sh.jsf
+tcl.jsf
+verilog.jsf
+vhdl.jsf
+xml.jsf
+
+[jupp.AddReg]
+HKCR,"*\shell\jupp","",,"&jupp"
+HKCR,"*\shell\jupp","Version",,"jupp 3.1.20 (i486)"
+HKCR,"*\shell\jupp\command","",,"c:\windows\system32\jupp32.exe ""%L"""
+
+[fopenas.AddReg]
+HKCR,"*\shell\fopenas","",,"&Load with..."
+HKCR,"*\shell\fopenas\command","",,"rundll32 shell32,OpenAs_RunDLL %1"
+
+[DestinationDirs]
+DefaultDestDir=-1,C:\WINDOWS\system32
+jupp.Copy=-1,C:\WINDOWS\system32
+jrc.Copy=-1,C:\WINDOWS\system32\joe
+jcm.Copy=-1,C:\WINDOWS\system32\joe\charmaps
+jsy.Copy=-1,C:\WINDOWS\system32\joe\syntax
+
+; $MirOS: contrib/code/jupp/setup.inf,v 1.1 2016/10/29 22:03:24 tg Exp $
