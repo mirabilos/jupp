@@ -9,16 +9,13 @@
 
 [Version]
 Signature="$CHICAGO$"
-DriverVer=06/08/2012,3.1.20
+DriverVer=06/08/2012,3.1.@jwin@
 
 [SourceDisksNames]
-1="joe 3.1jupp20 Win32 installation floppy"
+1="joe 3.1jupp@jwin@ Win32 installation floppy"
 
 [SourceDisksFiles]
-jupp-w32.cfg=1
-jupp-w32.dif=1
-setup32.inf=1
-setup64.inf=1
+setup.inf=1
 copying.txt=1
 cygwin1.dll=1
 jupp32.exe=1
@@ -100,7 +97,7 @@ xml.jsf
 
 [jupp.AddReg]
 HKCR,"*\shell\jupp","",,"&jupp"
-HKCR,"*\shell\jupp","Version",,"jupp 3.1.20 (i486)"
+HKCR,"*\shell\jupp","Version",,"jupp 3.1.@jwin@ (i486)"
 HKCR,"*\shell\jupp\command","",,"c:\windows\system32\jupp32.exe ""%L"""
 
 [fopenas.AddReg]
@@ -114,4 +111,4 @@ jrc.Copy=-1,C:\WINDOWS\system32\joe
 jcm.Copy=-1,C:\WINDOWS\system32\joe\charmaps
 jsy.Copy=-1,C:\WINDOWS\system32\joe\syntax
 
-; $MirOS: contrib/code/jupp/setup.inf,v 1.1 2016/10/29 22:03:24 tg Exp $
+; $MirOS: contrib/code/jupp/setup.inf,v 1.2 2016/10/29 22:28:48 tg Exp $
