@@ -675,7 +675,10 @@ Other requests:
 • put all configuration files into /usr/share, allow the user
   to override all of them (not just the rc files) from their
   home directory (XDG config dirs)
+• rc.c: struct glopts.set (int*) violates the strict aliasing
+  rule as it’s treated as (unsigned char *) for type 2 (global
+  option string), consider a union instead (check local types!)
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.28 2016/10/30 00:19:42 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.29 2016/10/30 02:46:25 tg Exp $
