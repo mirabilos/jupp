@@ -1,7 +1,7 @@
 #if 0
 .if "0" == "1"
 #endif
-/* $MirOS: contrib/code/jupp/charmap.c,v 1.16 2016/10/29 23:44:44 tg Exp $ */
+/* $MirOS: contrib/code/jupp/charmap.c,v 1.17 2016/10/30 03:49:04 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 conversion utilities
  *	Copyright
@@ -1517,7 +1517,7 @@ SRCS=		charmap.c
 SRCS+=		i18n.c path.c utf8.c utils.c va.c vs.c
 NOMAN=		Yes
 CPPFLAGS+=	-DTEST -DTEST_CHARMAP
-CPPFLAGS+=	-DJUPP_WIN32RELOC=0 -DJOERC=\"/etc/joe\"
+CPPFLAGS+=	-DJUPP_WIN32RELOC=0 -D'JOERC="/etc/joe"'
 
 .include <bsd.own.mk>
 
