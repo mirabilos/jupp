@@ -6,7 +6,7 @@
 
 [Version]
 Signature="$CHICAGO$"
-DriverVer=10/29/2016,3.1.@jwin@
+DriverVer=@ts@,3.1.@jwin@
 
 [SourceDisksNames]
 1="joe 3.1jupp@jwin@ Win32 installation floppy"
@@ -99,4 +99,4 @@ damage64.Undo=-1,C:\WINDOWS
 jcm.Copy=24,Programme\jupp32\charmaps
 jsy.Copy=24,Programme\jupp32\syntax
 
-; $MirOS: contrib/code/jupp/setup.inf,v 1.4 2016/10/30 02:38:35 tg Exp $
+; $MirOS: contrib/code/jupp/setup.inf,v 1.5 2016/10/30 02:44:19 tg Exp $

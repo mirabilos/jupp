@@ -1,5 +1,5 @@
 #!/bin/mksh
-# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.6 2016/10/30 02:38:34 tg Exp $
+# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.7 2016/10/30 02:44:19 tg Exp $
 
 extrawarnings="-Wall -Wextra"
 extrawarnings="$extrawarnings -Wno-unused-parameter"
@@ -58,7 +58,8 @@ for x in *; do
 	lc=$x
 	mv ../_TMP "$lc"
 done
-sed -b "s!@jwin@!$jupp!g" <../../setup.inf | while IFS= read -r line; do
+sed -b -e "s!@jwin@!$jupp!g" -e "s!@ts@!$(date -u +%m/%d/%Y)!g" \
+    <../../setup.inf | while IFS= read -r line; do
 	if [[ $line = '@files@'* ]]; then
 		stat -c '%n=1,,%s' *
 	else
