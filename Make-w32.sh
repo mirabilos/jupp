@@ -1,5 +1,5 @@
 #!/bin/mksh
-# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.3 2016/10/29 23:44:43 tg Exp $
+# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.4 2016/10/30 00:28:10 tg Exp $
 
 export LC_ALL=C
 set -ex
@@ -27,6 +27,7 @@ mksh ../../configure \
     --disable-dependency-tracking \
     --disable-curses \
     --disable-termcap \
+    --disable-search-libs \
     --disable-getpwnam \
     --disable-termidx \
     --enable-win32reloc
