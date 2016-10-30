@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.50 2016/10/29 23:51:23 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.51 2016/10/30 00:05:26 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -110,20 +110,20 @@ AC_ARG_ENABLE([win32reloc],
 	[win32reloc=$enableval], [win32reloc=no])
 AM_CONDITIONAL([JUPP_WIN32RELOC], [test x"$win32reloc" = x"yes"])
 if test x"$win32reloc" = x"yes"; then
-	joeinitfile='\fBjoerc\fR in the same directory as the binary resides in'
+	joeinitfile='\\fBjoerc\\fR in the same directory as the binary resides in'
 	joeinitcopy='which resides in the same directory as the binary'
-	joeresides='C:\eProgramme\ejupp32\ejoe.exe'
+	joeresides='C:\\eProgramme\\ejupp32\\ejoe.exe'
 	jrcbefore=''
 	jrcafter=' in the same directory as the binary'
 elif test x"$win32reloc" = x"old"; then
-	joeinitfile='\fBc:/windows/system32/joe/joerc\fR'
-	joeinitcopy='which resides in \fBc:/windows/system32/joe/joerc\fR'
+	joeinitfile='\\fBc:/windows/system32/joe/joerc\\fR'
+	joeinitcopy='which resides in \\fBc:/windows/system32/joe/joerc\\fR'
 	joeresides='c:/windows/system32/joe.exe'
 	jrcbefore='c:/windows/system32/joe/'
 	jrcafter=''
 else
-	joeinitfile='usually \fB'$sysconfdir$sysconfjoesubdir'/joerc\fR'
-	joeinitcopy='which normally resides in \fB'$sysconfdir$sysconfjoesubdir'/joerc\fR'
+	joeinitfile='usually \\fB'$sysconfdir$sysconfjoesubdir'/joerc\\fR'
+	joeinitcopy='which normally resides in \\fB'$sysconfdir$sysconfjoesubdir'/joerc\\fR'
 	joeresides=$bindir'/joe'
 	jrcbefore=$sysconfdir$sysconfjoesubdir/
 	jrcafter=''
