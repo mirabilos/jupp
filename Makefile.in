@@ -14,8 +14,8 @@
 
 @SET_MAKE@
 
-# $MirOS: contrib/code/jupp/Makefile.in,v 1.13 2016/10/08 17:56:32 tg Exp $
-# $miros: contrib/code/jupp/Makefile.am,v 1.10 2016/10/08 17:44:17 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.in,v 1.14 2016/10/30 00:08:27 tg Exp $
+# $miros: contrib/code/jupp/Makefile.am,v 1.14 2016/10/30 00:00:18 tg Exp $
 
 
 
@@ -47,11 +47,10 @@ bin_PROGRAMS = joe$(EXEEXT) $(am__EXEEXT_1)
 DIST_COMMON = README $(am__configure_deps) $(noinst_HEADERS) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/autoconf.h.in $(srcdir)/jmacsrc.in \
-	$(srcdir)/joe.1.in $(srcdir)/joerc.in $(srcdir)/jpicorc.in \
-	$(srcdir)/jstarrc.in $(srcdir)/rjoerc.in \
-	$(top_srcdir)/charmaps/klingon.in $(top_srcdir)/configure \
-	$(top_srcdir)/syntax/asm.jsf.in $(top_srcdir)/syntax/c.jsf.in \
-	$(top_srcdir)/syntax/conf.jsf.in \
+	$(srcdir)/joerc.in $(srcdir)/jpicorc.in $(srcdir)/jstarrc.in \
+	$(srcdir)/rjoerc.in $(top_srcdir)/charmaps/klingon.in \
+	$(top_srcdir)/configure $(top_srcdir)/syntax/asm.jsf.in \
+	$(top_srcdir)/syntax/c.jsf.in $(top_srcdir)/syntax/conf.jsf.in \
 	$(top_srcdir)/syntax/csh.jsf.in \
 	$(top_srcdir)/syntax/diff.jsf.in \
 	$(top_srcdir)/syntax/fortran.jsf.in \
@@ -81,8 +80,8 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno configure.status.lineno
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = autoconf.h
-CONFIG_CLEAN_FILES = joe.1 joerc jmacsrc jstarrc rjoerc jpicorc \
-	syntax/c.jsf syntax/perl.jsf syntax/verilog.jsf syntax/sh.jsf \
+CONFIG_CLEAN_FILES = joerc jmacsrc jstarrc rjoerc jpicorc syntax/c.jsf \
+	syntax/perl.jsf syntax/verilog.jsf syntax/sh.jsf \
 	syntax/python.jsf syntax/conf.jsf syntax/php.jsf \
 	syntax/mail.jsf syntax/pascal.jsf syntax/html.jsf \
 	syntax/vhdl.jsf syntax/fortran.jsf syntax/java.jsf \
@@ -95,19 +94,28 @@ am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(man1dir)" \
 	"$(DESTDIR)$(sysconf_joedir)" "$(DESTDIR)$(sysconf_syntaxdir)"
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
-am_joe_OBJECTS = b.$(OBJEXT) blocks.$(OBJEXT) bw.$(OBJEXT) \
-	cmd.$(OBJEXT) hash.$(OBJEXT) help.$(OBJEXT) kbd.$(OBJEXT) \
-	macro.$(OBJEXT) main.$(OBJEXT) menu.$(OBJEXT) path.$(OBJEXT) \
-	poshist.$(OBJEXT) pw.$(OBJEXT) queue.$(OBJEXT) qw.$(OBJEXT) \
-	rc.$(OBJEXT) regex.$(OBJEXT) scrn.$(OBJEXT) tab.$(OBJEXT) \
-	termcap.$(OBJEXT) tty.$(OBJEXT) tw.$(OBJEXT) ublock.$(OBJEXT) \
-	uedit.$(OBJEXT) uerror.$(OBJEXT) ufile.$(OBJEXT) \
-	uformat.$(OBJEXT) uisrch.$(OBJEXT) umath.$(OBJEXT) \
-	undo.$(OBJEXT) usearch.$(OBJEXT) ushell.$(OBJEXT) \
-	utag.$(OBJEXT) va.$(OBJEXT) vfile.$(OBJEXT) vs.$(OBJEXT) \
-	w.$(OBJEXT) utils.$(OBJEXT) syntax.$(OBJEXT) utf8.$(OBJEXT) \
-	selinux.$(OBJEXT) i18n.$(OBJEXT) charmap.$(OBJEXT) \
-	builtin.$(OBJEXT) builtins.$(OBJEXT) compat.$(OBJEXT)
+am__joe_SOURCES_DIST = b.c blocks.c builtin.c builtins.c bw.c \
+	charmap.c cmd.c compat.c hash.c help.c i18n.c kbd.c macro.c \
+	main.c menu.c path.c poshist.c pw.c queue.c qw.c rc.c regex.c \
+	scrn.c selinux.c syntax.c tab.c termcap.c tty.c tw.c ublock.c \
+	uedit.c uerror.c ufile.c uformat.c uisrch.c umath.c undo.c \
+	usearch.c ushell.c utag.c utf8.c utils.c va.c vfile.c vs.c w.c \
+	win32.c
+@JUPP_WIN32RELOC_TRUE@am__objects_1 = win32.$(OBJEXT)
+am_joe_OBJECTS = b.$(OBJEXT) blocks.$(OBJEXT) builtin.$(OBJEXT) \
+	builtins.$(OBJEXT) bw.$(OBJEXT) charmap.$(OBJEXT) \
+	cmd.$(OBJEXT) compat.$(OBJEXT) hash.$(OBJEXT) help.$(OBJEXT) \
+	i18n.$(OBJEXT) kbd.$(OBJEXT) macro.$(OBJEXT) main.$(OBJEXT) \
+	menu.$(OBJEXT) path.$(OBJEXT) poshist.$(OBJEXT) pw.$(OBJEXT) \
+	queue.$(OBJEXT) qw.$(OBJEXT) rc.$(OBJEXT) regex.$(OBJEXT) \
+	scrn.$(OBJEXT) selinux.$(OBJEXT) syntax.$(OBJEXT) \
+	tab.$(OBJEXT) termcap.$(OBJEXT) tty.$(OBJEXT) tw.$(OBJEXT) \
+	ublock.$(OBJEXT) uedit.$(OBJEXT) uerror.$(OBJEXT) \
+	ufile.$(OBJEXT) uformat.$(OBJEXT) uisrch.$(OBJEXT) \
+	umath.$(OBJEXT) undo.$(OBJEXT) usearch.$(OBJEXT) \
+	ushell.$(OBJEXT) utag.$(OBJEXT) utf8.$(OBJEXT) utils.$(OBJEXT) \
+	va.$(OBJEXT) vfile.$(OBJEXT) vs.$(OBJEXT) w.$(OBJEXT) \
+	$(am__objects_1)
 joe_OBJECTS = $(am_joe_OBJECTS)
 joe_LDADD = $(LDADD)
 am_termidx_OBJECTS = termidx.$(OBJEXT)
@@ -121,7 +129,7 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 SOURCES = $(joe_SOURCES) $(termidx_SOURCES)
-DIST_SOURCES = $(joe_SOURCES) $(termidx_SOURCES)
+DIST_SOURCES = $(am__joe_SOURCES_DIST) $(termidx_SOURCES)
 man1dir = $(mandir)/man1
 INSTALL_MAN_AM = install-man
 NROFF = nroff
@@ -177,6 +185,8 @@ INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+JUPP_WIN32RELOC_FALSE = @JUPP_WIN32RELOC_FALSE@
+JUPP_WIN32RELOC_TRUE = @JUPP_WIN32RELOC_TRUE@
 LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
@@ -255,25 +265,29 @@ target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
 AUTOMAKE_OPTIONS = foreign
-EXTRA_DIST = COPYING INFO LIST NEWS README README.cvs TODO docs/help-system.html \
-	joerc.in jmacsrc.in jstarrc.in rjoerc.in jpicorc.in jupprc \
-	joe.1.in dir.c syntax/c.jsf.in syntax/perl.jsf.in syntax/verilog.jsf.in \
-	syntax/conf.jsf.in syntax/python.jsf.in syntax/php.jsf.in syntax/sh.jsf.in \
-	syntax/pascal.jsf.in syntax/html.jsf.in syntax/vhdl.jsf.in syntax/fortran.jsf.in \
-	syntax/java.jsf.in syntax/xml.jsf.in syntax/tcl.jsf.in charmaps/klingon.in docs HINTS \
-	syntax/lisp.jsf.in syntax/csh.jsf.in syntax/mail.jsf.in syntax/mason.jsf.in \
-	syntax/diff.jsf.in syntax/asm.jsf.in syntax/tex.jsf.in
+EXTRA_DIST = \
+	COPYING HINTS INFO LIST NEWS README README.cvs TODO dir.c \
+	win32.c jmacsrc.in joe.1.in joerc.in jpicorc.in jstarrc.in \
+	jupprc rjoerc.in charmaps/klingon.in docs/help-system.html \
+	syntax/asm.jsf.in syntax/c.jsf.in syntax/conf.jsf.in \
+	syntax/csh.jsf.in syntax/diff.jsf.in syntax/fortran.jsf.in \
+	syntax/html.jsf.in syntax/java.jsf.in syntax/lisp.jsf.in \
+	syntax/mail.jsf.in syntax/mason.jsf.in syntax/pascal.jsf.in \
+	syntax/perl.jsf.in syntax/php.jsf.in syntax/python.jsf.in \
+	syntax/sh.jsf.in syntax/tcl.jsf.in syntax/tex.jsf.in \
+	syntax/verilog.jsf.in syntax/vhdl.jsf.in syntax/xml.jsf.in
 
 JOE_ALIASES = jmacs jpico jstar jupp rjoe
 sysconf_joedir = $(sysconfdir)$(sysconfjoesubdir)
-sysconf_joe_DATA = joerc jmacsrc jstarrc rjoerc jpicorc jupprc
+sysconf_joe_DATA = jmacsrc joerc jpicorc jstarrc jupprc rjoerc
 sysconf_syntaxdir = $(sysconf_joedir)/syntax
-sysconf_syntax_DATA = syntax/c.jsf syntax/perl.jsf syntax/verilog.jsf \
-	syntax/conf.jsf syntax/python.jsf syntax/php.jsf syntax/sh.jsf \
-	syntax/mail.jsf syntax/pascal.jsf syntax/html.jsf syntax/vhdl.jsf \
-	syntax/fortran.jsf syntax/java.jsf syntax/xml.jsf syntax/tcl.jsf \
-	syntax/lisp.jsf syntax/csh.jsf syntax/mason.jsf syntax/diff.jsf \
-	syntax/asm.jsf syntax/tex.jsf
+sysconf_syntax_DATA = \
+	syntax/asm.jsf syntax/c.jsf syntax/conf.jsf syntax/csh.jsf \
+	syntax/diff.jsf syntax/fortran.jsf syntax/html.jsf \
+	syntax/java.jsf syntax/lisp.jsf syntax/mail.jsf syntax/mason.jsf \
+	syntax/pascal.jsf syntax/perl.jsf syntax/php.jsf \
+	syntax/python.jsf syntax/sh.jsf syntax/tcl.jsf syntax/tex.jsf \
+	syntax/verilog.jsf syntax/vhdl.jsf syntax/xml.jsf
 
 sysconf_charmapsdir = $(sysconf_joedir)/charmaps
 sysconf_charmaps_DATA = charmaps/klingon
@@ -284,16 +298,25 @@ noinst_HEADERS = b.h blocks.h bw.h cmd.h config.h hash.h help.h kbd.h \
 	ufile.h uformat.h uisrch.h umath.h undo.h usearch.h ushell.h utag.h \
 	utils.h va.h vfile.h vs.h w.h utf8.h syntax.h i18n.h charmap.h builtin.h
 
-INCLUDES = -DJOERC="\"$(sysconf_joedir)/\""
+@JUPP_WIN32RELOC_FALSE@joe_WIN32_SRCS = # nothing
+@JUPP_WIN32RELOC_TRUE@joe_WIN32_SRCS = win32.c
+@JUPP_WIN32RELOC_FALSE@joe_WIN32_DEFS = -DJUPP_WIN32RELOC=0 -DJOERC="\"$(sysconf_joedir)/\""
+@JUPP_WIN32RELOC_TRUE@joe_WIN32_DEFS = -DJUPP_WIN32RELOC=1 -UJOERC
+INCLUDES = $(joe_WIN32_DEFS)
 
 # joe_LDADD = @REQRD_LIBS@
-joe_SOURCES = b.c blocks.c bw.c cmd.c hash.c help.c kbd.c macro.c main.c menu.c \
-	path.c poshist.c pw.c queue.c qw.c rc.c regex.c scrn.c tab.c termcap.c \
-	tty.c tw.c ublock.c uedit.c uerror.c ufile.c uformat.c uisrch.c umath.c \
-	undo.c usearch.c ushell.c utag.c va.c vfile.c vs.c w.c utils.c syntax.c \
-	utf8.c selinux.c i18n.c charmap.c builtin.c builtins.c compat.c
+joe_SOURCES = \
+	b.c blocks.c builtin.c builtins.c bw.c charmap.c cmd.c compat.c \
+	hash.c help.c i18n.c kbd.c macro.c main.c menu.c path.c \
+	poshist.c pw.c queue.c qw.c rc.c regex.c scrn.c selinux.c \
+	syntax.c tab.c termcap.c tty.c tw.c ublock.c uedit.c uerror.c \
+	ufile.c uformat.c uisrch.c umath.c undo.c usearch.c ushell.c \
+	utag.c utf8.c utils.c va.c vfile.c vs.c w.c $(joe_WIN32_SRCS)
 
 termidx_SOURCES = termidx.c
+man_joeinitfile = @joeinitfile@
+man_joeresides = @joeresides@
+man_joeinitcopy = @joeinitcopy@
 all: autoconf.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -349,8 +372,6 @@ $(srcdir)/autoconf.h.in: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 
 distclean-hdr:
 	-rm -f autoconf.h stamp-h1
-joe.1: $(top_builddir)/config.status $(srcdir)/joe.1.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
 joerc: $(top_builddir)/config.status $(srcdir)/joerc.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 jmacsrc: $(top_builddir)/config.status $(srcdir)/jmacsrc.in
@@ -488,6 +509,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vfile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vs.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/w.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/win32.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \
@@ -882,6 +904,13 @@ uninstall-man: uninstall-man1
 	uninstall-sysconf_charmapsDATA uninstall-sysconf_joeDATA \
 	uninstall-sysconf_syntaxDATA
 
+joe.1: joe.1.in
+	sed \
+	    -e 's!@''joeinitfile''@!$(man_joeinitfile)!g' \
+	    -e 's!@''joeresides''@!$(man_joeresides)!g' \
+	    -e 's!@''joeinitcopy''@!$(man_joeinitcopy)!g' \
+	    <$> >$@~
+	mv -f $@~ $@
 
 install-exec-hook:
 	cd $(DESTDIR)$(bindir) && for i in $(JOE_ALIASES); do \
