@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.c,v 1.21 2016/10/07 19:38:22 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.c,v 1.22 2016/10/30 02:38:35 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright
@@ -871,7 +871,6 @@ extern char *ptsname(int);
 static unsigned char *getpty(int *ptyfd)
 {
 	int fdm;
-	unsigned char *name;
 
 	*ptyfd = fdm = open("/dev/ptmx", O_RDWR);
 	grantpt(fdm);

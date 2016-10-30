@@ -1,9 +1,10 @@
 #!/bin/mksh
-# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.5 2016/10/30 00:34:40 tg Exp $
+# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.6 2016/10/30 02:38:34 tg Exp $
 
 extrawarnings="-Wall -Wextra"
 extrawarnings="$extrawarnings -Wno-unused-parameter"
-extrawarnings="$extrawarnings -Wno-missing-field-initializers"
+echo "N: gcc-3.4.4-999 does not support -Wno-missing-field-initializers"
+echo "N: expect warnings about those, they are known, do not report them"
 extrawarnings="$extrawarnings -Wno-old-style-definition -Wno-strict-prototypes"
 extrawarnings="$extrawarnings -Wno-cast-qual"
 extrawarnings="$extrawarnings -Wno-missing-prototypes -Wno-missing-declarations"
@@ -53,17 +54,19 @@ cd mkw32/$jtop
 for x in *; do
 	[[ $x = *[A-Z]* ]] || continue
 	mv "$x" ../_TMP
-	typeset -u uc
-	uc=$x
-	mv ../_TMP "$uc"
+	typeset -l lc
+	lc=$x
+	mv ../_TMP "$lc"
 done
-sed "s!@jwin@!$jupp!g" <../../setup.inf | while IFS= read -r line; do
-	if [[ $line = '@files@*' ]]; then
+sed -b "s!@jwin@!$jupp!g" <../../setup.inf | while IFS= read -r line; do
+	if [[ $line = '@files@'* ]]; then
 		stat -c '%n=1,,%s' *
 	else
 		print -r -- "$line"
 	fi
 done >setup.inf
+sed -bi "/^setup.inf=1,,/s/^.*\$/$(stat -c '%n=1,,%s' setup.inf)/" setup.inf
+sed -bi "/^setup.inf=1,,/s/^.*\$/$(stat -c '%n=1,,%s' setup.inf)/" setup.inf
 chmod 444 *
 cd ..
 zip -D -X -9 -k ../JWIN31$jWIN.ZIP $jtop/*

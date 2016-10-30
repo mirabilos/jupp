@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/win32.c,v 1.1 2016/10/29 23:44:46 tg Exp $ */
+/* $MirOS: contrib/code/jupp/win32.c,v 1.2 2016/10/30 02:38:35 tg Exp $ */
 
 /*-
  * Copyright (c) 2016
@@ -28,7 +28,7 @@
 char *
 cygwin32_argv0(void)
 {
-	DWORD res, len;
+	DWORD res;
 	/* plus one to detect truncation */
 	char buf[MAX_PATH + 1];
 
