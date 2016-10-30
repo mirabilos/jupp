@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/vs.h,v 1.5 2014/07/25 11:44:35 tg Exp $ */
+/* $MirOS: contrib/code/jupp/vs.h,v 1.6 2016/10/30 00:19:58 tg Exp $ */
 /*
  *	Dynamic string library
  *	Copyright
@@ -319,14 +319,14 @@ sELEMENT *_vsset PARAMS((sELEMENT *vary, int pos, sELEMENT el));
 /* Searching and Sorting */
 /*************************/
 
-/* int vsbsearch(sELEMENT *ary, int len, sELEMENT element);
+/* int vsbsearch(const sELEMENT *ary, int len, sELEMENT element);
  * Do a binary search on a sorted variable length or char array.  Returns position
  * of matching element or the position where the element should be if it was
  * not found.  (You should test with scmp to find out which).
  *
  * Hmm... this should really indicate whether or not the element was found.
  */
-int vsbsearch PARAMS((sELEMENT *ary, int len, sELEMENT el));
+int vsbsearch PARAMS((const sELEMENT *ary, int len, sELEMENT el));
 
 /* int vscmpn(sELEMENT *a, int alen, sELEMENT *b, int blen);
  *
@@ -342,13 +342,13 @@ int vscmpn PARAMS((sELEMENT *a, int alen, sELEMENT *b, int blen));
  */
 int vscmp PARAMS((sELEMENT *a, sELEMENT *b));
 
-/* int vsscan(sELEMENT *a, int alen, sELEMENT *b, int blen);
+/* int vsscan(const sELEMENT *a, int alen, const sELEMENT *b, int blen);
  * Find offset of first matching element in 'a' which matches any
  * of the elements passed in 'b'.  Array 'b' must be sorted.
  *
  * Hmm... this really needs to return what the found element is.
  */
-int vsscan PARAMS((sELEMENT *a, int alen, sELEMENT *b, int blen));
+int vsscan PARAMS((const sELEMENT *a, int alen, const sELEMENT *b, int blen));
 
 /* int vsspan(sELEMENT *a, int alen, sELEMENT *b, int blen);
  * Find offset of first matching element in 'a' which does not match any

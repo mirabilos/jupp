@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/vs.c,v 1.7 2014/07/25 11:44:34 tg Exp $ */
+/* $MirOS: contrib/code/jupp/vs.c,v 1.8 2016/10/30 00:19:57 tg Exp $ */
 /*
  *	Variable length strings
  *	Copyright
@@ -146,7 +146,7 @@ sELEMENT *_vsset(sELEMENT *vary, int pos, sELEMENT el)
 	return vary;
 }
 
-int vsbsearch(sELEMENT *ary, int len, sELEMENT el)
+int vsbsearch(const sELEMENT *ary, int len, sELEMENT el)
 {
 	int x, y, z;
 
@@ -201,7 +201,7 @@ int vscmp(sELEMENT *a, sELEMENT *b)
 	return vscmpn(sv(a), sv(b));
 }
 
-int vsscan(sELEMENT *a, int alen, sELEMENT *b, int blen)
+int vsscan(const sELEMENT *a, int alen, const sELEMENT *b, int blen)
 {
 	int x;
 
