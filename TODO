@@ -470,7 +470,7 @@ regex: character classes? a-z matches any letter?
 New features:
 -----------------------
 
-  move *rc files to .etc/joe directory?
+  move *rc files to .etc/joe directory? Or XDG, see below.
 
   check all instances of 'chars': use unicode to locale symbols instead.
   EBCDIC ?
@@ -507,8 +507,6 @@ Refactoring
 
 Syntax Highlighting:
 --------------------
-
-UTF-8 syntax files?
 
 Support for more languages:
 
@@ -650,9 +648,7 @@ Other requests:
 │ jupp TODO │
 └───────────┘
 
-• do not let configure handle expansion for the manpage,
-  currently @joeresides@ expands to ${exec_prefix}/bin
-  (unexpanded); a Makefile can correct that
+• replace all int with size_t where applicable
 • merge syntax handling code from joe-3.7+
 • merge math from joe-3.7+
 • add group support to regex code
@@ -682,4 +678,4 @@ Other requests:
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.27 2016/10/29 20:54:39 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.28 2016/10/30 00:19:42 tg Exp $
