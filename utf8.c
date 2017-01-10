@@ -1,9 +1,9 @@
-/* $MirOS: contrib/code/jupp/utf8.c,v 1.16 2017/01/10 23:07:58 tg Exp $ */
+/* $MirOS: contrib/code/jupp/utf8.c,v 1.17 2017/01/10 23:20:48 tg Exp $ */
 /*
  *	UTF-8 Utilities
  *	Copyright
  *		(C) 2004 Joseph H. Allen
- *		(c) 2004, 2006 Thorsten Glaser
+ *		(c) 2004, 2006, 2011, 2013, 2014, 2017 Thorsten Glaser
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
