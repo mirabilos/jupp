@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/builtin.c,v 1.4 2014/10/23 17:10:44 tg Exp $ */
+/* $MirOS: contrib/code/jupp/builtin.c,v 1.5 2017/01/10 19:16:27 tg Exp $ */
 /*
  *	Built-in config files
  *	Copyright
@@ -10,6 +10,7 @@
 #include "config.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "types.h"

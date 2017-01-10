@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/vs.c,v 1.8 2016/10/30 00:19:57 tg Exp $ */
+/* $MirOS: contrib/code/jupp/vs.c,v 1.9 2017/01/10 19:16:28 tg Exp $ */
 /*
  *	Variable length strings
  *	Copyright
@@ -8,6 +8,8 @@
  */
 #include "config.h"
 #include "types.h"
+
+#include <stdlib.h>
 
 #include "blocks.h"
 #include "utils.h"

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/hash.c,v 1.2 2008/05/13 13:08:22 tg Exp $ */
+/* $MirOS: contrib/code/jupp/hash.c,v 1.3 2017/01/10 19:16:27 tg Exp $ */
 /*
  *	Simple hash table
  *	Copyright
@@ -9,6 +9,7 @@
 #include "config.h"
 #include "types.h"
 
+#include <stdlib.h>
 #include <string.h>
 
 #include "hash.h"

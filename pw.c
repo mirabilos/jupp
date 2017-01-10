@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/pw.c,v 1.6 2016/10/08 14:58:46 tg Exp $ */
+/* $MirOS: contrib/code/jupp/pw.c,v 1.7 2017/01/10 19:16:27 tg Exp $ */
 /*
  *	Prompt windows
  *	Copyright
@@ -9,6 +9,7 @@
 #include "config.h"
 #include "types.h"
 
+#include <stdlib.h>
 #include <string.h>
 
 #include "b.h"

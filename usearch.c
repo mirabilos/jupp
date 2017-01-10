@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/usearch.c,v 1.8 2017/01/10 02:21:00 tg Exp $ */
+/* $MirOS: contrib/code/jupp/usearch.c,v 1.9 2017/01/10 19:16:28 tg Exp $ */
 /*
  *	Search & Replace system
  *	Copyright
@@ -10,6 +10,7 @@
 #include "types.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "b.h"
 #include "bw.h"

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/kbd.c,v 1.3 2013/10/23 18:46:59 tg Exp $ */
+/* $MirOS: contrib/code/jupp/kbd.c,v 1.4 2017/01/10 19:16:27 tg Exp $ */
 /*
  *	Key-map handler
  *	Copyright
@@ -9,6 +9,7 @@
 #include "config.h"
 #include "types.h"
 
+#include <stdlib.h>
 #include <string.h>
 
 #include "macro.h"

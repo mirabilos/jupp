@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/uisrch.c,v 1.6 2010/04/08 15:31:05 tg Exp $ */
+/* $MirOS: contrib/code/jupp/uisrch.c,v 1.7 2017/01/10 19:16:28 tg Exp $ */
 /*
  *	Incremental search
  *	Copyright
@@ -8,6 +8,8 @@
  */
 #include "config.h"
 #include "types.h"
+
+#include <stdlib.h>
 
 #include "b.h"
 #include "bw.h"

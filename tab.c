@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tab.c,v 1.5 2016/10/08 14:58:46 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tab.c,v 1.6 2017/01/10 19:16:28 tg Exp $ */
 /*
  *	File selection menu
  *	Copyright
@@ -15,6 +15,8 @@
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
 #endif
+
+#include <stdlib.h>
 
 #include "b.h"
 #include "blocks.h"

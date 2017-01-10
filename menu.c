@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/menu.c,v 1.6 2013/08/19 18:25:44 tg Exp $ */
+/* $MirOS: contrib/code/jupp/menu.c,v 1.7 2017/01/10 19:16:27 tg Exp $ */
 /*
  *	Menu selection window
  *	Copyright
@@ -9,6 +9,7 @@
 #include "config.h"
 #include "types.h"
 
+#include <stdlib.h>
 #include <string.h>
 
 #include "scrn.h"

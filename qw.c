@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/qw.c,v 1.4 2009/10/18 14:52:56 tg Exp $ */
+/* $MirOS: contrib/code/jupp/qw.c,v 1.5 2017/01/10 19:16:27 tg Exp $ */
 /*
  *	Query windows
  *	Copyright
@@ -8,6 +8,8 @@
  */
 #include "config.h"
 #include "types.h"
+
+#include <stdlib.h>
 
 #include "utils.h"
 #include "vs.h"
