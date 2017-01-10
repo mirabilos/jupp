@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/usearch.c,v 1.6 2012/12/22 00:06:15 tg Exp $ */
+/* $MirOS: contrib/code/jupp/usearch.c,v 1.7 2017/01/10 02:13:17 tg Exp $ */
 /*
  *	Search & Replace system
  *	Copyright
@@ -753,7 +753,7 @@ static int dopfrepl(BW *bw, int c, SRCH *srch, int *notify)
 
 static int restrict_to_block(BW *bw, SRCH *srch)
 {
-	if (!srch->valid || !srch->block_restrict)
+	if (!srch->block_restrict)
 		return 0;
 	bw->cursor->xcol = piscol(bw->cursor);
 	if (srch->backwards)
