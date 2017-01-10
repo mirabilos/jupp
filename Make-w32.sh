@@ -1,5 +1,5 @@
 #!/bin/mksh
-# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.8 2017/01/10 18:07:48 tg Exp $
+# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.9 2017/01/10 18:11:51 tg Exp $
 
 extrawarnings="-Wall -Wextra"
 if [[ $1 = -g ]]; then
@@ -48,6 +48,7 @@ make AM_CFLAGS="$extrawarnings"
 if [[ $1 = -g ]]; then
 	# Debug build with no packaging
 	ln -s joe.exe jupp.exe
+	ln -s ../../{charmaps,syntax,jmacsrc,joerc,jpicorc,jstarrc,jupprc} .
 	exit 0
 fi
 cp charmaps/* syntax/* ../$jtop/
