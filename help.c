@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/help.c,v 1.8 2017/01/10 19:16:27 tg Exp $ */
+/* $MirOS: contrib/code/jupp/help.c,v 1.9 2017/01/10 23:50:43 tg Exp $ */
 /*
  *	Help system
  *	Copyright
@@ -261,12 +261,9 @@ void help_display(SCREEN *t)
 						case 0:	
 							--x;
 							continue;
-						default:
-							c = *str++;
 						}
-					} else {
-						c = *str++;
 					}
+					c = *str++;
 					outatr(locale_map, t->t, t->t->scrn + x + y * t->w, 
 					             t->t->attr + x + y * t->w, x, y, c, atr);
 				}
