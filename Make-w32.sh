@@ -1,11 +1,20 @@
 #!/bin/mksh
-# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.9 2017/01/10 18:11:51 tg Exp $
+# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.10 2017/01/10 18:45:38 tg Exp $
+
+nopkg=0
+debug=0
+contb=0
+while getopts "bgn" c; do
+	case $c {
+	(b)	nopkg=1 ;;
+	(g)	debug=1 ;;
+	(n)	contb=1 ;;
+	(*)	exit 1 ;;
+	}
+done
 
 extrawarnings="-Wall -Wextra"
-if [[ $1 = -g ]]; then
-	# Debug build and no packaging
-	extrawarnings="$extrawarnings -g3"
-fi
+(( debug )) && extrawarnings="$extrawarnings -g3"
 extrawarnings="$extrawarnings -Wno-unused-parameter"
 echo "N: gcc-3.4.4-999 does not support -Wno-missing-field-initializers"
 echo "N: expect warnings about those, they are known, do not report them"
@@ -29,12 +38,16 @@ jwin=$jwin${tmp#1#}
 jtop=jwin31$jwin
 typeset -u jWIN=$jwin
 
-rm -rf mkw32
-mkdir mkw32{,/{build,$jtop}}
+if (( contb )); then
+	[[ -s mkw32/build/Makefile ]]
+else
+	rm -rf mkw32
+	mkdir mkw32{,/{build,$jtop}}
+fi
 cd mkw32/build
 export CFLAGS='-Os -march=i486 -mtune=pentium-mmx'
 export CPPFLAGS='-DJUPPRC_BUILTIN_NAME=\"jupp32rc\"'
-mksh ../../configure \
+(( contb )) || mksh ../../configure \
     --prefix=c:/windows/system32 \
     --sysconfdir=c:/windows/system32 \
     --disable-dependency-tracking \
@@ -45,10 +58,9 @@ mksh ../../configure \
     --disable-termidx \
     --enable-win32reloc
 make AM_CFLAGS="$extrawarnings"
-if [[ $1 = -g ]]; then
-	# Debug build with no packaging
+if (( nopkg )); then
 	ln -s joe.exe jupp.exe
-	ln -s ../../{charmaps,syntax,jmacsrc,joerc,jpicorc,jstarrc,jupprc} .
+	ln -s ../../jupprc .
 	exit 0
 fi
 cp charmaps/* syntax/* ../$jtop/
