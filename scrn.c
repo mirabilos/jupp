@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.c,v 1.18 2017/01/10 20:14:37 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.c,v 1.19 2017/01/10 23:59:33 tg Exp $ */
 /*
  *	Device independant TTY interface for JOE
  *	Copyright
@@ -188,6 +188,16 @@ int set_attr(SCRN *t, int c)
 }
 
 /* Output character with attributes */
+
+void outatr_help(SCRN *t,int *scrn,int *attrf,int xx,int yy,int c,int a)
+{
+	/* kludge for help_display() only */
+	if (locale_map->type && !joe_isprint(locale_map,c)) {
+		a ^= xlata[c];
+		c = xlatc[c];
+	}
+	outatr(locale_map, t, scrn, attrf, xx, yy, c, a);
+}
 
 void outatr(struct charmap *map,SCRN *t,int *scrn,int *attrf,int xx,int yy,int c,int a)
 {
