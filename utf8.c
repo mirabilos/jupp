@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/utf8.c,v 1.13 2017/01/10 21:04:31 tg Exp $ */
+/* $MirOS: contrib/code/jupp/utf8.c,v 1.14 2017/01/10 21:22:31 tg Exp $ */
 /*
  *	UTF-8 Utilities
  *	Copyright
@@ -18,6 +18,10 @@
 #include <stdlib.h>
 #endif
 
+#ifdef __CYGWIN__
+#include <cygwin/version.h>
+#endif
+
 #ifdef __MirBSD__
 #include <sys/param.h>
 #endif
@@ -25,6 +29,12 @@
 #undef USE_LOCALE
 #if defined(HAVE_SETLOCALE) && defined(HAVE_NL_LANGINFO)
 #define USE_LOCALE
+#endif
+
+/* Cygwin before 1.7.2 did not have locale support */
+#if defined(CYGWIN_VERSION_API_MAJOR) && (CYGWIN_VERSION_API_MAJOR < 1) && \
+    defined(CYGWIN_VERSION_API_MINOR) && (CYGWIN_VERSION_API_MINOR < 222)
+#undef USE_LOCALE
 #endif
 
 /* OpenBSD, ekkoBSD and old MirOS do not have real locale support */
