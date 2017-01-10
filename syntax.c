@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/syntax.c,v 1.14 2017/01/10 19:27:36 tg Exp $ */
+/* $MirOS: contrib/code/jupp/syntax.c,v 1.15 2017/01/10 20:55:03 tg Exp $ */
 /*
  *	Syntax highlighting DFA interpreter
  *	Copyright
@@ -87,6 +87,7 @@ octetutf(P *p)
 {
 	int c;
 
+	utfstate.first = 0;
 	if (!(utfstate.start < utfstate.limit)) {
 		if ((c = pgetb(p)) == NO_MORE_DATA)
 			return (NO_MORE_DATA);
@@ -94,6 +95,7 @@ octetutf(P *p)
 		utfstate.limit = utf8_encode(utfstate.buf,
 		    to_uni(p->b->o.charmap, c));
 		utfstate.start = 0;
+		utfstate.first = 1;
 	}
 	return (utfstate.buf[utfstate.start++]);
 }
