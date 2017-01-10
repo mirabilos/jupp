@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.c,v 1.15 2017/01/10 18:47:28 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.c,v 1.16 2017/01/10 19:19:55 tg Exp $ */
 /*
  *	Device independant TTY interface for JOE
  *	Copyright
@@ -70,7 +70,7 @@ static const unsigned char xlatc[256] = {
 	112, 113, 114, 115, 116, 117, 118, 119,			/* 248 */
 	120, 121, 122, 123, 124, 125, 126,  63			/* 256 */
 };
-/* ... and here their attributes */ 
+/* ... and here their attributes */
 static const unsigned short xlata[256] = {
 	UNDERLINE, UNDERLINE, UNDERLINE, UNDERLINE,		/*   4 */
 	UNDERLINE, UNDERLINE, UNDERLINE, UNDERLINE,		/*   8 */
@@ -444,7 +444,7 @@ static void out(unsigned char *t, unsigned char c)
 
 SCRN *nopen(CAP *cap)
 {
-	SCRN *t = (SCRN *) joe_calloc(1, sizeof(SCRN));
+	SCRN *t = calloc(1, sizeof(SCRN));
 	int x, y;
 
 	ttopen();
@@ -472,8 +472,6 @@ SCRN *nopen(CAP *cap)
 		t->os = 1;
 	if (t->os || getflag(t->cap,US "ul"))
 		t->ul = 1;
-	else
-		t->ul = 0;
 
 	t->xn = getflag(t->cap,US "xn");
 	t->am = getflag(t->cap,US "am");
@@ -481,10 +479,7 @@ SCRN *nopen(CAP *cap)
 	t->cl = jgetstr(t->cap,US "cl");
 	t->cd = jgetstr(t->cap,US "cd");
 
-	if (notite) {
-		t->ti = NULL;
-		t->te = NULL;
-	} else {
+	if (!notite) {
 		t->ti = jgetstr(t->cap,US "ti");
 		t->te = jgetstr(t->cap,US "te");
 	}
@@ -520,11 +515,6 @@ SCRN *nopen(CAP *cap)
 	t->Sf = jgetstr(t->cap,US "AF");
 	if (!t->Sf) t->Sf = jgetstr(t->cap,US "Sf");
 
-	t->mb = NULL;
-	t->md = NULL;
-	t->mh = NULL;
-	t->mr = NULL;
-	t->avattr = 0;
 	if (!(t->me = jgetstr(t->cap,US "me")))
 		goto oops;
 	if ((t->mb = jgetstr(t->cap,US "mb")))
@@ -535,19 +525,19 @@ SCRN *nopen(CAP *cap)
 		t->avattr |= DIM;
 	if ((t->mr = jgetstr(t->cap,US "mr")))
 		t->avattr |= INVERSE;
-      oops:
+ oops:
 
 
 	if (assume_color) {
 		/* Install color support if it looks like an ansi terminal (it has bold which begins with ESC [) */
 #ifndef TERMINFO
-		if (!t->Sf && t->md && t->md[0]=='\\' && t->md[1]=='E' && t->md[2]=='[') { 
+		if (!t->Sf && t->md && t->md[0]=='\\' && t->md[1]=='E' && t->md[2]=='[') {
 			t->ut = 1;
 			t->Sf =US "\\E[3%dm";
 			t->Sb =US "\\E[4%dm";
 		}
 #else
-		if (!t->Sf && t->md && t->md[0]=='\033' && t->md[1]=='[') { 
+		if (!t->Sf && t->md && t->md[0]=='\033' && t->md[1]=='[') {
 			t->ut = 1;
 			t->Sf =US "\033[3%p1%dm";
 			t->Sb =US "\033[4%p1%dm";
@@ -555,8 +545,6 @@ SCRN *nopen(CAP *cap)
 #endif
 	}
 
-	t->so = NULL;
-	t->se = NULL;
 	if (getnum(t->cap,US "sg") <= 0 && !t->mr && jgetstr(t->cap,US "se")) {
 		if ((t->so = jgetstr(t->cap,US "so")) != NULL)
 			t->avattr |= INVERSE;
@@ -565,8 +553,6 @@ SCRN *nopen(CAP *cap)
 	if (getflag(t->cap,US "xs") || getflag(t->cap,US "xt"))
 		t->so = NULL;
 
-	t->us = NULL;
-	t->ue = NULL;
 	if (getnum(t->cap,US "ug") <= 0 && jgetstr(t->cap,US "ue")) {
 		if ((t->us = jgetstr(t->cap,US "us")) != NULL)
 			t->avattr |= UNDERLINE;
@@ -608,20 +594,8 @@ SCRN *nopen(CAP *cap)
 		t->IC = jgetstr(t->cap,US "IC");
 		t->ip = jgetstr(t->cap,US "ip");
 		t->mi = getflag(t->cap,US "mi");
-	} else {
-		t->dm = NULL;
-		t->dc = NULL;
-		t->DC = NULL;
-		t->ed = NULL;
-		t->im = NULL;
-		t->ic = NULL;
-		t->IC = NULL;
-		t->ip = NULL;
-		t->ei = NULL;
-		t->mi = 1;
 	}
 
-	t->bs = NULL;
 	if (jgetstr(t->cap,US "bc"))
 		t->bs = jgetstr(t->cap,US "bc");
 	else if (jgetstr(t->cap,US "le"))
@@ -651,12 +625,7 @@ SCRN *nopen(CAP *cap)
 		if (getflag(t->cap,US "pt"))
 			t->ta =US "\11";
 	t->bt = jgetstr(t->cap,US "bt");
-	if (getflag(t->cap,US "xt")) {
-		t->ta = NULL;
-		t->bt = NULL;
-	}
-
-	if (!usetabs) {
+	if (getflag(t->cap,US "xt") || !usetabs) {
 		t->ta = NULL;
 		t->bt = NULL;
 	}
@@ -708,22 +677,17 @@ SCRN *nopen(CAP *cap)
 #endif
 	fprintf(stderr,"Sorry, your terminal can't do absolute cursor positioning.\nIt's broken\n");
 	return NULL;
-      ok:
+ ok:
 
 /* Determine if we can scroll */
 	if (((t->sr || t->SR) && (t->sf || t->SF) && t->cs) || ((t->al || t->AL) && (t->dl || t->DL)))
 		t->scroll = 1;
-	else {
-		t->scroll = 0;
-		if (baud < 38400)
-			mid = 1;
-	}
+	else if (baud < 38400)
+		mid = 1;
 
 /* Determine if we can ins/del within lines */
 	if ((t->im || t->ic || t->IC) && (t->dc || t->DC))
 		t->insdel = 1;
-	else
-		t->insdel = 0;
 
 /* Adjust for high baud rates */
 	if (baud >= 38400) {
@@ -738,15 +702,7 @@ SCRN *nopen(CAP *cap)
 		texec(t->cap, t->cl, 1, 0, 0, 0, 0);
 
 /* Initialize variable screen size dependant vars */
-	t->scrn = NULL;
-	t->attr = NULL;
-	t->sary = NULL;
-	t->updtab = NULL;
-	t->syntab = NULL;
-	t->compose = NULL;
-	t->ofst = NULL;
-	t->ary = NULL;
-	t->htab = (struct hentry *) joe_malloc(256 * sizeof(struct hentry));
+	t->htab = calloc(256, sizeof(struct hentry));
 
 	nresize(t, t->co, t->li);
 
@@ -1081,7 +1037,8 @@ static void cposs(register SCRN *t, register int x, register int y)
 		texec(t->cap, t->ho, 1, 0, 0, 0, 0);
 		t->x = 0;
 		t->y = hy;
-doch:
+ doch:
+		/* FALLTHROUGH */
 	case 4:
 		texec(t->cap, t->ch, 1, x, 0, 0, 0);
 		t->x = x;
@@ -1099,7 +1056,8 @@ doch:
 	case 8:
 		texec(t->cap, t->cr, 1, 0, 0, 0, 0);
 		t->x = 0;
-docv:
+ docv:
+		/* FALLTHROUGH */
 	case 5:
 		texec(t->cap, t->cv, 1, y, 0, 0, 0);
 		t->y = y;
@@ -1513,7 +1471,7 @@ static void doupscrl(SCRN *t, int top, int bot, int amnt)
 	msetI(t->syntab + top, -1, bot - top);
 	return;
 
-      done:
+ done:
 	mmove(t->scrn + top * t->co, t->scrn + (top + amnt) * t->co, (bot - top - amnt) * t->co * sizeof(int));
 	mmove(t->attr + top * t->co, t->attr + (top + amnt) * t->co, (bot - top - amnt) * t->co * sizeof(int));
 
@@ -1584,7 +1542,7 @@ static void dodnscrl(SCRN *t, int top, int bot, int amnt)
 	msetI(t->updtab + top, 1, bot - top);
 	msetI(t->syntab + top, -1, bot - top);
 	return;
-      done:
+ done:
 	mmove(t->scrn + (top + amnt) * t->co, t->scrn + top * t->co, (bot - top - amnt) * t->co * sizeof(int));
 	mmove(t->attr + (top + amnt) * t->co, t->attr + top * t->co, (bot - top - amnt) * t->co * sizeof(int));
 
