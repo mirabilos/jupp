@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/utf8.c,v 1.17 2017/01/10 23:20:48 tg Exp $ */
+/* $MirOS: contrib/code/jupp/utf8.c,v 1.18 2017/01/10 23:21:56 tg Exp $ */
 /*
  *	UTF-8 Utilities
  *	Copyright
@@ -263,6 +263,7 @@ joe_locale(void)
 			locale_map = find_charmap(buf);
 		}
 #endif
+	}
 #endif
 
 #ifdef USE_LOCALE
