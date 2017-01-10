@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/syntax.c,v 1.13 2016/10/29 23:44:45 tg Exp $ */
+/* $MirOS: contrib/code/jupp/syntax.c,v 1.14 2017/01/10 19:27:36 tg Exp $ */
 /*
  *	Syntax highlighting DFA interpreter
  *	Copyright
@@ -228,22 +228,6 @@ static struct high_state *find_state(struct high_syntax *syntax, const unsigned 
 	return state;
 }
 
-/* Create empty command */
-
-static struct high_cmd *
-mkcmd(void)
-{
-	struct high_cmd *cmd = malloc(sizeof(struct high_cmd));
-	cmd->noeat = 0;
-	cmd->recolor = 0;
-	cmd->start_buffering = 0;
-	cmd->stop_buffering = 0;
-	cmd->new_state = 0;
-	cmd->keywords = 0;
-	cmd->ignore = 0;
-	return cmd;
-}
-
 /* Load syntax file */
 
 struct high_syntax *syntax_list;
@@ -291,19 +275,12 @@ struct high_syntax *load_dfa(const unsigned char *name)
 		return 0;
 
 	/* Create new one */
-	syntax = malloc(sizeof(struct high_syntax));
+	syntax = calloc(1, sizeof(struct high_syntax));
 	syntax->name = (const unsigned char *)strdup((const char *)name);
 	syntax->next = syntax_list;
 	syntax_list = syntax;
-	syntax->nstates = 0;
-	syntax->color = 0;
 	syntax->states = malloc(sizeof(struct high_state *)*(syntax->szstates=64));
 	syntax->sync_lines = 120;
-	syntax->default_cmd.noeat = 0;
-	syntax->default_cmd.recolor = 0;
-	syntax->default_cmd.start_buffering = 0;
-	syntax->default_cmd.new_state = 0;
-	syntax->default_cmd.keywords = 0;
 
 	memset(clist, 0, sizeof(clist));
 
@@ -343,9 +320,8 @@ struct high_syntax *load_dfa(const unsigned char *name)
 						break;
 				/* If it doesn't exist, create it */
 				if(!color) {
-					color = malloc(sizeof(struct high_color));
+					color = calloc(1, sizeof(struct high_color));
 					color->name = (unsigned char *)strdup((char *)bf);
-					color->color = 0;
 					color->next = syntax->color;
 					syntax->color = color;
 				} else {
@@ -390,7 +366,7 @@ struct high_syntax *load_dfa(const unsigned char *name)
 						}
 					}
 					/* Create command */
-					cmd = mkcmd();
+					cmd = calloc(1, sizeof(struct high_cmd));
 					parse_ws(&p,'#');
 					if(!parse_ident(&p,bf,255)) {
 						int z;
@@ -425,7 +401,7 @@ struct high_syntax *load_dfa(const unsigned char *name)
 											if (cmd->ignore)
 												joe_strtolower(bf);
 											if(!parse_ident(&p,bf1,255)) {
-												struct high_cmd *kw_cmd=mkcmd();
+												struct high_cmd *kw_cmd = calloc(1, sizeof(struct high_cmd));
 												kw_cmd->noeat=1;
 												kw_cmd->new_state = find_state(syntax,bf1);
 												if(!cmd->keywords)

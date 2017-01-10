@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.c,v 1.16 2017/01/10 19:19:55 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.c,v 1.17 2017/01/10 19:27:35 tg Exp $ */
 /*
  *	Device independant TTY interface for JOE
  *	Copyright
@@ -735,14 +735,14 @@ void nresize(SCRN *t, int w, int h)
 		joe_free(t->ofst);
 	if (t->ary)
 		joe_free(t->ary);
-	t->scrn = (int *) joe_malloc(t->li * t->co * sizeof(int));
-	t->attr = (int *) joe_malloc(t->li * t->co * sizeof(int));
-	t->sary = (int *) joe_calloc(t->li, sizeof(int));
-	t->updtab = (int *) joe_malloc(t->li * sizeof(int));
-	t->syntab = (int *) joe_malloc(t->li * sizeof(int));
-	t->compose = (int *) joe_malloc(t->co * sizeof(int));
-	t->ofst = (int *) joe_malloc(t->co * sizeof(int));
-	t->ary = (struct hentry *) joe_malloc(t->co * sizeof(struct hentry));
+	t->scrn = calloc(t->li * t->co, sizeof(int));
+	t->attr = calloc(t->li * t->co, sizeof(int));
+	t->sary = calloc(t->li, sizeof(int));
+	t->updtab = calloc(t->li, sizeof(int));
+	t->syntab = calloc(t->li, sizeof(int));
+	t->compose = calloc(t->co, sizeof(int));
+	t->ofst = calloc(t->co, sizeof(int));
+	t->ary = calloc(t->co, sizeof(struct hentry));
 
 	nredraw(t);
 }
