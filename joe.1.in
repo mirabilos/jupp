@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.19 2016/10/30 03:46:11 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.20 2017/01/10 23:07:58 tg Exp $
 .\"-
 .TH JOE 1
 .SH Name
@@ -197,9 +197,7 @@ BBS editor.
 Each of these options may be specified in the joerc file as well.  In
 addition, the NOXON, BAUD, LINES, COLUMNS and DOPADDING options may be
 specified with environment variables.
-
-The JOETERM environment variable may be set to override the regular TERM
-environment variable for specifying your terminal type.
+See the section \fBEnvironment variables\fR below.
 
 The following options may be specified before each filename on the command
 line:
@@ -761,6 +759,23 @@ set this with the \fBstty rows nn cols nn\fR command, or by setting the
 
 The \fBxterm\-xfree86\fR terminal allows automatic entering and leaving
 of the bracketed paste mode.
+
+The \fBJOETERM\fR environment variable may be set to override the regular
+\fBTERM\fR environment variable for specifying your terminal type.
+
+JOE uses two character maps for its operation: the terminal I/O character
+map, which determines how characters are sent to the terminal and whether
+the %a/%A message specifiers use Unicode, and the file encoding, which can
+be specified per file using the \fB\-encoding\fR option and changed with
+the \fB^T E\fR command, and which defaults to the terminal I/O character
+map, which, in turn, is determined from the current locale, if the system
+supports such, otherwise the \fBLC_ALL\fR, \fBLC_CTYPE\fR and \fBLANG\fR
+environment variables (if they contain a period, only the part after it
+and before an optional "at sign" is used); on cygwin32 before 1.7.2, the
+codepage is used instead if the POSIX locale environment variables are
+empty; the environment variable \fBJOECHARMAP\fR can be used to manually
+force one overriding all methods described above, and can be used together
+with \fB\-encoding\fR to specify a different default file character map.
 
 JOE normally expects that flow control between the computer and your
 terminal to use ^S/^Q handshaking (I.E., if the computer is sending

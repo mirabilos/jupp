@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/utf8.c,v 1.15 2017/01/10 22:38:34 tg Exp $ */
+/* $MirOS: contrib/code/jupp/utf8.c,v 1.16 2017/01/10 23:07:58 tg Exp $ */
 /*
  *	UTF-8 Utilities
  *	Copyright
@@ -233,60 +233,55 @@ int utf8_decode_fwrd(unsigned char **p,int *plen)
 static unsigned int cygwin32_get_cp(void);
 #endif
 
-unsigned char *codeset;	/* Codeset of terminal */
-
 struct charmap *locale_map;
 			/* Character map of terminal */
 struct charmap *utf8_map;
 			/* Handy character map for UTF-8 */
 
-/*
- * XXX this is stupid, the console encoding should be a
- * XXX parameter, not forcibly determined by the current
- * XXX locale, since we use JOE locales ipv POSIX locales
- * XXX and charmaps anyway so the sets of supported ones
- * XXX do not completely match
- */
 void
 joe_locale(void)
 {
+	unsigned char *s;
+
+	s=(unsigned char *)getenv("JOECHARMAP");
+	locale_map = find_charmap(s);
 #if !defined(USE_LOCALE)
-	unsigned char *s, *t;
-
-	s=(unsigned char *)getenv("LC_ALL");
-	if (!s) {
-		s=(unsigned char *)getenv("LC_CTYPE");
+	if (!locale_map) {
+		s=(unsigned char *)getenv("LC_ALL");
 		if (!s) {
-			s=(unsigned char *)getenv("LANG");
+			s=(unsigned char *)getenv("LC_CTYPE");
+			if (!s) {
+				s=(unsigned char *)getenv("LANG");
+			}
 		}
-	}
-	locale_map = NULL;
 #ifdef USE_CODEPAGE
-	/* if LC_* are unset or just "C" allow for codepage, XXX see above */
-	if (!s || (joe_map_up(s[0]) == 'C' && !s[1])) {
-		char buf[16];
+		/* if LC_* are unset, use codepage */
+		if (!s) {
+			char buf[16];
 
-		joe_snprintf_1(buf, sizeof(buf), "cp%u", cygwin32_get_cp());
-		locale_map = find_charmap(buf);
-	}
+			joe_snprintf_1(buf, sizeof(buf), "cp%u", cygwin32_get_cp());
+			locale_map = find_charmap(buf);
+		}
 #endif
 #endif
 
 #ifdef USE_LOCALE
-	setlocale(LC_ALL,"");
-	codeset = (unsigned char *)strdup(nl_langinfo(CODESET));
+	if (!locale_map) {
+		setlocale(LC_ALL,"");
+		s = (unsigned char *)strdup(nl_langinfo(CODESET));
 
-	locale_map = find_charmap(codeset);
+		locale_map = find_charmap(s);
+	}
 #else
-	if (locale_map == NULL && s != NULL) {
-		if ((t = strrchr(s, '.')) != NULL) {
-			unsigned char *tt;
+	if (!locale_map && s) {
+		unsigned char *t, *tt;
 
+		if ((t = strrchr(s, '.')) != NULL) {
 			if ((tt = strchr(++t, '@')) != NULL)
 				*tt = '\0';
 			locale_map = find_charmap(t);
 		}
-		if (locale_map == NULL)
+		if (!locale_map)
 			locale_map = find_charmap(s);
 	}
 #endif
