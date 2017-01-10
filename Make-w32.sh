@@ -1,5 +1,5 @@
 #!/bin/mksh
-# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.10 2017/01/10 18:45:38 tg Exp $
+# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.11 2017/01/10 20:12:03 tg Exp $
 
 nopkg=0
 debug=0
@@ -59,8 +59,8 @@ export CPPFLAGS='-DJUPPRC_BUILTIN_NAME=\"jupp32rc\"'
     --enable-win32reloc
 make AM_CFLAGS="$extrawarnings"
 if (( nopkg )); then
-	ln -s joe.exe jupp.exe
-	ln -s ../../jupprc .
+	ln -sf joe.exe jupp.exe
+	ln -sf ../../jupprc .
 	exit 0
 fi
 cp charmaps/* syntax/* ../$jtop/
