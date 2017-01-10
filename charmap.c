@@ -1,7 +1,7 @@
 #if 0
 .if "0" == "1"
 #endif
-/* $MirOS: contrib/code/jupp/charmap.c,v 1.17 2016/10/30 03:49:04 tg Exp $ */
+/* $MirOS: contrib/code/jupp/charmap.c,v 1.18 2017/01/10 22:38:33 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 conversion utilities
  *	Copyright
@@ -88,7 +88,7 @@ static const struct {
 	{ US "cyrillic", US "iso-8859-5" },
 	{ US "arabic", US "iso-8859-6" },
 	{ US "greek", US "iso-8859-7" },
-	{ US "hebrew", US "iso-8859-8" }, /* cp1255 on windows machines? */
+	{ US "hebrew", US "iso-8859-8" },
 	{ US "latin5", US "iso-8859-9" },
 	{ US "turkish", US "iso-8859-9" },
 	{ US "latin6", US "iso-8859-10" },
@@ -97,6 +97,21 @@ static const struct {
 	{ US "latin7", US "iso-8859-13" },
 	{ US "latin8", US "iso-8859-14" },
 	{ US "latin9", US "iso-8859-15" },
+	{ US "cp20127", US "ascii" },
+	{ US "cp20866", US "koi8-r" },
+	{ US "cp21866", US "koi8-u" },
+	{ US "cp28591", US "iso-8859-1" },
+	{ US "cp28592", US "iso-8859-2" },
+	{ US "cp28593", US "iso-8859-3" },
+	{ US "cp28594", US "iso-8859-4" },
+	{ US "cp28595", US "iso-8859-5" },
+	{ US "cp28596", US "iso-8859-6" },
+	{ US "cp28597", US "iso-8859-7" },
+	{ US "cp28598", US "iso-8859-8" },
+	{ US "cp28599", US "iso-8859-9" },
+	{ US "cp28603", US "iso-8859-13" },
+	{ US "cp28605", US "iso-8859-15" },
+	{ US "cp65001", US "utf-8" },
 	{ 0, 0 }
 };
 

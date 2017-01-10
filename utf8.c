@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/utf8.c,v 1.14 2017/01/10 21:22:31 tg Exp $ */
+/* $MirOS: contrib/code/jupp/utf8.c,v 1.15 2017/01/10 22:38:34 tg Exp $ */
 /*
  *	UTF-8 Utilities
  *	Copyright
@@ -26,6 +26,7 @@
 #include <sys/param.h>
 #endif
 
+#undef USE_CODEPAGE
 #undef USE_LOCALE
 #if defined(HAVE_SETLOCALE) && defined(HAVE_NL_LANGINFO)
 #define USE_LOCALE
@@ -34,6 +35,7 @@
 /* Cygwin before 1.7.2 did not have locale support */
 #if defined(CYGWIN_VERSION_API_MAJOR) && (CYGWIN_VERSION_API_MAJOR < 1) && \
     defined(CYGWIN_VERSION_API_MINOR) && (CYGWIN_VERSION_API_MINOR < 222)
+#define USE_CODEPAGE
 #undef USE_LOCALE
 #endif
 
@@ -53,6 +55,10 @@
 
 #ifndef CODESET
 #undef USE_LOCALE
+#endif
+
+#ifdef USE_LOCALE
+#undef USE_CODEPAGE
 #endif
 
 #include "rc.h"
@@ -223,6 +229,10 @@ int utf8_decode_fwrd(unsigned char **p,int *plen)
 
 /* Initialize locale for JOE */
 
+#ifdef USE_CODEPAGE
+static unsigned int cygwin32_get_cp(void);
+#endif
+
 unsigned char *codeset;	/* Codeset of terminal */
 
 struct charmap *locale_map;
@@ -230,12 +240,18 @@ struct charmap *locale_map;
 struct charmap *utf8_map;
 			/* Handy character map for UTF-8 */
 
+/*
+ * XXX this is stupid, the console encoding should be a
+ * XXX parameter, not forcibly determined by the current
+ * XXX locale, since we use JOE locales ipv POSIX locales
+ * XXX and charmaps anyway so the sets of supported ones
+ * XXX do not completely match
+ */
 void
 joe_locale(void)
 {
 #if !defined(USE_LOCALE)
 	unsigned char *s, *t;
-
 
 	s=(unsigned char *)getenv("LC_ALL");
 	if (!s) {
@@ -244,6 +260,16 @@ joe_locale(void)
 			s=(unsigned char *)getenv("LANG");
 		}
 	}
+	locale_map = NULL;
+#ifdef USE_CODEPAGE
+	/* if LC_* are unset or just "C" allow for codepage, XXX see above */
+	if (!s || (joe_map_up(s[0]) == 'C' && !s[1])) {
+		char buf[16];
+
+		joe_snprintf_1(buf, sizeof(buf), "cp%u", cygwin32_get_cp());
+		locale_map = find_charmap(buf);
+	}
+#endif
 #endif
 
 #ifdef USE_LOCALE
@@ -252,9 +278,7 @@ joe_locale(void)
 
 	locale_map = find_charmap(codeset);
 #else
-	if (s == NULL) {
-		locale_map = NULL;
-	} else {
+	if (locale_map == NULL && s != NULL) {
 		if ((t = strrchr(s, '.')) != NULL) {
 			unsigned char *tt;
 
@@ -299,3 +323,17 @@ int from_utf8(struct charmap *map,unsigned char *s)
 	else
 		return c;
 }
+
+#ifdef USE_CODEPAGE
+#include <windows.h>
+
+/*
+ * Mirror get_cp() in winsup/cygwin/miscfuncs.cc as used by
+ * dev_console::str_to_con() in winsup/cygwin/fhandler_console.cc
+ */
+static unsigned int
+cygwin32_get_cp(void)
+{
+	return (AreFileApisANSI() ? GetACP() : GetOEMCP());
+}
+#endif
