@@ -1,5 +1,5 @@
 #!/bin/mksh
-# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.11 2017/01/10 20:12:03 tg Exp $
+# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.12 2017/01/10 20:23:23 tg Exp $
 
 nopkg=0
 debug=0
@@ -59,7 +59,7 @@ export CPPFLAGS='-DJUPPRC_BUILTIN_NAME=\"jupp32rc\"'
     --enable-win32reloc
 make AM_CFLAGS="$extrawarnings"
 if (( nopkg )); then
-	ln -sf joe.exe jupp.exe
+	ln -f joe.exe jupp.exe
 	ln -sf ../../jupprc .
 	exit 0
 fi
