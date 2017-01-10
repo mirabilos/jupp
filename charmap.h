@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/charmap.h,v 1.5 2014/06/26 17:51:14 tg Exp $ */
+/* $MirOS: contrib/code/jupp/charmap.h,v 1.6 2017/01/10 23:10:47 tg Exp $ */
 /*
  *	Character sets
  *	Copyright
@@ -53,7 +53,7 @@ struct charmap {
 
 	struct pair from_map[256 + 2];	/* Convert from unicode to byte */
 
-	int from_size;			/* No. paris in from_map */
+	int from_size;			/* No. pairs in from_map */
 
 	unsigned char print_map[32];	/* Bit map of printable characters */
 	unsigned char alpha__map[32];	/* Bit map of alphabetic characters and _ */
