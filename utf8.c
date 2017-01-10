@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/utf8.c,v 1.12 2014/10/23 17:10:45 tg Exp $ */
+/* $MirOS: contrib/code/jupp/utf8.c,v 1.13 2017/01/10 21:04:31 tg Exp $ */
 /*
  *	UTF-8 Utilities
  *	Copyright
@@ -245,8 +245,13 @@ joe_locale(void)
 	if (s == NULL) {
 		locale_map = NULL;
 	} else {
-		if ((t = strrchr(s, '.')) != NULL)
-			locale_map = find_charmap(++t);
+		if ((t = strrchr(s, '.')) != NULL) {
+			unsigned char *tt;
+
+			if ((tt = strchr(++t, '@')) != NULL)
+				*tt = '\0';
+			locale_map = find_charmap(t);
+		}
 		if (locale_map == NULL)
 			locale_map = find_charmap(s);
 	}
