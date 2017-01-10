@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.c,v 1.14 2017/01/10 17:59:17 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.c,v 1.15 2017/01/10 18:47:28 tg Exp $ */
 /*
  *	Device independant TTY interface for JOE
  *	Copyright
@@ -444,7 +444,7 @@ static void out(unsigned char *t, unsigned char c)
 
 SCRN *nopen(CAP *cap)
 {
-	SCRN *t = (SCRN *) joe_malloc(sizeof(SCRN));
+	SCRN *t = (SCRN *) joe_calloc(1, sizeof(SCRN));
 	int x, y;
 
 	ttopen();
