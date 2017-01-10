@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.c,v 1.13 2014/07/25 20:43:01 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.c,v 1.14 2017/01/10 17:59:17 tg Exp $ */
 /*
  *	Device independant TTY interface for JOE
  *	Copyright
@@ -33,7 +33,7 @@ int assume_color = 0;
 
 /* How to display characters (especially the control ones) */
 /* here are characters ... */
-unsigned char xlatc[256] = {
+static const unsigned char xlatc[256] = {
 	 64,  65,  66,  67,  68,  69,  70,  71,			/*   8 */
 	 72,  73,  74,  75,  76,  77,  78,  79,			/*  16 */
 	 80,  81,  82,  83,  84,  85,  86,  87,			/*  24 */
@@ -71,7 +71,7 @@ unsigned char xlatc[256] = {
 	120, 121, 122, 123, 124, 125, 126,  63			/* 256 */
 };
 /* ... and here their attributes */ 
-unsigned xlata[256] = {
+static const unsigned short xlata[256] = {
 	UNDERLINE, UNDERLINE, UNDERLINE, UNDERLINE,		/*   4 */
 	UNDERLINE, UNDERLINE, UNDERLINE, UNDERLINE,		/*   8 */
 	UNDERLINE, UNDERLINE, UNDERLINE, UNDERLINE,		/*  12 */
