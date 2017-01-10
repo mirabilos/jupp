@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/utils.c,v 1.3 2008/05/13 13:08:31 tg Exp $ */
+/* $MirOS: contrib/code/jupp/utils.c,v 1.4 2017/01/10 19:05:17 tg Exp $ */
 /*
  *	Various utilities
  *	Copyright
@@ -23,23 +23,6 @@
 #include "blocks.h"
 #include "utils.h"
 
-
-#if 0
-int joe_ispunct(int wide,struct charmap *map,int c)
-{
-	if (joe_isspace(c))
-		return 0;
-
-	if (c=='_')
-		return 1;
-
-	if (isalnum_(wide,map,c))
-		return 0;
-
-	return joe_isprint(wide,map,c);
-}
-#endif
-
 /*
  * return minimum/maximum of two numbers
  */
@@ -63,48 +46,6 @@ signed long int long_min(signed long int a, signed long int b)
 	return a < b ? a : b;
 }
 
-#if 0
-/* 
- * Characters which are considered as word characters 
- * 	_ is considered as word character because is often used 
- *	in the names of C/C++ functions
- */
-int isalnum_(int wide,struct charmap *map,int c)
-{
-	/* Fast... */
-	if (c>='0' && c<='9' ||
-	    c>='a' && c<='z' ||
-	    c>='A' && c<='Z' ||
-	    c=='_')
-	  return 1;
-	else if(c<128)
-	  return 0;
-
-	/* Slow... */
-	if (wide)
-		return joe_iswalpha(c);
-	else
-		return joe_iswalpha(to_uni(map,c));
-}
-
-int isalpha_(int wide,struct charmap *map,int c)
-{
-	/* Fast... */
-	if (c>='a' && c<='z' ||
-	    c>='A' && c<='Z' ||
-	    c=='_')
-	  return 1;
-	else if(c<128)
-	  return 0;
-
-	/* Slow... */
-	if (wide)
-		return joe_iswalpha(c);
-	else
-		return joe_iswalpha(to_uni(map,c));
-}
-#endif
-
 /* Versions of 'read' and 'write' which automatically retry when interrupted */
 ssize_t joe_read(int fd, void *buf, size_t size)
 {
@@ -125,28 +66,6 @@ ssize_t joe_write(int fd, void *buf, size_t size)
 	} while (rt < 0 && errno == EINTR);
 	return rt;
 }
-
-/* wrappers to *alloc routines */
-void *joe_malloc(size_t size)
-{
-	return malloc(size);
-}
-
-void *joe_calloc(size_t nmemb, size_t size)
-{
-	return calloc(nmemb, size);
-}
-
-void *joe_realloc(void *ptr, size_t size)
-{
-	return realloc(ptr, size);
-}
-
-void joe_free(void *ptr)
-{
-	free(ptr);
-}
-
 
 #ifndef SIG_ERR
 #define SIG_ERR ((sighandler_t) -1)

@@ -1,7 +1,7 @@
-/* $MirOS: contrib/code/jupp/utils.h,v 1.3 2008/05/13 13:08:31 tg Exp $ */
+/* $MirOS: contrib/code/jupp/utils.h,v 1.4 2017/01/10 19:05:17 tg Exp $ */
 /*
  *	Various utilities
- *	
+ *
  *	Copyright
  *		(C) 1992 Joseph H. Allen
  *		(C) 2001 Marek 'Marx' Grac
@@ -21,7 +21,7 @@
 #endif
 
 /*
- * Functions which return minimum/maximum of two numbers  
+ * Functions which return minimum/maximum of two numbers
  */
 unsigned int uns_min PARAMS((unsigned int a, unsigned int b));
 signed int int_min PARAMS((signed int a, int signed b));
@@ -33,10 +33,10 @@ ssize_t joe_read PARAMS((int fd, void *buf, size_t siz));
 ssize_t joe_write PARAMS((int fd, void *buf, size_t siz));
 
 /* wrappers to *alloc routines */
-void *joe_malloc PARAMS((size_t size));
-void *joe_calloc PARAMS((size_t nmemb, size_t size));
-void *joe_realloc PARAMS((void *ptr, size_t size));
-void joe_free PARAMS((void *ptr));
+#define joe_malloc malloc
+#define joe_calloc calloc
+#define joe_realloc realloc
+#define joe_free free
 
 #ifndef HAVE_SIGHANDLER_T
 typedef RETSIGTYPE (*sighandler_t)(int);
