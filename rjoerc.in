@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/rjoerc.in,v 1.22 2016/10/08 17:44:19 tg Exp $
+ $MirOS: contrib/code/jupp/rjoerc.in,v 1.23 2017/01/11 00:41:18 tg Exp $
 
                          Initialization file for JOE
                             Restricted access Joe
@@ -679,8 +679,8 @@
 \i   Help Screen    turn off with ^J     prev. screen ^[,    \uCharacter Map\u       \i
 \i \i Dec Hex  \u 0123 4567  89AB CDEF    0123 4567  89AB CDEF \u  Hex Dec            \i \i
 \i \i         |                                              |                    \i \i
-\i \i   0  00 | \u@ABC\u \uDEFG\u  \uHIJK\u \uLMNO\u    \i\u@ABC\u\i \i\uDEFG\u\i  \i\uHIJK\u\i \i\uLMNO\u\i | 80  128            \i \i
-\i \i  16  10 | \uPQRS\u \uTUVW\u  \uXYZ[\u \u\\]^_\u    \i\uPQRS\u\i \i\uTUVW\u\i  \i\uXYZ[\u\i \i\u\\]^_\u\i | 90  144            \i \i
+\i \i   0  00 | \u@ABC\u \uDEFG\u  \uHIJK\u \uLMNO\u    ÄÅÇÉ ÑÖÜá  àâäã åçéè | 80  128            \i \i
+\i \i  16  10 | \uPQRS\u \uTUVW\u  \uXYZ[\u \u\\]^_\u    êëíì îïñó  òôöõ úùûü | 90  144            \i \i
 \i \i  32  20 |  !"# $%&'  ()*+ ,-./    †°¢£ §•¶ß  ®©™´ ¨≠ÆØ | A0  160            \i \i
 \i \i  48  30 | 0123 4567  89:; <=>?    ∞±≤≥ ¥µ∂∑  ∏π∫ª ºΩæø | B0  176            \i \i
 \i \i  64  40 | @ABC DEFG  HIJK LMNO    ¿¡¬√ ƒ≈∆«  »… À ÃÕŒœ | C0  192            \i \i
