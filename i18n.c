@@ -1,7 +1,7 @@
 #if 0
 .if "0" == "1"
 #endif
-/* $MirOS: contrib/code/jupp/i18n.c,v 1.15 2016/09/01 12:54:41 tg Exp $ */
+/* $MirOS: contrib/code/jupp/i18n.c,v 1.16 2017/01/11 00:34:03 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 functions for JOE
  *	Copyright
@@ -3748,7 +3748,13 @@ static const struct mb_ucsrange data_wctype_print[] = {
 	{ 0x1FDD, 0x1FEF },
 	{ 0x1FF2, 0x1FF4 },
 	{ 0x1FF6, 0x1FFE },
+#ifdef __CYGWIN__
+	/* WTF?! https://blogs.msdn.microsoft.com/oldnewthing/20070104-12/?p=28513 */
+	{ 0x2000, 0x2021 },
+	{ 0x2023, 0x2064 },
+#else
 	{ 0x2000, 0x2064 },
+#endif
 	{ 0x2066, 0x2071 },
 	{ 0x2074, 0x208E },
 	{ 0x2090, 0x209C },
