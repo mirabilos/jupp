@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/utf8.c,v 1.18 2017/01/10 23:21:56 tg Exp $ */
+/* $MirOS: contrib/code/jupp/utf8.c,v 1.19 2017/01/11 21:48:58 tg Exp $ */
 /*
  *	UTF-8 Utilities
  *	Copyright
@@ -230,7 +230,7 @@ int utf8_decode_fwrd(unsigned char **p,int *plen)
 /* Initialize locale for JOE */
 
 #ifdef USE_CODEPAGE
-static unsigned int cygwin32_get_cp(void);
+extern unsigned int cygwin32_get_cp(void);
 #endif
 
 struct charmap *locale_map;
@@ -319,17 +319,3 @@ int from_utf8(struct charmap *map,unsigned char *s)
 	else
 		return c;
 }
-
-#ifdef USE_CODEPAGE
-#include <windows.h>
-
-/*
- * Mirror get_cp() in winsup/cygwin/miscfuncs.cc as used by
- * dev_console::str_to_con() in winsup/cygwin/fhandler_console.cc
- */
-static unsigned int
-cygwin32_get_cp(void)
-{
-	return (AreFileApisANSI() ? GetACP() : GetOEMCP());
-}
-#endif

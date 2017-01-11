@@ -1,7 +1,7 @@
-/* $MirOS: contrib/code/jupp/win32.c,v 1.2 2016/10/30 02:38:35 tg Exp $ */
+/* $MirOS: contrib/code/jupp/win32.c,v 1.3 2017/01/11 21:48:58 tg Exp $ */
 
 /*-
- * Copyright (c) 2016
+ * Copyright (c) 2016, 2017
  *	mirabilos <m@mirbsd.org>
  *
  * Provided that these terms and disclaimer and all copyright notices
@@ -18,13 +18,18 @@
  * of dealing in the work, even if advised of the possibility of such
  * damage or existence of a defect, except proven that it results out
  * of said person's immediate fault when using the work as intended.
- *-
+ */
+
+#ifdef __CYGWIN__
+
+#include <cygwin/version.h>
+#include <windows.h>
+
+#if JUPP_WIN32RELOC
+/*
  * Retrieve the realpath of the program (what could be argv[0] if the
  * Unix designers had wanted it).
  */
-
-#include <windows.h>
-
 char *
 cygwin32_argv0(void)
 {
@@ -38,3 +43,32 @@ cygwin32_argv0(void)
 	buf[res] = '\0';
 	return (strdup(buf));
 }
+#endif
+
+/* return command line as passed to the .EXE (just like cygwin32’s dcrt0.cc) */
+unsigned char *
+cygwin32_cmdline(void)
+{
+	char *cp;
+
+	cp = strdup(GetCommandLineA());
+	if (!AreFileApisANSI())
+		CharToOemA(cp, cp);
+	return ((unsigned char *)cp);
+}
+
+/* Cygwin before 1.7.2 did not have locale support */
+#if defined(CYGWIN_VERSION_API_MAJOR) && (CYGWIN_VERSION_API_MAJOR < 1) && \
+    defined(CYGWIN_VERSION_API_MINOR) && (CYGWIN_VERSION_API_MINOR < 222)
+/*
+ * Mirror get_cp() in winsup/cygwin/miscfuncs.cc as used by
+ * dev_console::str_to_con() in winsup/cygwin/fhandler_console.cc
+ */
+unsigned int
+cygwin32_get_cp(void)
+{
+	return (AreFileApisANSI() ? GetACP() : GetOEMCP());
+}
+#endif
+
+#endif /* __CYGWIN__ */

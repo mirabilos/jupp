@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/Makefile.am,v 1.15 2016/10/30 02:21:05 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.am,v 1.16 2017/01/11 21:48:57 tg Exp $
 
 AUTOMAKE_OPTIONS = foreign
 
@@ -46,16 +46,12 @@ bin_PROGRAMS += termidx
 endif
 
 if JUPP_WIN32RELOC
-joe_WIN32_SRCS = win32.c
 joe_WIN32_DEFS = -DJUPP_WIN32RELOC=1 -UJOERC
 else
-joe_WIN32_SRCS = # nothing
 joe_WIN32_DEFS = -DJUPP_WIN32RELOC=0 -DJOERC="\"$(sysconf_joedir)/\""
 endif
 
 INCLUDES = $(joe_WIN32_DEFS)
-
-# joe_LDADD = @REQRD_LIBS@
 
 joe_SOURCES = \
 	b.c blocks.c builtin.c builtins.c bw.c charmap.c cmd.c compat.c \
@@ -63,7 +59,7 @@ joe_SOURCES = \
 	poshist.c pw.c queue.c qw.c rc.c regex.c scrn.c selinux.c \
 	syntax.c tab.c termcap.c tty.c tw.c ublock.c uedit.c uerror.c \
 	ufile.c uformat.c uisrch.c umath.c undo.c usearch.c ushell.c \
-	utag.c utf8.c utils.c va.c vfile.c vs.c w.c $(joe_WIN32_SRCS)
+	utag.c utf8.c utils.c va.c vfile.c vs.c w.c win32.c
 
 termidx_SOURCES = termidx.c
 
