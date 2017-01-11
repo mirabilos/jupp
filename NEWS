@@ -1,5 +1,27 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.104 2016/10/30 00:19:42 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.105 2017/01/11 22:36:43 tg Exp $
 -------------------------------------------------------------------
+
+JOE 3.1jupp30
+
+- Fix spelling mistakes, some found by lintian (thanks!)
+- Silence a GCC 6 warning about content of a comment (WTF‽)
+- Fix segfault trying to fnext a block-restricted search when
+  no block is active
+- Make Freedroidz macro (^KF) more reliable, simpler, run parserr
+- Apply several bugfixes and optimisations to the code
+- Improve the jupp32 build script
+- Fix a few places where allocated memory was not properly zero’d out
+- Unbreak syntax highlighting for nōn-UTF8 locales (tty I/O charmaps)
+- For systems without setlocale, remove optional @modifier part from
+  LC_ALL/LC_CTYPE/LANG (if present) before testing for valid charmap
+- Disable setlocale for old cygwin32; use the current codepage instead
+- Add JOECHARMAP override for locale/codepage-detected I/O charmap
+- Display codes 128–159 in the CharTable help card properly
+– Avoid the Win32 console beeping on • by making it non-printable (WTF)
+- Improve some documentation façets
+- Add “-CYGhack” command line option; use it in right-click menu (WTF²)
+- Do not force use of /usr/local in configure on Solaris
+- Use ~/.jupp/, not ~/.joe/, as basepath for user charmap/syntax files
 
 JOE 3.1jupp29
 
