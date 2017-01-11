@@ -1,15 +1,24 @@
 #!/bin/mksh
-# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.12 2017/01/10 20:23:23 tg Exp $
+# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.14 2017/01/11 21:23:52 tg Exp $
+
+usage() {
+	print -ru2 "Usage: $0 [-bCgn]"
+	print -ru2 '	Builds jupp32 (with debugging if -g): clean (unless -n),'
+	print -ru2 '	configure (unless -n), make, package (unless -b), clean (unless -C)'
+	exit 1
+}
 
 nopkg=0
+nocln=0
 debug=0
 contb=0
-while getopts "bgn" c; do
+while getopts "bCgn" c; do
 	case $c {
 	(b)	nopkg=1 ;;
+	(C)	nocln=1 ;;
 	(g)	debug=1 ;;
 	(n)	contb=1 ;;
-	(*)	exit 1 ;;
+	(*)	usage ;;
 	}
 done
 
@@ -95,4 +104,4 @@ cd ..
 zip -D -X -9 -k ../JWIN31$jWIN.ZIP $jtop/*
 cd ..
 ls -l JWIN31$jWIN.ZIP
-rm -rf mkw32
+(( nocln )) || rm -rf mkw32
