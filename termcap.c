@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/termcap.c,v 1.11 2016/10/29 23:44:46 tg Exp $ */
+/* $MirOS: contrib/code/jupp/termcap.c,v 1.12 2017/01/11 22:41:19 tg Exp $ */
 /*
  *	TERMCAP/TERMINFO database interface
  *	Copyright
@@ -36,7 +36,7 @@ unsigned char *joeterm = NULL;
 
 /* Default termcap entry */
 
-unsigned char defentry[] = "\
+static const unsigned char defentry[] = "\
 :co#80:li#25:am:\
 :ho=\\E[H:cm=\\E[%i%d;%dH:cV=\\E[%i%dH:\
 :up=\\E[A:UP=\\E[%dA:DO=\\E[%dB:nd=\\E[C:RI=\\E[%dC:LE=\\E[%dD:\
