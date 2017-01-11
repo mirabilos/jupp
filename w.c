@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/w.c,v 1.6 2014/07/25 21:26:45 tg Exp $ */
+/* $MirOS: contrib/code/jupp/w.c,v 1.7 2017/01/11 22:56:50 tg Exp $ */
 /*
  *	Window system
  *	Copyright
@@ -568,7 +568,7 @@ void wshowone(W *w)
 
 /* Create a window */
 
-W *wcreate(SCREEN *t, WATOM *watom, W *where, W *target, W *original, int height, unsigned char *huh, int *notify)
+W *wcreate(SCREEN *t, WATOM *watom, W *where, W *target, W *original, int height, const unsigned char *huh, int *notify)
 {
 	W *new;
 

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/pw.c,v 1.7 2017/01/10 19:16:27 tg Exp $ */
+/* $MirOS: contrib/code/jupp/pw.c,v 1.8 2017/01/11 22:56:48 tg Exp $ */
 /*
  *	Prompt windows
  *	Copyright
@@ -199,7 +199,7 @@ WATOM watompw = {
 
 /* Create a prompt window */
 
-BW *wmkpw(W *w, unsigned char *prompt, B **history, int (*func) (), unsigned char *huh, int (*abrt) (), int (*tab) (), void *object, int *notify, struct charmap *map)
+BW *wmkpw(W *w, unsigned char *prompt, B **history, int (*func) (), const unsigned char *huh, int (*abrt) (), int (*tab) (), void *object, int *notify, struct charmap *map)
 {
 	W *new;
 	PW *pw;

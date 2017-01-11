@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/types.h,v 1.14 2014/10/23 15:30:52 tg Exp $ */
+/* $MirOS: contrib/code/jupp/types.h,v 1.15 2017/01/11 22:56:49 tg Exp $ */
 
 #ifndef _JOE_TYPES_H
 #define _JOE_TYPES_H
@@ -300,7 +300,7 @@ struct window {
 
 	const unsigned char *msgt;	/* Message at top of window */
 	const unsigned char *msgb;	/* Message at bottom of window */
-	unsigned char	*huh;		/* Name of window for context sensitive hlp */
+	const unsigned char *huh;	/* Name of window for context sensitive hlp */
 	int	*notify;	/* Address of kill notification flag */
 };
 

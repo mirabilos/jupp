@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/usearch.c,v 1.9 2017/01/10 19:16:28 tg Exp $ */
+/* $MirOS: contrib/code/jupp/usearch.c,v 1.10 2017/01/11 22:56:50 tg Exp $ */
 /*
  *	Search & Replace system
  *	Copyright
@@ -475,7 +475,8 @@ static P *insert(SRCH *srch, P *p, unsigned char *s, int len)
 /* Query for search string, search options, possible replacement string,
  * and execute first search */
 
-unsigned char srchstr[] = "Search";	/* Context sensitive help identifier */
+/* Context sensitive help identifier */
+const unsigned char srchstr[] = "Search";
 
 static int pfabort(BW *bw, SRCH *srch)
 {

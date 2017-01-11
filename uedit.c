@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/uedit.c,v 1.14 2016/10/07 20:36:41 tg Exp $ */
+/* $MirOS: contrib/code/jupp/uedit.c,v 1.15 2017/01/11 22:56:49 tg Exp $ */
 /*
  *	Basic user edit functions
  *	Copyright
@@ -1405,7 +1405,7 @@ int uquote8(BW *bw)
 		return -1;
 }
 
-extern unsigned char srchstr[];
+extern const unsigned char srchstr[];
 
 static int doctrl(BW *bw, int c, void *object, int *notify)
 {

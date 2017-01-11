@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/pw.h,v 1.3 2009/10/18 14:52:56 tg Exp $ */
+/* $MirOS: contrib/code/jupp/pw.h,v 1.4 2017/01/11 22:56:49 tg Exp $ */
 /*
  *	Prompt windows
  *	Copyright
@@ -16,7 +16,7 @@
              int (*tab)(),void *object,int *notify);
  * Create a prompt window for the given window
  */
-BW *wmkpw PARAMS((W *w, unsigned char *prompt, B **history, int (*func) (), unsigned char *huh, int (*abrt) (), int (*tab) (), void *object, int *notify, struct charmap *map));
+BW *wmkpw PARAMS((W *w, unsigned char *prompt, B **history, int (*func) (), const unsigned char *huh, int (*abrt) (), int (*tab) (), void *object, int *notify, struct charmap *map));
 
 int ucmplt PARAMS((BW *bw, int k));
 
