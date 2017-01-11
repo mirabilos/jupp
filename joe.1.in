@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.21 2017/01/11 17:09:03 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.22 2017/01/11 17:13:14 tg Exp $
 .\"-
 .TH JOE 1
 .SH Name
@@ -87,6 +87,12 @@ You can customise the keyboard layout, the help screens and a number of
 behavior defaults by copying JOE's initialisation file (@joeinitfile@)
 to \fB.joerc\fR in your home directory and then by modifying it.
 See the section \fBjoerc\fR below.
+The filename is actually \fB.\fIname\fBrc\fR where \fIname\fR is the
+\fBargv[0]\fR the editor is called with.
+
+Custom syntax files are loaded from \fB.joe/syntax/\fIname\fB.jsf\fR
+in your home directory and \fB.joe/charmaps/\fIname\fR holds custom
+charmaps (\fIname\fR here is the name of the syntax or charmap).
 
 To have JOE used as your default editor for e-mail and News, you need to set
 the \fBEDITOR\fR and \fBVISUAL\fR environment variables in your shell
