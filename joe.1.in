@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.22 2017/01/11 17:13:14 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.23 2017/01/11 19:26:53 tg Exp $
 .\"-
 .TH JOE 1
 .SH Name
@@ -54,6 +54,12 @@ the editor when you save the new file.  A modified syntax for file names is
 provided to allow you to edit program output, standard input/output, or
 sections of files or devices.  See the section \fBFilenames\fR below for
 details.
+
+On cygwin32 systems, the special option \fB\-CYGhack\fR is replaced by
+anything that comes past it (and separating whitespace) on the command
+line as \fIone\fR option (to work around a Cygwin bug as it cannot
+correctly be passed a UNC pathname with spaces as one argument from
+Explorer \fIat all\fR).
 
 Once you are in the editor, you can type in text and use special
 control-character sequences to perform other editing tasks.  To find out
@@ -816,7 +822,7 @@ Use this to access a fixed section of a file or device.  \fBSTART\fR and
 hexadecimal (ex.: 0xFF).  For example, use \fBjoe /dev/fd0,508,2\fR to edit
 bytes 508 and 509 of the first floppy drive in Linux.
 
-.IP \fB-
+.IP \fB\-
 Use this to get input from the standard input or to write output to the
 standard output.  For example, you can put joe in a pipe of commands:
 \fBquota \-v | joe \- | mail root\fR, if you want to complain about your low

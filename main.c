@@ -1,6 +1,6 @@
-/* $MirOS: contrib/code/jupp/main.c,v 1.26 2016/10/29 23:44:45 tg Exp $ */
+/* $MirOS: contrib/code/jupp/main.c,v 1.27 2017/01/11 19:26:54 tg Exp $ */
 
-#define JUPP_IS_COPYRIGHT_C_BY "2016 mirabilos"
+#define JUPP_IS_COPYRIGHT_C_BY "2017 mirabilos"
 
 /*-
  * Copyright (c) 2004ff. Thorsten Glaser
@@ -68,6 +68,10 @@ unsigned char *exmsg = NULL;		/* Message to display when exiting the editor */
 SCREEN *maint;			/* Main edit screen */
 
 const char null[] = "";
+
+#ifdef __CYGWIN__
+static unsigned char *cygwin32_cmdline(void);
+#endif
 
 /* Make windows follow cursor */
 
@@ -280,6 +284,20 @@ int main(int argc, char **argv, char **envp)
 	help_init(s);
 	for (c = 1; argv[c]; ++c) {
 		if (argv[c][0] == '-') {
+#ifdef __CYGWIN__
+			if (!strcmp(argv[c], "-CYGhack")) {
+				s = cygwin32_cmdline();
+				s = strstr(s, "-CYGhack");
+				if (s) {
+					s += /* strlen("-CYGhack") */ 8;
+					while (*s == ' ' || *s == '\t')
+						++s;
+					argv[c] = s;
+					argv[c + 1] = NULL;
+					break;
+				}
+			}
+#endif
 			if (argv[c][1])
 				switch (glopt(argv[c] + 1, argv[c + 1], NULL, 1)) {
 				case 0:
@@ -400,3 +418,19 @@ int main(int argc, char **argv, char **envp)
 		fprintf(stderr, "\n%s\n", exmsg);
 	return 0;
 }
+
+#ifdef __CYGWIN__
+#include <windows.h>
+
+/* return command line as passed to the .EXE (just like cygwin32’s dcrt0.cc) */
+static unsigned char *
+cygwin32_cmdline(void)
+{
+	char *cp;
+
+	cp = strdup(GetCommandLineA());
+	if (!AreFileApisANSI())
+		CharToOemA(cp, cp);
+	return ((unsigned char *)cp);
+}
+#endif
