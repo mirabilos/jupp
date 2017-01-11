@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.52 2016/10/30 02:47:28 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.53 2017/01/11 21:34:39 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -29,10 +29,6 @@ AC_PROG_LN_S
 case $host in
 *-*-minix*)
 	CPPFLAGS="$CPPFLAGS -D_POSIX_SOURCE -D_POSIX_1_SOURCE=2 -D_MINIX"
-	;;
-*-*-solaris*)
-	CPPFLAGS="$CPPFLAGS -I/usr/local/include"
-	LDFLAGS="$LDFLAGS -L/usr/local/lib -R/usr/local/lib"
 	;;
 *-gnu*)
 	CPPFLAGS="$CPPFLAGS -D_GNU_SOURCE"
