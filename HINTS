@@ -57,7 +57,7 @@ The character set will UTF-8.
 
 Hit ^T E to change the coding for the file.  Hit <tab> <tab> at this prompt
 to get a list of available codings.  There are a number of built-in
-character sets, plus you can install character sets in the ~/.joe/charmaps
+character sets, plus you can install character sets in the ~/.jupp/charmaps
 and /usr/local/etc/joe/charmaps directories.
 
 Check: /usr/share/i18n/charmaps for example character set files.  Only
@@ -134,5 +134,5 @@ will not insert.
 
 - Search, incremental search, and search & replace all operate as usual.
 
-__________________________________________________________________
-$MirOS: contrib/code/jupp/HINTS,v 1.9 2016/10/30 00:19:42 tg Exp $
+___________________________________________________________________
+$MirOS: contrib/code/jupp/HINTS,v 1.10 2017/01/11 22:04:31 tg Exp $

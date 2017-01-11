@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/rc.c,v 1.21 2016/10/29 23:44:45 tg Exp $ */
+/* $MirOS: contrib/code/jupp/rc.c,v 1.22 2017/01/11 22:04:32 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
@@ -631,7 +631,7 @@ static int syntaxcmplt(BW *bw)
 		p = (unsigned char *)getenv("HOME");
 		if (p) {
 			unsigned char buf[1024];
-			joe_snprintf_1((char *)buf,sizeof(buf),"%s/.joe/syntax",p);
+			joe_snprintf_1((char *)buf,sizeof(buf),"%s/.jupp/syntax",p);
 			if (!chpwd(buf) && (t = rexpnd(US "*.jsf"))) {
 				for (x = 0; x != aLEN(t); ++x)
 					*strrchr((char *)t[x],'.') = 0;

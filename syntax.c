@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/syntax.c,v 1.15 2017/01/10 20:55:03 tg Exp $ */
+/* $MirOS: contrib/code/jupp/syntax.c,v 1.16 2017/01/11 22:04:33 tg Exp $ */
 /*
  *	Syntax highlighting DFA interpreter
  *	Copyright
@@ -265,7 +265,7 @@ struct high_syntax *load_dfa(const unsigned char *name)
 	/* Load it */
 	p = (unsigned char *)getenv("HOME");
 	if (p) {
-		joe_snprintf_2((char *)buf,sizeof(buf),"%s/.joe/syntax/%s.jsf",p,name);
+		joe_snprintf_2((char *)buf,sizeof(buf),"%s/.jupp/syntax/%s.jsf",p,name);
 		f = fopen((char *)buf,"r");
 	}
 

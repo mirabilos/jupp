@@ -22,9 +22,9 @@ However, you need to copy a few files into your home directory first:
 	cp joerc ~/.joerc
 
 	# The following are needed if you want syntax highlighting to work:
-	mkdir ~/.joe
-	mkdir ~/.joe/syntax
-	cp syntax/*.jsf ~/.joe/syntax
+	mkdir ~/.jupp
+	mkdir ~/.jupp/syntax
+	cp syntax/*.jsf ~/.jupp/syntax/
 
 Otherwise you need to do a real install, which generally requires root
 privileges:
@@ -430,4 +430,4 @@ joe's stdin/stdout to /dev/tty:
 	joe filename  </dev/tty >/dev/tty
 
 ___________________________________________________________________
-$MirOS: contrib/code/jupp/README,v 1.5 2013/08/19 23:05:08 tg Exp $
+$MirOS: contrib/code/jupp/README,v 1.6 2017/01/11 22:04:31 tg Exp $

@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.23 2017/01/11 19:26:53 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.24 2017/01/11 22:04:32 tg Exp $
 .\"-
 .TH JOE 1
 .SH Name
@@ -96,8 +96,8 @@ See the section \fBjoerc\fR below.
 The filename is actually \fB.\fIname\fBrc\fR where \fIname\fR is the
 \fBargv[0]\fR the editor is called with.
 
-Custom syntax files are loaded from \fB.joe/syntax/\fIname\fB.jsf\fR
-in your home directory and \fB.joe/charmaps/\fIname\fR holds custom
+Custom syntax files are loaded from \fB.jupp/syntax/\fIname\fB.jsf\fR
+in your home directory and \fB.jupp/charmaps/\fIname\fR holds custom
 charmaps (\fIname\fR here is the name of the syntax or charmap).
 
 To have JOE used as your default editor for e-mail and News, you need to set

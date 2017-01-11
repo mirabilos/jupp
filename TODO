@@ -452,6 +452,10 @@ Fix for next release highlight:
 Watch loaded file for changes
 
 Save all history buffers and keyboard macros in ~/.joe_state file?
+Although, if merged, it must be disabled by default like mksh’s HISTFILE is:
+  18:48⎜«asarch» That would be for a wish list then: to keep the
+       ⎜    list of all opened files with their last position
+  Natureshadow agrees with me that this is a JOE antifeature  
 
   Update documentation.
 
@@ -470,7 +474,7 @@ regex: character classes? a-z matches any letter?
 New features:
 -----------------------
 
-  move *rc files to .etc/joe directory? Or XDG, see below.
+  move *rc files to .etc/jupp directory? Or XDG, see below.
 
   check all instances of 'chars': use unicode to locale symbols instead.
   EBCDIC ?
@@ -663,22 +667,16 @@ Other requests:
   updating the status line, …(?) ⇐ implemented using a “paste”
   labeled ftype that is switched to using the UI (command)
 • switch from autoconf to mirtoconf2
-• asarch requests merging the .joe_state file code, although
-  it must be disabled by default like mksh’s HISTFILE is:
-  18:48⎜«asarch» That would be for a wish list then: to keep the
-       ⎜    list of all opened files with their last position
-  Natureshadow agrees with me that this is a JOE antifeature
 • ANSI syntax highlighting; auto-turn it on in shell windows (‽)
 • proper redraw for lines that had combining characters in them
 • add a soft line break flag: display as line-wrapped, do not
   save any newlines introduced by that
-• put all configuration files into /usr/share, allow the user
-  to override all of them (not just the rc files) from their
-  home directory (XDG config dirs)
+• put all configuration files into /usr/share; use XDG dirs for
+  overriding (HOME, maybe site?)
 • rc.c: struct glopts.set (int*) violates the strict aliasing
   rule as it’s treated as (unsigned char *) for type 2 (global
   option string), consider a union instead (check local types!)
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.29 2016/10/30 02:46:25 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.30 2017/01/11 22:04:31 tg Exp $
