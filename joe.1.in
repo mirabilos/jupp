@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.20 2017/01/10 23:07:58 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.21 2017/01/11 17:09:03 tg Exp $
 .\"-
 .TH JOE 1
 .SH Name
@@ -31,7 +31,7 @@ command line.
 
 Although JOE is actually six different editors, it still requires only one
 executable, but one with six different names.  The name of the editor with
-an "rc" appended gives the name of JOE's initialization file, which
+an "rc" appended gives the name of JOE's initialisation file, which
 determines the personality of the editor.
 
 JUPP is free software; you can distribute it and/or modify it under the
@@ -83,14 +83,14 @@ the screen.  You can continue to enter and edit text while the help window
 is on.  To page through other topics, hit ^[, and ^[. (that is, ESC , and
 ESC .).  Use \fB^K H\fR to dismiss the help window.
 
-You can customize the keyboard layout, the help screens and a number of
+You can customise the keyboard layout, the help screens and a number of
 behavior defaults by copying JOE's initialisation file (@joeinitfile@)
 to \fB.joerc\fR in your home directory and then by modifying it.
 See the section \fBjoerc\fR below.
 
 To have JOE used as your default editor for e-mail and News, you need to set
 the \fBEDITOR\fR and \fBVISUAL\fR environment variables in your shell
-initialization file (\fB.cshrc\fR or \fB.profile\fR) to refer to JOE (the
+initialisation file (\fB.cshrc\fR or \fB.profile\fR) to refer to JOE (the
 joe binary usually resides as \fB@joeresides@\fR).
 
 There are a number of other obscure invocation parameters which may have to
@@ -111,7 +111,7 @@ If this option is given, backup files will be stored in the specified
 directory instead of in each file's original directory.
 
 .IP -baud\ nnn
-Set the baud rate for the purposes of terminal screen optimization.  Joe
+Set the baud rate for the purposes of terminal screen optimisation.  Joe
 inserts delays for baud rates below 19200, which bypasses tty buffering so
 that typeahead will interrupt the screen output.  Scrolling commands will
 not be used for 38400 baud.  This is useful for X-terms and other console
@@ -346,7 +346,7 @@ past the right edge of the screen in a normal file (one whose name doesn't
 end in .c, .h or .p), JOE will automatically wrap the last word onto the
 next line so that you don't have to hit \fBReturn\fR.  This is called
 word-wrap mode.  Word-wrap can be turned on or off with the \fB^T W\fR
-command.  JOE's initialization file is usually set up so that this mode is
+command.  JOE's initialisation file is usually set up so that this mode is
 automatically turned on for all non-program files.  See the section below on
 the \fBjoerc\fR file to change this and other defaults.
 
@@ -370,7 +370,7 @@ insert new text.  This happens, for example, when you are changing a table
 and you want to maintain the column position of the right side of the table.
 When this occurs, you can put the editor in over-type mode with \fB^T T\fR.
 When the editor is in this mode, the characters you type in replace existing
-characters, in the way an idealized typewriter would.  Also, \fBBackspace\fR
+characters, in the way an idealised typewriter would.  Also, \fBBackspace\fR
 simply moves left instead of deleting the character to the left, when it's
 not at the end or beginning of a line.  Over-type mode is not the natural
 way of dealing with text electronically, so you should go back to
@@ -819,10 +819,10 @@ quota.
 
 .SH The\ joerc file
 \fB^T\fR options, the help screens and the key-sequence to editor command
-bindings are all defined in JOE's initialization file.
+bindings are all defined in JOE's initialisation file.
 If you make a copy of this file (@joeinitcopy@) to \fB$HOME/.joerc\fR,
 you can customise these settings to your liking.
-The syntax of the initialization file should be fairly obvious,
+The syntax of the initialisation file should be fairly obvious,
 and there are further instruction in it.
 
 .SH Acknowledgments
