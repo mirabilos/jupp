@@ -35,13 +35,13 @@ Description
      Although JOE is actually six different editors, it still
      requires only one executable, but one with six different
      names.  The name of the editor with an "rc" appended gives
-     the name of JOE's initialization file, which determines the
+     the name of JOE's initialisation file, which determines the
      personality of the editor.
 
      JUPP is free software; you can distribute it and/or modify
      it under the terms of the GNU General Public License, Ver-
      sion 1, as published by the Free Software Foundation.
-     (main.c contains more detailled exceptions.) I have no plans
+     (main.c contains more detailed exceptions.) I have no plans
      for turning JOE into a commercial or share-ware product. See
      the source code for exact authorship and licencing informa-
      tion. JOE is available over the Internet from http://joe-
@@ -60,6 +60,12 @@ Usage
      allow you to edit program output, standard input/output, or
      sections of files or devices.  See the section Filenames
      below for details.
+
+     On cygwin32 systems, the special option -CYGhack is replaced
+     by anything that comes past it (and separating whitespace)
+     on the command line as one option (to work around a Cygwin
+     bug as it cannot correctly be passed a UNC pathname with
+     spaces as one argument from Explorer at all).
 
      Once you are in the editor, you can type in text and use
      special control-character sequences to perform other editing
@@ -92,17 +98,23 @@ Usage
      topics, hit ^[, and ^[. (that is, ESC , and ESC .).  Use ^K
      H to dismiss the help window.
 
-     You can customize the keyboard layout, the help screens and
+     You can customise the keyboard layout, the help screens and
      a number of behavior defaults by copying JOE's initialisa-
      tion file (joerc in the same directory as the binary resides
      in) to .joerc in your home directory and then by modifying
-     it. See the section joerc below.
+     it. See the section joerc below. The filename is actually
+     .namerc where name is the argv[0] the editor is called with.
+
+     Custom syntax files are loaded from .jupp/syntax/name.jsf in
+     your home directory and .jupp/charmaps/name holds custom
+     charmaps (name here is the name of the syntax or charmap).
 
      To have JOE used as your default editor for e-mail and News,
      you need to set the EDITOR and VISUAL environment variables
-     in your shell initialization file (.cshrc or .profile) to
+     in your shell initialisation file (.cshrc or .profile) to
      refer to JOE (the joe binary usually resides as
      C:\Programme\jupp32\joe.exe).
+
      There are a number of other obscure invocation parameters
      which may have to be set, particularly if your terminal
      screen is not updating as you think it should.  See the sec-
@@ -125,7 +137,7 @@ Command Line Options
 
      -baud nnn
           Set the baud rate for the purposes of terminal screen
-          optimization.  Joe inserts delays for baud rates below
+          optimisation.  Joe inserts delays for baud rates below
           19200, which bypasses tty buffering so that typeahead
           will interrupt the screen output.  Scrolling commands
           will not be used for 38400 baud.  This is useful for
@@ -190,6 +202,7 @@ Command Line Options
 
      -nobackups
           This option prevents backup files.
+
      -nonotice
           This option prevent the copyright notice from being
           displayed when the editor starts.
@@ -221,12 +234,7 @@ Command Line Options
      Each of these options may be specified in the joerc file as
      well.  In addition, the NOXON, BAUD, LINES, COLUMNS and
      DOPADDING options may be specified with environment vari-
-     ables.
-
-     The JOETERM environment variable may be set to override the
-     regular TERM environment variable for specifying your termi-
-     nal type.
-
+     ables. See the section Environment variables below.
      The following options may be specified before each filename
      on the command line:
 
@@ -384,7 +392,7 @@ Editing Tasks
      .c, .h or .p), JOE will automatically wrap the last word
      onto the next line so that you don't have to hit Return.
      This is called word-wrap mode.  Word-wrap can be turned on
-     or off with the ^T W command.  JOE's initialization file is
+     or off with the ^T W command.  JOE's initialisation file is
      usually set up so that this mode is automatically turned on
      for all non-program files.  See the section below on the
      joerc file to change this and other defaults.
@@ -414,7 +422,7 @@ Editing Tasks
      position of the right side of the table. When this occurs,
      you can put the editor in over-type mode with ^T T. When the
      editor is in this mode, the characters you type in replace
-     existing characters, in the way an idealized typewriter
+     existing characters, in the way an idealised typewriter
      would.  Also, Backspace simply moves left instead of delet-
      ing the character to the left, when it's not at the end or
      beginning of a line.  Over-type mode is not the natural way
@@ -748,7 +756,6 @@ Editing Tasks
      fied number of times.  Hit ^K \, type in the number of times
      you want the command repeated and press Return.  The next
      edit command you now give will be repeated that many times.
-
      For example, to delete the next 20 lines of text, type:
 
      ^K  20<return>^Y
@@ -838,6 +845,27 @@ Environment variables
      The xterm-xfree86 terminal allows automatic entering and
      leaving of the bracketed paste mode.
 
+     The JOETERM environment variable may be set to override the
+     regular TERM environment variable for specifying your termi-
+     nal type.
+
+     JOE uses two character maps for its operation: the terminal
+     I/O character map, which determines how characters are sent
+     to the terminal and whether the %a/%A message specifiers use
+     Unicode, and the file encoding, which can be specified per
+     file using the -encoding option and changed with the ^T E
+     command, and which defaults to the terminal I/O character
+     map, which, in turn, is determined from the current locale,
+     if the system supports such, otherwise the LC_ALL, LC_CTYPE
+     and LANG environment variables (if they contain a period,
+     only the part after it and before an optional "at sign" is
+     used); on cygwin32 before 1.7.2, the codepage is used
+     instead if the POSIX locale environment variables are empty;
+     the environment variable JOECHARMAP can be used to manually
+     force one overriding all methods described above, and can be
+     used together with -encoding to specify a different default
+     file character map.
+
      JOE normally expects that flow control between the computer
      and your terminal to use ^S/^Q handshaking (I.E., if the
      computer is sending characters too fast for your terminal,
@@ -876,7 +904,6 @@ Filenames
           octal (ex.: 0777) or hexadecimal (ex.: 0xFF).  For
           example, use joe /dev/fd0,508,2 to edit bytes 508 and
           509 of the first floppy drive in Linux.
-
      -    Use this to get input from the standard input or to
           write output to the standard output.  For example, you
           can put joe in a pipe of commands: quota -v | joe - |
@@ -885,11 +912,11 @@ Filenames
 
 The joerc file
      ^T options, the help screens and the key-sequence to editor
-     command bindings are all defined in JOE's initialization
+     command bindings are all defined in JOE's initialisation
      file. If you make a copy of this file (which resides in the
      same directory as the binary) to $HOME/.joerc, you can cus-
      tomise these settings to your liking. The syntax of the ini-
-     tialization file should be fairly obvious, and there are
+     tialisation file should be fairly obvious, and there are
      further instruction in it.
 
 Acknowledgments
