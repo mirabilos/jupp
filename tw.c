@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tw.c,v 1.10 2017/01/10 19:16:28 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tw.c,v 1.11 2017/03/19 17:38:59 tg Exp $ */
 /* 
  *	Text editing windows
  *	Copyright
@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #ifdef HAVE_TIME_H
 #include <time.h>
 #endif
