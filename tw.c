@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tw.c,v 1.11 2017/03/19 17:38:59 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tw.c,v 1.12 2017/03/19 18:53:02 tg Exp $ */
 /* 
  *	Text editing windows
  *	Copyright
@@ -144,31 +144,30 @@ unsigned char *get_context(BW *bw)
 
 static unsigned char *stagen(unsigned char *stalin, BW *bw, unsigned char *s, int fill)
 {
+	unsigned char *cp, *cp2, uc;
 	unsigned char buf[80];
 	int x;
 	W *w = bw->parent;
+	time_t tt;
 	int special_aA = 0;
 
-	{
-		unsigned char *cp = s, *cp2;
-
-		while ((cp2 = strstr(cp, "%a")) != NULL) {
-			cp2 += /* %a */ 2;
-			if (cp2[1] == '%')
-				++cp2;
-			if (cp2[0] == '%' && cp2[1] == 'A') {
-				special_aA = 1;
-				break;
-			}
+	cp = s;
+	while ((cp2 = strstr(cp, "%a")) != NULL) {
+		cp2 += /* %a */ 2;
+		if (cp2[1] == '%')
+			++cp2;
+		if (cp2[0] == '%' && cp2[1] == 'A') {
+			special_aA = 1;
+			break;
 		}
-		if (!special_aA) while ((cp2 = strstr(cp, "%A")) != NULL) {
-			cp2 += /* %A */ 2;
-			if (cp2[1] == '%')
-				++cp2;
-			if (cp2[0] == '%' && cp2[1] == 'a') {
-				special_aA = 1;
-				break;
-			}
+	}
+	if (!special_aA) while ((cp2 = strstr(cp, "%A")) != NULL) {
+		cp2 += /* %A */ 2;
+		if (cp2[1] == '%')
+			++cp2;
+		if (cp2[0] == '%' && cp2[1] == 'a') {
+			special_aA = 1;
+			break;
 		}
 	}
 
@@ -176,46 +175,37 @@ static unsigned char *stagen(unsigned char *stalin, BW *bw, unsigned char *s, in
 	while (*s) {
 		if (*s == '%' && s[1]) {
 			switch (*++s) {
-			case 'x': /* Context (but only if autoindent is enabled) */
-				{
-					if ( bw->o.autoindent) {
-						unsigned char *s_ = get_context(bw);
-						stalin = vsncpy(sv(stalin), sz(s_));
-					}
+			case 'x':
+				/* Context (but only if autoindent is enabled) */
+				if (bw->o.autoindent) {
+					cp = get_context(bw);
+					stalin = vsncpy(sv(stalin), sz(cp));
 				}
 				break;
 
 			case 'y':
-				{
-					if (bw->o.syntax) {
-						joe_snprintf_1((char *)buf, sizeof(buf), "(%s)", bw->o.syntax->name);
-						stalin = vsncpy(sv(stalin), sz(buf));
-					}
+				if (bw->o.syntax) {
+					joe_snprintf_1((char *)buf, sizeof(buf), "(%s)", bw->o.syntax->name);
+					stalin = vsncpy(sv(stalin), sz(buf));
 				}
 				break;
 			case 't':
-				{
-					time_t n = time(NULL);
-					int l;
-					unsigned char *d = (unsigned char *)ctime(&n);
+				tt = time(NULL);
+				cp = (unsigned char *)ctime(&tt);
 
-					l = (d[11] - '0') * 10 + d[12] - '0';
-					if (l > 12)
-						l -= 12;
-					joe_snprintf_1((char *)buf, sizeof(buf), "%2.2d", l);
-					if (buf[0] == '0')
-						buf[0] = fill;
-					stalin = vsncpy(sv(stalin), buf, 2);
-					stalin = vsncpy(sv(stalin), d + 13, 3);
-				}
+				x = (cp[11] - '0') * 10 + cp[12] - '0';
+				if (x > 12)
+					x -= 12;
+				joe_snprintf_1((char *)buf, sizeof(buf), "%2.2d", x);
+				if (buf[0] == '0')
+					buf[0] = fill;
+				stalin = vsncpy(sv(stalin), buf, 2);
+				stalin = vsncpy(sv(stalin), cp + 13, 3);
 				break;
 			case 'u':
-				{
-					time_t n = time(NULL);
-					unsigned char *d = (unsigned char *)ctime(&n);
-
-					stalin = vsncpy(sv(stalin), d + 11, 5);
-				}
+				tt = time(NULL);
+				cp = (unsigned char *)ctime(&tt);
+				stalin = vsncpy(sv(stalin), cp + 11, 5);
 				break;
 			case 'T':
 				if (bw->o.overtype)
@@ -241,24 +231,24 @@ static unsigned char *stagen(unsigned char *stalin, BW *bw, unsigned char *s, in
 				else
 					stalin = vsadd(stalin, fill);
 				break;
-			case 'n': {
-				unsigned char fnc;
-				const unsigned char *fn = bw->b->name ? bw->b->name :
-				    (const unsigned char *)"Unnamed";
-
+			case 'n':
+				if (!bw->b->name) {
+					stalin = vsncpy(sv(stalin), sc("Unnamed"));
+					break;
+				}
+				cp = bw->b->name;
  escape_loop:
-				switch ((fnc = *fn++)) {
+				switch ((uc = *cp++)) {
 				case '\\':
-					stalin = vsadd(stalin, fnc);
+					stalin = vsadd(stalin, uc);
 					/* FALLTHROUGH */
 				default:
-					stalin = vsadd(stalin, fnc);
+					stalin = vsadd(stalin, uc);
 					goto escape_loop;
 				case '\0':
 					break;
 				}
 				break;
-			    }
 			case 'm':
 				if (bw->b->changed)
 					stalin = vsncpy(sv(stalin), sc("(Modified)"));
@@ -359,33 +349,29 @@ static unsigned char *stagen(unsigned char *stalin, BW *bw, unsigned char *s, in
 				stalin = vsncpy(sv(stalin), sz(buf));
 				break;
 			case 'k':
-				{
-					int i;
-					unsigned char *cpos_ = buf;
+				cp = buf;
+				buf[0] = 0;
+				if (w->kbd->x && w->kbd->seq[0])
+					for (x = 0; x != w->kbd->x; ++x) {
+						uc = w->kbd->seq[x] & 127;
 
-					buf[0] = 0;
-					if (w->kbd->x && w->kbd->seq[0])
-						for (i = 0; i != w->kbd->x; ++i) {
-							int c = w->kbd->seq[i] & 127;
-
-							if (c < 32) {
-								cpos_[0] = '^';
-								cpos_[1] = c + '@';
-								cpos_ += 2;
-							} else if (c == 127) {
-								cpos_[0] = '^';
-								cpos_[1] = '?';
-								cpos_ += 2;
-							} else {
-								cpos_[0] = c;
-								cpos_ += 1;
-							}
+						if (uc < 32) {
+							cp[0] = '^';
+							cp[1] = uc + '@';
+							cp += 2;
+						} else if (uc == 127) {
+							cp[0] = '^';
+							cp[1] = '?';
+							cp += 2;
+						} else {
+							cp[0] = uc;
+							cp += 1;
 						}
-					*cpos_++ = fill;
-					while (cpos_ - buf < 4)
-						*cpos_++ = fill;
-					stalin = vsncpy(sv(stalin), buf, cpos_ - buf);
-				}
+					}
+				*cp++ = fill;
+				while (cp - buf < 4)
+					*cp++ = fill;
+				stalin = vsncpy(sv(stalin), buf, cp - buf);
 				break;
 			case 'S':
 				if (bw->b->pid)
