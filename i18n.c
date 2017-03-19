@@ -1,7 +1,7 @@
 #if 0
 .if "0" == "1"
 #endif
-/* $MirOS: contrib/code/jupp/i18n.c,v 1.16 2017/01/11 00:34:03 tg Exp $ */
+/* $MirOS: contrib/code/jupp/i18n.c,v 1.17 2017/03/19 19:30:21 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 functions for JOE
  *	Copyright
@@ -504,6 +504,7 @@ int joe_wcwidth(int wide, unsigned int ucs)
 
 /* From: contrib/hosted/tg/jupptables,v 1.1 2013/11/30 23:58:29 tg Exp $ */
 
+#ifdef TEST_I18N
 static const struct mb_ucsrange data_wctype_upper[] = {
 	{ 0x0041, 0x005A },
 	{ 0x00C0, 0x00D6 },
@@ -1710,6 +1711,7 @@ static const struct mb_ucsrange data_wctype_lower[] = {
 };
 
 MAKE_ISW(lower)
+#endif
 
 /* plus U+005F (UNDERSCORE) */
 static const struct mb_ucsrange data_wctype_alpha[] = {
@@ -2321,6 +2323,7 @@ static const struct mb_ucsrange data_wctype_space[] = {
 
 MAKE_ISW(space)
 
+#ifdef TEST_I18N
 /*
  * plus U+2028 (LINE SEPARATOR)
  * plus U+2029 (PARAGRAPH SEPARATOR)
@@ -2332,6 +2335,7 @@ static const struct mb_ucsrange data_wctype_cntrl[] = {
 };
 
 MAKE_ISW(cntrl)
+#endif
 
 static const struct mb_ucsrange data_wctype_punct[] = {
 	{ 0x0021, 0x002F },
@@ -2848,6 +2852,7 @@ static const struct mb_ucsrange data_wctype_punct[] = {
 
 MAKE_ISW(punct)
 
+#ifdef TEST_I18N
 static const struct mb_ucsrange data_wctype_graph[] = {
 	{ 0x0021, 0x007E },
 	{ 0x00A0, 0x0377 },
@@ -3491,6 +3496,7 @@ static const struct mb_ucsrange data_wctype_graph[] = {
 };
 
 MAKE_ISW(graph)
+#endif
 
 static const struct mb_ucsrange data_wctype_print[] = {
 	{ 0x0020, 0x007E },
@@ -4142,6 +4148,7 @@ static const struct mb_ucsrange data_wctype_print[] = {
 
 MAKE_ISW(print)
 
+#ifdef TEST_I18N
 static const struct mb_ucsrange data_wctype_xdigit[] = {
 	{ 0x0030, 0x0039 },
 	{ 0x0041, 0x0046 },
@@ -4168,6 +4175,7 @@ static const struct mb_ucsrange data_wctype_blank[] = {
 };
 
 MAKE_ISW(blank)
+#endif
 
 /* Conversion functions */
 
