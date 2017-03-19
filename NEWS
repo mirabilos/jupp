@@ -1,5 +1,11 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.105 2017/01/11 22:36:43 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.106 2017/03/19 19:35:27 tg Exp $
 -------------------------------------------------------------------
+
+JOE-current
+
+- Fix <bsd/string.h> usage issue on Haiku
+- Make some signal handlers a bit more safe
+- Remove unused Unicode categorisations (~15K in the binary)
 
 JOE 3.1jupp30
 
