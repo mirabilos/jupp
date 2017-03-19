@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.c,v 1.22 2016/10/30 02:38:35 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.c,v 1.23 2017/03/19 19:19:51 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright
@@ -263,19 +263,19 @@ void ttclose(void)
 	signrm();
 }
 
-static int winched = 0;
+static volatile sig_atomic_t winched = 0;
 #ifdef SIGWINCH
 /* Window size interrupt handler */
 static RETSIGTYPE winchd(int unused)
 {
-	++winched;
+	winched = 1;
 	REINSTALL_SIGHANDLER(SIGWINCH, winchd);
 }
 #endif
 
 /* Second ticker */
 
-int ticked = 0;
+static volatile sig_atomic_t ticked = 0;
 extern int dostaupd;
 static RETSIGTYPE dotick(int unused)
 {
@@ -453,7 +453,7 @@ void ttclsn(void)
 
 /* Timer interrupt handler */
 
-static int yep;
+static volatile sig_atomic_t yep;
 static RETSIGTYPE dosig(int unused)
 {
 	yep = 1;
@@ -589,17 +589,16 @@ int ttflsh(void)
 
 void mpxdied(MPX *m);
 
-long last_time;
+static time_t last_time;
 
 int ttgetc(void)
 {
 	int stat_;
-	long new_time;
-
+	time_t new_time;
 
 	tickon();
 
-      loop:
+ loop:
 	new_time = time(NULL);
 	if (new_time != last_time) {
 		last_time = new_time;
@@ -963,7 +962,7 @@ static unsigned char *getpty(int *ptyfd)
 /* Shell dies signal handler.  Puts pty in non-block mode so
  * that read returns with <1 when all data from process has
  * been read. */
-int dead = 0;
+static volatile sig_atomic_t dead = 0;
 int death_fd;
 static RETSIGTYPE death(int unused)
 {

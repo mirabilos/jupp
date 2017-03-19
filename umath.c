@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/umath.c,v 1.6 2012/12/30 17:12:37 tg Exp $ */
+/* $MirOS: contrib/code/jupp/umath.c,v 1.7 2017/03/19 19:19:51 tg Exp $ */
 /*
  *	Math
  *	Copyright
@@ -23,16 +23,16 @@
 #include "charmap.h"
 #include "w.h"
 
-const unsigned char * volatile merr;
+volatile sig_atomic_t merrf;
+const unsigned char *merrt;
 
 static char math_res[JOE_MSGBUFSIZE];
 static char *math_exp;
 
 static RETSIGTYPE fperr(int unused)
 {
-	if (!merr) {
-		merr = US "Float point exception";
-	}
+	if (!merrf)
+		merrf = 2;
 	REINSTALL_SIGHANDLER(SIGFPE, fperr);
 }
 
@@ -103,9 +103,9 @@ static double expr(int prec, struct var **rtv)
 		x = expr(0, &v);
 		if (*ptr == ')')
 			++ptr;
-		else {
-			if (!merr)
-				merr = US "Missing )";
+		else if (!merrf) {
+			merrf = 1;
+			merrt = US "Missing )";
 		}
 	} else if (*ptr == '-') {
 		++ptr;
@@ -136,9 +136,9 @@ static double expr(int prec, struct var **rtv)
 		if (v) {
 			v->val = x;
 			v->set = 1;
-		} else {
-			if (!merr)
-				merr = US "Left side of = is not an l-value";
+		} else if (!merrf) {
+			merrf = 1;
+			merrt = US "Left side of = is not an l-value";
 		}
 		goto loop;
 	}
@@ -187,10 +187,10 @@ double calc(BW *bw, unsigned char *s)
 	v->val = tbw->w;
 	v->set = 1;
 	ptr = s;
-	merr = 0;
+	merrf = 0;
       up:
 	result = expr(0, &dumb);
-	if (!merr) {
+	if (!merrf) {
 		while (*ptr == ' ' || *ptr == '\t') {
 			++ptr;
 		}
@@ -202,14 +202,17 @@ double calc(BW *bw, unsigned char *s)
 			if (*ptr) {
 				goto up;
 			}
-		} else if (*ptr) {
-			merr = US "Extra junk after end of expr";
+		} else if (*ptr && !merrf) {
+			merrf = 1;
+			merrt = US "Extra junk after end of expr";
 		}
 	}
 
-	if (merr) {
+	if (merrf) {
+		if (merrf == 2)
+			merrt = US "Float point exception";
 		joe_snprintf_1(math_res, JOE_MSGBUFSIZE,
-		    "math_error{%s}", merr);
+		    "math_error{%s}", merrt);
 	} else {
 		joe_imaxt ires = (joe_imaxt)result;
 
@@ -235,8 +238,8 @@ static int domath(BW *bw, unsigned char *s, void *object, int *notify)
 	if (notify) {
 		*notify = 1;
 	}
-	if (merr) {
-		msgnw(bw->parent, merr);
+	if (merrf) {
+		msgnw(bw->parent, merrt);
 		return -1;
 	}
 	vsrm(s);

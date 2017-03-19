@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/umath.h,v 1.4 2012/12/30 17:12:37 tg Exp $ */
+/* $MirOS: contrib/code/jupp/umath.h,v 1.5 2017/03/19 19:19:51 tg Exp $ */
 /*
  *	Math
  *	Copyright
@@ -12,7 +12,13 @@
 #include "config.h"
 #include "types.h"
 
-extern const unsigned char * volatile merr;
+#ifdef HAVE_SIGNAL_H
+#include <signal.h>
+#endif
+
+extern volatile sig_atomic_t merrf;       
+extern const unsigned char *merrt;
+
 double calc(BW *bw, unsigned char *s);
 int umath(BW *bw);
 int umathins(BW *bw);

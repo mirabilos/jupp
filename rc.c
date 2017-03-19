@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/rc.c,v 1.22 2017/01/11 22:04:32 tg Exp $ */
+/* $MirOS: contrib/code/jupp/rc.c,v 1.23 2017/03/19 19:19:50 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
@@ -522,8 +522,8 @@ static int doopt1(BW *bw, unsigned char *s, int *xx, int *notify)
 			break;
 		}
 		v = calc(bw, s);
-		if (merr) {
-			msgnw(bw->parent, merr);
+		if (merrf) {
+			msgnw(bw->parent, merrt);
 			ret = -1;
 		} else if (v >= glopts[x].low && v <= glopts[x].high)
 			*glopts[x].set = v;
@@ -542,8 +542,8 @@ static int doopt1(BW *bw, unsigned char *s, int *xx, int *notify)
 			break;
 		}
 		v = calc(bw, s);
-		if (merr) {
-			msgnw(bw->parent, merr);
+		if (merrf) {
+			msgnw(bw->parent, merrt);
 			ret = -1;
 		} else if (v >= glopts[x].low && v <= glopts[x].high)
 			*(int *) ((unsigned char *) &bw->o + glopts[x].ofst) = v;
@@ -558,8 +558,8 @@ static int doopt1(BW *bw, unsigned char *s, int *xx, int *notify)
 			break;
 		}
 		v = calc(bw, s) - 1.0;
-		if (merr) {
-			msgnw(bw->parent, merr);
+		if (merrf) {
+			msgnw(bw->parent, merrt);
 			ret = -1;
 		} else if (v >= glopts[x].low && v <= glopts[x].high)
 			*(int *) ((unsigned char *) &bw->o + glopts[x].ofst) = v;

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/uedit.c,v 1.16 2017/03/19 17:39:00 tg Exp $ */
+/* $MirOS: contrib/code/jupp/uedit.c,v 1.17 2017/03/19 19:19:51 tg Exp $ */
 /*
  *	Basic user edit functions
  *	Copyright
@@ -671,7 +671,7 @@ static int doline(BW *bw, unsigned char *s, void *object, int *notify)
 	if (notify)
 		*notify = 1;
 	vsrm(s);
-	if (num >= 1 && !merr) {
+	if (num >= 1 && !merrf) {
 		int tmp = mid;
 
 		if (num > bw->b->eof->line)
@@ -682,8 +682,8 @@ static int doline(BW *bw, unsigned char *s, void *object, int *notify)
 		mid = tmp;
 		return 0;
 	} else {
-		if (merr)
-			msgnw(bw->parent, merr);
+		if (merrf)
+			msgnw(bw->parent, merrt);
 		else
 			msgnw(bw->parent, US "Invalid line number");
 		return -1;
@@ -709,7 +709,7 @@ static int docol(BW *bw, unsigned char *s, void *object, int *notify)
 	if (notify)
 		*notify = 1;
 	vsrm(s);
-	if (num >= 1 && !merr) {
+	if (num >= 1 && !merrf) {
 		int tmp = mid;
 
 		pcol(bw->cursor, num - 1), bw->cursor->xcol = piscol(bw->cursor);
@@ -718,8 +718,8 @@ static int docol(BW *bw, unsigned char *s, void *object, int *notify)
 		mid = tmp;
 		return 0;
 	} else {
-		if (merr)
-			msgnw(bw->parent, merr);
+		if (merrf)
+			msgnw(bw->parent, merrt);
 		else
 			msgnw(bw->parent, US "Invalid column number");
 		return -1;
@@ -745,7 +745,7 @@ static int dobyte(BW *bw, unsigned char *s, void *object, int *notify)
 	if (notify)
 		*notify = 1;
 	vsrm(s);
-	if (num >= 0 && !merr) {
+	if (num >= 0 && !merrf) {
 		int tmp = mid;
 
 		pgoto(bw->cursor, num), bw->cursor->xcol = piscol(bw->cursor);
@@ -754,8 +754,8 @@ static int dobyte(BW *bw, unsigned char *s, void *object, int *notify)
 		mid = tmp;
 		return 0;
 	} else {
-		if (merr)
-			msgnw(bw->parent, merr);
+		if (merrf)
+			msgnw(bw->parent, merrt);
 		else
 			msgnw(bw->parent, US "Invalid byte number");
 		return -1;

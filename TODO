@@ -676,8 +676,7 @@ Other requests:
 • rc.c: struct glopts.set (int*) violates the strict aliasing
   rule as it’s treated as (unsigned char *) for type 2 (global
   option string), consider a union instead (check local types!)
-• tty.c: volatile sig_atomic_t not int; time_t not long; …
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.31 2017/03/18 00:02:08 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.32 2017/03/19 19:19:50 tg Exp $
