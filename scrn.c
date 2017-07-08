@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.c,v 1.20 2017/07/08 15:38:53 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.c,v 1.21 2017/07/08 16:19:23 tg Exp $ */
 /*
  *	Device independant TTY interface for JOE
  *	Copyright
@@ -305,7 +305,7 @@ void outatr(struct charmap *map,SCRN *t,int *scrn,int *attrf,int xx,int yy,int c
 			t->x++;
 		} else {
 			/* Non UTF-8 char to UTF-8 terminal */
-			unsigned char buf[16];
+			unsigned char buf[7];
 			int wid;
 
 			/* Deal with control characters */
@@ -1380,7 +1380,8 @@ void magic(SCRN *t, int y, int *cs, int *ca,int *s, int *a, int placex)
 			if (q > 0) {
 				int z, fu;
 
-				for (z = x; z != t->co - 1 && ofst[z] == q; ++z) ;
+				for (z = x; z != t->co - 1 && ofst[z] == q; ++z)
+					;
 				while (s[x] == cs[x] && x < placex)
 					++x;
 				dodelchr(t, x, y, q);
@@ -1391,7 +1392,8 @@ void magic(SCRN *t, int y, int *cs, int *ca,int *s, int *a, int placex)
 			} else {
 				int z, fu;
 
-				for (z = x; z != t->co - 1 && ofst[z] == q; ++z) ;
+				for (z = x; z != t->co - 1 && ofst[z] == q; ++z)
+					;
 				while (s[x + q] == cs[x + q] && x - q < placex)
 					++x;
 				doinschr(t, x + q, y, s + x + q, a + x + q, -q);
@@ -1562,12 +1564,14 @@ void nscroll(SCRN *t)
 				doupscrl(t, y, z + q, q);
 				y = z - 1;
 			} else {
-				for (r = y; r != t->li && (t->sary[r] < 0 || t->sary[r] == t->li); ++r) ;
+				for (r = y; r != t->li && (t->sary[r] < 0 || t->sary[r] == t->li); ++r)
+					;
 				p = r - 1;
 				do {
 					q = t->sary[p];
 					if (q && q != t->li) {
-						for (z = p; t->sary[z] = 0, (z && t->sary[z - 1] == q); --z) ;
+						for (z = p; t->sary[z] = 0, (z && t->sary[z - 1] == q); --z)
+							;
 						dodnscrl(t, z + q, p + 1, -q);
 						p = z + 1;
 					}
@@ -1801,7 +1805,7 @@ void genfield(SCRN *t,int *scrn,int *attr,int x,int y,int ofst,unsigned char *s,
 				wid = joe_wcwidth(1,c);
 		} else {
 			/* Byte mode: character is one column wide */
-			wid = 1 ;
+			wid = 1;
 		}
 		if (wid>=0) {
 			if (col >= ofst) {
@@ -1834,7 +1838,7 @@ void genfield(SCRN *t,int *scrn,int *attr,int x,int y,int ofst,unsigned char *s,
 				}
 			} else
 				col += wid;
-	}
+		}
 	}
 	/* Fill balance of field with spaces */
 	while (x < last_col) {
@@ -1923,11 +1927,11 @@ void genfmt(SCRN *t, int x, int y, int ofst, const unsigned char *s, int flg)
 				/* UTF-8 mode: decode character and determine its width */
 				c = utf8_decode(&sm,c);
 				if (c >= 0) {
-						wid = joe_wcwidth(1,c);
+					wid = joe_wcwidth(1, c);
 				}
 			} else {
 				/* Byte mode: character is one column wide */
-				wid = 1 ;
+				wid = 1;
 			}
 
 			if (wid>=0) {
