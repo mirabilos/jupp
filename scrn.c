@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.c,v 1.21 2017/07/08 16:19:23 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.c,v 1.22 2017/07/08 16:23:26 tg Exp $ */
 /*
  *	Device independant TTY interface for JOE
  *	Copyright
@@ -205,8 +205,6 @@ void outatr(struct charmap *map,SCRN *t,int *scrn,int *attrf,int xx,int yy,int c
 		if(locale_map->type) {
 			/* UTF-8 char to UTF-8 terminal */
 			int wid;
-			int uni_ctrl = 0;
-			unsigned char buf[16];
 
 			switch ((wid = unictrl(c))) {
 			case 0:
@@ -215,10 +213,7 @@ void outatr(struct charmap *map,SCRN *t,int *scrn,int *attrf,int xx,int yy,int c
 				break;
 			case 1:
 				c ^= 0x40;
-				if (/* CONSTCOND */ 0)
-					/* FALLTHROUGH */
 			default:
-				  uni_ctrl = 1;
 				a ^= UNDERLINE;
 				break;
 			}
@@ -234,10 +229,11 @@ void outatr(struct charmap *map,SCRN *t,int *scrn,int *attrf,int xx,int yy,int c
 				cpos(t, xx, yy);
 			if(t->attrib != a)
 				set_attr(t, a);
-			if (uni_ctrl) {
-				joe_snprintf_1((char *)buf,16,"<%X>",c);
-				ttputs(buf);
+			if (*unictrlbuf) {
+				ttputs(unictrlbuf);
 			} else {
+				unsigned char buf[7];
+
 				utf8_encode(buf,c);
 				ttputs(buf);
 			}

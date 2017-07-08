@@ -1,7 +1,7 @@
 #if 0
 .if "0" == "1"
 #endif
-/* $MirOS: contrib/code/jupp/i18n.c,v 1.21 2017/07/08 16:22:48 tg Exp $ */
+/* $MirOS: contrib/code/jupp/i18n.c,v 1.22 2017/07/08 16:23:25 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 functions for JOE
  *	Copyright
@@ -490,6 +490,8 @@ static const struct mb_ucsrange joe_ctrlchars[] = {
 unsigned char unictrlbuf[11];
 int unictrl(unsigned int ucs)
 {
+	*unictrlbuf = 0;
+
 	/* ASCII control characters use one screen column */
 	if (ucs < 32 || ucs == 0x7F)
 		return (1);

@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/i18n.h,v 1.7 2017/03/19 19:30:22 tg Exp $ */
+/* $MirOS: contrib/code/jupp/i18n.h,v 1.8 2017/07/08 16:23:26 tg Exp $ */
 
 #ifndef _Ii18n
 #define _Ii18n 1
@@ -36,6 +36,7 @@ int joe_wcwidth PARAMS((int wide, unsigned int c));
 int joe_towupper PARAMS((struct charmap *,int c));
 int joe_towlower PARAMS((struct charmap *,int c));
 
+extern unsigned char unictrlbuf[11];
 int unictrl PARAMS((unsigned int c));
 
 #endif
