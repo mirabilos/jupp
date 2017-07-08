@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/syntax.c,v 1.16 2017/01/11 22:04:33 tg Exp $ */
+/* $MirOS: contrib/code/jupp/syntax.c,v 1.17 2017/07/08 16:15:12 tg Exp $ */
 /*
  *	Syntax highlighting DFA interpreter
  *	Copyright
@@ -20,7 +20,7 @@
 #include "syntax.h"
 
 static struct {
-	unsigned char buf[6];
+	unsigned char buf[7];
 	unsigned char start;
 	unsigned char limit;
 	unsigned eaten : 1;
