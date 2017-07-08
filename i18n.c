@@ -1,7 +1,7 @@
 #if 0
 .if "0" == "1"
 #endif
-/* $MirOS: contrib/code/jupp/i18n.c,v 1.20 2017/07/08 16:20:34 tg Exp $ */
+/* $MirOS: contrib/code/jupp/i18n.c,v 1.21 2017/07/08 16:22:48 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 functions for JOE
  *	Copyright
@@ -487,6 +487,7 @@ static const struct mb_ucsrange joe_ctrlchars[] = {
 };
 
 /* returns column width of control character, 0 for regular */
+unsigned char unictrlbuf[11];
 int unictrl(unsigned int ucs)
 {
 	/* ASCII control characters use one screen column */
@@ -498,9 +499,8 @@ int unictrl(unsigned int ucs)
 	    ucs) == (size_t)-1 && (ucs & 0xFFFE) != 0xFFFE && ucs <= 0x10FFFF)
 		return (0);
 
-	/* < plus width of hex repr plus > */
-	return (ucs < 0x100 ? 4 : /* ucs < 0x1000 ? 5 : */
-	    ucs < 0x10000 ? 6 : ucs < 0x100000 ? 7 : 8);
+	return (joe_snprintf_1((char *)unictrlbuf, sizeof(unictrlbuf),
+	    "<%X>", ucs));
 }
 
 int joe_wcwidth(int wide, unsigned int ucs)
