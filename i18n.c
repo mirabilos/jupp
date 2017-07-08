@@ -1,7 +1,7 @@
 #if 0
 .if "0" == "1"
 #endif
-/* $MirOS: contrib/code/jupp/i18n.c,v 1.19 2017/07/08 15:38:52 tg Exp $ */
+/* $MirOS: contrib/code/jupp/i18n.c,v 1.20 2017/07/08 16:20:34 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 functions for JOE
  *	Copyright
@@ -480,6 +480,7 @@ static const struct mb_ucsrange joe_ctrlchars[] = {
 	{ 0x2028, 0x202E },
 	{ 0x2060, 0x2063 },
 	{ 0x2066, 0x206F },
+	{ 0xD800, 0xDFFF },
 	{ 0xFDD0, 0xFDEF },
 	{ 0xFEFF, 0xFEFF },
 	{ 0xFFF9, 0xFFFB }
@@ -494,7 +495,7 @@ int unictrl(unsigned int ucs)
 
 	/* not a control or noncharacter? */
 	if (mb_ucsbsearch(joe_ctrlchars, NELEM(joe_ctrlchars),
-	    ucs) == (size_t)-1 && (ucs & 0xFFFE) != 0xFFFE)
+	    ucs) == (size_t)-1 && (ucs & 0xFFFE) != 0xFFFE && ucs <= 0x10FFFF)
 		return (0);
 
 	/* < plus width of hex repr plus > */
