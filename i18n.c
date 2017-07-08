@@ -1,12 +1,13 @@
 #if 0
 .if "0" == "1"
 #endif
-/* $MirOS: contrib/code/jupp/i18n.c,v 1.18 2017/07/08 15:11:05 tg Exp $ */
+/* $MirOS: contrib/code/jupp/i18n.c,v 1.19 2017/07/08 15:38:52 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 functions for JOE
  *	Copyright
  *		(C) 1992 Joseph H. Allen
- *	Copyright © 2014 Thorsten Glaser
+ *	Copyright © 2014, 2017
+ *		mirabilos <m@mirbsd.org>
  *
  *	This file is part of JOE (Joe's Own Editor)
  *
@@ -474,15 +475,32 @@ mb_ucsbsearch(const struct mb_ucsrange arr[], size_t elems, unsigned int val)
 
 /*XXX possibly more */
 static const struct mb_ucsrange joe_ctrlchars[] = {
+	{ 0x0080, 0x009F },
 	{ 0x200B, 0x200F },
 	{ 0x2028, 0x202E },
 	{ 0x2060, 0x2063 },
 	{ 0x2066, 0x206F },
 	{ 0xFDD0, 0xFDEF },
 	{ 0xFEFF, 0xFEFF },
-	{ 0xFFF9, 0xFFFB },
-	{ 0xFFFE, 0xFFFF }
+	{ 0xFFF9, 0xFFFB }
 };
+
+/* returns column width of control character, 0 for regular */
+int unictrl(unsigned int ucs)
+{
+	/* ASCII control characters use one screen column */
+	if (ucs < 32 || ucs == 0x7F)
+		return (1);
+
+	/* not a control or noncharacter? */
+	if (mb_ucsbsearch(joe_ctrlchars, NELEM(joe_ctrlchars),
+	    ucs) == (size_t)-1 && (ucs & 0xFFFE) != 0xFFFE)
+		return (0);
+
+	/* < plus width of hex repr plus > */
+	return (ucs < 0x100 ? 4 : /* ucs < 0x1000 ? 5 : */
+	    ucs < 0x10000 ? 6 : ucs < 0x100000 ? 7 : 8);
+}
 
 int joe_wcwidth(int wide, unsigned int ucs)
 {
@@ -6903,27 +6921,6 @@ main(int argc,char *argv[])
 	return (0);
 }
 #endif
-
-/* Return true if c is a control character which should not be displayed */
-int unictrl(unsigned int ucs)
-{
-	/* C0 Control characters are one column wide in JOE */
-	if (ucs < 32 || ucs == 0x7F)
-		return (1);
-
-	/* C1 control characters... */
-	if (ucs >= 0x80 && ucs < 0xA0)
-		return (4);
-
-	/* More control characters... */
-	if (mb_ucsbsearch(joe_ctrlchars, NELEM(joe_ctrlchars), ucs) != (size_t)-1)
-		return (6);
-
-	if ((ucs & 0xFFFE) == 0xFFFE)
-		return (ucs > 0xFFFFF ? 8 : 7);
-
-	return (0);
-}
 
 #if 0
 .endif

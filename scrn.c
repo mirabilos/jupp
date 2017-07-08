@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.c,v 1.19 2017/01/10 23:59:33 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.c,v 1.20 2017/07/08 15:38:53 tg Exp $ */
 /*
  *	Device independant TTY interface for JOE
  *	Copyright
@@ -208,22 +208,23 @@ void outatr(struct charmap *map,SCRN *t,int *scrn,int *attrf,int xx,int yy,int c
 			int uni_ctrl = 0;
 			unsigned char buf[16];
 
-			/* Deal with control characters */
-			if (c<32) {
-				c = c + '@';
+			switch ((wid = unictrl(c))) {
+			case 0:
+				/* not a control character */
+				wid = joe_wcwidth(1, c);
+				break;
+			case 1:
+				c ^= 0x40;
+				if (/* CONSTCOND */ 0)
+					/* FALLTHROUGH */
+			default:
+				  uni_ctrl = 1;
 				a ^= UNDERLINE;
-			} else if (c==127) {
-				c = '?';
-				a ^= UNDERLINE;
-			} else if (unictrl(c)) {
-				a ^= UNDERLINE;
-				uni_ctrl = 1;
+				break;
 			}
 
 			if(*scrn==c && *attrf==a)
 				return;
-
-			wid = joe_wcwidth(1,c);
 
 			*scrn = c;
 			*attrf = a;
