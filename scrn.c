@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.c,v 1.24 2017/07/09 01:15:51 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.c,v 1.25 2017/07/09 01:19:54 tg Exp $ */
 /*
  *	Device independant TTY interface for JOE
  *	Copyright
@@ -1209,6 +1209,10 @@ int cpos(register SCRN *t, register int x, register int y)
 				   the right half of a UTF-8 two column character, so we can't.
 				   Also do not try to emit utf-8 sequences here. */
 				if(*cs<32 || *cs>=127)
+					break;
+
+				/* has a combining character attached? */
+				if (*as & HAS_COMBINING)
 					break;
 
 				if (*as != t->attrib)
