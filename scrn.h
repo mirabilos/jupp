@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.h,v 1.4 2012/12/30 17:10:58 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.h,v 1.5 2017/07/09 01:03:54 tg Exp $ */
 /*
  *	Device independant tty interface for JOE
  *	Copyright
@@ -126,6 +126,8 @@ extern unsigned atab[];
 #define FG_GREEN (13<<FG_SHIFT)
 #define FG_RED (14<<FG_SHIFT)
 #define FG_BLACK (15<<FG_SHIFT)
+
+#define HAS_COMBINING 0x200000
 
 void outatr PARAMS((struct charmap *map,SCRN *t,int *scrn,int *attrf,int xx,int yy,int c,int a));
 

@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.107 2017/07/08 15:11:05 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.108 2017/07/09 01:03:53 tg Exp $
 -------------------------------------------------------------------
 
 JOE-current
@@ -7,6 +7,7 @@ JOE-current
 - Make some signal handlers a bit more safe
 - Remove unused Unicode categorisations (~15K in the binary)
 - Update internationalisation data to Unicode 10.0.0
+- Partial fix for redrawing lines with combining characters
 
 JOE 3.1jupp30
 
@@ -24,7 +25,7 @@ JOE 3.1jupp30
 - Disable setlocale for old cygwin32; use the current codepage instead
 - Add JOECHARMAP override for locale/codepage-detected I/O charmap
 - Display codes 128–159 in the CharTable help card properly
-– Avoid the Win32 console beeping on • by making it non-printable (WTF)
+- Avoid the Win32 console beeping on • by making it non-printable (WTF)
 - Improve some documentation façets
 - Add “-CYGhack” command line option; use it in right-click menu (WTF²)
 - Do not force use of /usr/local in configure on Solaris

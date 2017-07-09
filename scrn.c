@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.c,v 1.22 2017/07/08 16:23:26 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.c,v 1.23 2017/07/09 01:03:53 tg Exp $ */
 /*
  *	Device independant TTY interface for JOE
  *	Copyright
@@ -236,6 +236,8 @@ void outatr(struct charmap *map,SCRN *t,int *scrn,int *attrf,int xx,int yy,int c
 
 				utf8_encode(buf,c);
 				ttputs(buf);
+				if (wid == 0 && xx > 0)
+					attrf[-1] |= HAS_COMBINING;
 			}
 			t->x+=wid;
 			while (wid>1) {
@@ -1641,7 +1643,7 @@ void nscrldn(SCRN *t, int top, int bot, int amnt)
 		for (x = top; x != top + amnt; ++x) {
 			t->updtab[x] = 1;
 			t->syntab[x] = -1;
-			}
+		}
 	}
 	if (amnt > bot - top)
 		amnt = bot - top;
@@ -1649,7 +1651,7 @@ void nscrldn(SCRN *t, int top, int bot, int amnt)
 	if (amnt == bot - top) {
 		msetI(t->updtab + top, 1, amnt);
 		msetI(t->syntab + top, -1, amnt);
-		}
+	}
 }
 
 void nscrlup(SCRN *t, int top, int bot, int amnt)
@@ -1669,7 +1671,7 @@ void nscrlup(SCRN *t, int top, int bot, int amnt)
 		for (x = bot - amnt; x != bot; ++x) {
 			t->updtab[x] = 1;
 			t->syntab[x] = -1;
-			}
+		}
 	}
 	if (amnt > bot - top)
 		amnt = bot - top;
@@ -1677,7 +1679,7 @@ void nscrlup(SCRN *t, int top, int bot, int amnt)
 	if (amnt == bot - top) {
 		msetI(t->updtab + bot - amnt, 1, amnt);
 		msetI(t->syntab + bot - amnt, -1, amnt);
-		}
+	}
 }
 
 extern volatile int dostaupd;
