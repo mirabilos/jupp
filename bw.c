@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/bw.c,v 1.21 2016/10/08 19:28:53 tg Exp $ */
+/* $MirOS: contrib/code/jupp/bw.c,v 1.22 2017/07/09 01:15:51 tg Exp $ */
 /*
  *	Edit buffer window generation
  *	Copyright
@@ -444,7 +444,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 						wid = 1;
 				}
 
-				if(wid>0) {
+				if (wid >= 0) {
 					col += wid;
 					if (col == scr) {
 						--amnt;

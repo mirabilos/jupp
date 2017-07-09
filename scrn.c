@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.c,v 1.23 2017/07/09 01:03:53 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.c,v 1.24 2017/07/09 01:15:51 tg Exp $ */
 /*
  *	Device independant TTY interface for JOE
  *	Copyright
@@ -1805,7 +1805,7 @@ void genfield(SCRN *t,int *scrn,int *attr,int x,int y,int ofst,unsigned char *s,
 			/* Byte mode: character is one column wide */
 			wid = 1;
 		}
-		if (wid>=0) {
+		if (wid >= 0) {
 			if (col >= ofst) {
 				if (x + wid > last_col) {
 					/* Character crosses end of field, so fill balance of field with '>' characters instead */
@@ -1815,7 +1815,7 @@ void genfield(SCRN *t,int *scrn,int *attr,int x,int y,int ofst,unsigned char *s,
 						++attr;
 						++x;
 					}
-				} else if(wid) {
+				} else /* if (wid >(=) 0) */ {
 					/* Emit character */
 					outatr(locale_map, t, scrn, attr, x, y, c, my_atr);
 					x += wid;
@@ -1932,7 +1932,7 @@ void genfmt(SCRN *t, int x, int y, int ofst, const unsigned char *s, int flg)
 				wid = 1;
 			}
 
-			if (wid>=0) {
+			if (wid >= 0) {
 				if (col >= ofst) {
 					outatr(locale_map, t, scrn, attr, x, y, c, atr);
 					scrn += wid;
