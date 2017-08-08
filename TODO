@@ -589,9 +589,8 @@ Other requests:
   option string), consider a union instead (check local types!)
 • killjoe equivalent to not exit 0; consider elsewhere too…
   (hardcoded in main.c, maybe leave=2?)
-• !isatty(0), as in foo|xargs jupp (or use BSD xargs -o ?)
 • presentation mode (^KP, ^KN, ^QBKBQKKKK/) on some F-keys
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.36 2017/07/09 01:03:53 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.37 2017/08/08 21:30:46 tg Exp $

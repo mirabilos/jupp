@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/main.c,v 1.29 2017/08/08 21:27:39 tg Exp $ */
+/* $MirOS: contrib/code/jupp/main.c,v 1.30 2017/08/08 21:30:47 tg Exp $ */
 
 #define JUPP_IS_COPYRIGHT_C_BY "2017 mirabilos"
 
@@ -39,6 +39,7 @@
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
+#include <unistd.h>
 
 #include "b.h"
 #include "help.h"
@@ -313,6 +314,11 @@ main_init(int argc, char **argv, char **envp, SCRN **np)
 				idleout = 0;
 		}
 	}
+
+#if HAVE_ISATTY
+	if (idleout && (!isatty(0) || !isatty(1)))
+		idleout = 0;
+#endif
 
 	if (!(n = nopen(cap)))
 		return 1;
