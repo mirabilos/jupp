@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/termcap.c,v 1.12 2017/01/11 22:41:19 tg Exp $ */
+/* $MirOS: contrib/code/jupp/termcap.c,v 1.13 2017/08/08 16:09:43 tg Exp $ */
 /*
  *	TERMCAP/TERMINFO database interface
  *	Copyright
@@ -571,9 +571,11 @@ void texec(CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int a3)
 					cap->out(cap->outptr, x / 96);
 					x %= 96;
 				}
+				/* FALLTHROUGH */
 			case '+':
 				if (*s)
 					x += escape(&s);
+				/* FALLTHROUGH */
 			case '.':
 				cap->out(cap->outptr, x);
 				++a;
@@ -581,9 +583,11 @@ void texec(CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int a3)
 			case 'd':
 				if (x < 10)
 					goto one;
+				/* FALLTHROUGH */
 			case '2':
 				if (x < 100)
 					goto two;
+				/* FALLTHROUGH */
 			case '3':
 				c = '0';
 				while (x >= 100) {
@@ -591,7 +595,8 @@ void texec(CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int a3)
 					x -= 100;
 				}
 				cap->out(cap->outptr, c);
-			      two:c = '0';
+ two:
+				c = '0';
 				while (x >= 10) {
 					++c;
 					x -= 10;
@@ -664,6 +669,7 @@ void texec(CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int a3)
 					a[0] += escape(&s);
 				else
 					escape(&s);
+				/* FALLTHROUGH */
 			default:
 				cap->out(cap->outptr, '%');
 				cap->out(cap->outptr, c);

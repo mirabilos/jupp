@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.c,v 1.25 2017/07/09 01:19:54 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.c,v 1.26 2017/08/08 16:09:43 tg Exp $ */
 /*
  *	Device independant TTY interface for JOE
  *	Copyright
@@ -213,6 +213,7 @@ void outatr(struct charmap *map,SCRN *t,int *scrn,int *attrf,int xx,int yy,int c
 				break;
 			case 1:
 				c ^= 0x40;
+				/* FALLTHROUGH */
 			default:
 				a ^= UNDERLINE;
 				break;
@@ -1028,6 +1029,7 @@ static void cposs(register SCRN *t, register int x, register int y)
 		texec(t->cap, t->ho, 1, 0, 0, 0, 0);
 		t->x = 0;
 		t->y = hy;
+		/* FALLTHROUGH */
  doch:
 		/* FALLTHROUGH */
 	case 4:
@@ -1047,6 +1049,7 @@ static void cposs(register SCRN *t, register int x, register int y)
 	case 8:
 		texec(t->cap, t->cr, 1, 0, 0, 0, 0);
 		t->x = 0;
+		/* FALLTHROUGH */
  docv:
 		/* FALLTHROUGH */
 	case 5:
