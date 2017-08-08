@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/cmd.c,v 1.16 2017/08/08 21:36:11 tg Exp $ */
+/* $MirOS: contrib/code/jupp/cmd.c,v 1.17 2017/08/08 21:39:28 tg Exp $ */
 /*
  *	Command execution
  *	Copyright
@@ -93,6 +93,7 @@ static int unop(void)
 }
 
 CMD cmds[] = {
+	{US "abendjoe", TYPETW + TYPEPW + TYPEMENU + TYPEQW, uabendjoe, NULL, 0, NULL},
 	{US "abort", TYPETW + TYPEPW + TYPEMENU + TYPEQW, uabort, NULL, 0, NULL},
 	{US "abortbuf", TYPETW, uabortbuf, NULL, 0, NULL},
 	{US "arg", TYPETW + TYPEPW + TYPEMENU + TYPEQW, uarg, NULL, 0, NULL},

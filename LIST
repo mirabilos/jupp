@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/LIST,v 1.10 2016/10/07 20:07:49 tg Exp $
+$MirOS: contrib/code/jupp/LIST,v 1.11 2017/08/08 21:39:27 tg Exp $
 -----------------------------------------------------------------
 
 Joe commands grouped by function
@@ -124,6 +124,7 @@ querysave	Prompt to save each modified buffer
 		Use in a macro: "querysave,query,killjoe"
 
 killjoe		Exit joe immediately without checking for modified buffers
+abendjoe	Same, but with errorlevel 1
 
 Files
 -----

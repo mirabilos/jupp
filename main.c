@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/main.c,v 1.30 2017/08/08 21:30:47 tg Exp $ */
+/* $MirOS: contrib/code/jupp/main.c,v 1.31 2017/08/08 21:39:28 tg Exp $ */
 
 #define JUPP_IS_COPYRIGHT_C_BY "2017 mirabilos"
 
@@ -422,19 +422,20 @@ main_init(int argc, char **argv, char **envp, SCRN **np)
 	return 0;
 }
 
+int main_rv;
+
 int
 main(int argc, char **argv, char **envp)
 {
-	int rv;
 	SCRN *n;
 
-	if ((rv = main_init(argc, argv, envp, &n)))
-		return (rv);
+	if ((main_rv = main_init(argc, argv, envp, &n)))
+		return (main_rv);
 
 	edloop(0);
 	vclose(vmem);
 	nclose(n);
 	if (exmsg)
 		fprintf(stderr, "\n%s\n", exmsg);
-	return (0);
+	return (main_rv);
 }

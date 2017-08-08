@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ufile.c,v 1.11 2014/10/23 16:10:28 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ufile.c,v 1.12 2017/08/08 21:39:28 tg Exp $ */
 /*
  * 	User file operations
  *	Copyright
@@ -1066,4 +1066,13 @@ int ukilljoe(BW *bw)
 {
 	leave = 1;
 	return 0;
+}
+
+extern int main_rv;
+
+int
+uabendjoe(BW *bw)
+{
+	main_rv = 1;
+	return (ukilljoe(bw));
 }
