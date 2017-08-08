@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.108 2017/07/09 01:03:53 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.109 2017/08/08 16:12:03 tg Exp $
 -------------------------------------------------------------------
 
 JOE-current
@@ -8,6 +8,7 @@ JOE-current
 - Remove unused Unicode categorisations (~15K in the binary)
 - Update internationalisation data to Unicode 10.0.0
 - Partial fix for redrawing lines with combining characters
+- Quell stricter GCC 7 warnings
 
 JOE 3.1jupp30
 

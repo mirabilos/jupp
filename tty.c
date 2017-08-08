@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.c,v 1.23 2017/03/19 19:19:51 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.c,v 1.24 2017/08/08 16:12:04 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright
@@ -408,7 +408,7 @@ baud_reset(int bbaud)
 	upc = DIVIDEND / baud;
 	if (obuf)
 		joe_free(obuf);
-	if (!(TIMES * upc))
+	if ((TIMES * upc) == 0)
 		obufsiz = 4096;
 	else {
 		obufsiz = 1000000 / (TIMES * upc);

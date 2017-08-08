@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/termcap.c,v 1.13 2017/08/08 16:09:43 tg Exp $ */
+/* $MirOS: contrib/code/jupp/termcap.c,v 1.14 2017/08/08 16:12:04 tg Exp $ */
 /*
  *	TERMCAP/TERMINFO database interface
  *	Copyright
@@ -79,7 +79,7 @@ static unsigned char *lfind(unsigned char *s, int pos, FILE *fd, unsigned char *
 	while (c = getc(fd), c == ' ' || c == '\t' || c == '#')
 		do {
 			c = getc(fd);
-		} while (!(c == -1 || c == '\n'));
+		} while (c != -1 && c != '\n');
 	if (c == -1)
 		return s = vstrunc(s, pos);
 	ungetc(c, fd);
