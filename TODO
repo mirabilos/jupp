@@ -61,5 +61,7 @@ msdos-
 
  how to give memory back during shell escapes?
 
+ doesn't work with 512 KiB RAM (NULL pointer dereference)
+
 =-=-=
 make identifier length significant in first 8 (6?) places for old C compilers
