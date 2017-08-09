@@ -329,8 +329,8 @@ Editing Tasks
      TAB key. This inserts a special control character which
      makes the characters which follow it begin at the next TAB
      STOP.  TAB STOPS normally occur every 8 columns, but this
-     can be changed with the ^T D command.  PASCAL and C program-
-     mers often set TAB STOPS on every 4 columns.
+     can be changed with the ^T D command.  Python programmers
+     often set TAB STOPS on every 4 columns.
 
      If for some reason your terminal screen gets messed up (for
      example, if you receive a mail notice from biff), you can
