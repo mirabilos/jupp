@@ -40,7 +40,7 @@ DDeessccrriippttiioonn
      Although JOE is actually six different editors, it still
      requires only one executable, but one with six different
      names.  The name of the editor with an "rc" appended gives
-     the name of JOE's initialization file, which determines the
+     the name of JOE's initialisation file, which determines the
      personality of the editor.
 
      JUPP is free software; you can distribute it and/or modify
@@ -48,19 +48,19 @@ DDeessccrriippttiioonn
      sion 1, as published by the Free Software Foundation. I have
      no plans for turning JOE into a commercial or share-ware
      product. See the source code for exact authorship and
-     licencing information. JOE is available over the Internet by
-     anonymous FTP from ffttpp..ssttdd..ccoomm, file:
-     ssrrcc//eeddiittoorrss//jjooee**..ttaarr..ZZ. JUPP is available at
+     licencing information. JOE is available over the Internet
+     from hhttttpp::////jjooee--eeddiittoorr..ssff..nneett//. JUPP is available at
      hhttttpp::////mmiirrbbssdd..ddee//jjuupppp.
 
 
 UUssaaggee
      To start the editor, type jjooee followed by zero or more names
      of files you want to edit.  Each file name may be preceded
+     by a local option setting (see the local options table which
 
 
 
-MirOS BSD #10-current   Printed 18.7.2009                       1
+MirOS BSD #10-current  Printed 09.08.2017                       1
 
 
 
@@ -71,7 +71,6 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
 
 
 
-     by a local option setting (see the local options table which
      follows).  Other global options, which apply to the editor
      as a whole, may also be placed on the command line (see the
      global options table which follows).  If you are editing a
@@ -113,20 +112,21 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
      topics, hit ^[, and ^[. (that is, ESC , and ESC .).  Use ^^KK
      HH to dismiss the help window.
 
-     You can customize the keyboard layout, the help screens and
-     a number of behavior defaults by copying JOE's initializa-
+     You can customise the keyboard layout, the help screens and
+     a number of behavior defaults by copying JOE's initialisa-
      tion file (usually //eettcc//jjooee//jjooeerrcc) to ..jjooeerrcc in your home
-     directory and then by modifying it.  See the section jjooeerrcc
-     below.
+     directory and then by modifying it. See the section jjooeerrcc
+     below. The filename is actually .._n_a_m_errcc where _n_a_m_e is the
+     aarrggvv[[00]] the editor is called with.
 
      To have JOE used as your default editor for e-mail and News,
      you need to set the EEDDIITTOORR and VVIISSUUAALL environment variables
-     in your shell initialization file (..ccsshhrrcc or ..pprrooffiillee) to
-     refer to JOE (joe usually resides as //uussrr//bbiinn//jjooee).
+     in your shell initialisation file (..ccsshhrrcc or ..pprrooffiillee) to
+     refer to JOE (the joe binary usually resides as
 
 
 
-MirOS BSD #10-current   Printed 18.7.2009                       2
+MirOS BSD #10-current  Printed 09.08.2017                       2
 
 
 
@@ -136,6 +136,8 @@ MirOS BSD #10-current   Printed 18.7.2009                       2
 JOE(1)              UNIX Programmer's Manual               JOE(1)
 
 
+
+     //uussrr//bbiinn//jjooee).
 
      There are a number of other obscure invocation parameters
      which may have to be set, particularly if your terminal
@@ -163,7 +165,7 @@ CCoommmmaanndd LLiinnee OOppttiioonnss
 
      -baud nnn
           Set the baud rate for the purposes of terminal screen
-          optimization.  Joe inserts delays for baud rates below
+          optimisation.  Joe inserts delays for baud rates below
           19200, which bypasses tty buffering so that typeahead
           will interrupt the screen output.  Scrolling commands
           will not be used for 38400 baud.  This is useful for
@@ -188,11 +190,9 @@ CCoommmmaanndd LLiinnee OOppttiioonnss
           emacs.
 
 
-     -dopadding
 
 
-
-MirOS BSD #10-current   Printed 18.7.2009                       3
+MirOS BSD #10-current  Printed 09.08.2017                       3
 
 
 
@@ -203,6 +203,7 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
 
 
 
+     -dopadding
           Joe usually assumes that there is some kind of flow
           control between it and the tty.  If there isn't, this
           option will make joe output extra ^@s to the tty as
@@ -254,11 +255,10 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
 
 
      -nobackups
-          This option prevents backup files.
 
 
 
-MirOS BSD #10-current   Printed 18.7.2009                       4
+MirOS BSD #10-current  Printed 09.08.2017                       4
 
 
 
@@ -267,6 +267,9 @@ MirOS BSD #10-current   Printed 18.7.2009                       4
 
 JOE(1)              UNIX Programmer's Manual               JOE(1)
 
+
+
+          This option prevents backup files.
 
 
      -nonotice
@@ -306,11 +309,7 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
      Each of these options may be specified in the joerc file as
      well.  In addition, the NOXON, BAUD, LINES, COLUMNS and
      DOPADDING options may be specified with environment vari-
-     ables.
-
-     The JOETERM environment variable may be set to override the
-     regular TERM environment variable for specifying your termi-
-     nal type.
+     ables. See the section EEnnvviirroonnmmeenntt vvaarriiaabblleess below.
 
      The following options may be specified before each filename
      on the command line:
@@ -321,10 +320,11 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
 
      -crlf
           Joe uses CR-LF as the end of line sequence instead of
+          just LF.  This is for editing MS-DOS or VMS files.
 
 
 
-MirOS BSD #10-current   Printed 18.7.2009                       5
+MirOS BSD #10-current  Printed 09.08.2017                       5
 
 
 
@@ -333,9 +333,6 @@ MirOS BSD #10-current   Printed 18.7.2009                       5
 
 JOE(1)              UNIX Programmer's Manual               JOE(1)
 
-
-
-          just LF.  This is for editing MS-DOS or VMS files.
 
 
      -wordwrap
@@ -387,10 +384,13 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
           sequence bindings.
 
 
+     These options can also be specified in the joerc file.  They
+     can be set depending on the file-name extension.  Programs
+     (.c, .h or .p extension) usually have autoindent enabled.
 
 
 
-MirOS BSD #10-current   Printed 18.7.2009                       6
+MirOS BSD #10-current  Printed 09.08.2017                       6
 
 
 
@@ -401,9 +401,6 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
 
 
 
-     These options can also be specified in the joerc file.  They
-     can be set depending on the file-name extension.  Programs
-     (.c, .h or .p extension) usually have autoindent enabled.
      Wordwrap is enabled on other files, but rc files have it
      disabled.
 
@@ -445,18 +442,21 @@ EEddiittiinngg TTaasskkss
      TTAABB key. This inserts a special control character which
      makes the characters which follow it begin at the next TAB
      STOP.  TAB STOPS normally occur every 8 columns, but this
-     can be changed with the ^^TT DD command.  PASCAL and C program-
-     mers often set TAB STOPS on every 4 columns.
+     can be changed with the ^^TT DD command.  Python programmers
+     often set TAB STOPS on every 4 columns.
 
      If for some reason your terminal screen gets messed up (for
      example, if you receive a mail notice from biff), you can
      have the editor refresh the screen by hitting ^^RR.
 
      There are many other keys for deleting text and moving
+     around the file.  For example, hit ^^DD to delete the charac-
+     ter the cursor is on instead of deleting backwards like
+     BBaacckkssppaaccee.  ^^DD will also delete a line-break if the cursor
 
 
 
-MirOS BSD #10-current   Printed 18.7.2009                       7
+MirOS BSD #10-current  Printed 09.08.2017                       7
 
 
 
@@ -467,9 +467,6 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
 
 
 
-     around the file.  For example, hit ^^DD to delete the charac-
-     ter the cursor is on instead of deleting backwards like
-     BBaacckkssppaaccee.  ^^DD will also delete a line-break if the cursor
      is at the end of a line.  Type ^^YY to delete the entire line
      the cursor is on or ^^JJ to delete just from the cursor to the
      end of the line.
@@ -519,10 +516,13 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
      If you type past the right edge of the screen in a C
      language or PASCAL file, the screen will scroll to the right
      to follow the cursor.  If you type past the right edge of
+     the screen in a normal file (one whose name doesn't end in
+     .c, .h or .p), JOE will automatically wrap the last word
+     onto the next line so that you don't have to hit RReettuurrnn.
 
 
 
-MirOS BSD #10-current   Printed 18.7.2009                       8
+MirOS BSD #10-current  Printed 09.08.2017                       8
 
 
 
@@ -533,11 +533,8 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
 
 
 
-     the screen in a normal file (one whose name doesn't end in
-     .c, .h or .p), JOE will automatically wrap the last word
-     onto the next line so that you don't have to hit RReettuurrnn.
      This is called word-wrap mode.  Word-wrap can be turned on
-     or off with the ^^TT WW command.  JOE's initialization file is
+     or off with the ^^TT WW command.  JOE's initialisation file is
      usually set up so that this mode is automatically turned on
      for all non-program files.  See the section below on the
      jjooeerrcc file to change this and other defaults.
@@ -568,7 +565,7 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
      position of the right side of the table. When this occurs,
      you can put the editor in over-type mode with ^^TT TT. When the
      editor is in this mode, the characters you type in replace
-     existing characters, in the way an idealized typewriter
+     existing characters, in the way an idealised typewriter
      would.  Also, BBaacckkssppaaccee simply moves left instead of delet-
      ing the character to the left, when it's not at the end or
      beginning of a line.  Over-type mode is not the natural way
@@ -585,10 +582,13 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
      number for 'A' is 65 and the number for '1' is 49.  All of
      the characters which you normally see have numbers in the
      range of 32 - 126 (this particular arbitrary assignment
+     between characters and numbers is called the ASCII character
+     set).  The numbers outside of this range, from 0 to 255,
+     aren't usually displayed, but sometimes have other special
 
 
 
-MirOS BSD #10-current   Printed 18.7.2009                       9
+MirOS BSD #10-current  Printed 09.08.2017                       9
 
 
 
@@ -599,9 +599,6 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
 
 
 
-     between characters and numbers is called the ASCII character
-     set).  The numbers outside of this range, from 0 to 255,
-     aren't usually displayed, but sometimes have other special
      meanings.  The number 10, for example, is used for the
      line-breaks.  You can enter these special, non-displayed
      ccoonnttrrooll cchhaarraacctteerrss by first hitting `` and then hitting a
@@ -652,9 +649,12 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
      with ^^KK PP and ^^KK NN.
 
 
+     WWhheerree aamm II??
 
 
-MirOS BSD #10-current   Printed 18.7.2009                      10
+
+
+MirOS BSD #10-current  Printed 09.08.2017                      10
 
 
 
@@ -664,8 +664,6 @@ MirOS BSD #10-current   Printed 18.7.2009                      10
 JOE(1)              UNIX Programmer's Manual               JOE(1)
 
 
-
-     WWhheerree aamm II??
 
      Hit ^^KK SSPPAACCEE to have JOE report the line number, column
      number, and byte number on the last line of the screen.  The
@@ -718,9 +716,11 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
           are considered to be different.
 
 
+     nnnnnn  (where nnnnnn is a number) If you enter a number, JOE
 
 
-MirOS BSD #10-current   Printed 18.7.2009                      11
+
+MirOS BSD #10-current  Printed 09.08.2017                      11
 
 
 
@@ -731,7 +731,6 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
 
 
 
-     nnnnnn  (where nnnnnn is a number) If you enter a number, JOE
           searches for the Nth occurrence of the text.  This is
           useful for going to specific places in files structured
           in some regular manner.
@@ -783,10 +782,11 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
 
 
      \\[[......]]
+          This matches any single character which appears within
 
 
 
-MirOS BSD #10-current   Printed 18.7.2009                      12
+MirOS BSD #10-current  Printed 09.08.2017                      12
 
 
 
@@ -797,7 +797,6 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
 
 
 
-          This matches any single character which appears within
           the brackets.  For example, if \\[[TTtt]]hhiiss is entered as
           the search string, then JOE finds both TThhiiss and tthhiiss.
           Ranges of characters can be entered within the brack-
@@ -848,11 +847,12 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
      \\nn   Use this if you need to put a line-break in the
           replacement string.
 
+     Some examples:
 
 
 
 
-MirOS BSD #10-current   Printed 18.7.2009                      13
+MirOS BSD #10-current  Printed 09.08.2017                      13
 
 
 
@@ -862,8 +862,6 @@ MirOS BSD #10-current   Printed 18.7.2009                      13
 JOE(1)              UNIX Programmer's Manual               JOE(1)
 
 
-
-     Some examples:
 
      Suppose you have a list of addresses, each on a separate
      line, which starts with "Address:" and has each element
@@ -916,9 +914,11 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
      the letters in the highlighted block will be converted to
      uppercase.
 
+     After you are finished with some block operations, you can
 
 
-MirOS BSD #10-current   Printed 18.7.2009                      14
+
+MirOS BSD #10-current  Printed 09.08.2017                      14
 
 
 
@@ -929,11 +929,10 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
 
 
 
-     After you are finished with some block operations, you can
      just leave the highlighting on if you don't mind it (of
-     course, if you accidently hit ^^KK YY without noticing...).  If
-     it really bothers you, however, just hit ^^KK BB ^^KK KK, to turn
-     the highlighting off.
+     course, if you accidentally hit ^^KK YY without noticing...).
+     If it really bothers you, however, just hit ^^KK BB ^^KK KK, to
+     turn the highlighting off.
 
 
      IInnddeennttiinngg pprrooggrraamm bblloocckkss
@@ -981,10 +980,11 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
      KKeeyybbooaarrdd mmaaccrrooss
 
      Macros allow you to record a series of keystrokes and replay
+     them with the press of two keys.  This is useful to automate
 
 
 
-MirOS BSD #10-current   Printed 18.7.2009                      15
+MirOS BSD #10-current  Printed 09.08.2017                      15
 
 
 
@@ -995,7 +995,6 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
 
 
 
-     them with the press of two keys.  This is useful to automate
      repetitive tasks.  To start a macro recording, hit ^^KK [[ fol-
      lowed by a number from 0 to 9.  The status line will display
      (Macro n recording...).  Now, type in the series of keys-
@@ -1047,10 +1046,11 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
 
      When rectangle mode is selected, over-type mode is also use-
      ful (^^TT TT).  When over-type mode is selected, rectangles
+     will replace existing text instead of getting inserted
 
 
 
-MirOS BSD #10-current   Printed 18.7.2009                      16
+MirOS BSD #10-current  Printed 09.08.2017                      16
 
 
 
@@ -1061,7 +1061,6 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
 
 
 
-     will replace existing text instead of getting inserted
      before it.  Also the delete block command (^^KK YY) will clear
      the selected rectangle with SPACEs and TABs instead of
      deleting it.  Over-type mode is especially useful for the
@@ -1113,10 +1112,11 @@ EEnnvviirroonnmmeenntt vvaarriiaabblleess
      ple, if you are connected via a 1200 baud modem, you want to
      use this value for ssttttyy.  If you are connected via 14.4k
      modem, but the terminal server you are connected to connects
+     to the computer a 9600 baud, you want to set your speed as
 
 
 
-MirOS BSD #10-current   Printed 18.7.2009                      17
+MirOS BSD #10-current  Printed 09.08.2017                      17
 
 
 
@@ -1127,7 +1127,6 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
 
 
 
-     to the computer a 9600 baud, you want to set your speed as
      9600 baud.  The special baud rate of 38400 or eexxttbb is used
      to indicate that you have a very-high speed connection, such
      as a memory mapped console or an X-window terminal emulator.
@@ -1144,6 +1143,10 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
      reported in the TERMCAP or TERMINFO entry, you can set this
      with the ssttttyy rroowwss nnnn ccoollss nnnn command, or by setting the
      LLIINNEESS and CCOOLLUUMMNNSS environment variables.
+
+     The JJOOEETTEERRMM environment variable may be set to override the
+     regular TTEERRMM environment variable for specifying your termi-
+     nal type.
 
      JOE normally expects that flow control between the computer
      and your terminal to use ^S/^Q handshaking (I.E., if the
@@ -1176,13 +1179,10 @@ FFiilleennaammeess
           edited to me.
 
 
-     >>>>ffiilleennaammee
-          Use this to have JOE append the edited text to the end
-          of the file "filename."
 
 
 
-MirOS BSD #10-current   Printed 18.7.2009                      18
+MirOS BSD #10-current  Printed 09.08.2017                      18
 
 
 
@@ -1191,6 +1191,11 @@ MirOS BSD #10-current   Printed 18.7.2009                      18
 
 JOE(1)              UNIX Programmer's Manual               JOE(1)
 
+
+
+     >>>>ffiilleennaammee
+          Use this to have JOE append the edited text to the end
+          of the file "filename."
 
 
      ffiilleennaammee,,SSTTAARRTT,,SSIIZZEE
@@ -1211,22 +1216,27 @@ JOE(1)              UNIX Programmer's Manual               JOE(1)
 
 TThhee jjooeerrcc ffiillee
      ^^TT options, the help screens and the key-sequence to editor
-     command bindings are all defined in JOE's initialization
-     file.  If you make a copy of this file (which normally
+     command bindings are all defined in JOE's initialisation
+     file. If you make a copy of this file (which normally
      resides in //eettcc//jjooee//jjooeerrcc) to $$HHOOMMEE//..jjooeerrcc, you can custom-
-     ize these setting to your liking.  The syntax of the ini-
-     tialization file should be fairly obvious and there are
+     ise these settings to your liking. The syntax of the ini-
+     tialisation file should be fairly obvious, and there are
      further instruction in it.
 
 
 AAcckknnoowwlleeddggmmeennttss
-     JOE was written by Joseph H. Allen.  If you have bug reports
-     or questions, e-mail them to jhallen@world.std.com.  Larry
+     JOE was written by Joseph H. Allen. If you have bug reports
+     or questions, e-mail them to jhallen@world.std.com. Larry
      Foard (entropy@world.std.com) and Gary Gray
      (ggray@world.std.com) also helped with the creation of JOE.
-     Thorsten Glaser (tg@mirbsd.org) created JUPP, and the 16-bit
-     MS-DOS version of JUPP 2.8 was compiled by Andreas Totlis
-     (atotlis@t-online.de).
+     Thorsten "mirabilos" Glaser (tg@mirbsd.org) created JUPP,
+     and the 16-bit MS-DOS version of JUPP 2.8 was compiled by
+     Andreas Totlis (atotlis@t-online.de).
+
+
+BBuuggss
+     This manual page describes only the JOE flavour; documenta-
+     tion for JUPP is especially missing.
 
 
 
@@ -1238,17 +1248,7 @@ AAcckknnoowwlleeddggmmeennttss
 
 
 
-
-
-
-
-
-
-
-
-
-
-MirOS BSD #10-current   Printed 18.7.2009                      19
+MirOS BSD #10-current  Printed 09.08.2017                      19
 
 
 

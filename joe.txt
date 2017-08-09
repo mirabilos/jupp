@@ -35,7 +35,7 @@ Description
      Although JOE is actually six different editors, it still
      requires only one executable, but one with six different
      names.  The name of the editor with an "rc" appended gives
-     the name of JOE's initialization file, which determines the
+     the name of JOE's initialisation file, which determines the
      personality of the editor.
 
      JUPP is free software; you can distribute it and/or modify
@@ -43,9 +43,8 @@ Description
      sion 1, as published by the Free Software Foundation. I have
      no plans for turning JOE into a commercial or share-ware
      product. See the source code for exact authorship and
-     licencing information. JOE is available over the Internet by
-     anonymous FTP from ftp.std.com, file:
-     src/editors/joe*.tar.Z. JUPP is available at
+     licencing information. JOE is available over the Internet
+     from http://joe-editor.sf.net/. JUPP is available at
      http://mirbsd.de/jupp.
 
 Usage
@@ -93,16 +92,19 @@ Usage
      topics, hit ^[, and ^[. (that is, ESC , and ESC .).  Use ^K
      H to dismiss the help window.
 
-     You can customize the keyboard layout, the help screens and
-     a number of behavior defaults by copying JOE's initializa-
+     You can customise the keyboard layout, the help screens and
+     a number of behavior defaults by copying JOE's initialisa-
      tion file (usually /etc/joe/joerc) to .joerc in your home
-     directory and then by modifying it.  See the section joerc
-     below.
+     directory and then by modifying it. See the section joerc
+     below. The filename is actually .namerc where name is the
+     argv[0] the editor is called with.
 
      To have JOE used as your default editor for e-mail and News,
      you need to set the EDITOR and VISUAL environment variables
-     in your shell initialization file (.cshrc or .profile) to
-     refer to JOE (joe usually resides as /usr/bin/joe).
+     in your shell initialisation file (.cshrc or .profile) to
+     refer to JOE (the joe binary usually resides as
+     /usr/bin/joe).
+
      There are a number of other obscure invocation parameters
      which may have to be set, particularly if your terminal
      screen is not updating as you think it should.  See the sec-
@@ -125,7 +127,7 @@ Command Line Options
 
      -baud nnn
           Set the baud rate for the purposes of terminal screen
-          optimization.  Joe inserts delays for baud rates below
+          optimisation.  Joe inserts delays for baud rates below
           19200, which bypasses tty buffering so that typeahead
           will interrupt the screen output.  Scrolling commands
           will not be used for 38400 baud.  This is useful for
@@ -222,11 +224,7 @@ Command Line Options
      Each of these options may be specified in the joerc file as
      well.  In addition, the NOXON, BAUD, LINES, COLUMNS and
      DOPADDING options may be specified with environment vari-
-     ables.
-
-     The JOETERM environment variable may be set to override the
-     regular TERM environment variable for specifying your termi-
-     nal type.
+     ables. See the section Environment variables below.
 
      The following options may be specified before each filename
      on the command line:
@@ -236,7 +234,6 @@ Command Line Options
      -crlf
           Joe uses CR-LF as the end of line sequence instead of
           just LF.  This is for editing MS-DOS or VMS files.
-
      -wordwrap
           Joe wraps the previous word when you type past the
           right margin.
@@ -318,8 +315,8 @@ Editing Tasks
      TAB key. This inserts a special control character which
      makes the characters which follow it begin at the next TAB
      STOP.  TAB STOPS normally occur every 8 columns, but this
-     can be changed with the ^T D command.  PASCAL and C program-
-     mers often set TAB STOPS on every 4 columns.
+     can be changed with the ^T D command.  Python programmers
+     often set TAB STOPS on every 4 columns.
 
      If for some reason your terminal screen gets messed up (for
      example, if you receive a mail notice from biff), you can
@@ -372,7 +369,6 @@ Editing Tasks
      appended to the name, which contains the original version of
      the file.
 
-
      Word wrap and formatting
 
      If you type past the right edge of the screen in a C
@@ -382,7 +378,7 @@ Editing Tasks
      .c, .h or .p), JOE will automatically wrap the last word
      onto the next line so that you don't have to hit Return.
      This is called word-wrap mode.  Word-wrap can be turned on
-     or off with the ^T W command.  JOE's initialization file is
+     or off with the ^T W command.  JOE's initialisation file is
      usually set up so that this mode is automatically turned on
      for all non-program files.  See the section below on the
      joerc file to change this and other defaults.
@@ -404,7 +400,6 @@ Editing Tasks
      If you want to center a line within the margins, use the ^K
      A command.
 
-
      Over-type mode
 
      Sometimes it's tiresome to have to delete old text before or
@@ -413,7 +408,7 @@ Editing Tasks
      position of the right side of the table. When this occurs,
      you can put the editor in over-type mode with ^T T. When the
      editor is in this mode, the characters you type in replace
-     existing characters, in the way an idealized typewriter
+     existing characters, in the way an idealised typewriter
      would.  Also, Backspace simply moves left instead of delet-
      ing the character to the left, when it's not at the end or
      beginning of a line.  Over-type mode is not the natural way
@@ -422,7 +417,6 @@ Editing Tasks
 
      If you need to insert while you're in over-type mode, hit
      ^@.  This inserts a single SPACE into the text.
-
 
      Control and Meta characters
 
@@ -452,9 +446,7 @@ Editing Tasks
      have to put the editor in ASIS mode (described later) to
      have these passed untranslated to the terminal.
 
-
      Prompts
-
      If you hit TAB at any file name prompt, joe will attempt to
      complete the name you entered as much as possible.  If it
      couldn't complete the entire name, because there are more
@@ -483,7 +475,6 @@ Editing Tasks
      Since prompts are windows, you can also switch out of them
      with ^K P and ^K N.
 
-
      Where am I?
 
      Hit ^K SPACE to have JOE report the line number, column
@@ -493,7 +484,6 @@ Editing Tasks
      and/or column number always displayed on the status line by
      setting placing the appropriate escape sequences in the
      status line setup strings.  Edit the joerc file for details.
-
 
      File operations
 
@@ -508,6 +498,14 @@ Editing Tasks
      If you want to include another file in the file you're edit-
      ing, use ^K R to insert it.
 
+     Temporarily suspending the editor
+
+     If you need to temporarily stop the editor and go back to
+     the shell, hit ^K Z.  You might want to do this to stop
+     whatever you're editing and answer an e-mail message or read
+     this man page, for example.  You have to type fg or exit
+     (you'll be told which when you hit ^K Z) to return to the
+     editor.
 
      Searching for text
 
@@ -543,7 +541,6 @@ Editing Tasks
           ing.
 
      You can hit ^L to repeat the previous search.
-
 
      Regular Expressions
 
@@ -639,7 +636,6 @@ Editing Tasks
 
      Address: England, London, S. Holmes, 221b Baker St.
 
-
      Blocks
 
      If you want to move, copy, save or delete a specific section
@@ -665,13 +661,11 @@ Editing Tasks
 
      After you are finished with some block operations, you can
      just leave the highlighting on if you don't mind it (of
-     course, if you accidently hit ^K Y without noticing...).  If
-     it really bothers you, however, just hit ^K B ^K K, to turn
-     the highlighting off.
-
+     course, if you accidentally hit ^K Y without noticing...).
+     If it really bothers you, however, just hit ^K B ^K K, to
+     turn the highlighting off.
 
      Indenting program blocks
-
      Auto-indent mode toggled with the ^T I command.  The joerc
      is normally set up so that files with names ending with .p,
      .c or .h have auto-indent mode enabled.  When auto-indent
@@ -686,9 +680,7 @@ Editing Tasks
      ^K , and ^K . commands.  The number of columns these com-
      mands shift by can be set through a ^T option.
 
-
      Windows
-
      You can edit more than one file at the same time or edit two
      or more different places of the same file.  To do this, hit
      ^K O, to split the screen into two windows.  Use ^K P or ^K
@@ -712,7 +704,6 @@ Editing Tasks
 
      You can change the height of the windows with the ^K G and
      ^K T commands.
-
 
      Keyboard macros
 
@@ -745,9 +736,7 @@ Editing Tasks
      number.  Also you can execute previously recorded macros
      from within new macros.
 
-
      Repeat
-
      You can use the repeat command, ^K \, to repeat a macro, or
      any other edit command or even a normal character, a speci-
      fied number of times.  Hit ^K \, type in the number of times
@@ -758,9 +747,7 @@ Editing Tasks
 
      ^K  20<return>^Y
 
-
      Rectangle mode
-
      Type ^T X to have ^K B and ^K K select rectangular blocks
      instead of stream-of-text blocks.  This mode is useful for
      moving, copying, deleting or saving columns of text.  You
@@ -777,9 +764,7 @@ Editing Tasks
      filter block command (^K /), since it will maintain the ori-
      ginal width of the selected column.
 
-
      Tag search
-
      If you are editing a large C program with many source files,
      you can use the ctags program to generate a tags file.  This
      file contains a list of program symbols and the files and
@@ -793,9 +778,7 @@ Editing Tasks
      probably want to split the window first with ^K O, to have
      both the original file and the definition file loaded.
 
-
      Shell windows
-
      Hit ^K ' to run a command shell in one of JOE's windows.
      When the cursor is at the end of a shell window (use ^K V if
      it's not), whatever you type is passed to the shell instead
@@ -840,6 +823,10 @@ Environment variables
      reported in the TERMCAP or TERMINFO entry, you can set this
      with the stty rows nn cols nn command, or by setting the
      LINES and COLUMNS environment variables.
+
+     The JOETERM environment variable may be set to override the
+     regular TERM environment variable for specifying your termi-
+     nal type.
 
      JOE normally expects that flow control between the computer
      and your terminal to use ^S/^Q handshaking (I.E., if the
@@ -888,18 +875,22 @@ Filenames
 
 The joerc file
      ^T options, the help screens and the key-sequence to editor
-     command bindings are all defined in JOE's initialization
-     file.  If you make a copy of this file (which normally
+     command bindings are all defined in JOE's initialisation
+     file. If you make a copy of this file (which normally
      resides in /etc/joe/joerc) to $HOME/.joerc, you can custom-
-     ize these setting to your liking.  The syntax of the ini-
-     tialization file should be fairly obvious and there are
+     ise these settings to your liking. The syntax of the ini-
+     tialisation file should be fairly obvious, and there are
      further instruction in it.
 
 Acknowledgments
-     JOE was written by Joseph H. Allen.  If you have bug reports
-     or questions, e-mail them to jhallen@world.std.com.  Larry
+     JOE was written by Joseph H. Allen. If you have bug reports
+     or questions, e-mail them to jhallen@world.std.com. Larry
      Foard (entropy@world.std.com) and Gary Gray
      (ggray@world.std.com) also helped with the creation of JOE.
-     Thorsten Glaser (tg@mirbsd.org) created JUPP, and the 16-bit
-     MS-DOS version of JUPP 2.8 was compiled by Andreas Totlis
-     (atotlis@t-online.de).
+     Thorsten "mirabilos" Glaser (tg@mirbsd.org) created JUPP,
+     and the 16-bit MS-DOS version of JUPP 2.8 was compiled by
+     Andreas Totlis (atotlis@t-online.de).
+
+Bugs
+     This manual page describes only the JOE flavour; documenta-
+     tion for JUPP is especially missing.
