@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ufile.h,v 1.3 2017/08/08 21:39:28 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ufile.h,v 1.4 2017/08/09 00:46:02 tg Exp $ */
 /*
  * 	User file operations
  *	Copyright
@@ -30,7 +30,7 @@ int uask PARAMS((BW *bw));
 int ubufed PARAMS((BW *bw));
 int ulose PARAMS((BW *bw));
 int okrepl PARAMS((BW *bw));
-int doedit PARAMS((BW *bw, unsigned char *s, void *obj, int *notify));
+int doswitch PARAMS((BW *bw, unsigned char *s, void *obj, int *notify));
 int uquerysave PARAMS((BW *bw));
 int ukilljoe PARAMS((BW *bw));
 int uabendjoe PARAMS((BW *bw));

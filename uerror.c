@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/uerror.c,v 1.3 2008/05/13 13:08:27 tg Exp $ */
+/* $MirOS: contrib/code/jupp/uerror.c,v 1.4 2017/08/09 00:46:02 tg Exp $ */
 /*
  *	Compiler error handler
  *	Copyright
@@ -276,7 +276,7 @@ int unxterr(BW *bw)
 	}
 	errptr = errptr->link.next;
 	if (!bw->b->name || strcmp(errptr->file, bw->b->name)) {
-		if (doedit(bw, vsdup(errptr->file), NULL, NULL))
+		if (doswitch(bw, vsdup(errptr->file), NULL, NULL))
 			return -1;
 		bw = (BW *) maint->curwin->object;
 	}
@@ -301,7 +301,7 @@ int uprverr(BW *bw)
 	}
 	errptr = errptr->link.prev;
 	if (!bw->b->name || strcmp(errptr->file, bw->b->name)) {
-		if (doedit(bw, vsdup(errptr->file), NULL, NULL))
+		if (doswitch(bw, vsdup(errptr->file), NULL, NULL))
 			return -1;
 		bw = (BW *) maint->curwin->object;
 	}

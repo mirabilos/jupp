@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/utag.c,v 1.2 2008/05/13 13:08:30 tg Exp $ */
+/* $MirOS: contrib/code/jupp/utag.c,v 1.3 2017/08/09 00:46:02 tg Exp $ */
 /*
  *	tags file symbol lookup
  *	Copyright
@@ -60,7 +60,7 @@ static int dotag(BW *bw, unsigned char *s, void *obj, int *notify)
 			if (x != y) {
 				c = buf[y];
 				buf[y] = 0;
-				if (doedit(bw, vsncpy(NULL, 0, sz(buf + x)), NULL, NULL)) {
+				if (doswitch(bw, vsncpy(NULL, 0, sz(buf + x)), NULL, NULL)) {
 					vsrm(s);
 					vsrm(t);
 					fclose(f);
