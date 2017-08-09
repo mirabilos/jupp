@@ -429,12 +429,12 @@
 
 {Windows
 \i   Help Screen    turn off with ^J     prev. screen ^[,    next screen ^[.     \i
-\i \i^KO Split the window in half         ^KE Load file into new window           \i \i
-\i \i^KG Make current window bigger       ^KT Make current window smaller         \i \i
-\i \i^KN Go to the window below           ^KP Go to the window above              \i \i
-\i \i^KQ Eliminate the current window     ^KI Show all windows / Show one window  \i \i
-\i \i^K; Do ctags search into new window  ^K- Edit scratch buffer in new window   \i \i
-\i \i Note: some commands (^KE ^K; ^K-) hide the current window. Use ^KI/^KN then.\i \i
+\i \i^KO Split the window in half          ^KE Load file into new window          \i \i
+\i \i^KG Make current window bigger        ^KT Make current window smaller        \i \i
+\i \i^KN Go to the window below            ^KP Go to the window above             \i \i
+\i \i^KQ Eliminate the current window      ^KI Show all windows / Show one window \i \i
+\i \i^K; Run a ctags search                ^K- Edit scratch buffer in new window  \i \i
+\i \i Note: some commands (^KE ^K; ^K-) hide the current window; use ^KI/^KN then \i \i
 \i \i\u\bSpecial help for XON/XOFF aware terminals\b\u                                    \i \i
 \i \i You can use \b^[q\b and \b^[s\b instead of \b^Q\b and \b^S\b to initiate a command.         \i \i
 }
