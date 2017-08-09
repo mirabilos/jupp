@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1,v 1.1.21.1.2.1 2009/07/18 14:30:06 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1,v 1.1.21.1.2.2 2017/08/09 03:02:33 tg Exp $
 .\"-
 .TH JOE 1
 .SH Name
@@ -31,7 +31,7 @@ command line.
 
 Although JOE is actually six different editors, it still requires only one
 executable, but one with six different names.  The name of the editor with
-an "rc" appended gives the name of JOE's initialization file, which
+an "rc" appended gives the name of JOE's initialisation file, which
 determines the personality of the editor.
 
 JUPP is free software; you can distribute it and/or modify it under the
@@ -39,8 +39,7 @@ terms of the GNU General Public License, Version 1, as published by the
 Free Software Foundation.
 I have no plans for turning JOE into a commercial or share-ware product.
 See the source code for exact authorship and licencing information.
-JOE is available over the Internet by anonymous FTP from
-\fBftp.std.com\fR, file: \fBsrc/editors/joe*.tar.Z\fR.
+JOE is available over the Internet from \fBhttp://joe-editor.sf.net/\fR.
 JUPP is available at \fBhttp://mirbsd.de/jupp\fR.
 
 .SH Usage
@@ -84,15 +83,18 @@ the screen.  You can continue to enter and edit text while the help window
 is on.  To page through other topics, hit ^[, and ^[. (that is, ESC , and
 ESC .).  Use \fB^K H\fR to dismiss the help window.
 
-You can customize the keyboard layout, the help screens and a number of
-behavior defaults by copying JOE's initialization file (usually
-\fB/etc/joe/joerc\fR) to \fB.joerc\fR in your home directory and then
-by modifying it.  See the section \fBjoerc\fR below.
+You can customise the keyboard layout, the help screens and a number of
+behavior defaults by copying JOE's initialisation file (usually
+\fB/etc/joe/joerc\fR)
+to \fB.joerc\fR in your home directory and then by modifying it.
+See the section \fBjoerc\fR below.
+The filename is actually \fB.\fIname\fBrc\fR where \fIname\fR is the
+\fBargv[0]\fR the editor is called with.
 
 To have JOE used as your default editor for e-mail and News, you need to set
 the \fBEDITOR\fR and \fBVISUAL\fR environment variables in your shell
-initialization file (\fB.cshrc\fR or \fB.profile\fR) to refer to JOE (joe
-usually resides as \fB/usr/bin/joe\fR).
+initialisation file (\fB.cshrc\fR or \fB.profile\fR) to refer to JOE (the
+joe binary usually resides as \fB/usr/bin/joe\fR).
 
 There are a number of other obscure invocation parameters which may have to
 be set, particularly if your terminal screen is not updating as you think it
@@ -112,7 +114,7 @@ If this option is given, backup files will be stored in the specified
 directory instead of in each file's original directory.
 
 .IP -baud\ nnn
-Set the baud rate for the purposes of terminal screen optimization.  Joe
+Set the baud rate for the purposes of terminal screen optimisation.  Joe
 inserts delays for baud rates below 19200, which bypasses tty buffering so
 that typeahead will interrupt the screen output.  Scrolling commands will
 not be used for 38400 baud.  This is useful for X-terms and other console
@@ -158,7 +160,7 @@ is given.
 Sets the number of screen lines.
 
 .IP -marking
-Text between ^KB and the cursor is highlighted (use with -lightoff and a
+Text between ^KB and the cursor is highlighted (use with \-lightoff and a
 modified joerc file to have drop-anchor style block selection).
 
 .IP -mid
@@ -187,7 +189,7 @@ in orphaned buffers instead of in extra windows.  This is useful for when
 joe is trying to be emacs.
 
 .IP -pg\ nnn
-This specifies the number of lines to keep after PgUp/PgDn (^U/^V).  If -1
+This specifies the number of lines to keep after PgUp/PgDn (^U/^V).  If \-1
 is given, half the window is kept.
 
 .IP -skiptop\ nnn
@@ -198,9 +200,7 @@ BBS editor.
 Each of these options may be specified in the joerc file as well.  In
 addition, the NOXON, BAUD, LINES, COLUMNS and DOPADDING options may be
 specified with environment variables.
-
-The JOETERM environment variable may be set to override the regular TERM
-environment variable for specifying your terminal type.
+See the section \fBEnvironment variables\fR below.
 
 The following options may be specified before each filename on the command
 line:
@@ -283,7 +283,7 @@ line.
 If you want to indent the text you enter, you can use the \fBTAB\fR key.
 This inserts a special control character which makes the characters which
 follow it begin at the next TAB STOP.  TAB STOPS normally occur every 8
-columns, but this can be changed with the \fB^T D\fR command.  PASCAL and C
+columns, but this can be changed with the \fB^T D\fR command.  Python
 programmers often set TAB STOPS on every 4 columns.
 
 If for some reason your terminal screen gets messed up (for example, if
@@ -339,7 +339,7 @@ past the right edge of the screen in a normal file (one whose name doesn't
 end in .c, .h or .p), JOE will automatically wrap the last word onto the
 next line so that you don't have to hit \fBReturn\fR.  This is called
 word-wrap mode.  Word-wrap can be turned on or off with the \fB^T W\fR
-command.  JOE's initialization file is usually set up so that this mode is
+command.  JOE's initialisation file is usually set up so that this mode is
 automatically turned on for all non-program files.  See the section below on
 the \fBjoerc\fR file to change this and other defaults.
 
@@ -363,7 +363,7 @@ insert new text.  This happens, for example, when you are changing a table
 and you want to maintain the column position of the right side of the table.
 When this occurs, you can put the editor in over-type mode with \fB^T T\fR.
 When the editor is in this mode, the characters you type in replace existing
-characters, in the way an idealized typewriter would.  Also, \fBBackspace\fR
+characters, in the way an idealised typewriter would.  Also, \fBBackspace\fR
 simply moves left instead of deleting the character to the left, when it's
 not at the end or beginning of a line.  Over-type mode is not the natural
 way of dealing with text electronically, so you should go back to
@@ -476,10 +476,10 @@ prompted for replacement text.  Each time the editor finds the search text,
 you will be prompted as to whether you want to replace the found search text
 with the replacement text.  You hit: \fBy\fR to replace the text and then
 find the next occurrence, \fBn\fR to not replace this text, but to then find
-the next occurrence, \fBr\fR to replace all of the remaining occurrences of
-the search text in the remainder of the file without asking for confirmation
-(subject to the \fBnnn\fR option above), or \fB^C\fR to stop searching and
-replacing.
+the next occurrence,
+\fBr\fR to replace all of the remaining occurrences of the search text in
+the remainder of the file without asking for confirmation (subject to the
+\fBnnn\fR option above), or \fB^C\fR to stop searching and replacing.
 
 .PP
 You can hit \fB^L\fR to repeat the previous search.
@@ -598,9 +598,9 @@ type \fB^K / tr a-z A-Z\fR, then all of the letters in the highlighted block
 will be converted to uppercase.
 
 After you are finished with some block operations, you can just leave the
-highlighting on if you don't mind it (of course, if you accidently hit \fB^K
-Y\fR without noticing...).  If it really bothers you, however, just hit
-\fB^K B ^K K\fR, to turn the highlighting off.
+highlighting on if you don't mind it (of course, if you accidentally hit
+\fB^K Y\fR without noticing...).  If it really bothers you, however, just
+hit \fB^K B ^K K\fR, to turn the highlighting off.
 
 .SS Indenting program blocks
 Auto-indent mode toggled with the \fB^T I\fR command.  The
@@ -745,6 +745,9 @@ different from what is reported in the TERMCAP or TERMINFO entry, you can
 set this with the \fBstty rows nn cols nn\fR command, or by setting the
 \fBLINES\fR and \fBCOLUMNS\fR environment variables.
 
+The \fBJOETERM\fR environment variable may be set to override the regular
+\fBTERM\fR environment variable for specifying your terminal type.
+
 JOE normally expects that flow control between the computer and your
 terminal to use ^S/^Q handshaking (I.E., if the computer is sending
 characters too fast for your terminal, your terminal sends ^S to stop the
@@ -778,24 +781,30 @@ Use this to access a fixed section of a file or device.  \fBSTART\fR and
 hexadecimal (ex.: 0xFF).  For example, use \fBjoe /dev/fd0,508,2\fR to edit
 bytes 508 and 509 of the first floppy drive in Linux.
 
-.IP \fB-
+.IP \fB\-
 Use this to get input from the standard input or to write output to the
 standard output.  For example, you can put joe in a pipe of commands:
-\fBquota -v | joe - | mail root\fR, if you want to complain about your low
+\fBquota \-v | joe \- | mail root\fR, if you want to complain about your low
 quota.
 
 
 .SH The\ joerc file
 \fB^T\fR options, the help screens and the key-sequence to editor command
-bindings are all defined in JOE's initialization file.  If you make a copy
-of this file (which normally resides in \fB/etc/joe/joerc\fR) to
-\fB$HOME/.joerc\fR, you can customize these setting to your liking.  The
-syntax of the initialization file should be fairly obvious and there are
-further instruction in it.
+bindings are all defined in JOE's initialisation file.
+If you make a copy of this file (which normally resides in
+\fB/etc/joe/joerc\fR) to \fB$HOME/.joerc\fR,
+you can customise these settings to your liking.
+The syntax of the initialisation file should be fairly obvious,
+and there are further instruction in it.
 
 .SH Acknowledgments
-JOE was written by Joseph H. Allen.  If you have bug reports or questions,
-e-mail them to jhallen@world.std.com.  Larry Foard (entropy@world.std.com)
-and Gary Gray (ggray@world.std.com) also helped with the creation of JOE.
-Thorsten Glaser (tg@mirbsd.org) created JUPP, and the 16-bit MS-DOS version
-of JUPP 2.8 was compiled by Andreas Totlis (atotlis@t-online.de).
+JOE was written by Joseph H. Allen.
+If you have bug reports or questions, e-mail them to jhallen@world.std.com.
+Larry Foard (entropy@world.std.com) and Gary Gray (ggray@world.std.com)
+also helped with the creation of JOE.
+Thorsten "mirabilos" Glaser (tg@mirbsd.org) created JUPP, and the 16-bit MS-DOS
+version of JUPP 2.8 was compiled by Andreas Totlis (atotlis@t-online.de).
+
+.SH Bugs
+This manual page describes only the JOE flavour; documentation for JUPP is
+especially missing.
