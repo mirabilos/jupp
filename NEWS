@@ -1,7 +1,9 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.109 2017/08/08 16:12:03 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.110 2017/08/09 01:00:22 tg Exp $
 -------------------------------------------------------------------
 
-JOE-current
+jupp-current
+
+JOE 3.1jupp31
 
 - Fix <bsd/string.h> usage issue on Haiku
 - Make some signal handlers a bit more safe
@@ -9,6 +11,12 @@ JOE-current
 - Update internationalisation data to Unicode 10.0.0
 - Partial fix for redrawing lines with combining characters
 - Quell stricter GCC 7 warnings
+- Fall back to /dev/tty if stdin or stdout is not a tty(4)
+- Add new command “abendjoe” to exit with errorlevel 1, cf. AbEnd
+- Introduce “presentation mode”, F6 toggles zoom/fullscreen;
+  F7/F8 go one file (“slide”) back/forth, F9 pipes the entire
+  file (needs rectangle mode disabled) and offers previous command
+- Fix some ctags operations segfaulting
 
 JOE 3.1jupp30
 

@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.55 2017/08/08 21:30:47 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.56 2017/08/09 01:00:22 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -6,7 +6,7 @@
 AC_PREREQ(2.54)
 
 #### Here's the only place where to change version number ####
-AC_INIT(joe, 3.1jupp30)
+AC_INIT(joe, 3.1jupp31)
 #### But see main.c for the Copyright (c) owner and year! ####
 AC_CONFIG_SRCDIR([b.c])
 
