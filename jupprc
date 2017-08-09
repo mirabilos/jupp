@@ -1,4 +1,4 @@
- "jupp" resource file for JOE 2.8/DOS (c) 1997-2016 Thorsten Glaser
+ "jupp" resource file for JOE 2.8/DOS (c) 1997-2017 Thorsten Glaser
  Provided that these terms and disclaimer and all copyright notices
  are retained or reproduced in an accompanying document, permission
  is granted to deal in this work without restriction, including un-
@@ -50,10 +50,10 @@
 
 {Windows
 \i   Help Screen    turn off with ^J     prev. screen ^[,    next screen ^[.     \i
-\i \i^KO Split the window in half         ^KE Load file into window               \i \i
-\i \i^KG Make current window bigger       ^KT Make current window smaller         \i \i
-\i \i^KN Go to the window below           ^KP Go to the window above              \i \i
-\i \i^KQ Eliminate the current window     ^KI Show all windows / Show one window  \i \i
+\i \i^KO Split the window in half          ^KE Load file into window              \i \i
+\i \i^KG Make current window bigger        ^KT Make current window smaller        \i \i
+\i \i^KN Go to the window below            ^KP Go to the window above             \i \i
+\i \i^KQ Eliminate the current window      ^KI Show all windows / Show one window \i \i
 \i \i^K; Split screen and do ctags search                                         \i \i
 \i \i Warning: ^KE trashes the current window if open at least twice (from ^KO)!  \i \i
 \i \i\u\bSpecial help for XON/XOFF aware terminals\b\u                                    \i \i
@@ -74,12 +74,14 @@
 
 {Programs
 \i   Help Screen    turn off with ^J     prev. screen ^[,    next screen ^[.     \i
-\i \i\u\bGOTO\b\u                  \u\bCOMPILING\b\u                     \u\bINDENT\b\u       \u\bSLIDING\b\u     \i \i
-\i \i^Q- to column number  ^[C Compile & parse errors    ^K. more     ^W up       \i \i
-\i \i^QI to line number    ^[E Parse errors              ^K, less     ^Z down     \i \i
-\i \i^QP previous place    ^[N goto previous error       ^KA center   \u\bSPECIAL\b\u     \i \i
-\i \i^K= next place        ^[M next error     ^Q[ matching brace      ^[- jexecmd \i \i
-\i \i \b\uSpecial\u:\b ^K] delete whitespace at EOL; ^Q= search for merge conflict marker \i \i
+\i \i\u\bGOTO\b\u                               \u\bCOMPILING\b\u                    \u\bSLIDING\b\u      \i \i
+\i \i^Q] matching brace, ^Q[ reverse    ^[C compile & parse errors   ^W up        \i \i
+\i \i^Q= merge conflict marker          ^[E parse errors             ^Z down      \i \i
+\i \i^Q- to column number  \u\bINDENT\b\u                                                 \i \i
+\i \i^QI to line number    ^K. more     \u\bGOTO AFTER COMPILING\b\u                      \i \i
+\i \i^QP previous place    ^K, less     ^[N previous error                        \i \i
+\i \i^K= next place        ^KA centre   ^[M next error      \u\bSPECIAL\b\u               \i \i
+\i \i                      ^K] kill whitespace at EOL       ^[- jupp command line \i \i
 }
 
 {Search
@@ -113,7 +115,7 @@
 \i \i go to \uhttp://sf.net/projects/joe-editor/\u for upstream bug reports. JUPP 2.8 \i \i
 \i \i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\d(R)\d \i \i
 \i \i at \uhttp://mirbsd.de/jupp\u and by \bThorsten "\dmirabilos\d" Glaser <\utg@mirbsd.org\u>\b \i \i
-\i \i @(#) jupprc 2016-10-07; 2.8; CR-LF on; UTF-8 not supported (for 16-bit DOS) \i \i
+\i \i @(#) jupprc 2017-01-11; 2.8; CR-LF on; UTF-8 not supported (for 16-bit DOS) \i \i
 }
 
  #HOOK#2802 additional help screens
@@ -122,8 +124,8 @@
 \i   Help Screen    turn off with ^J     prev. screen ^[,    \uCharacter Map\u       \i
 \i \i Dec Hex  \u 0123 4567  89AB CDEF    0123 4567  89AB CDEF \u  Hex Dec            \i \i
 \i \i         |                                              |                    \i \i
-\i \i   0  00 | \u@ABC\u \uDEFG\u  \uHIJK\u \uLMNO\u    \i\u@ABC\u\i \i\uDEFG\u\i  \i\uHIJK\u\i \i\uLMNO\u\i | 80  128            \i \i
-\i \i  16  10 | \uPQRS\u \uTUVW\u  \uXYZ[\u \u\\]^_\u    \i\uPQRS\u\i \i\uTUVW\u\i  \i\uXYZ[\u\i \i\u\\]^_\u\i | 90  144            \i \i
+\i \i   0  00 | \u@ABC\u \uDEFG\u  \uHIJK\u \uLMNO\u    ÄÅÇÉ ÑÖÜá  àâäã åçéè | 80  128            \i \i
+\i \i  16  10 | \uPQRS\u \uTUVW\u  \uXYZ[\u \u\\]^_\u    êëíì îïñó  òôöõ úùûü | 90  144            \i \i
 \i \i  32  20 |  !"# $%&'  ()*+ ,-./    †°¢£ §•¶ß  ®©™´ ¨≠ÆØ | A0  160            \i \i
 \i \i  48  30 | 0123 4567  89:; <=>?    ∞±≤≥ ¥µ∂∑  ∏π∫ª ºΩæø | B0  176            \i \i
 \i \i  64  40 | @ABC DEFG  HIJK LMNO    ¿¡¬√ ƒ≈∆«  »… À ÃÕŒœ | C0  192            \i \i
@@ -178,11 +180,10 @@ stop		^[ )
 
 :main
 :inherit windows
+:def docompile edit,rtn,filt,query,parserr
  #HOOK#2804 main keybindings
 bof,qrepl,"\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\+\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\$",rtn,rtn,rtn,"r",eof	^K ]
 ffirst,"\\^\\[<>=]\\[<>=]\\[<>=]\\[<>=]\\[<>=]\\[<>=]\\[<>=]\\[ \\n]",rtn,rtn,ltarw							^Q =
-edit,rtn,filt,query,parserr	^[ C
-edit,rtn,filt,query,parserr	^[ c
 backs		^?
 backs		^H
 backw		^[ o
@@ -330,6 +331,8 @@ nmark		^K h
 nxterr		^[ M
 nxterr		^[ m
 open		^[ b
+docompile	^[ C
+docompile	^[ c
 parserr		^[ E
 parserr		^[ e
 pgdn		.kN
@@ -370,9 +373,9 @@ shrinkw		^K t
 splitw		^K O
 splitw		^K ^O
 splitw		^K o
-splitw,tag	^K ;
 stat		^Q ?
 stat		^[ q ?
+splitw,tag	^K ;
 tomarkb		^Q B
 tomarkb		^Q ^B
 tomarkb		^Q b
