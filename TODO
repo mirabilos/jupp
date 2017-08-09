@@ -582,13 +582,13 @@ Other requests:
 • handle combining characters in the scrn array somehow
 • add a soft line break flag: display as line-wrapped, do not
   save any newlines introduced by that
+• perhaps wrap at U+00AD?
 • put all configuration files into /usr/share; use XDG dirs for
   overriding (HOME, maybe site?)
 • rc.c: struct glopts.set (int*) violates the strict aliasing
   rule as it’s treated as (unsigned char *) for type 2 (global
   option string), consider a union instead (check local types!)
-• presentation mode (^KP, ^KN, ^QBKBQKKKK/) on some F-keys
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.38 2017/08/08 21:39:27 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.39 2017/08/09 00:44:10 tg Exp $
