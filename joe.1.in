@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.24 2017/01/11 22:04:32 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.25 2017/08/09 00:59:09 tg Exp $
 .\"-
 .TH JOE 1
 .SH Name
@@ -302,7 +302,7 @@ line.
 If you want to indent the text you enter, you can use the \fBTAB\fR key.
 This inserts a special control character which makes the characters which
 follow it begin at the next TAB STOP.  TAB STOPS normally occur every 8
-columns, but this can be changed with the \fB^T D\fR command.  PASCAL and C
+columns, but this can be changed with the \fB^T D\fR command.  Python
 programmers often set TAB STOPS on every 4 columns.
 
 If for some reason your terminal screen gets messed up (for example, if
