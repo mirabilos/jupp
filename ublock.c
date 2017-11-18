@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ublock.c,v 1.10 2013/08/19 22:04:15 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ublock.c,v 1.11 2017/11/18 15:48:38 tg Exp $ */
 /*
  * 	Highlighted block functions
  *	Copyright
@@ -955,6 +955,10 @@ static int dofilt(BW *bw, unsigned char *s, void *object, int *notify)
 	int fw;
 	int flg = 0;
 	unsigned char *tf;
+	const char *sh;
+#ifdef HAVE_PUTENV
+	unsigned char *fname;
+#endif
 
 	if (notify)
 		*notify = 1;
@@ -990,12 +994,14 @@ static int dofilt(BW *bw, unsigned char *s, void *object, int *notify)
 	} else
 		bsavefd(markb, fw, markk->byte - markb->byte);
 	lseek(fw, (off_t)0, SEEK_SET);
-	if (!fork()) {
-		const char *sh;
 #ifdef HAVE_PUTENV
-		unsigned char		*fname, *name;
-		unsigned	len;
+	fname = vsncpy(NULL, 0, sc("JOE_FILENAME="));
+	tf = bw->b->name ? bw->b->name : (unsigned char *)"Unnamed";
+	fname = vsncpy(sv(fname), sz(tf));
+	putenv((char *)fname);
 #endif
+	sh = getushell();
+	if (!fork()) {
 		signrm();
 		close(0);
 		close(1);
@@ -1007,20 +1013,14 @@ static int dofilt(BW *bw, unsigned char *s, void *object, int *notify)
 		close(fw);
 		close(fr[1]);
 		close(fr[0]);
-#ifdef HAVE_PUTENV
-		fname = vsncpy(NULL, 0, sc("JOE_FILENAME="));
-		name = bw->b->name ? bw->b->name : (unsigned char *)"Unnamed";
-		if((len = slen(name)) >= 512)	/* limit filename length */
-			len = 512;
-		fname = vsncpy(sv(fname), name, len);
-		putenv((char *)fname);
-#endif
-		sh = getushell();
 		execl(sh, sh, "-c", s, NULL);
 		_exit(0);
 	}
 	close(fr[1]);
 	close(fw);
+#ifdef HAVE_PUTENV
+	vsrm(fname);
+#endif
 	if (square) {
 		B *tmp;
 		long width = markk->xcol - markb->xcol;
