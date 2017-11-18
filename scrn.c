@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/scrn.c,v 1.26 2017/08/08 16:09:43 tg Exp $ */
+/* $MirOS: contrib/code/jupp/scrn.c,v 1.27 2017/11/18 16:02:04 tg Exp $ */
 /*
  *	Device independant TTY interface for JOE
  *	Copyright
@@ -661,7 +661,7 @@ SCRN *nopen(CAP *cap)
 		goto ok;
 	leave = 1;
 	ttclose();
-	signrm();
+	signrm(0);
 #ifdef	DEBUG
 	/* these are strings, but I do not know if %s is appropriate -mirabilos */
         fprintf(stderr,"cm=%d ch=%d cv=%d ho=%d lf=%d DO=%d ll=%d up=%d UP=%d cr=%d\n",

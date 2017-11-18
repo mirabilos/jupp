@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ublock.c,v 1.11 2017/11/18 15:48:38 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ublock.c,v 1.12 2017/11/18 16:02:05 tg Exp $ */
 /*
  * 	Highlighted block functions
  *	Copyright
@@ -1002,7 +1002,7 @@ static int dofilt(BW *bw, unsigned char *s, void *object, int *notify)
 #endif
 	sh = getushell();
 	if (!fork()) {
-		signrm();
+		signrm(1);
 		close(0);
 		close(1);
 		close(2);

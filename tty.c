@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.c,v 1.24 2017/08/08 16:12:04 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.c,v 1.25 2017/11/18 16:02:05 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright
@@ -236,11 +236,12 @@ void sigjoe(void)
 }
 
 /* Restore signals for exiting */
-void signrm(void)
+void signrm(int inchild)
 {
 	if (!ttysig)
 		return;
-	ttysig = 0;
+	if (!inchild)
+		ttysig = 0;
 	joe_set_signal(SIGHUP, SIG_DFL);
 	joe_set_signal(SIGTERM, SIG_DFL);
 	joe_set_signal(SIGINT, SIG_DFL);
@@ -260,7 +261,7 @@ void ttopen(void)
 void ttclose(void)
 {
 	ttclsn();
-	signrm();
+	signrm(0);
 }
 
 static volatile sig_atomic_t winched = 0;
@@ -720,7 +721,7 @@ void ttshell(unsigned char *cmd)
 		if (omode)
 			ttopnn();
 	} else {
-		signrm();
+		signrm(0);
 		if (cmd)
 			execl(sh, sh, "-c", cmd, NULL);
 		else {
@@ -1086,7 +1087,7 @@ MPX *mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args, void (*fu
 
 		if (!(pid = fork())) {
 			/* This process becomes the shell */
-			signrm();
+			signrm(0);
 
 			/* Close pty (we only need tty) */
 			close(*ptyfd);

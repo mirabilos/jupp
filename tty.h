@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.h,v 1.6 2013/10/31 20:05:43 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.h,v 1.7 2017/11/18 16:02:05 tg Exp $ */
 /*
  *	TTY interface header file
  *	Copyright
@@ -167,9 +167,9 @@ void ttgtsz PARAMS((int *x, int *y));
  */
 void sigjoe PARAMS((void));
 
-/* void signrm(void);  Set above signals back to their default values.
+/* void signrm(int inchild);  Set above signals back to their default values.
  */
-void signrm PARAMS((void));
+void signrm PARAMS((int));
 
 /* MPX *mpxmk(int fd,int pid,
  *             void (*func)(),void *object,
