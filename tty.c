@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.c,v 1.25 2017/11/18 16:02:05 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.c,v 1.26 2017/11/18 16:43:07 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright
@@ -708,28 +708,40 @@ void ttgtsz(int *x, int *y)
 #endif
 }
 
-void ttshell(unsigned char *cmd)
+/* void ttshell(char *s);  Run a shell command or if 's' is zero, run a
+ * sub-shell
+ */
+static void ttshell PARAMS((unsigned char *cmd));
+static const char shmsg[] =
+    "You are at the command shell.  Type 'exit' to return\n";
+
+#if WANT_FORK
+#define v_or_fork() fork()
+#else
+#define v_or_fork() vfork()
+#endif
+
+static void ttshell(unsigned char *cmd)
 {
 	int x, omode = ttymode;
 	const char *sh;
 
 	sh = getushell();
 	ttclsn();
-	if ((x = fork()) != 0) {
-		if (x != -1)
-			wait(NULL);
-		if (omode)
-			ttopnn();
-	} else {
-		signrm(0);
+	if (!(x = v_or_fork())) {
+		signrm(1);
 		if (cmd)
 			execl(sh, sh, "-c", cmd, NULL);
 		else {
-			fprintf(stderr, "You are at the command shell.  Type 'exit' to return\n");
+			write(2, shmsg, sizeof(shmsg) - 1);
 			execl(sh, sh, NULL);
 		}
 		_exit(0);
 	}
+	if (x != -1)
+		wait(NULL);
+	if (omode)
+		ttopnn();
 }
 
 /* Create keyboard task */

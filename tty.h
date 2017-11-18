@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.h,v 1.7 2017/11/18 16:02:05 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.h,v 1.8 2017/11/18 16:43:08 tg Exp $ */
 /*
  *	TTY interface header file
  *	Copyright
@@ -91,11 +91,6 @@ extern unsigned char *obuf;
  * output buffer gets full, call ttflsh()
  */
 void ttputs PARAMS((unsigned char *s));
-
-/* void ttshell(char *s);  Run a shell command or if 's' is zero, run a
- * sub-shell
- */
-void ttshell PARAMS((unsigned char *cmd));
 
 /* void ttsusp(void);  Suspend the process, or if the UNIX can't do it, call
  * ttshell(NULL)
