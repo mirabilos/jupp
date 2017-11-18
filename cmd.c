@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/cmd.c,v 1.17 2017/08/08 21:39:28 tg Exp $ */
+/* $MirOS: contrib/code/jupp/cmd.c,v 1.18 2017/11/18 17:05:50 tg Exp $ */
 /*
  *	Command execution
  *	Copyright
@@ -91,6 +91,17 @@ static int unop(void)
 {
 	return (0);
 }
+
+#if !WANT_FORK
+static int
+unommu(BW *bw) {
+	msgnw(bw->parent, US "Sorry, not supported without MMU");
+	return (-1);
+}
+#define ubknd	unommu
+#define ubuild	unommu
+#define urun	unommu
+#endif
 
 CMD cmds[] = {
 	{US "abendjoe", TYPETW + TYPEPW + TYPEMENU + TYPEQW, uabendjoe, NULL, 0, NULL},

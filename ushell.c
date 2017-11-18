@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ushell.c,v 1.5 2017/11/18 17:04:19 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ushell.c,v 1.6 2017/11/18 17:05:51 tg Exp $ */
 /*
  *	Shell-window functions
  *	Copyright
@@ -108,6 +108,7 @@ static void cdata(B *b, unsigned char *dat, int siz)
 	cfollow(b,byte);
 }
 
+#if WANT_FORK
 static int doushell(BW *bw, unsigned char *cmd, int *notify, int build)
 {
 	MPX *m;
@@ -194,6 +195,7 @@ int ubuild(BW *bw)
 			return 0;
 		return -1;
 }
+#endif
 
 /* Kill program */
 

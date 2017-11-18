@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.c,v 1.26 2017/11/18 16:43:07 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.c,v 1.27 2017/11/18 17:05:51 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright
@@ -203,6 +203,7 @@ static int ttymode = 0;
 /* Signal state flag.  1 for joe, 0 for normal */
 static int ttysig = 0;
 
+#if WANT_FORK
 /* Stuff for shell windows */
 
 static pid_t kbdpid;		/* PID of kbd client */
@@ -222,6 +223,7 @@ struct packet {
 } pack;
 
 MPX asyncs[NPROC];
+#endif
 
 /* Set signals for JOE */
 void sigjoe(void)
@@ -548,6 +550,7 @@ int ttflsh(void)
 		obufp = 0;
 	}
 
+#if WANT_FORK
 	/* Ack previous packet */
 	if (ackkbd != -1 && tty_accept != NO_MORE_DATA && !have) {
 		unsigned char c = 0;
@@ -558,10 +561,12 @@ int ttflsh(void)
 			joe_write(ackkbd, &c, 1);
 		tty_accept = NO_MORE_DATA;
 	}
+#endif
 
 	/* Check for typeahead or next packet */
 
 	if (!have && !leave) {
+#if WANT_FORK
 		if (ackkbd != -1) {
 			fcntl(mpxfd, F_SETFL, O_NDELAY);
 			if (read(mpxfd, &pack, sizeof(struct packet) - 1024) > 0) {
@@ -571,7 +576,9 @@ int ttflsh(void)
 				tty_accept = pack.ch;
 			} else
 				fcntl(mpxfd, F_SETFL, 0);
-		} else {
+		} else
+#endif
+		  {
 			/* Set terminal input to non-blocking */
 			fcntl(fileno(termin), F_SETFL, O_NDELAY);
 
@@ -588,7 +595,9 @@ int ttflsh(void)
 
 /* Read next character from input */
 
+#if WANT_FORK
 void mpxdied(MPX *m);
+#endif
 
 static time_t last_time;
 
@@ -617,6 +626,7 @@ int ttgetc(void)
 		ttflsh();
 		tickon();
 	}
+#if WANT_FORK
 	if (ackkbd != -1) {
 		if (!have) {	/* Wait for input */
 			stat_ = read(mpxfd, &pack, sizeof(struct packet) - 1024);
@@ -653,6 +663,7 @@ int ttgetc(void)
 			}
 		}
 	}
+#endif
 	if (have) {
 		have = 0;
 	} else {
@@ -744,6 +755,7 @@ static void ttshell(unsigned char *cmd)
 		ttopnn();
 }
 
+#if WANT_FORK
 /* Create keyboard task */
 
 static int mpxresume(void)
@@ -789,6 +801,7 @@ static void mpxsusp(void)
 		close(ackkbd);
 	}
 }
+#endif
 
 /* We used to leave the keyboard copy task around during suspend, but
    Cygwin gets confused when two processes are waiting for input and you
@@ -803,19 +816,24 @@ void ttsusp(void)
 
 #ifdef SIGTSTP
 	omode = ttymode;
+#if WANT_FORK
 	mpxsusp();
+#endif
 	ttclsn();
 	fprintf(stderr, "You have suspended the program.  Type 'fg' to return\n");
 	kill(0, SIGTSTP);
 	if (omode)
 		ttopnn();
+#if WANT_FORK
 	if (ackkbd!= -1)
 		mpxresume();
+#endif
 #else
 	ttshell(NULL);
 #endif
 }
 
+#if WANT_FORK
 /* Stuff for asynchronous I/O multiplexing.  We do not use streams or
    select() because joe needs to work on versions of UNIX which predate
    these calls.  Instead, when there is multiple async sources, we use
@@ -849,6 +867,7 @@ static void mpxend(void)
 	if (have)
 		havec = pack.ch;
 }
+#endif
 
 /* Get a pty/tty pair.  Returns open pty in 'ptyfd' and returns tty name
  * string in static buffer or NULL if couldn't get a pair.
@@ -1018,6 +1037,7 @@ static unsigned char **newenv(unsigned char **old, unsigned char *s)
 
 /* Create a shell process */
 
+#if WANT_FORK
 MPX *mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args, void (*func) (/* ??? */), void *object, void (*die) (/* ??? */), void *dieobj)
 {
 	unsigned char buf[80];
@@ -1244,6 +1264,7 @@ void mpxdied(MPX *m)
 	m->func = NULL;
 	edupd(1);
 }
+#endif
 
 void
 tty_xonoffbaudrst(void)
