@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/tty.c,v 1.27 2017/11/18 17:05:51 tg Exp $ */
+/* $MirOS: contrib/code/jupp/tty.c,v 1.28 2017/11/18 17:08:44 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright
@@ -596,7 +596,7 @@ int ttflsh(void)
 /* Read next character from input */
 
 #if WANT_FORK
-void mpxdied(MPX *m);
+static void mpxdied(MPX *m);
 #endif
 
 static time_t last_time;
@@ -719,6 +719,7 @@ void ttgtsz(int *x, int *y)
 #endif
 }
 
+#ifndef SIGTSTP
 /* void ttshell(char *s);  Run a shell command or if 's' is zero, run a
  * sub-shell
  */
@@ -754,6 +755,7 @@ static void ttshell(unsigned char *cmd)
 	if (omode)
 		ttopnn();
 }
+#endif
 
 #if WANT_FORK
 /* Create keyboard task */
@@ -1253,7 +1255,7 @@ MPX *mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args, void (*fu
 	return m;
 }
 
-void mpxdied(MPX *m)
+static void mpxdied(MPX *m)
 {
 	if (!--nmpx)
 		mpxend();
