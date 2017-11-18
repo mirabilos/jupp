@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ublock.c,v 1.13 2017/11/18 16:08:57 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ublock.c,v 1.14 2017/11/18 16:30:21 tg Exp $ */
 /*
  * 	Highlighted block functions
  *	Copyright
@@ -939,6 +939,12 @@ int doinsf(BW *bw, unsigned char *s, void *object, int *notify)
 
 static int filtflg = 0;
 
+#if WANT_FORK
+#define v_or_fork() fork()
+#else
+#define v_or_fork() vfork()
+#endif
+
 /*
  * This isn't optimal, but until the home-brewn VM system is removed
  * it is the best we can do: we cannot use bsavefd() in a concurrent
@@ -956,7 +962,7 @@ static int dofilt(BW *bw, unsigned char *s, void *object, int *notify)
 	int flg = 0;
 	unsigned char *tf;
 	const char *sh;
-#ifdef HAVE_PUTENV
+#if defined(HAVE_PUTENV) && (WANT_FORK || defined(HAVE_UNSETENV))
 	unsigned char *fname;
 #endif
 
@@ -994,14 +1000,17 @@ static int dofilt(BW *bw, unsigned char *s, void *object, int *notify)
 	} else
 		bsavefd(markb, fw, markk->byte - markb->byte);
 	lseek(fw, (off_t)0, SEEK_SET);
-#ifdef HAVE_PUTENV
+#if defined(HAVE_PUTENV) && (WANT_FORK || defined(HAVE_UNSETENV))
 	fname = vsncpy(NULL, 0, sc("JOE_FILENAME="));
 	tf = bw->b->name ? bw->b->name : (unsigned char *)"Unnamed";
 	fname = vsncpy(sv(fname), sz(tf));
+#if !WANT_FORK
+	putenv((char *)fname);
+#endif
 #endif
 	sh = getushell();
-	if (!fork()) {
-#ifdef HAVE_PUTENV
+	if (!v_or_fork()) {
+#if defined(HAVE_PUTENV) && WANT_FORK
 		putenv((char *)fname);
 #endif
 		signrm(1);
@@ -1020,7 +1029,10 @@ static int dofilt(BW *bw, unsigned char *s, void *object, int *notify)
 	}
 	close(fr[1]);
 	close(fw);
-#ifdef HAVE_PUTENV
+#if defined(HAVE_PUTENV) && (WANT_FORK || defined(HAVE_UNSETENV))
+#if !WANT_FORK
+	unsetenv("JOE_FILENAME");
+#endif
 	vsrm(fname);
 #endif
 	if (square) {
