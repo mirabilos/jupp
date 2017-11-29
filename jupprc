@@ -460,7 +460,7 @@
 \i \i^Q- to column number  ^K. more     \u\bGOTO AFTER COMPILING\b\u         \u\bINSERT MATH\b\u  \i \i
 \i \i^QI to line number    ^K, less     ^[N previous error           ^[# equation \i \i
 \i \i^QO to byte offset    ^KA centre   ^[M next error      \u\bSPECIAL\b\u  ^[= result   \i \i
-\i \i^K= next place        ^K] kill whitespace at EOL       ^[- jupp command line \i \i
+\i \i^K= next place        ^K] kill whitespace at EOL/EOF   ^[- jupp command line \i \i
 }
 
 {Search
@@ -495,7 +495,7 @@
 \i \i go to \uhttp://sf.net/projects/joe-editor/\u for upstream bug reports. JUPP 2.8 \i \i
 \i \i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\d(R)\d \i \i
 \i \i at \uhttp://mirbsd.de/jupp\u and by \bThorsten "\dmirabilos\d" Glaser <\utg@mirbsd.org\u>\b \i \i
-\i \i @(#) jupprc 2017-08-10; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
+\i \i @(#) jupprc 2017-11-29; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
 }
 
  #HOOK#3103 additional help screens
@@ -595,7 +595,7 @@ keymap,"prompt",rtn			^D
 :def freedroidz splitw,prevw,scratch,"nbc-Output",rtn,nextw,save,markk,bol,markb,prevw,prevw,blkcpy,nextw,nextw,rtn,prevw,eol,"'",bol,qrepl,"'",rtn,rtn,"'\\\\''",rtn,"r",backs,backs,backs,bol,"LC_ALL=C; export LC_ALL; fn='",eol,rtn,"p=--posix; sed $p -e q </dev/null >/dev/null 2>&1 || p=; fns=$(echo \"$fn\" | sed $p -e 's[^^][&]g; s\\^\\\\^g'); (case $fn in",rtn,"*.nxc) ;;",rtn,"*) echo '==> Error: filename not *.nxc'; exit ;;",rtn,"esac",rtn,"echo \"Compiling $fn\"",rtn,"nbc -sm- -d \"$fn\" 2>&1; x=$?",rtn,"if test $x = 0; then echo '==> OK'; else echo '==> Error code:' $x; fi",rtn,") | tr '\\n' '' | sed $p -e 's!# *\\([^]*\\)File \"[^\"]*/\\('\"$fns\"'\\)\" ; line \\([0-9]*\\)!\\2:\\3: \\1!g' -e 's!#\\([^]*\\)File \"\\([^\"]*\\)\" ; line \\([0-9]*\\)!\\2:\\3: \\1!g' | tr '' '\\n'",rtn,nmark,filt,"sh",rtn,rtn,"Press ^KQ to close this window!",rtn,parserr
 :def docompile edit,rtn,filt,query,parserr
  #HOOK#3105 main keybindings
-bof,qrepl,"\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\+\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\$",rtn,rtn,rtn,"r",eof	^K ]
+eof," ",bof,qrepl,"\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\+\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\$",rtn,rtn,rtn,"r",eof,ffirst,"\\[^\\n]",rtn,"b",rtn,rtarw,rtn,markb,rtn,eof,markk,blkdel	^K ]
 ffirst,"\\^\\[<>=]\\[<>=]\\[<>=]\\[<>=]\\[<>=]\\[<>=]\\[<>=]\\[ \\n]",rtn,rtn,ltarw							^Q =
 begin_marking,uparw,toggle_marking	^[ [ 1 ; 2 A
 begin_marking,dnarw,toggle_marking	^[ [ 1 ; 2 B
