@@ -1,6 +1,11 @@
-# $MirOS: contrib/code/jupp/syntax/conf.jsf.in,v 1.2 2008/05/13 16:17:44 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/conf.jsf.in,v 1.3 2017/12/01 00:20:56 tg Exp $
 #-
 # JOE syntax highlight file for typical UNIX configuration files
+#
+# Currently used for configure.ac (shell-ish), jsf files themselves,
+# Makefile.am (Makefile-ish) and ?akefile. We probably should create
+# a proper Makefile jsf to split off this, supporting proper quoting
+# rules and perhaps even highlighting wrong whitespace.
 
 =Idle
 =Comment 	green
@@ -10,11 +15,16 @@
 :idle Idle
 	*		idle
 	"#"		comment		recolor=-1
+	"'"		string_sq	recolor=-1
 	"\""		string		recolor=-1
+	"\\"		escape		recolor=-1
 
 :comment Comment
 	*		comment
 	"\n"		idle
+
+:escape Escape
+	*		idle
 
 :string String
 	*		string
@@ -23,4 +33,7 @@
 
 :string_escape Escape
 	*		string
-	"\n"		string		recolor=-2
+
+:string_sq String
+	*		string_sq
+	"\'"		idle
