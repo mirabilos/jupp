@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/uedit.c,v 1.17 2017/03/19 19:19:51 tg Exp $ */
+/* $MirOS: contrib/code/jupp/uedit.c,v 1.18 2017/12/01 23:26:24 tg Exp $ */
 /*
  *	Basic user edit functions
  *	Copyright
@@ -666,7 +666,7 @@ static B *linehist = NULL;	/* History of previously entered line numbers */
 
 static int doline(BW *bw, unsigned char *s, void *object, int *notify)
 {
-	long num = calc(bw, s);
+	long num = calcl(bw, s);
 
 	if (notify)
 		*notify = 1;
@@ -704,7 +704,7 @@ static B *colhist = NULL;	/* History of previously entered column numbers */
 
 static int docol(BW *bw, unsigned char *s, void *object, int *notify)
 {
-	long num = calc(bw, s);
+	long num = calcl(bw, s);
 
 	if (notify)
 		*notify = 1;
@@ -740,7 +740,7 @@ static B *bytehist = NULL;	/* History of previously entered byte numbers */
 
 static int dobyte(BW *bw, unsigned char *s, void *object, int *notify)
 {
-	long num = calc(bw, s);
+	long num = calcl(bw, s);
 
 	if (notify)
 		*notify = 1;

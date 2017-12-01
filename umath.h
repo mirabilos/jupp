@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/umath.h,v 1.5 2017/03/19 19:19:51 tg Exp $ */
+/* $MirOS: contrib/code/jupp/umath.h,v 1.6 2017/12/01 23:26:24 tg Exp $ */
 /*
  *	Math
  *	Copyright
@@ -23,5 +23,8 @@ double calc(BW *bw, unsigned char *s);
 int umath(BW *bw);
 int umathins(BW *bw);
 int umathres(BW *bw);
+
+#define calcl(bw,s)	((long)calc((bw), (s)))
+#define calcldec(bw,s)	((long)(calc((bw), (s)) - 1.0))
 
 #endif

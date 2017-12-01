@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/rc.c,v 1.23 2017/03/19 19:19:50 tg Exp $ */
+/* $MirOS: contrib/code/jupp/rc.c,v 1.24 2017/12/01 23:26:24 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
@@ -512,7 +512,7 @@ static int doopt1(BW *bw, unsigned char *s, int *xx, int *notify)
 {
 	int ret = 0;
 	int x = *xx;
-	int v;
+	long v;
 
 	joe_free(xx);
 	switch (glopts[x].type) {
@@ -521,7 +521,7 @@ static int doopt1(BW *bw, unsigned char *s, int *xx, int *notify)
 			ret = -1;
 			break;
 		}
-		v = calc(bw, s);
+		v = calcl(bw, s);
 		if (merrf) {
 			msgnw(bw->parent, merrt);
 			ret = -1;
@@ -541,7 +541,7 @@ static int doopt1(BW *bw, unsigned char *s, int *xx, int *notify)
 			ret = -1;
 			break;
 		}
-		v = calc(bw, s);
+		v = calcl(bw, s);
 		if (merrf) {
 			msgnw(bw->parent, merrt);
 			ret = -1;
@@ -557,7 +557,7 @@ static int doopt1(BW *bw, unsigned char *s, int *xx, int *notify)
 			ret = -1;
 			break;
 		}
-		v = calc(bw, s) - 1.0;
+		v = calcldec(bw, s);
 		if (merrf) {
 			msgnw(bw->parent, merrt);
 			ret = -1;
