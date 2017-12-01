@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.57 2017/11/18 16:25:07 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.58 2017/12/01 23:02:14 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -219,6 +219,11 @@ no:*) use_fork=0 ;;
 *) use_fork=0 ;;
 esac
 AC_DEFINE_UNQUOTED([WANT_FORK], [$use_fork], [We have fork(2) and want to use it])
+if test $use_fork = 1; then
+	echo "Enabling use of fork(), concurrent subshells, etc."
+else
+	echo "DISabling use of fork() and concurrent subshells (NOMMU)!"
+fi
 
 AC_CHECK_DECLS([strlcpy, strlcat, popen])
 AC_CHECK_DECLS([ctime], [], [], [AC_INCLUDES_DEFAULT
