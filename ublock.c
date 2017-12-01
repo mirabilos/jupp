@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ublock.c,v 1.14 2017/11/18 16:30:21 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ublock.c,v 1.15 2017/12/01 22:31:05 tg Exp $ */
 /*
  * 	Highlighted block functions
  *	Copyright
@@ -959,7 +959,7 @@ static int dofilt(BW *bw, unsigned char *s, void *object, int *notify)
 {
 	int fr[2];
 	int fw;
-	int flg = 0;
+	volatile int flg = 0;
 	unsigned char *tf;
 	const char *sh;
 #if defined(HAVE_PUTENV) && (WANT_FORK || defined(HAVE_UNSETENV))

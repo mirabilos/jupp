@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/ushell.c,v 1.6 2017/11/18 17:05:51 tg Exp $ */
+/* $MirOS: contrib/code/jupp/ushell.c,v 1.7 2017/12/01 22:31:05 tg Exp $ */
 /*
  *	Shell-window functions
  *	Copyright
@@ -39,6 +39,7 @@
 
 extern int orphan;
 
+#if WANT_FORK
 /* Executed when shell process terminates */
 
 static void cdone(B *b)
@@ -108,7 +109,6 @@ static void cdata(B *b, unsigned char *dat, int siz)
 	cfollow(b,byte);
 }
 
-#if WANT_FORK
 static int doushell(BW *bw, unsigned char *cmd, int *notify, int build)
 {
 	MPX *m;
