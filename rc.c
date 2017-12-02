@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.26 2017/12/02 04:32:41 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.27 2017/12/02 05:04:28 tg Exp $");
 
 #include <string.h>
 #ifdef HAVE_STDLIB_H
@@ -557,7 +557,7 @@ static int doopt1(BW *bw, unsigned char *s, int *xx, int *notify)
 			ret = -1;
 			break;
 		}
-		v = calcldec(bw, s);
+		v = calcl(bw, s) - 1L;
 		if (merrf) {
 			msgnw(bw->parent, merrt);
 			ret = -1;

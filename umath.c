@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.12 2017/12/02 04:55:19 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.13 2017/12/02 05:04:28 tg Exp $");
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -28,6 +28,8 @@ const unsigned char *merrt;
 #if WANT_MATH
 static char math_res[JOE_MSGBUFSIZE];
 static char *math_exp;
+
+static double calc(BW *bw, unsigned char *s);
 
 static RETSIGTYPE fperr(int unused)
 {
@@ -152,7 +154,8 @@ typedef long joe_imaxt;
 #define JOE_IMAXT "l"
 #endif
 
-double calc(BW *bw, unsigned char *s)
+static double
+calc(BW *bw, unsigned char *s)
 {
 	double result;
 	struct var *v;
@@ -276,6 +279,12 @@ int umathres(BW *bw)
 {
 	binss(bw->cursor, (void *)math_res);
 	return 0;
+}
+
+long
+calcl(BW *bw, unsigned char *s)
+{
+	return ((long)calc(bw, s));
 }
 #else
 long
