@@ -261,7 +261,7 @@ jstar missing sequences
 ESC $  insert math result money formatted
 ESC m  Memorandum
 ESC s  isearch fwrd (supposed to be Sincerely)
-ESC c  compile (supposed to be center line)
+ESC c  compile (supposed to be center line) — actually ^OC but ncih…
 ^Q U   align paragraph (don't know what this does)
 ^Q ^Q  repeat next command once every second
 ^Q O   spell check entered word
@@ -565,7 +565,6 @@ Other requests:
 • replace all int with size_t where applicable
 • merge syntax handling code from joe-3.7+
 • merge math from joe-3.7+
-• add group support to regex code
 • make -Wcast-qual clean
 • write a jupp(1) mdoc page
 • use mirkev (better code for hashtables)
@@ -592,4 +591,4 @@ Other requests:
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.40 2017/08/09 01:15:24 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.41 2017/12/02 05:12:39 tg Exp $
