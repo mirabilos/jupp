@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.13 2017/12/02 05:04:28 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.14 2017/12/02 05:07:18 tg Exp $");
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -284,7 +284,10 @@ int umathres(BW *bw)
 long
 calcl(BW *bw, unsigned char *s)
 {
-	return ((long)calc(bw, s));
+	double rv;
+
+	rv = calc(bw, s);
+	return ((long)rv);
 }
 #else
 long
