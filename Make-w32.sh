@@ -1,5 +1,5 @@
 #!/bin/mksh
-# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.17 2017/12/02 18:52:59 tg Exp $
+# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.18 2017/12/02 18:53:37 tg Exp $
 
 usage() {
 	print -ru2 "Usage: $0 [-bCgn]"
@@ -101,5 +101,5 @@ chmod 444 *
 cd ..
 zip -D -X -9 -k ../JWIN31$jWIN.ZIP $jtop/*
 cd ..
-ls -l JWIN31$jWIN.ZIP
+ls -l JWIN31$jWIN.*
 (( nocln )) || rm -rf mkw32
