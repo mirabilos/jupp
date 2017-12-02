@@ -7,13 +7,14 @@
  */
 
 #include "config.h"
+#include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/syntax.c,v 1.19 2017/12/02 03:52:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/syntax.c,v 1.20 2017/12/02 04:36:56 tg Exp $");
 
+#include <limits.h>
 #include <stdlib.h>
 #include <string.h>
 #include "b.h"
-#include "types.h"
 #include "scrn.h"
 #include "utils.h"
 #include "hash.h"
@@ -248,7 +249,7 @@ struct high_syntax *load_dfa(const unsigned char *name)
 	struct high_state *state=0;	/* Current state */
 	struct high_syntax *syntax;	/* New syntax table */
 	int line = 0;
-	unsigned char *np;
+	void *np;
 
 	if (!name)
 		return NULL;
