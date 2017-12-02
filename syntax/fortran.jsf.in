@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/syntax/fortran.jsf.in,v 1.2 2008/05/13 16:17:44 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/fortran.jsf.in,v 1.3 2017/12/02 05:38:05 tg Exp $
 #-
 # JOE syntax highlight file for FORTRAN
 # Heavily improved by: Malte Thoma (thoma@uni-muenster.de)
@@ -13,7 +13,7 @@
 =Type 		red
 =Keyword 	bold 
 =Intrinsic	magenta
-=Preproc        blue
+=Preproc        yellow
 =Operator	magenta
 =Bad		bold red
 

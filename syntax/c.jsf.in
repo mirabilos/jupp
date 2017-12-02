@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/syntax/c.jsf.in,v 1.7 2016/10/07 19:43:56 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/c.jsf.in,v 1.8 2017/12/02 05:38:05 tg Exp $
 #-
 # JOE syntax highlight file for C and C++
 
@@ -90,7 +90,7 @@
 
 =Idle
 =Bad		bold red
-=Preproc 	blue
+=Preproc 	yellow
 =Define		bold blue
 =Comment 	green
 =IncLocal	cyan
