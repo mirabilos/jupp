@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/poshist.c,v 1.3 2017/12/02 02:07:29 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/poshist.c,v 1.4 2017/12/02 18:50:03 tg Exp $");
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -26,8 +26,8 @@ struct pos {
 	W *w;
 };
 
-POS pos = { {&pos, &pos} };
-POS frpos = { {&frpos, &frpos} };
+POS pos = { {&pos, &pos}, NULL, NULL };
+POS frpos = { {&frpos, &frpos}, NULL, NULL };
 POS *curpos = &pos;
 int npos = 0;
 

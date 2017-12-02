@@ -10,7 +10,6 @@ http://article.gmane.org/gmane.os.miros.cvs/11607 for details.
 Disable the following warnings; the code doesn't cope with it:
 -Wno-pointer-sign
 -Wno-unused-parameter
--Wno-missing-field-initializers
 -Wno-old-style-definition -Wno-strict-prototypes
 -Wno-cast-qual
 -Wno-missing-prototypes -Wno-missing-declarations
@@ -135,4 +134,4 @@ will not insert.
 - Search, incremental search, and search & replace all operate as usual.
 
 ___________________________________________________________________
-$MirOS: contrib/code/jupp/HINTS,v 1.10 2017/01/11 22:04:31 tg Exp $
+$MirOS: contrib/code/jupp/HINTS,v 1.11 2017/12/02 18:50:01 tg Exp $

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.11 2017/12/02 02:07:36 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.12 2017/12/02 18:50:04 tg Exp $");
 
 #include <stdlib.h>
 
@@ -42,7 +42,7 @@ B *replhist = NULL;		/* Replacement string history */
 
 SRCH *globalsrch = NULL;	/* Most recent completed search data */
 
-SRCHREC fsr = { {&fsr, &fsr} };
+SRCHREC fsr = { {&fsr, &fsr}, 0, 0, 0 };
 
 /* Completion stuff: should go somewhere else */
 

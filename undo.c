@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/undo.c,v 1.4 2017/12/02 02:07:36 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/undo.c,v 1.5 2017/12/02 18:50:03 tg Exp $");
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -23,20 +23,20 @@ __RCSID("$MirOS: contrib/code/jupp/undo.c,v 1.4 2017/12/02 02:07:36 tg Exp $");
 
 #define SMALL 1024
 
-static UNDO undos = { {&undos, &undos} };
-static UNDO frdos = { {&frdos, &frdos} };
+static UNDO undos = { {&undos, &undos}, NULL, 0, { {NULL, NULL}, NULL, 0, 0, 0, 0, 0, NULL, NULL }, NULL, NULL, NULL };
+static UNDO frdos = { {&frdos, &frdos}, NULL, 0, { {NULL, NULL}, NULL, 0, 0, 0, 0, 0, NULL, NULL }, NULL, NULL, NULL };
 
 int inundo = 0;
 int inredo = 0;
 
 extern int dostaupd;
 
-UNDOREC yanked = { {&yanked, &yanked} };
+UNDOREC yanked = { {&yanked, &yanked}, NULL, 0, 0, 0, 0, 0, NULL, NULL };
 int nyanked = 0;
 int inyank = 0;
 int justkilled = 0;
 
-UNDOREC frrecs = { {&frrecs, &frrecs} };
+UNDOREC frrecs = { {&frrecs, &frrecs}, NULL, 0, 0, 0, 0, 0, NULL, NULL };
 
 static UNDOREC *alrec(void)
 {

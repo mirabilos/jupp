@@ -1,5 +1,5 @@
 #!/bin/mksh
-# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.15 2017/12/02 05:26:39 tg Exp $
+# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.16 2017/12/02 18:50:01 tg Exp $
 
 usage() {
 	print -ru2 "Usage: $0 [-bCgn]"
@@ -25,8 +25,6 @@ done
 extrawarnings="-Wall -Wextra"
 (( debug )) && extrawarnings="$extrawarnings -g3"
 extrawarnings="$extrawarnings -Wno-unused-parameter"
-echo "N: gcc-3.4.4-999 does not support -Wno-missing-field-initializers"
-echo "N: expect warnings about those, they are known, do not report them"
 extrawarnings="$extrawarnings -Wno-old-style-definition -Wno-strict-prototypes"
 extrawarnings="$extrawarnings -Wno-cast-qual"
 extrawarnings="$extrawarnings -Wno-missing-prototypes -Wno-missing-declarations"

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uisrch.c,v 1.9 2017/12/02 04:32:42 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uisrch.c,v 1.10 2017/12/02 18:50:03 tg Exp $");
 
 #include <stdlib.h>
 
@@ -32,7 +32,7 @@ unsigned char *lastpat = NULL;	/* Previous pattern */
 
 extern SRCH *globalsrch;	/* Existing SRCH structure */
 
-IREC fri = { {&fri, &fri} };	/* Free-list of irecs */
+IREC fri = { {&fri, &fri}, 0, 0, 0, 0 };	/* Free-list of irecs */
 
 static IREC *alirec(void)
 {				/* Allocate an IREC */

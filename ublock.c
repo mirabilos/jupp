@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.18 2017/12/02 04:32:41 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.19 2017/12/02 18:50:03 tg Exp $");
 
 #include <unistd.h>
 #ifdef HAVE_STDLIB_H
@@ -53,8 +53,8 @@ typedef struct marksav MARKSAV;
 struct marksav {
 	LINK(MARKSAV) link;
 	P *markb, *markk;
-} markstack = { { &markstack, &markstack} };
-MARKSAV markfree = { {&markfree, &markfree} };
+} markstack = { { &markstack, &markstack}, NULL, NULL };
+MARKSAV markfree = { {&markfree, &markfree}, NULL, NULL };
 int nstack = 0;
 
 int upsh(BW *bw)

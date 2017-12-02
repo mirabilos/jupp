@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/vfile.c,v 1.10 2017/12/02 02:07:38 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/vfile.c,v 1.11 2017/12/02 18:50:04 tg Exp $");
 
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
@@ -27,7 +27,8 @@ __RCSID("$MirOS: contrib/code/jupp/vfile.c,v 1.10 2017/12/02 02:07:38 tg Exp $")
 #include "vfile.h"
 #include "vs.h"
 
-static VFILE vfiles = { {&vfiles, &vfiles} };	/* Known vfiles */
+				/* Known vfiles */
+static VFILE vfiles = { {&vfiles, &vfiles}, 0, 0, 0, 0, NULL, 0, NULL, 0, NULL, NULL, 0, 0 };
 static VPAGE *freepages = NULL;	/* Linked list of free pages */
 static VPAGE *htab[HTSIZE];	/* Hash table of page headers */
 static long curvalloc = 0;	/* Amount of memory in use */

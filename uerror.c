@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uerror.c,v 1.5 2017/12/02 02:07:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uerror.c,v 1.6 2017/12/02 18:50:03 tg Exp $");
 
 #include "b.h"
 #include "bw.h"
@@ -32,7 +32,7 @@ struct error {
 	unsigned char *file;		/* Target file name */
 	long src;		/* Error-file line number */
 	unsigned char *msg;		/* The message */
-} errors = { { &errors, &errors} };
+} errors = { { &errors, &errors}, 0, 0, NULL, 0, NULL };
 ERROR *errptr = &errors;	/* Current error row */
 
 B *errbuf = NULL;		/* Buffer with error messages */
@@ -96,7 +96,7 @@ void saverr(unsigned char *name)
 }
 
 /* Pool of free error nodes */
-ERROR errnodes = { {&errnodes, &errnodes} };
+ERROR errnodes = { {&errnodes, &errnodes}, 0, 0, NULL, 0, NULL };
 
 /* Free an error node */
 
