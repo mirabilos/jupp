@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/vfile.c,v 1.8 2013/08/19 22:03:20 tg Exp $ */
+/* $MirOS: contrib/code/jupp/vfile.c,v 1.9 2017/12/02 00:16:44 tg Exp $ */
 /*
  *	Software virtual memory system
  *	Copyright
@@ -16,6 +16,7 @@
 #include <sys/stat.h>
 #endif
 #include <fcntl.h>
+#include <limits.h>
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #endif
@@ -51,7 +52,7 @@ void vflsh(void)
 	for (vfile = vfiles.link.next; vfile != &vfiles; vfile = vfile->link.next) {
 		last = -1;
 	      loop:
-		addr = MAXLONG;
+		addr = LONG_MAX;
 		vlowest = NULL;
 		for (x = 0; x != HTSIZE; x++)
 			for (vp = htab[x]; vp; vp = vp->next)
@@ -89,7 +90,7 @@ void vflshf(VFILE *vfile)
 	int x;
 
       loop:
-	addr = MAXLONG;
+	addr = LONG_MAX;
 	vlowest = NULL;
 	for (x = 0; x != HTSIZE; x++)
 		for (vp = htab[x]; vp; vp = vp->next)

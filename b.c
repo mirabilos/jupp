@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/b.c,v 1.15 2016/10/08 17:42:12 tg Exp $ */
+/* $MirOS: contrib/code/jupp/b.c,v 1.16 2017/12/02 00:16:43 tg Exp $ */
 /*
  *	Editor engine
  *	Copyright
@@ -14,6 +14,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <limits.h>
 #ifdef HAVE_PWD_H
 #include <pwd.h>
 #endif
@@ -2027,7 +2028,7 @@ unsigned char *parsens(unsigned char *s, long int *skip, long int *amnt)
 	int x;
 
 	*skip = 0;
-	*amnt = MAXLONG;
+	*amnt = LONG_MAX;
 	for (x = sLEN(n) - 1; x > 0 && ((n[x] >= '0' && n[x] <= '9') || n[x] == 'x' || n[x] == 'X'); --x) ;
 	if (n[x] == ',') {
 		n[x] = 0;
@@ -2204,7 +2205,7 @@ opnerr:
 	b->name = joesep((unsigned char *)strdup(s));
 
 	/* Set flags */
-	if (error || s[0] == '!' || skip || amnt != MAXLONG) {
+	if (error || s[0] == '!' || skip || amnt != LONG_MAX) {
 		b->backup = 1;
 		b->changed = 0;
 	} else if (!strcmp(n, "-")) {
@@ -2453,7 +2454,7 @@ int bsave(P *p, unsigned char *s, long int size, int flag)
 		nescape(maint->t);
 		ttclsn();
 		f = stdout;
-	} else if (skip || amnt != MAXLONG)
+	} else if (skip || amnt != LONG_MAX)
 		f = fopen((char *)s, "r+");
 	else {
 		f = fopen((char *)s, "w");
@@ -2476,7 +2477,7 @@ int bsave(P *p, unsigned char *s, long int size, int flag)
 
 	bsavefd(p, fileno(f), size);
 
-	if (!error && force && size && !skip && amnt == MAXLONG) {
+	if (!error && force && size && !skip && amnt == LONG_MAX) {
 		P *q = pdup(p);
 		unsigned char nl = '\n';
 

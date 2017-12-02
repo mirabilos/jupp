@@ -1,4 +1,4 @@
-/* $MirOS: contrib/code/jupp/config.h,v 1.7 2014/06/26 18:15:17 tg Exp $ */
+/* $MirOS: contrib/code/jupp/config.h,v 1.8 2017/12/02 00:16:43 tg Exp $ */
 
 #ifndef _JOE_CONFIG_H
 #define _JOE_CONFIG_H
@@ -51,9 +51,6 @@
 #define joe_snprintf_10(buf,len,fmt,a,b,c,d,e,f,g,h,i,j) sprintf((buf),(fmt),(a),(b),(c),(d),(e),(f),(g),(h),(i),(j))
 
 #endif
-
-#define MAXINT  ((((unsigned int)-1)/2)-1)
-#define MAXLONG ((((unsigned long)-1L)/2)-1)
 
 #include <stdio.h>
 #ifndef EOF
