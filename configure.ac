@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.58 2017/12/01 23:02:14 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.59 2017/12/02 04:15:29 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -224,6 +224,22 @@ if test $use_fork = 1; then
 else
 	echo "DISabling use of fork() and concurrent subshells (NOMMU)!"
 fi
+
+AC_ARG_ENABLE([fpu],
+[  --disable-fpu           disable use of floating point arithmetics],
+	use_fpu=$enableval, use_fpu=yes)
+if test x"$use_fpu" = x"no"; then
+	use_fpu=0
+else
+	use_fpu=1
+fi
+AC_DEFINE_UNQUOTED([WANT_MATH], [$use_fpu], [Can we use the FPU?])
+if test $use_fpu = 1; then
+	echo "Enabling use of floating point arithmetics"
+else
+	echo "DISabling Math support for lack of an FPU!"
+fi
+
 
 AC_CHECK_DECLS([strlcpy, strlcat, popen])
 AC_CHECK_DECLS([ctime], [], [], [AC_INCLUDES_DEFAULT

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.9 2017/12/02 02:11:19 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.10 2017/12/02 04:15:29 tg Exp $");
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -26,6 +26,7 @@ __RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.9 2017/12/02 02:11:19 tg Exp $");
 volatile sig_atomic_t merrf;
 const unsigned char *merrt;
 
+#if WANT_MATH
 static char math_res[JOE_MSGBUFSIZE];
 static char *math_exp;
 
@@ -277,3 +278,26 @@ int umathres(BW *bw)
 	binss(bw->cursor, (void *)math_res);
 	return 0;
 }
+#else
+long
+calcl(BW *bw, unsigned char *s)
+{
+	long rv;
+	void *cp = NULL;
+
+	rv = ustol(s, &cp, USTOL_TRIM | USTOL_EOS);
+	if (!cp) {
+		rv = 0;
+		merrt = US "Invalid or out-of-range number";
+		merrf = 1;
+	}
+	return (rv);
+}
+
+int
+unomath(BW *bw)
+{
+	msgnw(bw->parent, US "Sorry, compiled without Math");
+	return (-1);
+}
+#endif
