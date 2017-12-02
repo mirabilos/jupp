@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.59 2017/12/02 04:15:29 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.60 2017/12/02 05:15:46 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -53,7 +53,7 @@ AC_ARG_ENABLE(curses,
 [  --disable-curses        disable use of curses library],
 	curses=$enableval, curses=yes)
 test x"$curses" = x"yes" && \
-    search_libs_term="$search_libs_term tinfo ncurses curses"
+    search_libs_term="$search_libs_term tinfo ncursesw ncurses curses"
 
 AC_ARG_ENABLE(termcap,
 [  --disable-termcap       disable use of termcap library],
