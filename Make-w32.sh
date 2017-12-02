@@ -1,5 +1,5 @@
 #!/bin/mksh
-# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.16 2017/12/02 18:50:01 tg Exp $
+# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.17 2017/12/02 18:52:59 tg Exp $
 
 usage() {
 	print -ru2 "Usage: $0 [-bCgn]"
@@ -48,9 +48,10 @@ typeset -u jWIN=$jwin
 if (( contb )); then
 	[[ -s mkw32/build/Makefile ]]
 else
-	rm -rf mkw32
+	rm -rf mkw32 JWIN31$jWIN.*
 	mkdir mkw32{,/{build,$jtop}}
 fi
+date >>JWIN31$jWIN.log
 cd mkw32/build
 export CFLAGS='-Os -march=i486 -mtune=pentium-mmx'
 export CPPFLAGS='-DJUPPRC_BUILTIN_NAME=\"jupp32rc\"'
@@ -62,8 +63,8 @@ export CPPFLAGS='-DJUPPRC_BUILTIN_NAME=\"jupp32rc\"'
     --disable-search-libs \
     --disable-getpwnam \
     --disable-termidx \
-    --enable-win32reloc
-make AM_CFLAGS="$extrawarnings"
+    --enable-win32reloc | tee -a ../../JWIN31$jWIN.log
+make AM_CFLAGS="$extrawarnings" | tee -a ../../JWIN31$jWIN.log
 if (( nopkg )); then
 	ln -f joe.exe jupp.exe
 	ln -sf ../../jupprc .
