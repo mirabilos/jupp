@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/syntax/c.jsf.in,v 1.8 2017/12/02 05:38:05 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/c.jsf.in,v 1.9 2017/12/02 22:24:07 tg Exp $
 #-
 # JOE syntax highlight file for C and C++
 
@@ -91,6 +91,7 @@
 =Idle
 =Bad		bold red
 =Preproc 	yellow
+=PpCond		red
 =Define		bold blue
 =Comment 	green
 =IncLocal	cyan
@@ -119,7 +120,12 @@
 :preident Preproc
 	*		preproc		noeat strings
 	"define"	predef
+	"elif"		preif
+	"if"		preif
+	"ifdef"		predef
+	"ifndef"	predef
 	"include"	preinc
+	"undef"		predef
 done
 	"a-z"		preident
 
@@ -146,7 +152,6 @@ done
 	*		prebad
 	"\n"		reset
 
-
 :predef Preproc
 	*		predef
 	" \t"		predef_ws
@@ -161,6 +166,28 @@ done
 	*		idle		noeat
 	"a-zA-Z0-9_"	predef_ident
 
+:preif Preproc
+	*		preif
+	" \t"		preif_ws
+	"\n"		reset
+
+:preif_ws Preproc
+	*		preif_cond	recolor=-1
+	" \t"		preif_ws
+
+:preif_cond PpCond
+	*		preif_cond
+	"\\"		preif_cont
+	"/"		preif_slash
+	"\n"		reset
+
+:preif_slash Preproc
+	*		preif_cond	noeat
+	"*"		comment		recolor=-2
+	"/"		line_comment	recolor=-2
+
+:preif_cont PpCond
+	*		preif_cond
 
 :preproc Preproc
 	*		preproc
