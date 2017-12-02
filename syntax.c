@@ -8,7 +8,7 @@
 
 #include "config.h"
 
-__RCSID("$MirOS: contrib/code/jupp/syntax.c,v 1.18 2017/12/02 02:07:32 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/syntax.c,v 1.19 2017/12/02 03:52:34 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -248,6 +248,7 @@ struct high_syntax *load_dfa(const unsigned char *name)
 	struct high_state *state=0;	/* Current state */
 	struct high_syntax *syntax;	/* New syntax table */
 	int line = 0;
+	unsigned char *np;
 
 	if (!name)
 		return NULL;
@@ -338,8 +339,12 @@ struct high_syntax *load_dfa(const unsigned char *name)
 				}
 			}
 		} else if(!parse_char(&p, '-')) { /* No. sync lines */
-			if(parse_int(&p, &syntax->sync_lines))
+			syntax->sync_lines = (int)ustolb(p, &np,
+			    INT_MIN, INT_MAX, USTOL_TRIM);
+			if (!np)
 				syntax->sync_lines = -1;
+			else
+				p = np;
 		} else {
 			c = parse_ws(&p,'#');
 
@@ -386,8 +391,12 @@ struct high_syntax *load_dfa(const unsigned char *name)
 								parse_ws(&p,'#');
 								if(!parse_char(&p,'=')) {
 									parse_ws(&p,'#');
-									if(parse_int(&p,&cmd->recolor))
+									cmd->recolor = (int)ustolb(p, &np,
+									    INT_MIN, INT_MAX, USTOL_TRIM);
+									if (!np)
 										fprintf(stderr,"%s:%d: Missing value for option %s\n", name, line, bf);
+									else
+										p = np;
 								} else
 									fprintf(stderr,"%s:%d: Missing value for option %s\n", name, line, bf);
 							} else if(!strcmp(bf,"strings") || !strcmp(bf,"istrings")) {
@@ -420,8 +429,12 @@ struct high_syntax *load_dfa(const unsigned char *name)
 														parse_ws(&p,'#');
 														if(!parse_char(&p,'=')) {
 															parse_ws(&p,'#');
-															if(parse_int(&p,&kw_cmd->recolor))
+															kw_cmd->recolor = (int)ustolb(p, &np,
+															    INT_MIN, INT_MAX, USTOL_TRIM);
+															if (!np)
 																fprintf(stderr,"%s:%d: Missing value for option %s\n", name, line, bf);
+															else
+																p = np;
 														} else
 															fprintf(stderr,"%s:%d: Missing value for option %s\n", name, line, bf);
 													} else

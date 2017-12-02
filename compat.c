@@ -30,7 +30,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/compat.c,v 1.6 2017/12/02 03:41:43 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/compat.c,v 1.7 2017/12/02 03:52:34 tg Exp $");
 
 #undef L_strlcat
 #undef L_strlcpy
@@ -345,4 +345,20 @@ ustol(void *us, void **dpp, int flags)
 	if (dpp)
 		*dpp = (void *)s;
 	return ((long)a);
+}
+
+long
+ustolb(void *us, void **dpp, long lower, long upper, int flags)
+{
+	void *dp;
+	long rv;
+
+	rv = ustol(us, &dp, flags);
+	if (dp != NULL && (rv < lower || rv > upper)) {
+		dp = NULL;
+		rv = 0;
+	}
+	if (dpp)
+		*dpp = dp;
+	return (rv);
 }

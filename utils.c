@@ -8,7 +8,7 @@
  */
 #include "config.h"
 
-__RCSID("$MirOS: contrib/code/jupp/utils.c,v 1.5 2017/12/02 02:07:37 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/utils.c,v 1.6 2017/12/02 03:52:34 tg Exp $");
 
 #include <errno.h>
 #ifdef HAVE_UNISTD_H
@@ -183,23 +183,6 @@ int parse_char(unsigned char **pp, unsigned char c)
 	unsigned char *p = *pp;
 	if (*p == c) {
 		*pp = p+1;
-		return 0;
-	} else
-		return -1;
-}
-
-/* Parse an integer.  Returns 0 for success. */
-
-int parse_int(unsigned char **pp, int *buf)
-{
-	unsigned char *p = *pp;
-	if ((*p>='0' && *p<='9') || *p=='-') {
-		*buf = atoi((char *)p);
-		if(*p=='-')
-			++p;
-		while(*p>='0' && *p<='9')
-			++p;
-		*pp = p;
 		return 0;
 	} else
 		return -1;

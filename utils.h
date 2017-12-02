@@ -11,7 +11,7 @@
 #define _JOE_UTILS_H 1
 
 #ifdef EXTERN_B_C
-__RCSID("$MirOS: contrib/code/jupp/utils.h,v 1.6 2017/12/02 03:41:43 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/utils.h,v 1.7 2017/12/02 03:52:35 tg Exp $");
 #endif
 
 #ifdef HAVE_SIGNAL_H
@@ -55,7 +55,6 @@ int parse_kw PARAMS((unsigned char **p,unsigned char *kw));
 int parse_tows PARAMS((unsigned char **p,unsigned char *buf));
 int parse_field PARAMS((unsigned char **p,unsigned char *field));
 int parse_char PARAMS((unsigned char  **p,unsigned char c));
-int parse_int PARAMS((unsigned char **p,int *buf));
 int parse_string PARAMS((unsigned char **p,unsigned char *buf,int len));
 int parse_range PARAMS((unsigned char **p,int *first,int *second));
 
@@ -69,9 +68,11 @@ void tty_xonoffbaudrst(void);
 #define USTOL_OCT	0x03
 #define USTOL_LTRIM	0x04
 #define USTOL_RTRIM	0x08
+#define USTOL_TRIM	0x0C
 #define USTOL_EOS	0x10
 
 long ustol(void *, void **, int);
+long ustolb(void *, void **, long, long, int);
 
 #define USTOC_MAX	4 /* arbitrary, but at least 4 */
 
