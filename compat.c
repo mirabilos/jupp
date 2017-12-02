@@ -1,6 +1,6 @@
 /*-
- * Copyright © 2004, 2005, 2006, 2007, 2011, 2012
- *	Thorsten “mirabilos” Glaser <tg@mirbsd.org>
+ * Copyright © 2004, 2005, 2006, 2007, 2011, 2012, 2017
+ *	mirabilos <m@mirbsd.org>
  *
  * Provided that these terms and disclaimer and all copyright notices
  * are retained or reproduced in an accompanying document, permission
@@ -17,19 +17,20 @@
  * damage or existence of a defect, except proven that it results out
  * of said person’s immediate fault when using the work as intended.
  *-
- * Compatibility functions for jupp.
+ * Compatibility and fully new utility functions for jupp.
  *
  * – ctime: based on mirtime from MirBSD libc; not leap second capable
  *   src/kern/include/mirtime.h,v 1.2 2011/11/20 23:40:11 tg Exp
  *   src/kern/c/mirtime.c,v 1.3 2011/11/20 23:40:10 tg Exp
  * – strlcpy, strlcat: pulled in via "strlfun.inc"
  * – popen, pclose: pulled in via "popen.inc"
+ * - ustoc_{hex,oct}, ustol: parse integers
  */
 
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/compat.c,v 1.5 2017/12/02 02:07:25 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/compat.c,v 1.6 2017/12/02 03:41:43 tg Exp $");
 
 #undef L_strlcat
 #undef L_strlcpy
@@ -57,6 +58,7 @@ __RCSID("$MirOS: contrib/code/jupp/compat.c,v 1.5 2017/12/02 02:07:25 tg Exp $")
 #endif
 
 #include <limits.h>
+#include "utils.h"
 
 typedef struct {
 	int tm_sec;		/* seconds [0-60] */
@@ -200,3 +202,147 @@ joe_timet2tm(joe_tm *tm, const time_t *tp)
 #ifndef HAVE_POPEN
 #include "popen.inc"
 #endif
+
+size_t
+ustoc_hex(const void *us, int *dp, size_t lim)
+{
+	unsigned char c;
+	const unsigned char *s = (const unsigned char *)us;
+	int rv = 0, rounds = 0;
+
+	while (rounds++ < 2 && lim-- > 0)
+		if ((c = *s++) >= '0' && c <= '9')
+			rv = (rv << 4) | (c & 15);
+		else if ((c |= 0x20) >= 'a' && c <= 'f')
+			rv = (rv << 4) | (c - 'a' + 10);
+		else {
+			--s;
+			break;
+		}
+
+	*dp = rv;
+	return (s - (const unsigned char *)us);
+}
+
+size_t
+ustoc_oct(const void *us, int *dp, size_t lim)
+{
+	unsigned char c;
+	const unsigned char *s = (const unsigned char *)us;
+	int rv = 0, rounds = 0;
+
+	while (rounds++ < 3 && lim-- > 0)
+		if ((c = *s++) >= '0' && c <= '7')
+			rv = (rv << 3) | (c & 7);
+		else {
+			--s;
+			break;
+		}
+
+	*dp = rv;
+	return (s - (const unsigned char *)us);
+}
+
+#define USTOL_MODEMASK	0x03
+
+static const char ustol_wsp[] = "\t\x0B\x0C\r ";
+
+long
+ustol(void *us, void **dpp, int flags)
+{
+	unsigned char c, *s = (unsigned char *)us;
+	unsigned long a = 0;
+	unsigned char *sp;
+	unsigned char neg = 0;
+
+	if (flags & USTOL_LTRIM)
+		while ((c = *s) && strchr(ustol_wsp, c))
+			++s;
+
+	switch (flags & USTOL_MODEMASK) {
+	case USTOL_HEX:
+		if (s[0] == '0' && (s[1] | 0x20) == 'x')
+			s += 2;
+		break;
+	case USTOL_AUTO:
+		if (s[0] != '0')
+			flags |= USTOL_DEC;
+		else if ((s[1] | 0x20) != 'x')
+			flags |= USTOL_OCT;
+		else {
+			flags |= USTOL_HEX;
+			s += 2;
+		}
+		break;
+	}
+
+	sp = s;
+	switch (flags & USTOL_MODEMASK) {
+	case USTOL_OCT:
+		while ((c = *s++) >= '0' && c <= '7') {
+			/* overflow check */
+			if (a > (ULONG_MAX >> 3))
+				goto err;
+			/* accumulate trivially */
+			a = (a << 3) | (c & 7);
+		}
+		break;
+	case USTOL_HEX:
+		while ((c = *s++) >= '0') {
+			if (c <= '9')
+				c &= 15;
+			else if ((c |= 0x20) >= 'a' && c <= 'f')
+				c = c - 'a' + 10;
+			else
+				break;
+			/* overflow check */
+			if (a > (ULONG_MAX >> 4))
+				goto err;
+			/* accumulate trivially */
+			a = (a << 4) | c;
+		}
+		break;
+	default:
+		switch (*s) {
+		case '-':
+			neg = 1;
+			/* FALLTHROUGH */
+		case '+':
+			sp = ++s;
+		}
+		while ((c = *s++) >= '0' && c <= '9') {
+			c &= 15;
+			if (a > (ULONG_MAX / 10))
+				goto err;
+			a *= 10;
+			if (a > (ULONG_MAX - c))
+				goto err;
+			a += c;
+		}
+		if (neg) {
+			if (a > (((unsigned long)(-(LONG_MIN + 1L))) + 1UL))
+				goto err;
+			a = -a;
+		} else if (a > (unsigned long)LONG_MAX)
+			goto err;
+	}
+	/* check we had at least one digit */
+	if (--s == sp)
+		goto err;
+
+	if (flags & USTOL_RTRIM)
+		while ((c = *s) && strchr(ustol_wsp, c))
+			++s;
+
+	/* don’t check for EOS, or arrived at EOS */
+	if (!(flags & USTOL_EOS) || !*s)
+		goto out;
+
+ err:
+	s = NULL;
+	a = 0;
+ out:
+	if (dpp)
+		*dpp = (void *)s;
+	return ((long)a);
+}
