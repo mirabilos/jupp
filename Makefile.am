@@ -1,11 +1,11 @@
-# $MirOS: contrib/code/jupp/Makefile.am,v 1.16 2017/01/11 21:48:57 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.am,v 1.17 2017/12/02 04:02:42 tg Exp $
 
 AUTOMAKE_OPTIONS = foreign
 
 EXTRA_DIST = \
-	COPYING HINTS INFO LIST NEWS README README.cvs TODO dir.c \
-	win32.c jmacsrc.in joe.1.in joerc.in jpicorc.in jstarrc.in \
-	jupprc rjoerc.in charmaps/klingon.in docs/help-system.html \
+	COPYING HINTS INFO LIST NEWS README README.cvs TODO \
+	charmaps/klingon.in dir.c docs/help-system.html jmacsrc.in \
+	joe.1.in joerc.in jpicorc.in jstarrc.in jupprc rjoerc.in \
 	syntax/asm.jsf.in syntax/c.jsf.in syntax/conf.jsf.in \
 	syntax/csh.jsf.in syntax/diff.jsf.in syntax/fortran.jsf.in \
 	syntax/html.jsf.in syntax/java.jsf.in syntax/lisp.jsf.in \
@@ -33,12 +33,13 @@ sysconf_charmapsdir = $(sysconf_joedir)/charmaps
 sysconf_charmaps_DATA = charmaps/klingon
 
 man_MANS = joe.1
-noinst_HEADERS = b.h blocks.h bw.h cmd.h config.h hash.h help.h kbd.h \
-	macro.h main.h menu.h path.h poshist.h pw.h queue.h qw.h rc.h regex.h \
-	scrn.h tab.h termcap.h tty.h tw.h types.h ublock.h uedit.h uerror.h \
-	ufile.h uformat.h uisrch.h umath.h undo.h usearch.h ushell.h utag.h \
-	utils.h va.h vfile.h vs.h w.h utf8.h syntax.h i18n.h charmap.h builtin.h
-
+noinst_HEADERS = \
+	b.h blocks.h builtin.h bw.h charmap.h cmd.h config.h hash.h \
+	help.h i18n.h kbd.h macro.h main.h menu.h path.h poshist.h pw.h \
+	queue.h qw.h rc.h regex.h scrn.h syntax.h tab.h termcap.h tty.h \
+	tw.h types.h ublock.h uedit.h uerror.h ufile.h uformat.h \
+	uisrch.h umath.h undo.h usearch.h ushell.h utag.h utf8.h utils.h \
+	va.h vfile.h vs.h w.h
 
 bin_PROGRAMS = joe
 if WANT_TERMIDX
