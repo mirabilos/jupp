@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/hash.c,v 1.3 2017/01/10 19:16:27 tg Exp $ */
 /*
  *	Simple hash table
  *	Copyright
@@ -8,6 +7,8 @@
  */
 #include "config.h"
 #include "types.h"
+
+__RCSID("$MirOS: contrib/code/jupp/hash.c,v 1.4 2017/12/02 02:07:26 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>

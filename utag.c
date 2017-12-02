@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/utag.c,v 1.3 2017/08/09 00:46:02 tg Exp $ */
 /*
  *	tags file symbol lookup
  *	Copyright
@@ -9,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-#include <stdio.h>
+__RCSID("$MirOS: contrib/code/jupp/utag.c,v 1.4 2017/12/02 02:07:36 tg Exp $");
 
 #include "b.h"
 #include "bw.h"

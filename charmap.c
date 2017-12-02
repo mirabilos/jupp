@@ -1,7 +1,6 @@
 #if 0
 .if "0" == "1"
 #endif
-/* $MirOS: contrib/code/jupp/charmap.c,v 1.19 2017/01/11 22:04:31 tg Exp $ */
 /*
  *	UNICODE/ISO-10646 conversion utilities
  *	Copyright
@@ -12,7 +11,8 @@
 
 #include "config.h"
 
-#include <stdio.h>
+__RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.20 2017/12/02 02:07:24 tg Exp $");
+
 #include <stdlib.h>
 #include <string.h>
 

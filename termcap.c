@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/termcap.c,v 1.14 2017/08/08 16:12:04 tg Exp $ */
 /*
  *	TERMCAP/TERMINFO database interface
  *	Copyright
@@ -9,10 +8,8 @@
 #include "config.h"
 #include "types.h"
 
-#include <stdio.h>
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif
+__RCSID("$MirOS: contrib/code/jupp/termcap.c,v 1.15 2017/12/02 02:07:32 tg Exp $");
+
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
 #endif

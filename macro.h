@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/macro.h,v 1.2 2008/05/13 13:08:23 tg Exp $ */
 /*
  *	Keyboard macros
  *	Copyright
@@ -9,8 +8,9 @@
 #ifndef _JOE_MACRO_H
 #define _JOE_MACRO_H 1
 
-#include "config.h"
-#include "types.h"
+#ifdef EXTERN
+__RCSID("$MirOS: contrib/code/jupp/macro.h,v 1.3 2017/12/02 02:07:28 tg Exp $");
+#endif
 
 /* Set when macro is recording: for status line */
 extern struct recmac *recmac;

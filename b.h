@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/b.h,v 1.4 2014/10/23 16:10:28 tg Exp $ */
 /*
  *	Editor engine
  *	Copyright
@@ -9,8 +8,9 @@
 #ifndef _JOE_B_H
 #define _JOE_B_H 1
 
-#include "config.h"
-#include "types.h"
+#ifdef EXTERN
+__RCSID("$MirOS: contrib/code/jupp/b.h,v 1.5 2017/12/02 02:07:23 tg Exp $");
+#endif
 
 /* 31744 */
 extern unsigned char stdbuf[stdsiz];

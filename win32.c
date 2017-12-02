@@ -1,5 +1,3 @@
-/* $MirOS: contrib/code/jupp/win32.c,v 1.3 2017/01/11 21:48:58 tg Exp $ */
-
 /*-
  * Copyright (c) 2016, 2017
  *	mirabilos <m@mirbsd.org>
@@ -19,6 +17,10 @@
  * damage or existence of a defect, except proven that it results out
  * of said person's immediate fault when using the work as intended.
  */
+
+#include "config.h"
+
+__RCSID("$MirOS: contrib/code/jupp/win32.c,v 1.4 2017/12/02 02:07:39 tg Exp $");
 
 #ifdef __CYGWIN__
 

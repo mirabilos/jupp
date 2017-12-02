@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/ufile.h,v 1.4 2017/08/09 00:46:02 tg Exp $ */
 /*
  * 	User file operations
  *	Copyright
@@ -9,8 +8,9 @@
 #ifndef _JOE_UFILE_H
 #define _JOE_UFILE_H 1
 
-#include "config.h"
-#include "types.h"
+#ifdef EXTERN_CMD_C
+__RCSID("$MirOS: contrib/code/jupp/ufile.h,v 1.5 2017/12/02 02:07:35 tg Exp $");
+#endif
 
 extern int exask;
 

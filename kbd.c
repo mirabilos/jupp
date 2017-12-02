@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/kbd.c,v 1.4 2017/01/10 19:16:27 tg Exp $ */
 /*
  *	Key-map handler
  *	Copyright
@@ -8,6 +7,8 @@
  */
 #include "config.h"
 #include "types.h"
+
+__RCSID("$MirOS: contrib/code/jupp/kbd.c,v 1.5 2017/12/02 02:07:28 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>

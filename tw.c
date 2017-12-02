@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/tw.c,v 1.12 2017/03/19 18:53:02 tg Exp $ */
 /* 
  *	Text editing windows
  *	Copyright
@@ -9,7 +8,8 @@
 #include "config.h"
 #include "types.h"
 
-#include <stdio.h>
+__RCSID("$MirOS: contrib/code/jupp/tw.c,v 1.13 2017/12/02 02:07:33 tg Exp $");
+
 #include <stdlib.h>
 #include <string.h>
 #ifdef HAVE_TIME_H

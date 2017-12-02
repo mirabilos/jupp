@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/w.c,v 1.7 2017/01/11 22:56:50 tg Exp $ */
 /*
  *	Window system
  *	Copyright
@@ -8,6 +7,8 @@
  */
 #include "config.h"
 #include "types.h"
+
+__RCSID("$MirOS: contrib/code/jupp/w.c,v 1.8 2017/12/02 02:07:38 tg Exp $");
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>

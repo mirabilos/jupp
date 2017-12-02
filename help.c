@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/help.c,v 1.10 2017/01/10 23:59:32 tg Exp $ */
 /*
  *	Help system
  *	Copyright
@@ -10,7 +9,8 @@
 #include "config.h"
 #include "types.h"
 
-#include <stdio.h>
+__RCSID("$MirOS: contrib/code/jupp/help.c,v 1.11 2017/12/02 02:07:26 tg Exp $");
+
 #include <stdlib.h>
 #include <string.h>
 

@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/undo.c,v 1.3 2010/04/08 15:31:05 tg Exp $ */
 /*
  *	UNDO system
  *	Copyright
@@ -8,6 +7,8 @@
  */
 #include "config.h"
 #include "types.h"
+
+__RCSID("$MirOS: contrib/code/jupp/undo.c,v 1.4 2017/12/02 02:07:36 tg Exp $");
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>

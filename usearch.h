@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/usearch.h,v 1.2 2008/05/13 13:08:29 tg Exp $ */
 /*
  *	Search & Replace system
  *	Copyright
@@ -9,8 +8,9 @@
 #ifndef _JOE_USEARCH_H
 #define _JOE_USEARCH_H 1
 
-#include "config.h"
-#include "types.h"
+#ifdef EXTERN_CMD_C
+__RCSID("$MirOS: contrib/code/jupp/usearch.h,v 1.3 2017/12/02 02:07:36 tg Exp $");
+#endif
 
 SRCH *mksrch PARAMS((unsigned char *pattern, unsigned char *replacement, int ignore, int backwards, int repeat, int replace, int rest));
 void rmsrch PARAMS((SRCH *srch));

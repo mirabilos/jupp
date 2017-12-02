@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/ushell.c,v 1.7 2017/12/01 22:31:05 tg Exp $ */
 /*
  *	Shell-window functions
  *	Copyright
@@ -9,10 +8,9 @@
 #include "config.h"
 #include "types.h"
 
+__RCSID("$MirOS: contrib/code/jupp/ushell.c,v 1.8 2017/12/02 02:07:36 tg Exp $");
+
 #include <unistd.h>
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
 #endif

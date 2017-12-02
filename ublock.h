@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/ublock.h,v 1.2 2008/05/13 13:08:27 tg Exp $ */
 /*
  * 	Highlighted block functions
  *	Copyright
@@ -9,8 +8,9 @@
 #ifndef _JOE_UBLOCK_H
 #define _JOE_UBLOCK_H 1
 
-#include "config.h"
-#include "types.h"
+#ifdef EXTERN_CMD_C
+__RCSID("$MirOS: contrib/code/jupp/ublock.h,v 1.3 2017/12/02 02:07:34 tg Exp $");
+#endif
 
 extern int square;
 extern int lightoff;

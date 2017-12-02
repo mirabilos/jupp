@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/w.h,v 1.4 2017/01/11 22:56:50 tg Exp $ */
 /*
  *	Window management
  *	Copyright
@@ -9,8 +8,9 @@
 #ifndef _JOE_W_H
 #define _JOE_W_H 1
 
-#include "config.h"
-#include "types.h"
+#ifdef EXTERN
+__RCSID("$MirOS: contrib/code/jupp/w.h,v 1.5 2017/12/02 02:07:38 tg Exp $");
+#endif
 
 /***************/
 /* Subroutines */

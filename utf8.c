@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/utf8.c,v 1.19 2017/01/11 21:48:58 tg Exp $ */
 /*
  *	UTF-8 Utilities
  *	Copyright
@@ -11,7 +10,8 @@
 #include "config.h"
 #include "types.h"
 
-#include <stdio.h>
+__RCSID("$MirOS: contrib/code/jupp/utf8.c,v 1.20 2017/12/02 02:07:37 tg Exp $");
+
 #include <string.h>
 
 #ifdef HAVE_STDLIB_H

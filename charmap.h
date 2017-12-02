@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/charmap.h,v 1.6 2017/01/10 23:10:47 tg Exp $ */
 /*
  *	Character sets
  *	Copyright
@@ -10,9 +9,11 @@
 #ifndef _Icharmap
 #define _Icharmap 1
 
-#include "config.h"
+#ifdef EXTERN
+__RCSID("$MirOS: contrib/code/jupp/charmap.h,v 1.7 2017/12/02 02:07:25 tg Exp $");
+#endif
+
 #include "utf8.h"
-#include "types.h"
 
 /* For sorted from_map entries */
 

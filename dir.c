@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/dir.c,v 1.2 2008/05/13 13:08:21 tg Exp $ */
 /*
  *	Directory package for older UNIXs
  *	Copyright
@@ -6,6 +5,8 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
+
+__RCSID("$MirOS: contrib/code/jupp/dir.c,v 1.3 2017/12/02 02:07:26 tg Exp $");
 
 struct direct {
 	short d_ino;

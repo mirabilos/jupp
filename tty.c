@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/tty.c,v 1.29 2017/12/01 22:31:05 tg Exp $ */
 /*
  *	UNIX Tty and Process interface
  *	Copyright
@@ -9,14 +8,14 @@
 #include "config.h"
 #include "types.h"
 
-#include <sys/types.h>
+__RCSID("$MirOS: contrib/code/jupp/tty.c,v 1.30 2017/12/02 02:07:33 tg Exp $");
+
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
 #endif
 #ifdef HAVE_SYS_IOCTL_H
 #include <sys/ioctl.h>
 #endif
-#include <stdio.h>
 #ifdef HAVE_FCNTL_H
 #include <fcntl.h>
 #endif

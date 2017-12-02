@@ -1,7 +1,9 @@
-/* $MirOS: contrib/code/jupp/syntax.h,v 1.3 2016/10/07 19:43:55 tg Exp $ */
-
 #ifndef _Isyntax
 #define _Isyntax 1
+
+#ifdef EXTERN
+__RCSID("$MirOS: contrib/code/jupp/syntax.h,v 1.4 2017/12/02 02:07:32 tg Exp $");
+#endif
 
 #include "hash.h"
 

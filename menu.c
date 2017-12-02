@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/menu.c,v 1.7 2017/01/10 19:16:27 tg Exp $ */
 /*
  *	Menu selection window
  *	Copyright
@@ -8,6 +7,8 @@
  */
 #include "config.h"
 #include "types.h"
+
+__RCSID("$MirOS: contrib/code/jupp/menu.c,v 1.8 2017/12/02 02:07:29 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>

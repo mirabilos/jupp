@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/qw.h,v 1.2 2008/05/13 13:08:24 tg Exp $ */
 /*
  *	Single-key query windows
  *	Copyright
@@ -9,8 +8,9 @@
 #ifndef _JOE_QW_H
 #define _JOE_QW_H 1
 
-#include "config.h"
-#include "types.h"
+#ifdef EXTERN_UFILE_C
+__RCSID("$MirOS: contrib/code/jupp/qw.h,v 1.3 2017/12/02 02:07:30 tg Exp $");
+#endif
 
 /* QW *mkqw(W *w, char *prompt, int (*func)(), int (*abrt)(), void *object);
  * Create a query window for the given window

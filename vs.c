@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/vs.c,v 1.9 2017/01/10 19:16:28 tg Exp $ */
 /*
  *	Variable length strings
  *	Copyright
@@ -8,6 +7,8 @@
  */
 #include "config.h"
 #include "types.h"
+
+__RCSID("$MirOS: contrib/code/jupp/vs.c,v 1.10 2017/12/02 02:07:38 tg Exp $");
 
 #include <stdlib.h>
 
@@ -91,7 +92,6 @@ sELEMENT *vsncpy(sELEMENT *vary, int pos, const sELEMENT *array, int len)
 
 	if (!vary || pos + len > sSIZ(vary))
 		vary = vsensure(vary, pos + len);
-	mkssert(vary != NULL);
 	if (pos + len > olen) {
 		vary[pos + len] = vary[olen];
 		sLen(vary) = pos + len;

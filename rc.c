@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/rc.c,v 1.24 2017/12/01 23:26:24 tg Exp $ */
 /*
  *	*rc file parser
  *	Copyright
@@ -6,10 +5,12 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
+#define EXTERN_RC_C
 #include "config.h"
 #include "types.h"
 
-#include <stdio.h>
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.25 2017/12/02 02:07:30 tg Exp $");
+
 #include <string.h>
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>

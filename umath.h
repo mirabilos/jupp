@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/umath.h,v 1.6 2017/12/01 23:26:24 tg Exp $ */
 /*
  *	Math
  *	Copyright
@@ -9,8 +8,9 @@
 #ifndef _JOE_UMATH_H
 #define _JOE_UMATH_H 1
 
-#include "config.h"
-#include "types.h"
+#ifdef EXTERN_CMD_C
+__RCSID("$MirOS: contrib/code/jupp/umath.h,v 1.7 2017/12/02 02:07:36 tg Exp $");
+#endif
 
 #ifdef HAVE_SIGNAL_H
 #include <signal.h>

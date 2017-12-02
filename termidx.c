@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/termidx.c,v 1.5 2014/03/04 23:04:12 tg Exp $ */
 /*
  *	Program to generate termcap index file
  *	Copyright
@@ -6,10 +5,12 @@
  *
  * This file is part of JOE (Joe's Own Editor)
  */
+#define EXTERN
 #include "config.h"
 #include "types.h"
 
-#include <stdio.h>
+__RCSID("$MirOS: contrib/code/jupp/termidx.c,v 1.6 2017/12/02 02:07:33 tg Exp $");
+
 #include <string.h>
 
 static void gen(unsigned char *s, FILE *fd)

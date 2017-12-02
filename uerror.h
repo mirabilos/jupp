@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/uerror.h,v 1.2 2008/05/13 13:08:27 tg Exp $ */
 /*
  *	Compiler error handler
  *	Copyright
@@ -9,8 +8,9 @@
 #ifndef _JOE_UERROR_H
 #define _JOE_UERROR_H 1
 
-#include "config.h"
-#include "types.h"
+#ifdef EXTERN_B_C
+__RCSID("$MirOS: contrib/code/jupp/uerror.h,v 1.3 2017/12/02 02:07:34 tg Exp $");
+#endif
 
 int unxterr PARAMS((BW *bw));
 int uprverr PARAMS((BW *bw));

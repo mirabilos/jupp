@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/queue.h,v 1.2 2008/05/13 13:08:24 tg Exp $ */
 /*
  *	Doubly linked list primitives
  *	Copyright
@@ -9,7 +8,9 @@
 #ifndef _JOE_QUEUE
 #define _JOE_QUEUE 1 
 
-#include "config.h"
+#ifdef EXTERN_B_C
+__RCSID("$MirOS: contrib/code/jupp/queue.h,v 1.3 2017/12/02 02:07:30 tg Exp $");
+#endif
 
 extern void *ITEM;
 extern void *QUEUE;

@@ -1,5 +1,3 @@
-/* $MirOS: contrib/code/jupp/compat.c,v 1.4 2012/06/08 16:48:58 tg Exp $ */
-
 /*-
  * Copyright © 2004, 2005, 2006, 2007, 2011, 2012
  *	Thorsten “mirabilos” Glaser <tg@mirbsd.org>
@@ -31,8 +29,7 @@
 #include "config.h"
 #include "types.h"
 
-#undef __RCSID
-#define __RCSID(x)	/* nothing, in jupp */
+__RCSID("$MirOS: contrib/code/jupp/compat.c,v 1.5 2017/12/02 02:07:25 tg Exp $");
 
 #undef L_strlcat
 #undef L_strlcpy
@@ -60,7 +57,6 @@
 #endif
 
 #include <limits.h>
-#include <stdio.h>
 
 typedef struct {
 	int tm_sec;		/* seconds [0-60] */

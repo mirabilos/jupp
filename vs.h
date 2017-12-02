@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/vs.h,v 1.6 2016/10/30 00:19:58 tg Exp $ */
 /*
  *	Dynamic string library
  *	Copyright
@@ -9,7 +8,9 @@
 #ifndef _JOE_VS_H
 #define _JOE_VS_H 1
 
-#include "config.h"
+#ifdef EXTERN
+__RCSID("$MirOS: contrib/code/jupp/vs.h,v 1.7 2017/12/02 02:07:38 tg Exp $");
+#endif
 
 #include <string.h>
 

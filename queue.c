@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/queue.c,v 1.3 2017/01/10 19:16:27 tg Exp $ */
 /*
  * 	Doubly linked list primitives
  *	Copyright
@@ -8,6 +7,8 @@
  */
 #include "config.h"
 #include "types.h"
+
+__RCSID("$MirOS: contrib/code/jupp/queue.c,v 1.4 2017/12/02 02:07:30 tg Exp $");
 
 #include <stdlib.h>
 

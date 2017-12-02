@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/b.c,v 1.16 2017/12/02 00:16:43 tg Exp $ */
 /*
  *	Editor engine
  *	Copyright
@@ -6,12 +5,13 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
+#define EXTERN_B_C
 #include "config.h"
 #include "types.h"
 
+__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.17 2017/12/02 02:07:22 tg Exp $");
+
 #include <unistd.h>
-#include <stdio.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <limits.h>

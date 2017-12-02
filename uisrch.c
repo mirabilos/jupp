@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/uisrch.c,v 1.7 2017/01/10 19:16:28 tg Exp $ */
 /*
  *	Incremental search
  *	Copyright
@@ -8,6 +7,8 @@
  */
 #include "config.h"
 #include "types.h"
+
+__RCSID("$MirOS: contrib/code/jupp/uisrch.c,v 1.8 2017/12/02 02:07:35 tg Exp $");
 
 #include <stdlib.h>
 

@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/usearch.c,v 1.10 2017/01/11 22:56:50 tg Exp $ */
 /*
  *	Search & Replace system
  *	Copyright
@@ -9,7 +8,8 @@
 #include "config.h"
 #include "types.h"
 
-#include <stdio.h>
+__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.11 2017/12/02 02:07:36 tg Exp $");
+
 #include <stdlib.h>
 
 #include "b.h"

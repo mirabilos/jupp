@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/termcap.h,v 1.4 2010/04/08 15:31:04 tg Exp $ */
 /*
  * 	TERMCAP/TERMINFO header file
  *	Copyright
@@ -9,8 +8,9 @@
 #ifndef _JOE_TERMCAP_H
 #define _JOE_TERMCAP_H 1
  
-#include "config.h"
-#include "types.h"
+#ifdef EXTERN
+__RCSID("$MirOS: contrib/code/jupp/termcap.h,v 1.5 2017/12/02 02:07:33 tg Exp $");
+#endif
 
 /* CAP *getcap(char *s,int baud,void (*out)(void *outptr,char c),void *outptr);
  *

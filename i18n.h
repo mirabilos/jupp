@@ -1,10 +1,9 @@
-/* $MirOS: contrib/code/jupp/i18n.h,v 1.8 2017/07/08 16:23:26 tg Exp $ */
-
 #ifndef _Ii18n
 #define _Ii18n 1
 
-#include "config.h"
-#include "types.h"
+#ifdef EXTERN
+__RCSID("$MirOS: contrib/code/jupp/i18n.h,v 1.9 2017/12/02 02:07:28 tg Exp $");
+#endif
 
 #ifdef TEST_I18N
 int joe_iswupper PARAMS((struct charmap *,int c));

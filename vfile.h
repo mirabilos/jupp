@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/vfile.h,v 1.3 2012/06/08 16:55:29 tg Exp $ */
 /*
  *	Software virtual memory system
  *	Copyright
@@ -9,8 +8,9 @@
 #ifndef _JOE_VFILE_H
 #define _JOE_VFILE_H 1
 
-#include "config.h"
-#include "types.h"
+#ifdef EXTERN
+__RCSID("$MirOS: contrib/code/jupp/vfile.h,v 1.4 2017/12/02 02:07:38 tg Exp $");
+#endif
 
 /* Additions:
  *

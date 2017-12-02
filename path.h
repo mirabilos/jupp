@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/path.h,v 1.11 2016/10/29 23:44:45 tg Exp $ */
 /*
  *	Directory and path functions
  *	Copyright
@@ -9,7 +8,9 @@
 #ifndef _JOE_PATH_H
 #define _JOE_PATH_H 1
 
-#include "config.h"
+#ifdef EXTERN
+__RCSID("$MirOS: contrib/code/jupp/path.h,v 1.12 2017/12/02 02:07:29 tg Exp $");
+#endif
 
 #if defined(__MSDOS__) || defined(__DJGPP__) || defined(__EMX__) || \
     defined(__CYGWIN__) || defined(_WIN32)

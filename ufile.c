@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/ufile.c,v 1.12 2017/08/08 21:39:28 tg Exp $ */
 /*
  * 	User file operations
  *	Copyright
@@ -6,14 +5,13 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
+#define EXTERN_UFILE_C
 #include "config.h"
 #include "types.h"
 
-#include <stdio.h>
+__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.13 2017/12/02 02:07:35 tg Exp $");
+
 #include <unistd.h>
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
 #endif

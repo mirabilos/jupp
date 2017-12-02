@@ -1,7 +1,7 @@
-/* $MirOS: contrib/code/jupp/config.h,v 1.8 2017/12/02 00:16:43 tg Exp $ */
-
 #ifndef _JOE_CONFIG_H
 #define _JOE_CONFIG_H
+
+/* see bottom for RCSID on this one */
 
 #ifndef TEST
 #include "autoconf.h"
@@ -20,6 +20,10 @@
 #define HAVE_UNISTD_H 1
 #define RETSIGTYPE void
 #define PARAMS(protos) protos
+#endif
+
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
 #endif
 
 #ifdef HAVE_SNPRINTF
@@ -108,6 +112,52 @@ size_t strlcat(char *, const char *, size_t)
 #if !HAVE_DECL_STRLCPY
 size_t strlcpy(char *, const char *, size_t)
     ATTR_BOUNDED((__string__, 1, 3));
+#endif
+
+/* from mksh */
+
+#define BIT(i)		(1U << (i))
+#define NELEM(a)	(sizeof(a) / sizeof((a)[0]))
+
+#if defined(MirBSD) && (MirBSD >= 0x09A1) && \
+    defined(__ELF__) && defined(__GNUC__) && \
+    !defined(__llvm__) && !defined(__NWCC__)
+/*
+ * We got usable __IDSTRING __COPYRIGHT __RCSID __SCCSID macros
+ * which work for all cases; no need to redefine them using the
+ * "portable" macros from below when we might have the "better"
+ * gcc+ELF specific macros or other system dependent ones.
+ */
+#else
+#undef __IDSTRING
+#undef __IDSTRING_CONCAT
+#undef __IDSTRING_EXPAND
+#undef __COPYRIGHT
+#undef __RCSID
+#undef __SCCSID
+#define __IDSTRING_CONCAT(l,p)		__LINTED__ ## l ## _ ## p
+#define __IDSTRING_EXPAND(l,p)		__IDSTRING_CONCAT(l,p)
+#ifdef MKSH_DONT_EMIT_IDSTRING
+#define __IDSTRING(prefix, string)	/* nothing */
+#elif defined(__ELF__) && defined(__GNUC__) && \
+    !defined(__llvm__) && !defined(__NWCC__) && !defined(NO_ASM)
+#define __IDSTRING(prefix, string)				\
+	__asm__(".section .comment"				\
+	"\n	.ascii	\"@(\"\"#)" #prefix ": \""		\
+	"\n	.asciz	\"" string "\""				\
+	"\n	.previous")
+#else
+#define __IDSTRING(prefix, string)				\
+	static const char __IDSTRING_EXPAND(__LINE__,prefix) []	\
+	    __attribute__((__used__)) = "@(""#)" #prefix ": " string
+#endif
+#define __COPYRIGHT(x)		__IDSTRING(copyright,x)
+#define __RCSID(x)		__IDSTRING(rcsid,x)
+#define __SCCSID(x)		__IDSTRING(sccsid,x)
+#endif
+
+#ifdef EXTERN
+__RCSID("$MirOS: contrib/code/jupp/config.h,v 1.9 2017/12/02 02:07:26 tg Exp $");
 #endif
 
 #endif /* ifndef _JOE_CONFIG_H */

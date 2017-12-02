@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/bw.c,v 1.23 2017/12/02 00:16:43 tg Exp $ */
 /*
  *	Edit buffer window generation
  *	Copyright
@@ -9,8 +8,9 @@
 #include "config.h"
 #include "types.h"
 
+__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.24 2017/12/02 02:07:24 tg Exp $");
+
 #include <string.h>
-#include <stdio.h>
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #endif

@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/cmd.c,v 1.18 2017/11/18 17:05:50 tg Exp $ */
 /*
  *	Command execution
  *	Copyright
@@ -6,8 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
+#define EXTERN_CMD_C
 #include "config.h"
 #include "types.h"
+
+__RCSID("$MirOS: contrib/code/jupp/cmd.c,v 1.19 2017/12/02 02:07:25 tg Exp $");
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>

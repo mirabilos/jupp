@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/utils.c,v 1.4 2017/01/10 19:05:17 tg Exp $ */
 /*
  *	Various utilities
  *	Copyright
@@ -8,6 +7,8 @@
  *	This file is part of JOE (Joe's Own Editor)
  */
 #include "config.h"
+
+__RCSID("$MirOS: contrib/code/jupp/utils.c,v 1.5 2017/12/02 02:07:37 tg Exp $");
 
 #include <errno.h>
 #ifdef HAVE_UNISTD_H

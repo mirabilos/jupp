@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/uedit.h,v 1.5 2016/10/07 20:07:50 tg Exp $ */
 /*
  *	Basic user edit functions
  *	Copyright
@@ -9,8 +8,9 @@
 #ifndef _JOE_UEDIT_H
 #define _JOE_UEDIT_H 1
 
-#include "config.h"
-#include "types.h"
+#ifdef EXTERN_CMD_C
+__RCSID("$MirOS: contrib/code/jupp/uedit.h,v 1.6 2017/12/02 02:07:34 tg Exp $");
+#endif
 
 extern int pgamnt;
 

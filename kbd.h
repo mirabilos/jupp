@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/kbd.h,v 1.2 2008/05/13 13:08:23 tg Exp $ */
 /*
  *	Key-map handler
  *	Copyright
@@ -9,8 +8,9 @@
 #ifndef _JOE_KBD_H
 #define _JOE_KBD_H 1
 
-#include "config.h"
-#include "types.h"
+#ifdef EXTERN
+__RCSID("$MirOS: contrib/code/jupp/kbd.h,v 1.3 2017/12/02 02:07:28 tg Exp $");
+#endif
 
 /* KMAP *mkkmap(void);
  * Create an empty keymap

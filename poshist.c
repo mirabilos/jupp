@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/poshist.c,v 1.2 2008/05/13 13:08:24 tg Exp $ */
 /*
  *	Position history
  *	Copyright
@@ -8,6 +7,8 @@
  */
 #include "config.h"
 #include "types.h"
+
+__RCSID("$MirOS: contrib/code/jupp/poshist.c,v 1.3 2017/12/02 02:07:29 tg Exp $");
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>

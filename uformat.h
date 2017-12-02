@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/uformat.h,v 1.2 2008/05/13 13:08:28 tg Exp $ */
 /*
  * 	User text formatting functions
  * 	Copyright
@@ -9,8 +8,9 @@
 #ifndef _JOE_UFORMAT_H
 #define _JOE_UFORMAT_H 1
 
-#include "config.h"
-#include "types.h"
+#ifdef EXTERN_CMD_C
+__RCSID("$MirOS: contrib/code/jupp/uformat.h,v 1.3 2017/12/02 02:07:35 tg Exp $");
+#endif
 
 int ucenter PARAMS((BW *bw));
 P *pbop PARAMS((P *p));

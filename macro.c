@@ -1,4 +1,3 @@
-/* $MirOS: contrib/code/jupp/macro.c,v 1.9 2017/12/01 23:26:23 tg Exp $ */
 /*
  *	Keyboard macros
  *	Copyright
@@ -9,7 +8,8 @@
 #include "config.h"
 #include "types.h"
 
-#include <stdio.h>
+__RCSID("$MirOS: contrib/code/jupp/macro.c,v 1.10 2017/12/02 02:07:28 tg Exp $");
+
 #include <string.h>
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
