@@ -1,7 +1,7 @@
 /*
  *	*rc file parser
  *	Copyright
- *		(C) 1992 Joseph H. Allen; 
+ *		(C) 1992 Joseph H. Allen;
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.27 2017/12/02 05:04:28 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.28 2017/12/02 18:33:24 tg Exp $");
 
 #include <string.h>
 #ifdef HAVE_STDLIB_H
@@ -222,83 +222,99 @@ void setopt(B *b, unsigned char *parsed_name)
 /* local means it's in an OPTION structure, global means it's in a global
  * variable */
 
+#define F(x) NULL, &fdefault.x
+#define G(type,name,setiaddr,yes,no,menu,low,high) \
+	X(type,name,setiaddr,yes,no,menu,low,high)
+#define X(type,name,seti,addr,yes,no,menu,low,high) \
+	{ UC name, { seti }, US addr, UC yes, UC no, UC menu, type, 0, low, high }
+#define L(x) &x, NULL
 struct glopts {
-	unsigned char *name;		/* Option name */
-	int type;		/*      0 for global option flag
+	const unsigned char *name;	/* Option name */
+	union {
+		int *i;
+		unsigned char **us;
+	} set;				/* Address of global option */
+	unsigned char *addr;		/* Local options structure member address */
+	const unsigned char *yes;	/* Message if option was turned on, or prompt string */
+	const unsigned char *no;	/* Message if option was turned off */
+	const unsigned char *menu;	/* Menu string */
+	int type;		/* 0 for global option flag
 				   1 for global option numeric
 				   2 for global option string
 				   4 for local option flag
 				   5 for local option numeric
 				   6 for local option string
 				   7 for local option numeric+1, with range checking
+				   8 for ...?
+				   9 for syntax
+				  13 for encoding
 				 */
-	int *set;		/* Address of global option */
-	unsigned char *addr;		/* Local options structure member address */
-	unsigned char *yes;		/* Message if option was turned on, or prompt string */
-	unsigned char *no;		/* Message if option was turned off */
-	unsigned char *menu;		/* Menu string */
 	int ofst;		/* Local options structure member offset */
 	int low;		/* Low limit for numeric options */
 	int high;		/* High limit for numeric options */
 } glopts[] = {
-	{US "noxon",	0, &noxon, NULL, US "XON/XOFF processing disabled", US "XON/XOFF processing enabled", US "  XON/XOFF usable " },
-	{US "keepup",	0, &keepup, NULL, US "Status line updated constantly", US "Status line updated once/sec", US "  Fast status line " },
-	{US "baud",	1, &Baud, NULL, US "Terminal baud rate (%d): ", 0, US "  Baud rate ", 0, 0, 38400 },
-	{US "overwrite",4, NULL, (unsigned char *) &fdefault.overtype, US "Overtype mode", US "Insert mode", US "T Overtype " },
-	{US "autoindent",	4, NULL, (unsigned char *) &fdefault.autoindent, US "Autoindent enabled", US "Autoindent disabled", US "I Autoindent " },
-	{US "wordwrap",	4, NULL, (unsigned char *) &fdefault.wordwrap, US "Wordwrap enabled", US "Wordwrap disabled", US "Word wrap " },
-	{US "tab",	5, NULL, (unsigned char *) &fdefault.tab, US "Tab width (%d): ", 0, US "D Tab width ", 0, 1, 64 },
-	{US "lmargin",	7, NULL, (unsigned char *) &fdefault.lmargin, US "Left margin (%d): ", 0, US "Left margin ", 0, 0, 63 },
-	{US "rmargin",	7, NULL, (unsigned char *) &fdefault.rmargin, US "Right margin (%d): ", 0, US "Right margin ", 0, 7, 255 },
-	{US "square",	0, &square, NULL, US "Rectangle mode", US "Text-stream mode", US "X Rectangle mode " },
-	{US "icase",	0, &icase, NULL, US "Ignore case by default", US "Case sensitive by default", US "  Case insensitive " },
-	{US "wrap",	0, &wrap, NULL, US "Search wraps", US "Search doesn't wrap", US "  Search wraps " },
-	{US "menu_explorer",	0, &menu_explorer, NULL, US "Menu explorer mode", US "  Simple completion", US "  Menu explorer " },
-	{US "autoswap",	0, &autoswap, NULL, US "Autoswap ^KB and ^KK", US "  Autoswap off ", US "  Autoswap mode " },
-	{US "indentc",	5, NULL, (unsigned char *) &fdefault.indentc, US "Indent char %d (SPACE=32, TAB=9, ^C to abort): ", 0, US "  Indent char ", 0, 0, 255 },
-	{US "istep",	5, NULL, (unsigned char *) &fdefault.istep, US "Indent step %d (^C to abort): ", 0, US "  Indent step ", 0, 1, 64 },
-	{US "french",	4, NULL, (unsigned char *) &fdefault.french, US "One space after periods for paragraph reformat", US "Two spaces after periods for paragraph reformat", US "  French spacing " },
-	{US "highlight",	4, NULL, (unsigned char *) &fdefault.highlight, US "Highlighting enabled", US "Highlighting disabled", US "Highlighting " },
-	{US "spaces",	4, NULL, (unsigned char *) &fdefault.spaces, US "Inserting spaces when tab key is hit", US "Inserting tabs when tab key is hit", US "  Disable tabs " },
-	{US "mid",	0, &mid, NULL, US "Cursor will be recentered on scrolls", US "Cursor will not be recentered on scroll", US "Center on scroll " },
-	{US "guess_crlf",0, &guesscrlf, NULL, US "Automatically detect MS-DOS files", US "Do not automatically detect MS-DOS files", US "  Auto detect CR-LF " },
-	{US "guess_indent",0, &guessindent, NULL, US "Automatically detect indentation", US "Do not automatically detect indentation", US "  Guess indent " },
-	{US "crlf",	4, NULL, (unsigned char *) &fdefault.crlf, US "CR-LF is line terminator", US "LF is line terminator", US "Z CR-LF (MS-DOS) " },
-	{US "linums",	4, NULL, (unsigned char *) &fdefault.linums, US "Line numbers enabled", US "Line numbers disabled", US "N Line numbers " },
-	{US "marking",	0, &marking, NULL, US "Anchored block marking on", US "Anchored block marking off", US "Marking " },
-	{US "asis",	0, &dspasis, NULL, US "Characters above 127 shown as-is", US "Characters above 127 shown in inverse", US "  Meta chars as-is " },
-	{US "force",	0, &force, NULL, US "Last line forced to have NL when file saved", US "Last line not forced to have NL", US "Force last NL " },
-	{US "nobackups",	0, &nobackups, NULL, US "Backup files will not be made", US "Backup files will be made", US "  Disable backups " },
-	{US "lightoff",	0, &lightoff, NULL, US "Highlighting turned off after block operations", US "Highlighting not turned off after block operations", US "Auto unmark " },
-	{US "exask",	0, &exask, NULL, US "Prompt for filename in save & exit command", US "Don't prompt for filename in save & exit command", US "  Exit ask " },
-	{US "beep",	0, &dobeep, NULL, US "Warning bell enabled", US "Warning bell disabled", US "Beeps " },
-	{US "nosta",	0, &staen, NULL, US "Top-most status line disabled", US "Top-most status line enabled", US "  Disable status " },
-	{US "pg",		1, &pgamnt, NULL, US "Lines to keep for PgUp/PgDn or -1 for 1/2 window (%d): ", 0, US "  # PgUp/PgDn lines ", 0, -1, 64 },
-	{US "csmode",	0, &csmode, NULL, US "Start search after a search repeats previous search", US "Start search always starts a new search", US "Continued search " },
-	{US "rdonly",	4, NULL, (unsigned char *) &fdefault.readonly, US "Read only", US "Full editing", US "O Read only " },
-	{US "smarthome",	4, NULL, (unsigned char *) &fdefault.smarthome, US "Smart home key enabled", US "Smart home key disabled", US "  Smart home key " },
-	{US "indentfirst",	4, NULL, (unsigned char *) &fdefault.indentfirst, US "Smart home goes to indent first", US "Smart home goes home first", US "  To indent first " },
-	{US "smartbacks",	4, NULL, (unsigned char *) &fdefault.smartbacks, US "Smart backspace key enabled", US "Smart backspace key disabled", US "  Smart backspace " },
-	{US "purify",	4, NULL, (unsigned char *) &fdefault.purify, US "Indentation clean up enabled", US "Indentation clean up disabled", US "  Clean up indents " },
-	{US "picture",	4, NULL, (unsigned char *) &fdefault.picture, US "Picture drawing mode enabled", US "Picture drawing mode disabled", US "Picture mode " },
-	{US "backpath",	2, (int *) &backpath, NULL, US "Backup files stored in (%s): ", 0, US "  Backup file path " },
-	{US "vispace",	4, NULL, (unsigned char *) &fdefault.vispace, US "Spaces visible", US "Spaces invisible", US "Visible spaces " },
-	{US "hex",	4, NULL, (unsigned char *) &fdefault.hex, US "Hex edit mode", US "Text edit mode", US "G Hexedit mode "},
-	{US "syntax",	9, NULL, NULL, US "Select syntax (%s; ^C to abort): ", 0, US "Y Syntax" },
-	{US "encoding",13, NULL, NULL, US "Select file character set (%s; ^C to abort): ", 0, US "Encoding " },
-	{US "nonotice",	0, &nonotice, NULL, 0, 0, 0 },
-	{US "orphan",	0, &orphan, NULL, 0, 0, 0 },
-	{US "help",	0, &help, NULL, 0, 0, 0 },
-	{US "dopadding",	0, &dopadding, NULL, 0, 0, 0 },
-	{US "lines",	1, &lines, NULL, 0, 0, 0, 0, 2, 1024 },
-	{US "columns",	1, &columns, NULL, 0, 0, 0, 0, 2, 1024 },
-	{US "skiptop",	1, &skiptop, NULL, 0, 0, 0, 0, 0, 64 },
-	{US "notite",	0, &notite, NULL, 0, 0, 0 },
-	{US "pastetite", 0, &pastetite, NULL, 0, 0, 0 },
-	{US "usetabs",	0, &usetabs, NULL, 0, 0, 0 },
-	{US "assume_color", 0, &assume_color, NULL, 0, 0, 0 },
-	{ NULL,		0, NULL, NULL, NULL, NULL, NULL, 0, 0, 0 }
+G( 0, "noxon",		L(noxon),	  "XON/XOFF processing disabled", "XON/XOFF processing enabled", "  XON/XOFF usable ", 0, 0),
+G( 0, "keepup",		L(keepup),	  "Status line updated constantly", "Status line updated once/sec", "  Fast status line ", 0, 0),
+G( 1, "baud",		L(Baud),	  "Terminal baud rate (%d): ", NULL, "  Baud rate ", 0, 38400),
+G( 4, "overwrite",	F(overtype),	  "Overtype mode", "Insert mode", "T Overtype ", 0, 0),
+G( 4, "autoindent",	F(autoindent),	  "Autoindent enabled", "Autoindent disabled", "I Autoindent ", 0, 0),
+G( 4, "wordwrap",	F(wordwrap),	  "Wordwrap enabled", "Wordwrap disabled", "Word wrap ", 0, 0),
+G( 5, "tab",		F(tab),		  "Tab width (%d): ", NULL, "D Tab width ", 1, 64),
+G( 7, "lmargin",	F(lmargin),	  "Left margin (%d): ", NULL, "Left margin ", 0, 63),
+G( 7, "rmargin",	F(rmargin),	  "Right margin (%d): ", NULL, "Right margin ", 7, 255),
+G( 0, "square",		L(square),	  "Rectangle mode", "Text-stream mode", "X Rectangle mode ", 0, 0),
+G( 0, "icase",		L(icase),	  "Ignore case by default", "Case sensitive by default", "  Case insensitive ", 0, 0),
+G( 0, "wrap",		L(wrap),	  "Search wraps", "Search doesn't wrap", "  Search wraps ", 0, 0),
+G( 0, "menu_explorer",	L(menu_explorer), "Menu explorer mode", "  Simple completion", "  Menu explorer ", 0, 0),
+G( 0, "autoswap",	L(autoswap),	  "Autoswap ^KB and ^KK", "  Autoswap off ", "  Autoswap mode ", 0, 0),
+G( 5, "indentc",	F(indentc),	  "Indent char %d (SPACE=32, TAB=9, ^C to abort): ", NULL, "  Indent char ", 0, 255),
+G( 5, "istep",		F(istep),	  "Indent step %d (^C to abort): ", NULL, "  Indent step ", 1, 64),
+G( 4, "french",		F(french),	  "One space after periods for paragraph reformat", "Two spaces after periods for paragraph reformat", "  French spacing ", 0, 0),
+G( 4, "highlight",	F(highlight),	  "Highlighting enabled", "Highlighting disabled", "Highlighting ", 0, 0),
+G( 4, "spaces",		F(spaces),	  "Inserting spaces when tab key is hit", "Inserting tabs when tab key is hit", "  Disable tabs ", 0, 0),
+G( 0, "mid",		L(mid),		  "Cursor will be recentered on scrolls", "Cursor will not be recentered on scroll", "Center on scroll ", 0, 0),
+G( 0, "guess_crlf",	L(guesscrlf),	  "Automatically detect MS-DOS files", "Do not automatically detect MS-DOS files", "  Auto detect CR-LF ", 0, 0),
+G( 0, "guess_indent",	L(guessindent),	  "Automatically detect indentation", "Do not automatically detect indentation", "  Guess indent ", 0, 0),
+G( 4, "crlf",		F(crlf),	  "CR-LF is line terminator", "LF is line terminator", "Z CR-LF (MS-DOS) ", 0, 0),
+G( 4, "linums",		F(linums),	  "Line numbers enabled", "Line numbers disabled", "N Line numbers ", 0, 0),
+G( 0, "marking",	L(marking),	  "Anchored block marking on", "Anchored block marking off", "Marking ", 0, 0),
+G( 0, "asis",		L(dspasis),	  "Characters above 127 shown as-is", "Characters above 127 shown in inverse", "  Meta chars as-is ", 0, 0),
+G( 0, "force",		L(force),	  "Last line forced to have NL when file saved", "Last line not forced to have NL", "Force last NL ", 0, 0),
+G( 0, "nobackups",	L(nobackups),	  "Backup files will not be made", "Backup files will be made", "  Disable backups ", 0, 0),
+G( 0, "lightoff",	L(lightoff),	  "Highlighting turned off after block operations", "Highlighting not turned off after block operations", "Auto unmark ", 0, 0),
+G( 0, "exask",		L(exask),	  "Prompt for filename in save & exit command", "Don't prompt for filename in save & exit command", "  Exit ask ", 0, 0),
+G( 0, "beep",		L(dobeep),	  "Warning bell enabled", "Warning bell disabled", "Beeps ", 0, 0),
+G( 0, "nosta",		L(staen),	  "Top-most status line disabled", "Top-most status line enabled", "  Disable status ", 0, 0),
+G( 1, "pg",		L(pgamnt),	  "Lines to keep for PgUp/PgDn or -1 for 1/2 window (%d): ", NULL, "  # PgUp/PgDn lines ", -1, 64),
+G( 0, "csmode",		L(csmode),	  "Start search after a search repeats previous search", "Start search always starts a new search", "Continued search ", 0, 0),
+G( 4, "rdonly",		F(readonly),	  "Read only", "Full editing", "O Read only ", 0, 0),
+G( 4, "smarthome",	F(smarthome),	  "Smart home key enabled", "Smart home key disabled", "  Smart home key ", 0, 0),
+G( 4, "indentfirst",	F(indentfirst),	  "Smart home goes to indent first", "Smart home goes home first", "  To indent first ", 0, 0),
+G( 4, "smartbacks",	F(smartbacks),	  "Smart backspace key enabled", "Smart backspace key disabled", "  Smart backspace ", 0, 0),
+G( 4, "purify",		F(purify),	  "Indentation clean up enabled", "Indentation clean up disabled", "  Clean up indents ", 0, 0),
+G( 4, "picture",	F(picture),	  "Picture drawing mode enabled", "Picture drawing mode disabled", "Picture mode ", 0, 0),
+X( 2, "backpath",	NULL, NULL,	  "Backup files stored in (%s): ", NULL, "  Backup file path ", 0, 0),
+G( 4, "vispace",	F(vispace),	  "Spaces visible", "Spaces invisible", "Visible spaces ", 0, 0),
+G( 4, "hex",		F(hex),		  "Hex edit mode", "Text edit mode", "G Hexedit mode ", 0, 0),
+X( 9, "syntax",		NULL, NULL,	  "Select syntax (%s; ^C to abort): ", NULL, "Y Syntax", 0, 0),
+X(13, "encoding",	NULL, NULL,	  "Select file character set (%s; ^C to abort): ", NULL, "Encoding ", 0, 0),
+G( 0, "nonotice",	L(nonotice),	  NULL, NULL, NULL, 0, 0),
+G( 0, "orphan",		L(orphan),	  NULL, NULL, NULL, 0, 0),
+G( 0, "help",		L(help),	  NULL, NULL, NULL, 0, 0),
+G( 0, "dopadding",	L(dopadding),	  NULL, NULL, NULL, 0, 0),
+G( 1, "lines",		L(lines),	  NULL, NULL, NULL, 2, 1024),
+G( 1, "columns",	L(columns),	  NULL, NULL, NULL, 2, 1024),
+G( 1, "skiptop",	L(skiptop),	  NULL, NULL, NULL, 0, 64),
+G( 0, "notite",		L(notite),	  NULL, NULL, NULL, 0, 0),
+G( 0, "pastetite",	L(pastetite),	  NULL, NULL, NULL, 0, 0),
+G( 0, "usetabs",	L(usetabs),	  NULL, NULL, NULL, 0, 0),
+G( 0, "assume_color",	L(assume_color),  NULL, NULL, NULL, 0, 0),
+X( 0, NULL,		NULL, NULL,	  NULL, NULL, NULL, 0, 0)
 };
+#undef F
+#undef G
+#undef L
+#undef X
 
 /* Initialize .ofsts above.  Is this really necessary? */
 
@@ -310,6 +326,10 @@ static void izopts(void)
 
 	for (x = 0; glopts[x].name; ++x)
 		switch (glopts[x].type) {
+		case 2:
+			if (!strcmp((const char *)glopts[x].name, "backpath"))
+				glopts[x].set.us = &backpath;
+			break;
 		case 4:
 		case 5:
 		case 6:
@@ -362,21 +382,21 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options_, int set)
 			switch (glopts[x].type) {
 			case 0: /* Global variable flag option */
 				if (set)
-					*glopts[x].set = st;
+					*glopts[x].set.i = st;
 				break;
 			case 1: /* Global variable integer option */
 				if (set && arg) {
 					sscanf((char *)arg, "%d", &val);
 					if (val >= glopts[x].low && val <= glopts[x].high)
-						*glopts[x].set = val;
+						*glopts[x].set.i = val;
 				}
 				break;
 			case 2: /* Global variable string option */
 				if (set) {
 					if (arg)
-						*(unsigned char **) glopts[x].set = (unsigned char *)strdup((char *)arg);
+						*glopts[x].set.us = (unsigned char *)strdup((char *)arg);
 					else
-						*(unsigned char **) glopts[x].set = 0;
+						*glopts[x].set.us = NULL;
 				}
 				break;
 			case 4: /* Local option flag */
@@ -390,7 +410,7 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options_, int set)
 						if (val >= glopts[x].low && val <= glopts[x].high)
 							*(int *) ((unsigned char *)
 								  options_ + glopts[x].ofst) = val;
-					} 
+					}
 				}
 				break;
 			case 7: /* Local option numeric + 1, with range checking */
@@ -526,7 +546,7 @@ static int doopt1(BW *bw, unsigned char *s, int *xx, int *notify)
 			msgnw(bw->parent, merrt);
 			ret = -1;
 		} else if (v >= glopts[x].low && v <= glopts[x].high)
-			*glopts[x].set = v;
+			*glopts[x].set.i = v;
 		else {
 			msgnw(bw->parent, US "Value out of range");
 			ret = -1;
@@ -534,7 +554,7 @@ static int doopt1(BW *bw, unsigned char *s, int *xx, int *notify)
 		break;
 	case 2:
 		if (s[0])
-			*(unsigned char **) glopts[x].set = (unsigned char *)strdup((char *)s);
+			*glopts[x].set.us = (unsigned char *)strdup((char *)s);
 		break;
 	case 5:
 		if (!*s) {
@@ -719,14 +739,14 @@ static int doopt(MENU *m, int x, void *object, int flg)
 	switch (glopts[x].type) {
 	case 0:
 		if (!flg)
-			*glopts[x].set = !*glopts[x].set;
+			*glopts[x].set.i = !*glopts[x].set.i;
 		else if (flg == 1)
-			*glopts[x].set = 1;
+			*glopts[x].set.i = 1;
 		else
-			*glopts[x].set = 0;
+			*glopts[x].set.i = 0;
 		wabort(m->parent);
-		msgnw(bw->parent, *glopts[x].set ? glopts[x].yes : glopts[x].no);
-		if (glopts[x].set == &noxon)
+		msgnw(bw->parent, *glopts[x].set.i ? glopts[x].yes : glopts[x].no);
+		if (glopts[x].set.i == &noxon)
 			tty_xonoffbaudrst();
 		break;
 	case 4:
@@ -751,21 +771,21 @@ static int doopt(MENU *m, int x, void *object, int flg)
 		}
 		break;
 	case 1:
-		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, *glopts[x].set);
+		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, *glopts[x].set.i);
 		xx = (int *) joe_malloc(sizeof(int));
 
 		*xx = x;
 		m->parent->notify = 0;
 		wabort(m->parent);
 		if (wmkpw(bw->parent, buf, NULL, doopt1, NULL, doabrt1, utypebw, xx, notify, locale_map)) {
-			if (glopts[x].set == &Baud)
+			if (glopts[x].set.i == &Baud)
 				tty_xonoffbaudrst();
 			return 0;
 		} else
 			return -1;
 	case 2:
-		if (*(unsigned char **) glopts[x].set)
-			joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, *(unsigned char **) glopts[x].set);
+		if (*glopts[x].set.us)
+			joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, *glopts[x].set.us);
 		else
 			joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, "");
 		xx = (int *) joe_malloc(sizeof(int));
@@ -858,11 +878,11 @@ int umode(BW *bw)
 		switch (glopts[x].type) {
 		case 0:
 			joe_snprintf_1(s[x] + n, OPT_BUF_SIZE - n,
-			    "%s", *glopts[x].set ? "ON" : "OFF");
+			    "%s", *glopts[x].set.i ? "ON" : "OFF");
 			break;
 		case 1:
 			joe_snprintf_1(s[x] + n, OPT_BUF_SIZE - n,
-			    "%d", *glopts[x].set);
+			    "%d", *glopts[x].set.i);
 			break;
 		case 2:
 			strlcpy(s[x] + n, "...", OPT_BUF_SIZE - n);

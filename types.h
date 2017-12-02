@@ -2,10 +2,11 @@
 #define _JOE_TYPES_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.17 2017/12/02 17:00:50 tg Exp $");
+__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.18 2017/12/02 18:33:25 tg Exp $");
 #endif
 
 /* Prefix to make string constants unsigned */
+#define UC (const unsigned char *)
 #define US (unsigned char *)
 
 #define LINK(type) struct { type *next; type *prev; }

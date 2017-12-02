@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.14 2017/12/02 05:07:18 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.15 2017/12/02 18:33:25 tg Exp $");
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -97,7 +97,10 @@ static double expr(int prec, struct var **rtv)
 		while ((*ptr >= '0' && *ptr <= '9') || ((*ptr | 0x20) >= 'a' && (*ptr | 0x20) <= 'f'))
 			++ptr;
 	} else if ((*ptr >= '0' && *ptr <= '9') || *ptr == '.') {
-		x = strtod(ptr, (char **)&ptr);
+		char *eptr;
+
+		x = strtod(ptr, &eptr);
+		ptr = (unsigned char *)eptr;
 	} else if (*ptr == '(') {
 		++ptr;
 		x = expr(0, &v);
