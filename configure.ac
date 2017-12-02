@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.60 2017/12/02 05:15:46 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.61 2017/12/02 05:26:39 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -61,6 +61,10 @@ AC_ARG_ENABLE(termcap,
 test x"$termcap" = x"yes" && \
     search_libs_term="$search_libs_term termcap"
 
+AC_ARG_ENABLE(terminfo,
+[  --disable-terminfo      disable use of terminfo functions],
+	terminfo=$enableval, terminfo=yes)
+
 AC_ARG_ENABLE([search_libs],
 [  --disable-search-libs   do not search in any external libraries],
 	search_libs=$enableval, search_libs=yes)
@@ -74,7 +78,11 @@ fi
 
 AC_SEARCH_LIBS(openpty, $search_libs_util, AC_DEFINE_UNQUOTED(HAVE_OPENPTY, 1, [If we have BSD function openpty()]))
 AC_SEARCH_LIBS(login_tty, $search_libs_util, AC_DEFINE_UNQUOTED(HAVE_LOGIN_TTY, 1, [If we have BSD function login_tty()]))
-AC_SEARCH_LIBS(tgetflag, $search_libs_term, AC_DEFINE_UNQUOTED(TERMINFO, 1, [If we have newer terminfo/termcap capabilities]))
+if test x"$terminfo" = x"no"; then
+	echo "DISabling looking for terminal libraries entirely!"
+else
+	AC_SEARCH_LIBS(tgetflag, $search_libs_term, AC_DEFINE_UNQUOTED(TERMINFO, 1, [If we have newer terminfo/termcap capabilities]))
+fi
 AC_SEARCH_LIBS(snprintf, $search_libs_snprintf, AC_DEFINE_UNQUOTED(HAVE_SNPRINTF, 1, [If we have snprintf]))
 AC_SEARCH_LIBS(is_selinux_enabled, $search_libs_selinux, AC_DEFINE_UNQUOTED(HAVE_SELINUX_FUN, 1, [We have SELinux functions]))
 
