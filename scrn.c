@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.29 2017/12/02 04:32:41 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.30 2017/12/02 04:49:46 tg Exp $");
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -518,22 +518,20 @@ SCRN *nopen(CAP *cap)
 		t->avattr |= INVERSE;
  oops:
 
-
-	if (assume_color) {
-		/* Install color support if it looks like an ansi terminal (it has bold which begins with ESC [) */
-#ifndef TERMINFO
-		if (!t->Sf && t->md && t->md[0]=='\\' && t->md[1]=='E' && t->md[2]=='[') {
+	if (assume_color && !t->Sf && t->md) {
+		/*
+		 * Install colour support if this looks like an ANSI
+		 * terminal — that is, it’s got bold with ESC ‘[’…
+		 */
+		if (t->md[0] == '\\' && t->md[1] == 'E' && t->md[2] == '[') {
 			t->ut = 1;
 			t->Sf =US "\\E[3%dm";
 			t->Sb =US "\\E[4%dm";
-		}
-#else
-		if (!t->Sf && t->md && t->md[0]=='\033' && t->md[1]=='[') {
+		} else if (t->md[0] == '\033' && t->md[1] == '[') {
 			t->ut = 1;
 			t->Sf =US "\033[3%p1%dm";
 			t->Sb =US "\033[4%p1%dm";
 		}
-#endif
 	}
 
 	if (getnum(t->cap,US "sg") <= 0 && !t->mr && jgetstr(t->cap,US "se")) {
