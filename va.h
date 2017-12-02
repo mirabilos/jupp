@@ -9,7 +9,7 @@
 #define _JOE_VA_H 1
 
 #ifdef EXTERN_B_C
-__RCSID("$MirOS: contrib/code/jupp/va.h,v 1.4 2017/12/02 02:07:37 tg Exp $");
+__IDSTRING(rcsid_va_h, "$MirOS: contrib/code/jupp/va.h,v 1.5 2017/12/02 17:00:52 tg Exp $");
 #endif
 
 #include "vs.h"

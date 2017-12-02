@@ -9,7 +9,7 @@
 #define _JOE_VFILE_H 1
 
 #ifdef EXTERN
-__RCSID("$MirOS: contrib/code/jupp/vfile.h,v 1.4 2017/12/02 02:07:38 tg Exp $");
+__IDSTRING(rcsid_vfile_h, "$MirOS: contrib/code/jupp/vfile.h,v 1.5 2017/12/02 17:00:52 tg Exp $");
 #endif
 
 /* Additions:

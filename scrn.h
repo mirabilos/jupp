@@ -9,7 +9,7 @@
 #define _JOE_SCRN_H 1
 
 #ifdef EXTERN
-__RCSID("$MirOS: contrib/code/jupp/scrn.h,v 1.6 2017/12/02 02:07:31 tg Exp $");
+__IDSTRING(rcsid_scrn_h, "$MirOS: contrib/code/jupp/scrn.h,v 1.7 2017/12/02 17:00:50 tg Exp $");
 #endif
 
 #include "tty.h"		/* ttputc() */

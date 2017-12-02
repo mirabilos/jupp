@@ -9,7 +9,7 @@
 #define _JOE_UFILE_H 1
 
 #ifdef EXTERN_CMD_C
-__RCSID("$MirOS: contrib/code/jupp/ufile.h,v 1.5 2017/12/02 02:07:35 tg Exp $");
+__IDSTRING(rcsid_ufile_h, "$MirOS: contrib/code/jupp/ufile.h,v 1.6 2017/12/02 17:00:51 tg Exp $");
 #endif
 
 extern int exask;

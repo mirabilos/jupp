@@ -9,7 +9,7 @@
 #define _JOE_MACRO_H 1
 
 #ifdef EXTERN
-__RCSID("$MirOS: contrib/code/jupp/macro.h,v 1.3 2017/12/02 02:07:28 tg Exp $");
+__IDSTRING(rcsid_macro_h, "$MirOS: contrib/code/jupp/macro.h,v 1.4 2017/12/02 17:00:49 tg Exp $");
 #endif
 
 /* Set when macro is recording: for status line */

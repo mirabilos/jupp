@@ -9,7 +9,7 @@
 #define _JOE_TERMCAP_H 1
  
 #ifdef EXTERN
-__RCSID("$MirOS: contrib/code/jupp/termcap.h,v 1.5 2017/12/02 02:07:33 tg Exp $");
+__IDSTRING(rcsid_termcap_h, "$MirOS: contrib/code/jupp/termcap.h,v 1.6 2017/12/02 17:00:50 tg Exp $");
 #endif
 
 /* CAP *getcap(char *s,int baud,void (*out)(void *outptr,char c),void *outptr);

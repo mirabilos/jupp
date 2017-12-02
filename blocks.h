@@ -9,7 +9,7 @@
 #define _JOE_BLOCKS_H 1
 
 #ifdef EXTERN_B_C
-__RCSID("$MirOS: contrib/code/jupp/blocks.h,v 1.5 2017/12/02 02:07:23 tg Exp $");
+__IDSTRING(rcsid_blocks_h, "$MirOS: contrib/code/jupp/blocks.h,v 1.6 2017/12/02 17:00:48 tg Exp $");
 #endif
 
 /* char *mmove(char *d,char *s,int sz); Copy 'sz' bytes from 's' to 'd'.

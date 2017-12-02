@@ -2,7 +2,7 @@
 #define _Ii18n 1
 
 #ifdef EXTERN
-__RCSID("$MirOS: contrib/code/jupp/i18n.h,v 1.9 2017/12/02 02:07:28 tg Exp $");
+__IDSTRING(rcsid_i18n_h, "$MirOS: contrib/code/jupp/i18n.h,v 1.10 2017/12/02 17:00:48 tg Exp $");
 #endif
 
 #ifdef TEST_I18N

@@ -9,7 +9,7 @@
 #define _JOE_PATH_H 1
 
 #ifdef EXTERN
-__RCSID("$MirOS: contrib/code/jupp/path.h,v 1.12 2017/12/02 02:07:29 tg Exp $");
+__IDSTRING(rcsid_path_h, "$MirOS: contrib/code/jupp/path.h,v 1.13 2017/12/02 17:00:49 tg Exp $");
 #endif
 
 #if defined(__MSDOS__) || defined(__DJGPP__) || defined(__EMX__) || \

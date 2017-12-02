@@ -30,7 +30,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/compat.c,v 1.8 2017/12/02 04:32:39 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/compat.c,v 1.9 2017/12/02 17:00:53 tg Exp $");
 
 #include <limits.h>
 #include <string.h>
@@ -45,6 +45,8 @@ __RCSID("$MirOS: contrib/code/jupp/compat.c,v 1.8 2017/12/02 04:32:39 tg Exp $")
 #define L_strlcpy
 #endif
 #if defined(L_strlcat) || defined(L_strlcpy)
+#undef __RCSID
+#define __RCSID(x)		__IDSTRING(rcsid_strlfun_inc,x)
 #define OUTSIDE_OF_LIBKERN
 #include "strlfun.inc"
 #endif
@@ -201,6 +203,8 @@ joe_timet2tm(joe_tm *tm, const time_t *tp)
 #endif /* ndef HAVE_CTIME */
 
 #ifndef HAVE_POPEN
+#undef __RCSID
+#define __RCSID(x)		__IDSTRING(rcsid_popen_inc,x)
 #include "popen.inc"
 #endif
 

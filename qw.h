@@ -9,7 +9,7 @@
 #define _JOE_QW_H 1
 
 #ifdef EXTERN_UFILE_C
-__RCSID("$MirOS: contrib/code/jupp/qw.h,v 1.3 2017/12/02 02:07:30 tg Exp $");
+__IDSTRING(rcsid_qw_h, "$MirOS: contrib/code/jupp/qw.h,v 1.4 2017/12/02 17:00:49 tg Exp $");
 #endif
 
 /* QW *mkqw(W *w, char *prompt, int (*func)(), int (*abrt)(), void *object);

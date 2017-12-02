@@ -10,7 +10,7 @@
 #define _Icharmap 1
 
 #ifdef EXTERN
-__RCSID("$MirOS: contrib/code/jupp/charmap.h,v 1.8 2017/12/02 04:32:39 tg Exp $");
+__IDSTRING(rcsid_charmap_h, "$MirOS: contrib/code/jupp/charmap.h,v 1.9 2017/12/02 17:00:48 tg Exp $");
 #endif
 
 /* For sorted from_map entries */

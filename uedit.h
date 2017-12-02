@@ -9,7 +9,7 @@
 #define _JOE_UEDIT_H 1
 
 #ifdef EXTERN_CMD_C
-__RCSID("$MirOS: contrib/code/jupp/uedit.h,v 1.6 2017/12/02 02:07:34 tg Exp $");
+__IDSTRING(rcsid_uedit_h, "$MirOS: contrib/code/jupp/uedit.h,v 1.7 2017/12/02 17:00:51 tg Exp $");
 #endif
 
 extern int pgamnt;

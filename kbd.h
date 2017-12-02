@@ -9,7 +9,7 @@
 #define _JOE_KBD_H 1
 
 #ifdef EXTERN
-__RCSID("$MirOS: contrib/code/jupp/kbd.h,v 1.3 2017/12/02 02:07:28 tg Exp $");
+__IDSTRING(rcsid_kbd_h, "$MirOS: contrib/code/jupp/kbd.h,v 1.4 2017/12/02 17:00:49 tg Exp $");
 #endif
 
 /* KMAP *mkkmap(void);

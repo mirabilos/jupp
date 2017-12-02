@@ -9,7 +9,7 @@
 #define _JOE_PW_H 1
 
 #ifdef EXTERN_CMD_C
-__RCSID("$MirOS: contrib/code/jupp/pw.h,v 1.5 2017/12/02 02:07:30 tg Exp $");
+__IDSTRING(rcsid_pw_h, "$MirOS: contrib/code/jupp/pw.h,v 1.6 2017/12/02 17:00:49 tg Exp $");
 #endif
 
 /* BW *wmkpw(BW *bw,char *prompt,int (*func)(),char *huh,int (*abrt)(),

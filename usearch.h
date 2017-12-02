@@ -9,7 +9,7 @@
 #define _JOE_USEARCH_H 1
 
 #ifdef EXTERN_CMD_C
-__RCSID("$MirOS: contrib/code/jupp/usearch.h,v 1.3 2017/12/02 02:07:36 tg Exp $");
+__IDSTRING(rcsid_usearch_h, "$MirOS: contrib/code/jupp/usearch.h,v 1.4 2017/12/02 17:00:51 tg Exp $");
 #endif
 
 SRCH *mksrch PARAMS((unsigned char *pattern, unsigned char *replacement, int ignore, int backwards, int repeat, int replace, int rest));

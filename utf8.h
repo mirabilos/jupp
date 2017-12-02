@@ -9,7 +9,7 @@
 #define _Iutf8 1
 
 #ifdef EXTERN
-__RCSID("$MirOS: contrib/code/jupp/utf8.h,v 1.5 2017/12/02 02:07:37 tg Exp $");
+__IDSTRING(rcsid_utf8_h, "$MirOS: contrib/code/jupp/utf8.h,v 1.6 2017/12/02 17:00:52 tg Exp $");
 #endif
 
 #include "i18n.h"

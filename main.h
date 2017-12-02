@@ -9,7 +9,7 @@
 #define _JOE_MAIN_H 1
 
 #ifdef EXTERN_B_C
-__RCSID("$MirOS: contrib/code/jupp/main.h,v 1.4 2017/12/02 02:07:29 tg Exp $");
+__IDSTRING(rcsid_main_h, "$MirOS: contrib/code/jupp/main.h,v 1.5 2017/12/02 17:00:49 tg Exp $");
 #endif
 
 extern const char null[];

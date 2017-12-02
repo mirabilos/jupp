@@ -9,7 +9,7 @@
 #define _JOE_TW_H 1
 
 #ifdef EXTERN
-__RCSID("$MirOS: contrib/code/jupp/tw.h,v 1.4 2017/12/02 02:07:33 tg Exp $");
+__IDSTRING(rcsid_tw_h, "$MirOS: contrib/code/jupp/tw.h,v 1.5 2017/12/02 17:00:50 tg Exp $");
 #endif
 
 BW *wmktw PARAMS((SCREEN *t, B *b));

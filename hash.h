@@ -9,7 +9,7 @@
 #define _JOE_HASH_H 1
 
 #ifdef EXTERN_CMD_C
-__RCSID("$MirOS: contrib/code/jupp/hash.h,v 1.3 2017/12/02 02:07:26 tg Exp $");
+__IDSTRING(rcsid_hash_h, "$MirOS: contrib/code/jupp/hash.h,v 1.4 2017/12/02 17:00:48 tg Exp $");
 #endif
 
 unsigned long hash PARAMS((unsigned char *s));

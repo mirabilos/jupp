@@ -10,7 +10,7 @@
 #define _JOE_HELP_H 1
 
 #ifdef EXTERN
-__RCSID("$MirOS: contrib/code/jupp/help.h,v 1.5 2017/12/02 02:07:26 tg Exp $");
+__IDSTRING(rcsid_help_h, "$MirOS: contrib/code/jupp/help.h,v 1.6 2017/12/02 17:00:48 tg Exp $");
 #endif
 
 extern struct help *help_actual;
