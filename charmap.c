@@ -10,15 +10,15 @@
  */
 
 #include "config.h"
+#include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.20 2017/12/02 02:07:24 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.21 2017/12/02 04:32:38 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
 
 #include "va.h"
 #include "utils.h"
-#include "i18n.h"
 #include "path.h"
 #include "charmap.h"
 

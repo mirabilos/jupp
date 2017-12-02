@@ -10,10 +10,8 @@
 #define _Icharmap 1
 
 #ifdef EXTERN
-__RCSID("$MirOS: contrib/code/jupp/charmap.h,v 1.7 2017/12/02 02:07:25 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/charmap.h,v 1.8 2017/12/02 04:32:39 tg Exp $");
 #endif
-
-#include "utf8.h"
 
 /* For sorted from_map entries */
 
@@ -87,5 +85,7 @@ unsigned char **get_encodings PARAMS((void));
 
 int to_uni PARAMS((struct charmap *cset, int c));
 int from_uni PARAMS((struct charmap *cset, int c));
+
+#include "utf8.h"
 
 #endif

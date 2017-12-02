@@ -21,11 +21,9 @@
 #include <stdlib.h>
 #endif
 
-__RCSID("$MirOS: contrib/code/jupp/i18n.c,v 1.25 2017/12/02 02:07:26 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/i18n.c,v 1.26 2017/12/02 04:32:39 tg Exp $");
 
 #include "charmap.h"
-#include "utf8.h"
-#include "i18n.h"
 
 /* From: X11/xc/programs/xterm/wcwidth.c,v 1.10 */
 

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/qw.c,v 1.6 2017/12/02 02:07:30 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/qw.c,v 1.7 2017/12/02 04:32:40 tg Exp $");
 
 #include <stdlib.h>
 
@@ -16,7 +16,6 @@ __RCSID("$MirOS: contrib/code/jupp/qw.c,v 1.6 2017/12/02 02:07:30 tg Exp $");
 #include "vs.h"
 #include "charmap.h"
 #include "scrn.h"
-#include "utf8.h"
 #include "w.h"
 
 static void dispqw(QW *qw)

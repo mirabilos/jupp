@@ -8,10 +8,9 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/regex.c,v 1.6 2017/12/02 02:07:31 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/regex.c,v 1.7 2017/12/02 04:32:41 tg Exp $");
 
 #include "b.h"
-#include "utf8.h"
 #include "charmap.h"
 #include "vs.h"
 

@@ -30,7 +30,11 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/compat.c,v 1.7 2017/12/02 03:52:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/compat.c,v 1.8 2017/12/02 04:32:39 tg Exp $");
+
+#include <limits.h>
+#include <string.h>
+#include "utils.h"
 
 #undef L_strlcat
 #undef L_strlcpy
@@ -56,9 +60,6 @@ __RCSID("$MirOS: contrib/code/jupp/compat.c,v 1.7 2017/12/02 03:52:34 tg Exp $")
 #  include <time.h>
 # endif
 #endif
-
-#include <limits.h>
-#include "utils.h"
 
 typedef struct {
 	int tm_sec;		/* seconds [0-60] */

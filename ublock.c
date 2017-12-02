@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.17 2017/12/02 02:07:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.18 2017/12/02 04:32:41 tg Exp $");
 
 #include <unistd.h>
 #ifdef HAVE_STDLIB_H
@@ -31,7 +31,6 @@ __RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.17 2017/12/02 02:07:34 tg Exp $"
 #include "path.h"
 #include "poshist.h"
 #include "ushell.h"
-#include "utf8.h"
 #include "charmap.h"
 #include "w.h"
 

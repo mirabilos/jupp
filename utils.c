@@ -8,7 +8,7 @@
  */
 #include "config.h"
 
-__RCSID("$MirOS: contrib/code/jupp/utils.c,v 1.6 2017/12/02 03:52:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/utils.c,v 1.7 2017/12/02 04:32:43 tg Exp $");
 
 #include <errno.h>
 #ifdef HAVE_UNISTD_H
@@ -18,8 +18,6 @@ __RCSID("$MirOS: contrib/code/jupp/utils.c,v 1.6 2017/12/02 03:52:34 tg Exp $");
 #include <stdlib.h>
 #endif
 
-#include "i18n.h"
-#include "utf8.h"
 #include "charmap.h"
 #include "blocks.h"
 #include "utils.h"

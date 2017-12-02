@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.19 2017/12/02 02:07:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.20 2017/12/02 04:32:42 tg Exp $");
 
 #include <string.h>
 
@@ -28,7 +28,6 @@ __RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.19 2017/12/02 02:07:34 tg Exp $")
 #include "umath.h"
 #include "utils.h"
 #include "vs.h"
-#include "utf8.h"
 #include "charmap.h"
 #include "w.h"
 

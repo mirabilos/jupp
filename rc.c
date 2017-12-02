@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.25 2017/12/02 02:07:30 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.26 2017/12/02 04:32:41 tg Exp $");
 
 #include <string.h>
 #ifdef HAVE_STDLIB_H
@@ -36,7 +36,6 @@ __RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.25 2017/12/02 02:07:30 tg Exp $");
 #include "b.h"
 #include "syntax.h"
 #include "va.h"
-#include "utf8.h"
 #include "charmap.h"
 #include "w.h"
 

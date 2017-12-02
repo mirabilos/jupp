@@ -10,7 +10,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/utf8.c,v 1.20 2017/12/02 02:07:37 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/utf8.c,v 1.21 2017/12/02 04:32:43 tg Exp $");
 
 #include <string.h>
 
@@ -62,7 +62,6 @@ __RCSID("$MirOS: contrib/code/jupp/utf8.c,v 1.20 2017/12/02 02:07:37 tg Exp $");
 #endif
 
 #include "rc.h"
-#include "utf8.h"
 #include "charmap.h"
 
 /* UTF-8 Encoder

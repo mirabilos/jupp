@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.13 2017/12/02 02:07:35 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.14 2017/12/02 04:32:42 tg Exp $");
 
 #include <unistd.h>
 #ifdef HAVE_SYS_STAT_H
@@ -55,7 +55,6 @@ int copy_security_context(const char *from_file, const char *to_file);
 #include "utils.h"
 #include "va.h"
 #include "vs.h"
-#include "utf8.h"
 #include "charmap.h"
 #include "w.h"
 
