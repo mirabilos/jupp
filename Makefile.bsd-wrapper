@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.10 2017/07/08 15:38:43 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.11 2017/12/02 04:33:47 tg Exp $
 #-
 # make -f Makefile.bsd-wrapper CFPREFIX=/usr/mpkg sysconfjoesubdir=/joe
 
@@ -19,6 +19,7 @@ CFARGS+=	--prefix=${CFPREFIX:Q} \
 		--bindir=${CFPREFIX:Q}/bin \
 		--mandir=${CFMANDIR:Q} \
 		--sysconfdir=${CFETC:Q} \
+		${GCFARGS} \
 		--enable-sysconfjoesubdir=${sysconfjoesubdir:Q}
 
 .ifmake winman
