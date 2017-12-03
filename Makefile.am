@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/Makefile.am,v 1.17 2017/12/02 04:02:42 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.am,v 1.18 2017/12/03 01:11:48 tg Exp $
 
 AUTOMAKE_OPTIONS = foreign
 
@@ -45,14 +45,6 @@ bin_PROGRAMS = joe
 if WANT_TERMIDX
 bin_PROGRAMS += termidx
 endif
-
-if JUPP_WIN32RELOC
-joe_WIN32_DEFS = -DJUPP_WIN32RELOC=1 -UJOERC
-else
-joe_WIN32_DEFS = -DJUPP_WIN32RELOC=0 -DJOERC="\"$(sysconf_joedir)/\""
-endif
-
-INCLUDES = $(joe_WIN32_DEFS)
 
 joe_SOURCES = \
 	b.c blocks.c builtin.c builtins.c bw.c charmap.c cmd.c compat.c \
