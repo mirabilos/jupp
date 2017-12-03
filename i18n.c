@@ -21,9 +21,10 @@
 #include <stdlib.h>
 #endif
 
-__RCSID("$MirOS: contrib/code/jupp/i18n.c,v 1.28 2017/12/03 01:43:51 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/i18n.c,v 1.29 2017/12/03 02:36:01 tg Exp $");
 
 #include "charmap.h"
+#include "utils.h"
 
 /* From: X11/xc/programs/xterm/wcwidth.c,v 1.10 */
 
@@ -6902,10 +6903,13 @@ int
 main(int argc,char *argv[])
 {
 	int c;
+	void *vp;
 
 	if (argc != 2)
 		return (1);
-	sscanf(argv[1],"%x",&c);
+	c = ustolb(argv[1], &vp, 0, 0x10FFFF, USTOL_TRIM | USTOL_EOS);
+	if (!vp)
+		return (1);
 	printf("Properties of character %X:\n",c);
 	printf("upper=%X\n",joe_iswupper(NULL,c));
 	printf("lower=%X\n",joe_iswlower(NULL,c));
@@ -6928,6 +6932,7 @@ main(int argc,char *argv[])
 .endif
 
 PROG=		i18n
+SRCS=		compat.c i18n.c
 NOMAN=		Yes
 CPPFLAGS+=	-DTEST -DTEST_I18N
 

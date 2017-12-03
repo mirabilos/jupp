@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.20 2017/12/02 04:32:42 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.21 2017/12/03 02:36:03 tg Exp $");
 
 #include <string.h>
 
@@ -1180,7 +1180,7 @@ static int dounicode(BW *bw, unsigned char *s, void *object, int *notify)
 {
 	int num;
 
-	sscanf((char *)s,"%x",&num);
+	num = ustolb(s, NULL, 0, 0x10FFFF, USTOL_HEX | USTOL_TRIM | USTOL_EOS);
 	if (notify)
 		*notify = 1;
 	vsrm(s);

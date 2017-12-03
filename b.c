@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.19 2017/12/02 18:50:02 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.20 2017/12/03 02:36:00 tg Exp $");
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -2024,33 +2024,22 @@ B *bread(int fi, long int max)
 unsigned char *parsens(unsigned char *s, long int *skip, long int *amnt)
 {
 	unsigned char *n = vsncpy(NULL, 0, sz(s));
-	int x;
+	size_t x;
 
 	*skip = 0;
 	*amnt = LONG_MAX;
 	for (x = sLEN(n) - 1; x > 0 && ((n[x] >= '0' && n[x] <= '9') || n[x] == 'x' || n[x] == 'X'); --x) ;
 	if (n[x] == ',') {
+		void *vp;
+
 		n[x] = 0;
-		if (n[x + 1] == 'x' || n[x + 1] == 'X')
-			sscanf((char *)(n + x + 2), "%lx", skip);
-		else if (n[x + 1] == '0' && (n[x + 2] == 'x' || n[x + 2] == 'X'))
-			sscanf((char *)(n + x + 3), "%lx", skip);
-		else if (n[x + 1] == '0')
-			sscanf((char *)(n + x + 1), "%lo", skip);
-		else
-			sscanf((char *)(n + x + 1), "%ld", skip);
+		*skip = ustol(n + x + 1, &vp, USTOL_EOS);
 		for (--x; x > 0 && ((n[x] >= '0' && n[x] <= '9') || n[x] == 'x' || n[x] == 'X'); --x) ;
 		if (n[x] == ',') {
 			n[x] = 0;
-			*amnt = *skip;
-			if (n[x + 1] == 'x' || n[x + 1] == 'X')
-				sscanf((char *)(n + x + 2), "%lx", skip);
-			else if (n[x + 1] == '0' && (n[x + 2] == 'x' || n[x + 2] == 'X'))
-				sscanf((char *)(n + x + 3), "%lx", skip);
-			else if (n[x + 1] == '0')
-				sscanf((char *)(n + x + 1), "%lo", skip);
-			else
-				sscanf((char *)(n + x + 1), "%ld", skip);
+			if (vp != NULL)
+				*amnt = *skip;
+			*skip = ustol(n + x + 1, NULL, USTOL_EOS);
 		}
 	}
 #ifndef __MSDOS__

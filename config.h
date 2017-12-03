@@ -6,6 +6,9 @@
 #ifndef TEST
 #include "autoconf.h"
 #else
+#define HAVE_CTIME 1
+#define HAVE_STRLCAT 1
+#define HAVE_STRLCPY 1
 #define HAVE_DECL_STRLCAT 1
 #define HAVE_DECL_STRLCPY 1
 #define HAVE_GETCWD 1
@@ -157,7 +160,7 @@ size_t strlcpy(char *, const char *, size_t)
 #endif
 
 #ifdef EXTERN
-__IDSTRING(rcsid_config_h, "$MirOS: contrib/code/jupp/config.h,v 1.10 2017/12/02 17:00:48 tg Exp $");
+__IDSTRING(rcsid_config_h, "$MirOS: contrib/code/jupp/config.h,v 1.11 2017/12/03 02:36:01 tg Exp $");
 #endif
 
 #endif /* ifndef _JOE_CONFIG_H */

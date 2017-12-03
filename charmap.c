@@ -12,7 +12,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.22 2017/12/03 01:43:50 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.23 2017/12/03 02:36:00 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -1306,10 +1306,10 @@ parse_charmap(const unsigned char *name, FILE *f)
 			int uni;
 			int byt;
 
-			sscanf((char *)bf1+2, "%x", &uni);
+			uni = ustolb(bf1 + 2, NULL, 0, 0x10FFFF, USTOL_HEX);
 			parse_ws(&p, comment_char);
 			parse_tows(&p, bf1);
-			sscanf((char *)bf1+2, "%x", &byt);
+			byt = ustolb(bf1 + 2, NULL, 0, 255, USTOL_HEX);
 			b->to_uni[byt] = uni;
 		}
 	}
@@ -1425,7 +1425,7 @@ main(int argc, char *argv[])
 		printf("Not found\n");
 		return (1);
 	}
-	sscanf(argv[2], "%x", &u);
+	u = ustol(argv[2], NULL, USTOL_TRIM | USTOL_EOS);
 	printf("Unicode=%X\n", uni = to_uni(map, u));
 	printf("Local=%X\n", from_uni(map, uni));
 	return (0);
@@ -1529,7 +1529,7 @@ joe_strtolower(unsigned char *s)
 
 PROG=		charmap
 SRCS=		charmap.c
-SRCS+=		i18n.c path.c utf8.c utils.c va.c vs.c
+SRCS+=		compat.c i18n.c path.c utf8.c utils.c va.c vs.c
 NOMAN=		Yes
 CPPFLAGS+=	-DTEST -DTEST_CHARMAP
 CPPFLAGS+=	-DJUPP_WIN32RELOC=0 -D'JOERC="/etc/joe"'

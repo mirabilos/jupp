@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uerror.c,v 1.6 2017/12/02 18:50:03 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uerror.c,v 1.7 2017/12/03 02:36:03 tg Exp $");
 
 #include "b.h"
 #include "bw.h"
@@ -153,10 +153,15 @@ static int parseit(struct charmap *map,unsigned char *s, long int row)
 	for (y = x; s[y] >= '0' && s[y] <= '9'; ++y) ;
 
 	/* Save line number */
-	if (x != y)
-		sscanf((char *)(s + x), "%ld", &line);
-	if (line != -1)
-		--line;
+	if (x != y) {
+		void *vp;
+
+		line = ustol(s + x, &vp, USTOL_DEC);
+		if (!vp)
+			line = -1;
+		else
+			--line;
+	}
 
 	/* Look for ':' */
 	flg = 0;

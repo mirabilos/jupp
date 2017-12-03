@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.28 2017/12/02 18:33:24 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.29 2017/12/03 02:36:02 tg Exp $");
 
 #include <string.h>
 #ifdef HAVE_STDLIB_H
@@ -226,7 +226,7 @@ void setopt(B *b, unsigned char *parsed_name)
 #define G(type,name,setiaddr,yes,no,menu,low,high) \
 	X(type,name,setiaddr,yes,no,menu,low,high)
 #define X(type,name,seti,addr,yes,no,menu,low,high) \
-	{ UC name, { seti }, US addr, UC yes, UC no, UC menu, type, 0, low, high }
+	{ UC name, { seti }, US addr, UC yes, UC no, UC menu, 0, type, low, high }
 #define L(x) &x, NULL
 struct glopts {
 	const unsigned char *name;	/* Option name */
@@ -238,6 +238,7 @@ struct glopts {
 	const unsigned char *yes;	/* Message if option was turned on, or prompt string */
 	const unsigned char *no;	/* Message if option was turned off */
 	const unsigned char *menu;	/* Menu string */
+	size_t ofst;			/* Local options structure member offset */
 	int type;		/* 0 for global option flag
 				   1 for global option numeric
 				   2 for global option string
@@ -249,7 +250,6 @@ struct glopts {
 				   9 for syntax
 				  13 for encoding
 				 */
-	int ofst;		/* Local options structure member offset */
 	int low;		/* Low limit for numeric options */
 	int high;		/* High limit for numeric options */
 } glopts[] = {
@@ -366,6 +366,7 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options_, int set)
 	int ret = 0;
 	int st = 1;	/* 1 to set option, 0 to clear it */
 	int x;
+	void *vp;
 
 	/* Initialize offsets */
 	if (!isiz)
@@ -386,8 +387,8 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options_, int set)
 				break;
 			case 1: /* Global variable integer option */
 				if (set && arg) {
-					sscanf((char *)arg, "%d", &val);
-					if (val >= glopts[x].low && val <= glopts[x].high)
+					val = ustolb(arg, &vp, glopts[x].low, glopts[x].high, USTOL_TRIM | USTOL_EOS);
+					if (vp)
 						*glopts[x].set.i = val;
 				}
 				break;
@@ -404,26 +405,19 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options_, int set)
 					*(int *) ((unsigned char *) options_ + glopts[x].ofst) = st;
 				break;
 			case 5: /* Local option integer */
-				if (arg) {
-					if (options_) {
-						sscanf((char *)arg, "%d", &val);
-						if (val >= glopts[x].low && val <= glopts[x].high)
-							*(int *) ((unsigned char *)
-								  options_ + glopts[x].ofst) = val;
-					}
+				if (arg && options_) {
+					val = ustolb(arg, &vp, glopts[x].low, glopts[x].high, USTOL_TRIM | USTOL_EOS);
+					if (vp)
+						*(int *) ((unsigned char *)
+							  options_ + glopts[x].ofst) = val;
 				}
 				break;
 			case 7: /* Local option numeric + 1, with range checking */
 				if (arg) {
-					int zz = 0;
-
-					sscanf((char *)arg, "%d", &zz);
-					if (zz >= glopts[x].low && zz <= glopts[x].high) {
-						--zz;
-						if (options_)
-							*(int *) ((unsigned char *)
-								  options_ + glopts[x].ofst) = zz;
-					}
+					val = ustolb(arg, &vp, glopts[x].low, glopts[x].high, USTOL_TRIM | USTOL_EOS);
+					if (vp && options_)
+						*(int *) ((unsigned char *)
+							  options_ + glopts[x].ofst) = val - 1;
 				}
 				break;
 

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/termcap.c,v 1.16 2017/12/02 04:46:10 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/termcap.c,v 1.17 2017/12/03 02:36:02 tg Exp $");
 
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
@@ -121,17 +121,15 @@ static off_t findidx(FILE *file, unsigned char *name)
 	off_t addr = 0;
 
 	while (fgets((char *)buf, 80, file)) {
-		int x = 0, flg = 0, c, y, z;
+		int x = 0, flg = 0, c, y;
 
 		do {
 			for (y = x; buf[y] && buf[y] != ' ' && buf[y] != '\n'; ++y) ;
 			c = buf[y];
 			buf[y] = 0;
-			if (c == '\n' || !c) {
-				z = 0;
-				sscanf((char *)(buf + x), "%x", &z);
-				addr += z;
-			} else if (!strcmp(buf + x, name))
+			if (c == '\n' || !c)
+				addr += ustol(buf + x, NULL, USTOL_HEX);
+			else if (!strcmp(buf + x, name))
 				flg = 1;
 			x = y + 1;
 		} while (c && c != '\n');

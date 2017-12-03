@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/utag.c,v 1.5 2017/12/02 04:32:43 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/utag.c,v 1.6 2017/12/03 02:36:03 tg Exp $");
 
 #include "b.h"
 #include "bw.h"
@@ -75,7 +75,7 @@ static int dotag(BW *bw, unsigned char *s, void *obj, int *notify)
 					long line = 0;
 
 					if (buf[y] >= '0' && buf[y] <= '9') {
-						sscanf((char *)(buf + y), "%ld", &line);
+						line = ustol(buf + y, NULL, USTOL_AUTO);
 						if (line >= 1) {
 							int omid = mid;
 
