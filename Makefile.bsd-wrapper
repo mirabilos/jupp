@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.13 2017/12/03 01:43:50 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.14 2017/12/03 01:49:12 tg Exp $
 #-
 # make -f Makefile.bsd-wrapper CFPREFIX=/usr/mpkg sysconfjoesubdir=/joe
 
@@ -51,7 +51,7 @@ winman: joe.1
 	    -e '1d' -e '$$d' -e $$'s/$$/\r/' >joe.txt
 
 
-.ifmake joe.pdf
+.ifmake cats
 V_GROFF!=	pkg_info -e 'groff-*'
 V_GHOSTSCRIPT!=	pkg_info -e 'ghostscript-*'
 .  if empty(V_GROFF) || empty(V_GHOSTSCRIPT)
@@ -62,10 +62,9 @@ V_GHOSTSCRIPT!=	pkg_info -e 'ghostscript-*'
 CLEANFILES+=	joe.htm joe.ps1 joe.pdf
 CATS_KW=	jmacs, joe, jpico, jstar, jupp, rjoe
 CATS_TITLE_joe_1=joe - Joe's Own Editor
-joe.htm: joe.cat1
+cats: joe.cat1 joe.ps1
 	set -e; . ${BSDSRCDIR:Q}/scripts/roff2htm; set_target_absolute; \
 	    do_conversion_verbose joe 1 joe.cat1 joe.htm
-joe.pdf: joe.ps1
 	x=$$(ident joe.1 | \
 	    awk '/Mir''OS:/ { print $$4$$5; }' | \
 	    tr -dc 0-9); (( $${#x} == 14 )) || exit 1; exec \
