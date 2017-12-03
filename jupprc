@@ -404,7 +404,7 @@
  #HOOK#3102 filename matching
 
 {Basic
-\i   Help Screen    turn off with ^J     more help with ESC . (^[.)              \i
+\i   Help Screen    turn off with ^J     more help with Esc+. (^[.)              \i
 \i \i\u\bCURSOR\b\u           \u\bGOTO\b\u             \u\bBLOCK\b\u    \u\bDELETE\b\u    \u\bMISC\b\u         \u\bEXIT\b\u       \i \i
 \i \i^S left ^D right ^R  prev. screen ^KV move ^G  char  ^B  reformat ^KX save   \i \i
 \i \i^E up   ^X down  ^C  next screen  ^KC copy ^Y  line  ^V  overtype ^KQ abort  \i \i
@@ -483,7 +483,7 @@
 \i \i go to \uhttp://sf.net/projects/joe-editor/\u for upstream bug reports. JUPP 2.8 \i \i
 \i \i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\d(R)\d \i \i
 \i \i at \uhttp://mirbsd.de/jupp\u and by \bThorsten "\dmirabilos\d" Glaser <\utg@mirbsd.org\u>\b \i \i
-\i \i @(#) jupprc 2017-11-31; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
+\i \i @(#) jupprc 2017-12-02; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
 }
 
  #HOOK#3103 additional help screens
@@ -580,7 +580,7 @@ keymap,"prompt",rtn			^D
 
 :main
 :inherit windows
-:def freedroidz splitw,prevw,scratch,"nbc-Output",rtn,nextw,save,markk,bol,markb,prevw,prevw,blkcpy,nextw,nextw,rtn,prevw,eol,"'",bol,qrepl,"'",rtn,rtn,"'\\\\''",rtn,"r",backs,backs,backs,bol,"LC_ALL=C; export LC_ALL; fn='",eol,rtn,"p=--posix; sed $p -e q </dev/null >/dev/null 2>&1 || p=; fns=$(echo \"$fn\" | sed $p -e 's[^^][&]g; s\\^\\\\^g'); (case $fn in",rtn,"*.nxc) ;;",rtn,"*) echo '==> Error: filename not *.nxc'; exit ;;",rtn,"esac",rtn,"echo \"Compiling $fn\"",rtn,"nbc -sm- -d \"$fn\" 2>&1; x=$?",rtn,"if test $x = 0; then echo '==> OK'; else echo '==> Error code:' $x; fi",rtn,") | tr '\\n' '' | sed $p -e 's!# *\\([^]*\\)File \"[^\"]*/\\('\"$fns\"'\\)\" ; line \\([0-9]*\\)!\\2:\\3: \\1!g' -e 's!#\\([^]*\\)File \"\\([^\"]*\\)\" ; line \\([0-9]*\\)!\\2:\\3: \\1!g' | tr '' '\\n'",rtn,nmark,filt,"sh",rtn,rtn,"Press ^KQ to close this window!",rtn,parserr
+:def freedroidz splitw,prevw,scratch,"nbc-Output",rtn,nextw,save,markk,bol,markb,prevw,prevw,blkcpy,nextw,nextw,rtn,prevw,eol,"'",bol,qrepl,"'",rtn,rtn,"'\\\\''",rtn,"r",backs,backs,backs,bol,"LC_ALL=C; export LC_ALL; fn='",eol,"; p=--posix; sed $p -e q </dev/null >/dev/null 2>&1 || p=; r=$(sed $p -e 's[^^][&]g; s\\^\\\\^g' <<EOF",rtn,"$fn",rtn,"EOF",rtn,"); (case $fn in *.nxc) ;; *) echo '==> Error: filename not *.nxc'; exit ;; esac; echo \"Compiling $fn\"; nbc -sm- -d \"$fn\" 2>&1; x=$?; if test $x = 0; then echo '==> OK'; else echo '==> Error code:' $x; fi) | tr '\\n' '' | sed $p -e 's!# *\\([^]*\\)File \"[^\"]*/\\('\"$r\"'\\)\" ; line \\([0-9]*\\)!\\2:\\3: \\1!g' -e 's!#\\([^]*\\)File \"\\([^\"]*\\)\" ; line \\([0-9]*\\)!\\2:\\3: \\1!g' | tr '' '\\n'",rtn,nmark,filt,"sh",rtn,rtn,"Press ^KQ to close this window!",rtn,parserr
 :def docompile edit,rtn,filt,query,parserr
  #HOOK#3105 main keybindings
 eof," ",bof,qrepl,"\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\+\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\$",rtn,rtn,rtn,"r",eof,ffirst,"\\[^\\n]",rtn,"b",rtn,rtarw,rtn,markb,rtn,eof,markk,blkdel	^K ]
