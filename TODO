@@ -248,7 +248,7 @@ Del: [3~
 Ctrl-arrows: -
 Shift-arrows: -
 
-Alt-enything: prefixed with ESC
+Alt-anything: prefixed with ESC
 
 -----------------------
 jstar missing sequences
@@ -384,8 +384,6 @@ regex: character classes? a-z matches any letter?
 
 New features:
 -----------------------
-
-  move *rc files to .etc/jupp directory? Or XDG, see below.
 
   check all instances of 'chars': use unicode to locale symbols instead.
   EBCDIC ?
@@ -553,9 +551,8 @@ Options
 
 Other requests:
 
- -cleanup (delete extra lines and extra spaces at ends of lines).
-
  -show no. utf characters, not no. bytes
+ (if so, both need to be available)
 
 
 ┌───────────┐
@@ -588,4 +585,4 @@ Other requests:
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.42 2017/12/02 18:33:24 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.43 2017/12/03 01:43:50 tg Exp $

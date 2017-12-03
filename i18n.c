@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #endif
 
-__RCSID("$MirOS: contrib/code/jupp/i18n.c,v 1.27 2017/12/02 18:50:02 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/i18n.c,v 1.28 2017/12/03 01:43:51 tg Exp $");
 
 #include "charmap.h"
 
@@ -6934,8 +6934,8 @@ CPPFLAGS+=	-DTEST -DTEST_I18N
 .include <bsd.own.mk>
 
 .ifdef __CRAZY
-COPTS+=		-Wno-unused-parameter \
-		-Wno-old-style-definition -Wno-strict-prototypes \
+COPTS+=		-Wno-old-style-definition \
+		-Wno-unused-parameter -Wno-strict-prototypes \
 		-Wno-cast-qual \
 		-Wno-missing-prototypes -Wno-missing-declarations
 .endif

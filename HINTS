@@ -4,18 +4,12 @@ yet.
 GCC
 ---
 
-Using -fomit-frame-pointer may miscompile code at least in gcc 3.4.6, see
-http://article.gmane.org/gmane.os.miros.cvs/11607 for details.
-
 Disable the following warnings; the code doesn't cope with it:
 -Wno-pointer-sign
--Wno-unused-parameter
--Wno-old-style-definition -Wno-strict-prototypes
+-Wno-old-style-definition
+-Wno-unused-parameter -Wno-strict-prototypes
 -Wno-cast-qual
 -Wno-missing-prototypes -Wno-missing-declarations
-
-Additionally, -Wstrict-overflow bitches around if you enable it.
-This needs verification and possibly fixes.
 
 UTF-8
 -----
@@ -134,4 +128,4 @@ will not insert.
 - Search, incremental search, and search & replace all operate as usual.
 
 ___________________________________________________________________
-$MirOS: contrib/code/jupp/HINTS,v 1.11 2017/12/02 18:50:01 tg Exp $
+$MirOS: contrib/code/jupp/HINTS,v 1.12 2017/12/03 01:43:49 tg Exp $

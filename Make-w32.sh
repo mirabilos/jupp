@@ -1,5 +1,5 @@
 #!/bin/mksh
-# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.18 2017/12/02 18:53:37 tg Exp $
+# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.19 2017/12/03 01:43:50 tg Exp $
 
 usage() {
 	print -ru2 "Usage: $0 [-bCgn]"
@@ -24,8 +24,8 @@ done
 
 extrawarnings="-Wall -Wextra"
 (( debug )) && extrawarnings="$extrawarnings -g3"
-extrawarnings="$extrawarnings -Wno-unused-parameter"
-extrawarnings="$extrawarnings -Wno-old-style-definition -Wno-strict-prototypes"
+extrawarnings="$extrawarnings -Wno-old-style-definition"
+extrawarnings="$extrawarnings -Wno-unused-parameter -Wno-strict-prototypes"
 extrawarnings="$extrawarnings -Wno-cast-qual"
 extrawarnings="$extrawarnings -Wno-missing-prototypes -Wno-missing-declarations"
 

@@ -12,7 +12,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.21 2017/12/02 04:32:38 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.22 2017/12/03 01:43:50 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -1537,8 +1537,8 @@ CPPFLAGS+=	-DJUPP_WIN32RELOC=0 -D'JOERC="/etc/joe"'
 .include <bsd.own.mk>
 
 .ifdef __CRAZY
-COPTS+=		-Wno-unused-parameter \
-		-Wno-strict-prototypes \
+COPTS+=		-Wno-old-style-definition \
+		-Wno-unused-parameter -Wno-strict-prototypes \
 		-Wno-cast-qual \
 		-Wno-missing-prototypes -Wno-missing-declarations
 .endif
