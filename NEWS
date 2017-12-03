@@ -1,7 +1,19 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.110 2017/08/09 01:00:22 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.111 2017/12/03 03:26:18 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
+
+- Harmonise help rendering in jupprc (also for 2.8, 3.7, (NEW) 4.4)
+- Update internationalisation data to Unicode 10.0.0 with bugfixes
+- Don’t limit JOE_FILENAME
+- Optionally be NOMMU-safe: use vfork(), disable stuff needing fork()
+- Let ^K] also remove whitespace at EOF
+- Major code cleanup and a lot of warning fixes
+- Improve syntax highlighting (conf, c, all dark blue-using ones)
+- Don’t use sscanf(3) any more (dietlibc complains about bloat)
+- Add way to disable use of the FPU (including Math), for klibc
+- Make assume_color[sic!] actually work
+- Recognise libncursesw for tgetflag(3); add --disable-terminfo
 
 JOE 3.1jupp31
 
