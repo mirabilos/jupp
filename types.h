@@ -2,7 +2,7 @@
 #define _JOE_TYPES_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.18 2017/12/02 18:33:25 tg Exp $");
+__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.19 2017/12/04 22:15:39 tg Exp $");
 #endif
 
 /* Prefix to make string constants unsigned */
@@ -335,23 +335,6 @@ struct hentry {
 };
 
 /* Each terminal has one of these */
-
-#ifdef __MSDOS__
-
-struct scrn {
-	int	li;		/* Height of screen */
-	int	co;		/* Width of screen */
-	short	*scrn;		/* Buffer */
-	int	scroll;
-	int	insdel;
-	int	*updtab;	/* Lines which need to be updated */
-	/* HIGHLIGHT_STATE *syntab; */ /* Syntax highlight state at start of each line */
-	int	*syntab;
-	int	*compose;
-	int	*sary;
-};
-
-#else
 struct scrn {
 	CAP	*cap;		/* Termcap/Terminfo data */
 
@@ -462,7 +445,6 @@ struct scrn {
 	struct hentry	*htab;
 	struct hentry	*ary;
 };
-#endif
 
 
 struct sortentry {

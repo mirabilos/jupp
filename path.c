@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.13 2017/12/02 02:07:29 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.14 2017/12/04 22:15:38 tg Exp $");
 
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
@@ -87,11 +87,7 @@ __RCSID("$MirOS: contrib/code/jupp/path.c,v 1.13 2017/12/02 02:07:29 tg Exp $");
 #define skip_drive_letter(path)	do_if_drive_letter((path), (path) += 2)
 
 #ifndef		_PATH_TMP
-#  ifdef __MSDOS__
-#    define	_PATH_TMP	""
-#  else
 #    define	_PATH_TMP	"/tmp/"
-#  endif
 #endif
 
 #if !defined(PATH_MAX) && !defined(HAVE_GET_CURRENT_DIR_NAME)
@@ -327,47 +323,6 @@ int isreg(unsigned char *s)
 	return 0;
 }
 /********************************************************************/
-#ifdef __MSDOS__
-#include <dos.h>
-#include <dir.h>
-
-struct direct {
-	unsigned char d_name[16];
-} direc;
-int dirstate = 0;
-struct ffblk ffblk;
-unsigned char *dirpath = NULL;
-
-void *opendir(unsigned char *path)
-{
-	dirstate = 0;
-	return &direc;
-}
-
-void closedir()
-{
-}
-
-struct direct *readdir()
-{
-	int x;
-
-	if (dirstate) {
-		if (findnext(&ffblk))
-			return NULL;
-	} else {
-		if (findfirst("*.*", &ffblk, FA_DIREC))
-			return NULL;
-		dirstate = 1;
-	}
-
-	strcpy(direc.d_name, ffblk.ff_name);
-	for (x = 0; direc.d_name[x]; ++x)
-		direc.d_name[x] = tolower(direc.d_name[x]);
-	return &direc;
-}
-#endif
-/********************************************************************/
 unsigned char **rexpnd(unsigned char *word)
 {
 	void *dir;
@@ -401,34 +356,9 @@ int chJpwd(const unsigned char *path)
 
 int chpwd(const unsigned char *path)
 {
-#ifdef __MSDOS__
-	unsigned char buf[256];
-	int x;
-
-	if (!path)
-		return 0;
-	if ((path[0]) && (path[1] == ':')) {
-		if (_chdrive(path[0] & 0x1F))
-			return -1;
-		path += 2;
-	}
-	if (!path[0])
-		return 0;
-	strcpy(buf, path);
-	x = strlen(buf);
-	while (x > 1) {
-		--x;
-		if ((buf[x] == '/') || (buf[x] == '\\'))
-			buf[x] = 0;
-		else
-			break;
-	}
-	return chdir(buf);
-#else
 	if ((!path) || (!path[0]))
 		return 0;
 	return chdir((char *)path);
-#endif
 }
 
 /* The pwd function */

@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.21 2017/12/04 21:53:33 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.22 2017/12/04 22:15:37 tg Exp $");
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -2042,7 +2042,6 @@ unsigned char *parsens(unsigned char *s, long int *skip, long int *amnt)
 			*skip = ustol(n + x + 1, NULL, USTOL_EOS);
 		}
 	}
-#ifndef __MSDOS__
 	if (n[0] == '~') {
 		for (x = 1; n[x] && n[x] != '/'; ++x) ;
 		if (n[x] == '/') {
@@ -2073,7 +2072,6 @@ unsigned char *parsens(unsigned char *s, long int *skip, long int *amnt)
 			}
 		}
 	}
-#endif
 	return n;
 }
 
@@ -2109,13 +2107,11 @@ B *bload(unsigned char *s)
 	n = parsens(s, &skip, &amnt);
 
 	/* Open file or stream */
-#ifndef __MSDOS__
 	if (n[0] == '!') {
 		nescape(maint->t);
 		ttclsn();
 		fi = popen((char *)(n + 1), "r");
 	} else
-#endif
 	if (!strcmp(n, "-"))
 		fi = stdin;
 	else {
@@ -2175,12 +2171,9 @@ B *bload(unsigned char *s)
 
 	/* Close stream */
 err:
-#ifndef __MSDOS__
 	if (s[0] == '!')
 		pclose(fi);
-	else
-#endif
-	if (strcmp(n, "-"))
+	else if (strcmp(n, "-"))
 		fclose(fi);
 
 opnerr:
@@ -2429,14 +2422,11 @@ int bsave(P *p, unsigned char *s, long int size, int flag)
 	if (amnt < size)
 		size = amnt;
 
-#ifndef __MSDOS__
 	if (s[0] == '!') {
 		nescape(maint->t);
 		ttclsn();
 		f = popen((char *)(s + 1), "w");
-	} else
-#endif
-	if (s[0] == '>' && s[1] == '>')
+	} else if (s[0] == '>' && s[1] == '>')
 		f = fopen((char *)(s + 2), "a");
 	else if (!strcmp(s, "-")) {
 		nescape(maint->t);
@@ -2476,12 +2466,9 @@ int bsave(P *p, unsigned char *s, long int size, int flag)
 	}
 
 err:
-#ifndef __MSDOS__
 	if (s[0] == '!')
 		pclose(f);
-	else
-#endif
-	if (strcmp(s, "-"))
+	else if (strcmp(s, "-"))
 		fclose(f);
 	else
 		fflush(f);

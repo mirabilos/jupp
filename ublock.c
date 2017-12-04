@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.19 2017/12/02 18:50:03 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.20 2017/12/04 22:15:39 tg Exp $");
 
 #include <unistd.h>
 #ifdef HAVE_STDLIB_H
@@ -1116,10 +1116,6 @@ static int checkmark(BW *bw)
 
 int ufilt(BW *bw)
 {
-#ifdef __MSDOS__
-	msgnw(bw->parent, "Sorry, no sub-processes in DOS (yet)");
-	return -1;
-#else
 	switch (checkmark(bw)) {
 	case 0:
 		if (wmkpw(bw->parent, US "Command to filter block through (^C to abort): ", &filthist, dofilt, NULL, NULL, utypebw, NULL, NULL, locale_map))
@@ -1136,7 +1132,6 @@ int ufilt(BW *bw)
 		msgnw(bw->parent, US "No block");
 		return -1;
 	}
-#endif
 }
 
 /* Force region to lower case */

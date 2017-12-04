@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.30 2017/12/02 04:49:46 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.31 2017/12/04 22:15:39 tg Exp $");
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -1557,7 +1557,7 @@ void nscroll(SCRN *t)
 
 	for (y = 0; y != t->li; ++y) {
 		q = t->sary[y];
-		if (ifhave)
+		if (have)
 			return;
 		if (q && q != t->li) {
 			if (q > 0) {

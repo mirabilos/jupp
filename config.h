@@ -65,25 +65,6 @@
 #endif
 #define NO_MORE_DATA EOF
 
-#if defined __MSDOS__ && SIZEOF_INT == 2 /* real mode ms-dos compilers */
-#if SIZEOF_VOID_P == 4 /* real mode ms-dos compilers with 'far' memory model or something like that */
-#define physical(a)  (((unsigned long)(a)&0xFFFF)+(((unsigned long)(a)&0xFFFF0000)>>12))
-#define normalize(a) ((void *)(((unsigned long)(a)&0xFFFF000F)+(((unsigned long)(a)&0x0000FFF0)<<12)))
-#else
-#define physical(a) ((unsigned long)(a))
-#define normalize(a) (a)
-#endif /* sizeof(void *) == 4 */
-
-#define SEGSIZ 1024
-#define PGSIZE 1024
-#define LPGSIZE 10
-#define ILIMIT (PGSIZE*96L)
-#define HTSIZE 128
-
-#else /* not real mode ms-dos */
-
-#define physical(a) ((unsigned long)(a))
-#define normalize(a) (a)
 #ifdef PAGE_SIZE
 #define PGSIZE PAGE_SIZE
 #else
@@ -94,13 +75,9 @@
 #define ILIMIT (PGSIZE*1024)
 #define HTSIZE 2048
 
-#endif /* real mode ms-dos */
-
 #if !defined(__GNUC__) && !defined(__attribute__)
 #define __attribute__(p) /* nothing */
 #endif
-
-#define ATTR_UNUSED	__attribute__((__unused__))
 
 #ifdef HAVE_GCC_ATTRIBUTE_BOUNDED
 #define ATTR_BOUNDED(p)	__attribute__((__bounded__ p))
@@ -160,7 +137,7 @@ size_t strlcpy(char *, const char *, size_t)
 #endif
 
 #ifdef EXTERN
-__IDSTRING(rcsid_config_h, "$MirOS: contrib/code/jupp/config.h,v 1.11 2017/12/03 02:36:01 tg Exp $");
+__IDSTRING(rcsid_config_h, "$MirOS: contrib/code/jupp/config.h,v 1.12 2017/12/04 22:15:38 tg Exp $");
 #endif
 
 #endif /* ifndef _JOE_CONFIG_H */

@@ -9,7 +9,7 @@
 #define _JOE_VFILE_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_vfile_h, "$MirOS: contrib/code/jupp/vfile.h,v 1.5 2017/12/02 17:00:52 tg Exp $");
+__IDSTRING(rcsid_vfile_h, "$MirOS: contrib/code/jupp/vfile.h,v 1.6 2017/12/04 22:15:40 tg Exp $");
 #endif
 
 /* Additions:
@@ -100,7 +100,7 @@ unsigned char *vlock PARAMS((VFILE *vfile, unsigned long addr));
  * Return address of page header for given page
  */
 
-#define vheader(p) (vheaders[(physical((unsigned char *)(p))-physical(vbase))>>LPGSIZE])
+#define vheader(p) (vheaders[(((size_t)(unsigned char *)(p))-((size_t)vbase))>>LPGSIZE])
 
 /* void vchanged(char *);
  *

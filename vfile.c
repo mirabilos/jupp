@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/vfile.c,v 1.11 2017/12/02 18:50:04 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/vfile.c,v 1.12 2017/12/04 22:15:40 tg Exp $");
 
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
@@ -122,7 +122,7 @@ static unsigned char *mema(int align, int size)
 {
 	unsigned char *z = (unsigned char *) joe_malloc(align + size);
 
-	return z + align - physical(z) % align;
+	return z + (align - ((size_t)z % align));
 }
 
 unsigned char *vlock(VFILE *vfile, unsigned long addr)
@@ -156,18 +156,18 @@ unsigned char *vlock(VFILE *vfile, unsigned long addr)
 				if (!vheaders) {
 					vheaders = (VPAGE **) joe_malloc((vheadsz = INC) * sizeof(VPAGE *));
 					vbase = vp->data;
-				} else if (physical(vp->data) < physical(vbase)) {
+				} else if ((size_t)vp->data < (size_t)vbase) {
 					VPAGE **t = vheaders;
-					int amnt = (physical(vbase) - physical(vp->data)) >> LPGSIZE;
+					int amnt = (((size_t)vbase) - ((size_t)vp->data)) >> LPGSIZE;
 
 					vheaders = (VPAGE **) joe_malloc((amnt + vheadsz) * sizeof(VPAGE *));
 					mmove(vheaders + amnt, t, vheadsz * sizeof(VPAGE *));
 					vheadsz += amnt;
 					vbase = vp->data;
 					joe_free(t);
-				} else if (((physical(vp->data + PGSIZE * INC) - physical(vbase)) >> LPGSIZE) > (unsigned long)vheadsz) {
+				} else if (((((size_t)vp->data + PGSIZE * INC) - ((size_t)vbase)) >> LPGSIZE) > (unsigned long)vheadsz) {
 					vheaders = (VPAGE **)
-					    joe_realloc(vheaders, (vheadsz = (((physical(vp->data + PGSIZE * INC) - physical(vbase)) >> LPGSIZE))) * sizeof(VPAGE *));
+					    joe_realloc(vheaders, (vheadsz = (((((size_t)vp->data + PGSIZE * INC) - ((size_t)vbase)) >> LPGSIZE))) * sizeof(VPAGE *));
 				}
 				for (q = 1; q != INC; ++q) {
 					vp[q].next = freepages;

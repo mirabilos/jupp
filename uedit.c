@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.22 2017/12/04 21:53:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.23 2017/12/04 22:15:40 tg Exp $");
 
 #include <string.h>
 
@@ -1126,7 +1126,6 @@ int utypebw_raw(BW *bw, int k, int no_decode)
 		}
 
 		bw->cursor->xcol = piscol(bw->cursor);
-#ifndef __MSDOS__
 		if (x < 0 || x >= bw->w)
 			simple = 0;
 		if (bw->cursor->line < bw->top->line || bw->cursor->line >= bw->top->line + bw->h)
@@ -1162,7 +1161,6 @@ int utypebw_raw(BW *bw, int k, int no_decode)
 				atr = INVERSE;
 			outatr(bw->b->o.charmap, t, screen + x, attr + x, x, y, no_decode == 2 ? 0xFFFD : k, atr);
 		}
-#endif
 	}
 	return 0;
 }

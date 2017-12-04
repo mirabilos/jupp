@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.25 2017/12/02 04:32:38 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.26 2017/12/04 22:15:38 tg Exp $");
 
 #include <string.h>
 #ifdef HAVE_STDLIB_H
@@ -536,7 +536,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 				do {
 					outatr(utf8_map, t, screen + x, attr + x, x, y, tach, c1|atr);
 					tach = tach1;
-					if (ifhave)
+					if (have)
 						goto bye;
 					if (++x == w)
 						goto eosl;
@@ -594,7 +594,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 				} else
 					--idx;
 
-				if (ifhave)
+				if (have)
 					goto bye;
 				if (x >= w)
 					goto eosl;
@@ -652,7 +652,7 @@ static void gennum(BW *w, int *screen, int *attr, SCRN *t, int y, int *comp)
 		strlcpy((char *)buf, "      ",12);
 	for (z = 0; buf[z]; ++z) {
 		outatr(w->b->o.charmap, t, screen + z, attr + z, z, y, buf[z], 0);
-		if (ifhave)
+		if (have)
 			return;
 		comp[z] = buf[z];
 	}
@@ -815,7 +815,7 @@ void bwgen(BW *w, int linums)
 	y = w->cursor->line - w->top->line + w->y;
 	attr = t->attr + y*w->t->w;
 	for (screen = t->scrn + y * w->t->w; y != bot; ++y, (screen += w->t->w), (attr += w->t->w)) {
-		if (ifhave && !linums)
+		if (have && !linums)
 			break;
 		if (linums)
 			gennum(w, screen, attr, t, y, t->compose);
@@ -845,7 +845,7 @@ void bwgen(BW *w, int linums)
 	y = w->y;
 	attr = t->attr + w->y * w->t->w;
 	for (screen = t->scrn + w->y * w->t->w; y != w->y + w->cursor->line - w->top->line; ++y, (screen += w->t->w), (attr += w->t->w)) {
-		if (ifhave && !linums)
+		if (have && !linums)
 			break;
 		if (linums)
 			gennum(w, screen, attr, t, y, t->compose);

@@ -9,7 +9,7 @@
 #define _JOE_SCRN_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_scrn_h, "$MirOS: contrib/code/jupp/scrn.h,v 1.7 2017/12/02 17:00:50 tg Exp $");
+__IDSTRING(rcsid_scrn_h, "$MirOS: contrib/code/jupp/scrn.h,v 1.8 2017/12/04 22:15:39 tg Exp $");
 #endif
 
 #include "tty.h"		/* ttputc() */
@@ -72,24 +72,6 @@ void utf8_putc PARAMS((int c));
 
 /* Character attribute bits */
 
-#ifdef __MSDOS__
-
-#define INVERSE 1
-#define UNDERLINE 2
-#define BOLD 4
-#define BLINK 8
-#define DIM 16
-extern unsigned atab[];
-
-#define outatr(t,scrn,attr,x,y,c,a) do { \
-	(t); \
-	(x); \
-	(y); \
-	*(scrn) = ((unsigned)(c) | atab[a]); \
-} while(0)
-
-#else
-
 #define INVERSE		 256
 #define UNDERLINE	 512
 #define BOLD		1024
@@ -130,8 +112,6 @@ extern unsigned atab[];
 #define HAS_COMBINING 0x200000
 
 void outatr PARAMS((struct charmap *map,SCRN *t,int *scrn,int *attrf,int xx,int yy,int c,int a));
-
-#endif
 
 /*
  * translate character and its attribute into something printable

@@ -9,7 +9,7 @@
 #define _JOE_TTY_H 1
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_tty_h, "$MirOS: contrib/code/jupp/tty.h,v 1.10 2017/12/02 17:00:50 tg Exp $");
+__IDSTRING(rcsid_tty_h, "$MirOS: contrib/code/jupp/tty.h,v 1.11 2017/12/04 22:15:39 tg Exp $");
 #endif
 
 /* void ttopen(void);  Open the tty (attached to stdin) for use inside of JOE
@@ -130,22 +130,12 @@ int ttflsh PARAMS((void));
 extern int have;
 extern int leave;
 
-#ifdef __MSDOS__
-#define ifhave bioskey(1)
-#else
-#define ifhave have
-#endif
-
 /* void ttsig(int n);  Signal handler you provide.  This is called if the
  * editor gets a hangup signal, termination signal or if the input closes.
  * It is called with 'n' set to the number of the caught signal or 0 if the
  * input closed.
  */
-RETSIGTYPE ttsig PARAMS((int sig))
-#ifdef __GNUC__
-    __attribute__((__noreturn__))
-#endif
-    ;
+RETSIGTYPE ttsig PARAMS((int sig)) __attribute__((__noreturn__));
 
 /* void ttgtsz(int *x,int *y);  Get size of screen from ttsize/winsize
  * structure */
