@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.13 2017/12/04 21:53:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.14 2017/12/04 22:00:28 tg Exp $");
 
 #include <stdlib.h>
 
@@ -262,7 +262,7 @@ static P *searchf(BW *bw,SRCH *srch, P *p)
 	for (x = 0; x != sLEN(pattern) && pattern[x] != '\\' && (pattern[x]<128 || !p->b->o.charmap->type); ++x)
 		if (srch->ignore)
 			pattern[x] = joe_tolower(p->b->o.charmap,pattern[x]);
-	wrapped:
+ wrapped:
 	while (srch->ignore ? pifind(start, pattern, x) : pfind(start, pattern, x)) {
 		pset(end, start);
 		pfwrd(end, (long) x);
@@ -319,7 +319,7 @@ static P *searchb(BW *bw,SRCH *srch, P *p)
 		if (srch->ignore)
 			pattern[x] = joe_tolower(p->b->o.charmap,pattern[x]);
 
-	wrapped:
+ wrapped:
 	while (pbkwd(start, 1L)
 	       && (srch->ignore ? prifind(start, pattern, x) : prfind(start, pattern, x))) {
 		pset(end, start);
@@ -440,8 +440,8 @@ static P *insert(SRCH *srch, P *p, unsigned char *s, int len)
 			len -= x;
 			s += x;
 		} else if (len >= 2) {
-			if (((s[1] >= 'a' && s[1] <= 'z') || (s[1] >= 'A' && s[1] <= 'Z'))
-				 && srch->pieces[(s[1] & 0x1f) - 1]) {
+			if (((s[1] >= 'a' && s[1] <= 'z') || (s[1] >= 'A' && s[1] <= 'Z')) &&
+			    srch->pieces[(s[1] & 0x1f) - 1]) {
 				binsm(p, sv(srch->pieces[(s[1] & 0x1f) - 1]));
 				pfwrd(p, (long) sLEN(srch->pieces[(s[1] & 0x1f) - 1]));
 				s += 2;
@@ -529,25 +529,20 @@ static int set_options(BW *bw, unsigned char *s, SRCH *srch, int *notify)
 	srch->ignore = icase;
 
 	for (x = 0; s[x]; ++x) {
-		switch (s[x]) {
+		switch (s[x] | 0x20) {
 		case 'r':
-		case 'R':
 			srch->replace = 1;
 			break;
 		case 'b':
-		case 'B':
 			srch->backwards = 1;
 			break;
 		case 'i':
-		case 'I':
 			srch->ignore = 1;
 			break;
 		case 's':
-		case 'S':
 			srch->ignore = 0;
 			break;
 		case 'k':
-		case 'K':
 			srch->block_restrict = 1;
 			break;
 		case '0':
@@ -718,19 +713,19 @@ static void goback(SRCH *srch, BW *bw)
 static int dopfrepl(BW *bw, int c, SRCH *srch, int *notify)
 {
 	srch->addr = bw->cursor->byte;
-	if (c == 'N' || c == 'n')
+	if ((c | 0x20) == 'n')
 		return dopfnext(bw, srch, notify);
-	else if (c == 'Y' || c == 'y' || c == ' ' || c == 'L' || c == 'l') {
+	else if ((c | 0x20) == 'y' || (c | 0x20) == 'l' || c == ' ') {
 		srch->recs.link.prev->yn = 1;
 		/* why do I return -1 on 'L' here? */
-		return ((doreplace(bw, srch) || c == 'L' || c == 'l') ?
+		return ((doreplace(bw, srch) || (c | 0x20) == 'l') ?
 		    pfsave(bw, srch) : dopfnext(bw, srch, notify));
-	} else if (c == 'R' || c == 'r') {
+	} else if ((c | 0x20) == 'r') {
 		if (doreplace(bw, srch))
 			return -1;
 		srch->rest = 1;
 		return dopfnext(bw, srch, notify);
-	} else if (c == 8 || c == 127 || c == 'b' || c == 'B') {
+	} else if (c == 8 || c == 127 || (c | 0x20) == 'b') {
 		goback(srch, bw);
 		goback(srch, bw);
 		return dopfnext(bw, srch, notify);
@@ -797,14 +792,15 @@ static int fnext(BW *bw, SRCH *srch)
 {
 	P *sta;
 
-      next:
+ next:
 	if (srch->repeat != -1) {
 		if (!srch->repeat)
 			return 0;
 		else
 			--srch->repeat;
 	}
-      again:if (srch->backwards)
+ again:
+	if (srch->backwards)
 		sta = searchb(bw, srch, bw->cursor);
 	else
 		sta = searchf(bw, srch, bw->cursor);
@@ -850,11 +846,13 @@ int dopfnext(BW *bw, SRCH *srch, int *notify)
 		smode = 2;	/* We have started a search mode */
 	if (srch->replace)
 		visit(srch, bw, 0);
-again:	switch (fnext(bw, srch)) {
+ again:
+	switch (fnext(bw, srch)) {
 	case 0:
 		break;
 	case 1:
-bye:		if (!srch->flg && !srch->rest) {
+ bye:
+		if (!srch->flg && !srch->rest) {
 			if (srch->valid && srch->block_restrict)
 				msgnw(bw->parent, US "Not found (search restricted to marked block)");
 			else
@@ -927,20 +925,22 @@ bye:		if (!srch->flg && !srch->rest) {
 
 int pfnext(BW *bw)
 {
-	if (!globalsrch)	/* Query for search string if there isn't any */
-		return pffirst(bw);
-	else {
-		SRCH *srch = globalsrch;
+	SRCH *srch;
 
-		globalsrch = NULL;
-		srch->addr = bw->cursor->byte;
-		if (!srch->wrap_p || srch->wrap_p->b!=bw->b) {
-			prm(srch->wrap_p);
-			srch->wrap_p = pdup(bw->cursor);
-			srch->wrap_p->owner = &srch->wrap_p;
-			srch->wrap_flag = 0;
-		}
-		srch->valid = 0;
-		return dopfnext(bw, setmark(srch), NULL);
+	if (!globalsrch) {
+		/* Query for search string if there isn't any */
+		return pffirst(bw);
 	}
+
+	srch = globalsrch;
+	globalsrch = NULL;
+	srch->addr = bw->cursor->byte;
+	if (!srch->wrap_p || srch->wrap_p->b!=bw->b) {
+		prm(srch->wrap_p);
+		srch->wrap_p = pdup(bw->cursor);
+		srch->wrap_p->owner = &srch->wrap_p;
+		srch->wrap_flag = 0;
+	}
+	srch->valid = 0;
+	return dopfnext(bw, setmark(srch), NULL);
 }
