@@ -1,8 +1,9 @@
 #include "config.h"
 
-__RCSID("$MirOS: contrib/code/jupp/selinux.c,v 1.9 2017/12/04 21:42:57 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/selinux.c,v 1.10 2017/12/04 21:46:21 tg Exp $");
 
-#if defined(HAVE_SELINUX_HDR) && defined(HAVE_SELINUX_FUN)
+#if defined(HAVE_SELINUX_CONTEXT_H) && defined(HAVE_SELINUX_SELINUX_H) && \
+    defined(HAVE_SELINUX_FUN)
 #define WITH_SELINUX
 #else
 #undef WITH_SELINUX

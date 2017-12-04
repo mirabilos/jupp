@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.62 2017/12/03 01:11:49 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.63 2017/12/04 21:46:21 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -65,6 +65,10 @@ AC_ARG_ENABLE(terminfo,
 [  --disable-terminfo      disable use of terminfo functions],
 	terminfo=$enableval, terminfo=yes)
 
+AC_ARG_ENABLE(selinux,
+[  --disable-selinux       disable SELinux context copying],
+	selinux=$enableval, selinux=yes)
+
 AC_ARG_ENABLE([search_libs],
 [  --disable-search-libs   do not search in any external libraries],
 	search_libs=$enableval, search_libs=yes)
@@ -84,7 +88,11 @@ else
 	AC_SEARCH_LIBS(tgetflag, $search_libs_term, AC_DEFINE_UNQUOTED(TERMINFO, 1, [If we have newer terminfo/termcap capabilities]))
 fi
 AC_SEARCH_LIBS(snprintf, $search_libs_snprintf, AC_DEFINE_UNQUOTED(HAVE_SNPRINTF, 1, [If we have snprintf]))
-AC_SEARCH_LIBS(is_selinux_enabled, $search_libs_selinux, AC_DEFINE_UNQUOTED(HAVE_SELINUX_FUN, 1, [We have SELinux functions]))
+if test x"$selinux" = x"no"; then
+	echo "DISabling looking for SELinux support"
+else
+	AC_SEARCH_LIBS(is_selinux_enabled, $search_libs_selinux, AC_DEFINE_UNQUOTED(HAVE_SELINUX_FUN, 1, [We have SELinux functions]))
+fi
 
 
 # other conditionals
@@ -166,11 +174,6 @@ fi
 AC_HEADER_TIOCGWINSZ
 
 AC_HEADER_TIME
-
-if test "$ac_cv_header_selinux_selinux_h" = "yes" -a "$ac_cv_header_selinux_context_h" = "yes" ; then
-	echo "Enabling SELinux context copying!"
-	AC_DEFINE(HAVE_SELINUX_HDR, 1, [We have SELinux headers])
-fi
 
 # Checks for typedefs, structures, and compiler characteristics.
 
