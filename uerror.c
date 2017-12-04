@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uerror.c,v 1.7 2017/12/03 02:36:03 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uerror.c,v 1.8 2017/12/04 21:53:34 tg Exp $");
 
 #include "b.h"
 #include "bw.h"
@@ -134,10 +134,10 @@ static int parseit(struct charmap *map,unsigned char *s, long int row)
 
 	do {
 		/* Skip to first word */
-		for (x = y; s[x] && !(joe_isalnum_(map,s[x]) || s[x] == '.' || s[x] == '/'); ++x) ;
+		for (x = y; s[x] && !(joe_isalnux(map,s[x]) || s[x] == '.' || s[x] == '/'); ++x) ;
 
 		/* Skip to end of first word */
-		for (y = x; joe_isalnum_(map,s[y]) || s[y] == '.' || s[y] == '/'; ++y)
+		for (y = x; joe_isalnux(map,s[y]) || s[y] == '.' || s[y] == '/'; ++y)
 			if (s[y] == '.')
 				flg = 1;
 	} while (!flg && x!=y);

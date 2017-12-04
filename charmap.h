@@ -10,7 +10,7 @@
 #define _Icharmap 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_charmap_h, "$MirOS: contrib/code/jupp/charmap.h,v 1.9 2017/12/02 17:00:48 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/charmap.h,v 1.10 2017/12/04 21:53:34 tg Exp $");
 #endif
 
 /* For sorted from_map entries */
@@ -33,8 +33,8 @@ struct charmap {
 	int (*is_punct)(struct charmap *map,int c);
 	int (*is_print)(struct charmap *map,int c);
 	int (*is_space)(struct charmap *map,int c);
-	int (*is_alpha_)(struct charmap *map,int c);
-	int (*is_alnum_)(struct charmap *map,int c);
+	int (*is_alphx)(struct charmap *map,int c);
+	int (*is_alnux)(struct charmap *map,int c);
 
 	/* Character conversion functions */
 
@@ -55,8 +55,8 @@ struct charmap {
 	int from_size;			/* No. pairs in from_map */
 
 	unsigned char print_map[32];	/* Bit map of printable characters */
-	unsigned char alpha__map[32];	/* Bit map of alphabetic characters and _ */
-	unsigned char alnum__map[32];	/* Bit map of alphanumeric characters and _ */
+	unsigned char alphx_map[32];	/* Bit map of alphabetic characters and _ */
+	unsigned char alnux_map[32];	/* Bit map of alphanumeric characters and _ */
 };
 
 /* Predicates */
@@ -64,8 +64,8 @@ struct charmap {
 #define joe_ispunct(map,c) ((map)->is_punct((map),(c)))
 #define joe_isprint(map,c) ((map)->is_print((map),(c)))
 #define joe_isspace(map,c) ((map)->is_space((map),(c)))
-#define joe_isalpha_(map,c) ((map)->is_alpha_((map),(c)))
-#define joe_isalnum_(map,c) ((map)->is_alnum_((map),(c)))
+#define joe_isalphx(map,c) ((map)->is_alphx((map),(c)))
+#define joe_isalnux(map,c) ((map)->is_alnux((map),(c)))
 int joe_isblank PARAMS((struct charmap *map,int c));
 int joe_isspace_eof PARAMS((struct charmap *map,int c));
 

@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.20 2017/12/03 02:36:00 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.21 2017/12/04 21:53:33 tg Exp $");
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -429,7 +429,7 @@ int pisbow(P *p)
 	int d = prgetc(q);
 
 	prm(q);
-	if (joe_isalnum_(p->b->o.charmap,c) && (!joe_isalnum_(p->b->o.charmap,d) || pisbof(p)))
+	if (joe_isalnux(p->b->o.charmap,c) && (!joe_isalnux(p->b->o.charmap,d) || pisbof(p)))
 		return 1;
 	else
 		return 0;
@@ -443,7 +443,7 @@ int piseow(P *p)
 	int c = prgetc(q);
 
 	prm(q);
-	if (joe_isalnum_(p->b->o.charmap,c) && (!joe_isalnum_(p->b->o.charmap,d) || piseof(p)))
+	if (joe_isalnux(p->b->o.charmap,c) && (!joe_isalnux(p->b->o.charmap,d) || piseof(p)))
 		return 1;
 	else
 		return 0;

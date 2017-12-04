@@ -8,7 +8,7 @@
  */
 #include "config.h"
 
-__RCSID("$MirOS: contrib/code/jupp/utils.c,v 1.7 2017/12/02 04:32:43 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/utils.c,v 1.8 2017/12/04 21:53:35 tg Exp $");
 
 #include <errno.h>
 #ifdef HAVE_UNISTD_H
@@ -121,11 +121,11 @@ int parse_ws(unsigned char **pp,int cmt)
 int parse_ident(unsigned char **pp, unsigned char *buf, int len)
 {
 	unsigned char *p = *pp;
-	if (joe_isalpha_(locale_map,*p)) {
-		while(len && joe_isalnum_(locale_map,*p))
+	if (joe_isalphx(locale_map,*p)) {
+		while(len && joe_isalnux(locale_map,*p))
 			*buf++= *p++, --len;
 		*buf=0;
-		while(joe_isalnum_(locale_map,*p))
+		while(joe_isalnux(locale_map,*p))
 			++p;
 		*pp = p;
 		return 0;
@@ -153,7 +153,7 @@ int parse_kw(unsigned char **pp, unsigned char *kw)
 	unsigned char *p = *pp;
 	while(*kw && *kw==*p)
 		++kw, ++p;
-	if(!*kw && !joe_isalnum_(locale_map,*p)) {
+	if(!*kw && !joe_isalnux(locale_map,*p)) {
 		*pp = p;
 		return 0;
 	} else

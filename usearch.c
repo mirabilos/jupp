@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.12 2017/12/02 18:50:04 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.13 2017/12/04 21:53:34 tg Exp $");
 
 #include <stdlib.h>
 
@@ -67,7 +67,7 @@ unsigned char **get_word_list(B *b,int ignore)
 	idx = 0;
 	while ((c=pgetc(p))!=NO_MORE_DATA)
 		if (idx) {
-			if (joe_isalnum_(b->o.charmap, c)) {
+			if (joe_isalnux(b->o.charmap, c)) {
 				if (idx!=MAX_WORD_SIZE)
 					buf[idx++] = c;
 			} else {
@@ -82,7 +82,7 @@ unsigned char **get_word_list(B *b,int ignore)
 			}
 		} else {
 			start=p->byte-1;
-			if (joe_isalpha_(b->o.charmap, c))
+			if (joe_isalphx(b->o.charmap, c))
 				buf[idx++] = c;
 		}
 	prm(p);
@@ -105,7 +105,7 @@ void fcmplt_ins(BW *bw, unsigned char *line)
 
 	if (!piseol(bw->cursor)) {
 		c = brch(bw->cursor);
-		if (joe_isalnum_(bw->b->o.charmap,c))
+		if (joe_isalnux(bw->b->o.charmap,c))
 			return;
 	}
 
@@ -114,7 +114,7 @@ void fcmplt_ins(BW *bw, unsigned char *line)
 	p = pdup(bw->cursor);
 	do
 		c = prgetc(p);
-		while (joe_isalnum_(bw->b->o.charmap,c));
+		while (joe_isalnux(bw->b->o.charmap,c));
 	if (c!=NO_MORE_DATA)
 		pgetc(p);
 
@@ -161,7 +161,7 @@ int ufinish(BW *bw)
 
 	if (!piseol(bw->cursor)) {
 		c = brch(bw->cursor);
-		if (joe_isalnum_(bw->b->o.charmap,c))
+		if (joe_isalnux(bw->b->o.charmap,c))
 			return -1;
 	}
 
@@ -170,7 +170,7 @@ int ufinish(BW *bw)
 	p = pdup(bw->cursor);
 	do
 		c = prgetc(p);
-		while (joe_isalnum_(bw->b->o.charmap,c));
+		while (joe_isalnux(bw->b->o.charmap,c));
 	if (c!=NO_MORE_DATA)
 		pgetc(p);
 

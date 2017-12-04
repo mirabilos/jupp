@@ -12,7 +12,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.23 2017/12/03 02:36:00 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.24 2017/12/04 21:53:33 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -1071,7 +1071,7 @@ byte_ispunct(struct charmap *map, int c)
 	if (c < 0 || c > 255)
 		return (0);
 	return (((map->print_map[ofst] & bitn) != 0) &&
-	    ((map->alnum__map[ofst] & bitn) == 0));
+	    ((map->alnux_map[ofst] & bitn) == 0));
 }
 
 int
@@ -1092,25 +1092,25 @@ byte_isspace(struct charmap *map, int c)
 }
 
 int
-byte_isalpha_(struct charmap *map, int c)
+byte_isalphx(struct charmap *map, int c)
 {
 	int ofst = (c >> 3);
 	int bitn = (1 << (c & 7));
 
 	if (c < 0 || c > 255)
 		return (0);
-	return ((map->alpha__map[ofst] & bitn) != 0);
+	return ((map->alphx_map[ofst] & bitn) != 0);
 }
 
 int
-byte_isalnum_(struct charmap *map, int c)
+byte_isalnux(struct charmap *map, int c)
 {
 	int ofst = (c >> 3);
 	int bitn = (1 << (c & 7));
 
 	if (c < 0 || c > 255)
 		return (0);
-	return ((map->alnum__map[ofst] & bitn) != 0);
+	return ((map->alnux_map[ofst] & bitn) != 0);
 }
 
 int
@@ -1160,8 +1160,8 @@ process_builtin(const struct builtin_charmap *builtin)
 	map->is_punct = byte_ispunct;
 	map->is_print = byte_isprint;
 	map->is_space = byte_isspace;
-	map->is_alpha_ = byte_isalpha_;
-	map->is_alnum_ = byte_isalnum_;
+	map->is_alphx = byte_isalphx;
+	map->is_alnux = byte_isalnux;
 	map->to_lower = byte_tolower;
 	map->to_upper = byte_toupper;
 	map->to_uni = to_uni;
@@ -1195,8 +1195,8 @@ process_builtin(const struct builtin_charmap *builtin)
 
 	for (x = 0; x != 32; ++x) {
 		map->print_map[x] = 0;
-		map->alpha__map[x] = 0;
-		map->alnum__map[x] = 0;
+		map->alphx_map[x] = 0;
+		map->alnux_map[x] = 0;
 	}
 
 	for (x = 0; x != 256; ++x) {
@@ -1208,8 +1208,8 @@ process_builtin(const struct builtin_charmap *builtin)
 			if (joe_iswprint(NULL, c))
 				set_bit(map->print_map, x);
 			if (joe_iswalpha(NULL, c)) {
-				set_bit(map->alpha__map, x);
-				set_bit(map->alnum__map, x);
+				set_bit(map->alphx_map, x);
+				set_bit(map->alnux_map, x);
 			}
 
 			y = joe_towlower(NULL, c);
@@ -1225,15 +1225,15 @@ process_builtin(const struct builtin_charmap *builtin)
 	/* Set underbar <U+005F> */
 
 	if ((c = from_uni(map, 0x5F)) != -1) {
-		set_bit(map->alpha__map, c);
-		set_bit(map->alnum__map, c);
+		set_bit(map->alphx_map, c);
+		set_bit(map->alnux_map, c);
 	}
 
 	/* Put digits into alnum map */
 
 	for (x = 0x30; x != 0x3A; ++x) {
 		if ((c = from_uni(map, x)) != -1)
-			set_bit(map->alnum__map, c);
+			set_bit(map->alnux_map, c);
 	}
 
 	map->next = charmaps;
@@ -1256,8 +1256,8 @@ load_builtins(void)
 	map->is_punct = joe_iswpunct;
 	map->is_print = joe_iswprint;
 	map->is_space = joe_iswspace;
-	map->is_alpha_ = joe_iswalpha;
-	map->is_alnum_ = joe_iswalnum;
+	map->is_alphx = joe_iswalpha;
+	map->is_alnux = joe_iswalnum;
 	map->to_lower = joe_towlower;
 	map->to_upper = joe_towupper;
 	map->next = charmaps;

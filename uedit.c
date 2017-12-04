@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.21 2017/12/03 02:36:03 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.22 2017/12/04 21:53:34 tg Exp $");
 
 #include <string.h>
 
@@ -191,15 +191,15 @@ int u_goto_prev(BW *bw)
 	struct charmap *map=bw->b->o.charmap;
 	int c = prgetc(p);
 
-	if (joe_isalnum_(map,c)) {
-		while (joe_isalnum_(map,(c=prgetc(p))))
+	if (joe_isalnux(map,c)) {
+		while (joe_isalnux(map,(c=prgetc(p))))
 			/* Do nothing */;
 		if (c != NO_MORE_DATA)
 			pgetc(p);
 	} else if (joe_isspace(map,c) || joe_ispunct(map,c)) {
 		while ((c=prgetc(p)), (joe_isspace(map,c) || joe_ispunct(map,c)))
 			/* Do nothing */;
-		while(joe_isalnum_(map,(c=prgetc(p))))
+		while(joe_isalnux(map,(c=prgetc(p))))
 			/* Do nothing */;
 		if (c != NO_MORE_DATA)
 			pgetc(p);
@@ -228,14 +228,14 @@ int u_goto_next(BW *bw)
 	int c = brch(p);
 	int rtn = -1;
 
-	if (joe_isalnum_(map,c)) {
+	if (joe_isalnux(map,c)) {
 		rtn = 0;
-		while (joe_isalnum_(map,(c = brch(p))))
+		while (joe_isalnux(map,(c = brch(p))))
 			pgetc(p);
 	} else if (joe_isspace(map,c) || joe_ispunct(map,c)) {
 		while (joe_isspace(map, (c = brch(p))) || joe_ispunct(map,c))
 			pgetc(p);
-		while (joe_isalnum_(map,(c = brch(p)))) {
+		while (joe_isalnux(map,(c = brch(p)))) {
 			rtn = 0;
 			pgetc(p);
 		}
@@ -869,8 +869,8 @@ int u_word_delete(BW *bw)
 	struct charmap *map=bw->b->o.charmap;
 	int c = brch(p);
 
-	if (joe_isalnum_(map,c))
-		while (joe_isalnum_(map,(c = brch(p))))
+	if (joe_isalnux(map,c))
+		while (joe_isalnux(map,(c = brch(p))))
 			pgetc(p);
 	else if (joe_isspace(map,c))
 		while (joe_isspace(map,(c = brch(p))))
@@ -897,8 +897,8 @@ int ubackw(BW *bw)
 	int c = prgetc(bw->cursor);
 	struct charmap *map=bw->b->o.charmap;
 
-	if (joe_isalnum_(map,c)) {
-		while (joe_isalnum_(map,(c = prgetc(bw->cursor))))
+	if (joe_isalnux(map,c)) {
+		while (joe_isalnux(map,(c = prgetc(bw->cursor))))
 			/* do nothing */;
 		if (c != NO_MORE_DATA)
 			pgetc(bw->cursor);
