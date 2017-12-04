@@ -1,6 +1,6 @@
 #include "config.h"
 
-__RCSID("$MirOS: contrib/code/jupp/selinux.c,v 1.8 2017/12/02 02:07:31 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/selinux.c,v 1.9 2017/12/04 21:42:57 tg Exp $");
 
 #if defined(HAVE_SELINUX_HDR) && defined(HAVE_SELINUX_FUN)
 #define WITH_SELINUX
@@ -49,14 +49,8 @@ copy_security_context(const char *from_file, const char *to_file)
 	}
 
 	if (getfilecon(to_file, &to_context) < 0) {
-#ifdef _
-		MSG_PUTS(_("\nCould not get security context for "));
-		msg_outtrans(to_file);
-		msg_putchar('\n');
-#else
 		warn("Could not get security context for %s",
 		    to_file);
-#endif
 		freecon(from_context);
 		return 1;
 	}
