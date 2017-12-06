@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/help.c,v 1.11 2017/12/02 02:07:26 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/help.c,v 1.12 2017/12/06 23:02:02 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -20,13 +20,12 @@ __RCSID("$MirOS: contrib/code/jupp/help.c,v 1.11 2017/12/02 02:07:26 tg Exp $");
 
 #include "blocks.h"
 #include "builtin.h"
+#include "help.h"
 #include "scrn.h"
 #include "utils.h"
 #include "vs.h"
 #include "utf8.h"
 #include "w.h"
-
-extern void outatr_help(SCRN *,int *,int *,int,int,int,int);
 
 #define NOT_ENOUGH_MEMORY -11
 
@@ -38,8 +37,8 @@ struct help *help_actual = NULL;			/* actual help screen */
  *        -1 if the help file couldn't be opened 
  *        NOT_ENOUGH_MEMORY if there is not enough memory
  */
-
-int help_init(unsigned char *filename)
+int
+help_init(const unsigned char *filename)
 {
 	JFILE *fd;					/* help file */
 	unsigned char buf[1024];			/* input buffer */
@@ -49,7 +48,7 @@ int help_init(unsigned char *filename)
 	unsigned int hlpsiz, hlpbsz;			/* number of used/allocated bytes for tmp->text */
 	unsigned char *tempbuf;
 
-	if (!(fd = jfopen((char *)filename, "r")))		/* open the help file */
+	if (!(fd = jfopen((const char *)filename, "r")))/* open the help file */
 		return -1;				/* return if we couldn't open the file */
 
 	fprintf(stderr, "Processing '%s'...", filename);
@@ -136,7 +135,8 @@ int help_init(unsigned char *filename)
  * Find context help - find help entry with the same name
  */
 
-struct help *find_context_help(const unsigned char *name)
+struct help *
+find_context_help(const unsigned char *name)
 {
 	struct help *tmp = help_actual;
 
@@ -152,7 +152,8 @@ struct help *find_context_help(const unsigned char *name)
 /*
  * Display help text
  */
-void help_display(SCREEN *t)
+void
+help_display(SCREEN *t)
 {
 	unsigned char *str;
 	int y, x, z;
@@ -285,7 +286,8 @@ void help_display(SCREEN *t)
 /*
  * Show help screen 
  */
-int help_on(SCREEN *t)
+int
+help_on(SCREEN *t)
 {
 	if (help_actual) {
 		t->wind = help_actual->lines + skiptop;
@@ -307,7 +309,8 @@ int help_on(SCREEN *t)
 /*
  * Hide help screen
  */
-void help_off(SCREEN *t)
+void
+help_off(SCREEN *t)
 {
 	t->wind = skiptop;
 	wfit(t);
@@ -316,7 +319,8 @@ void help_off(SCREEN *t)
 /*
  * Show/hide current help screen
  */
-int u_help(BASE *base)
+int
+u_help(BASE *base)
 {
 	W *w = base->parent;
 	struct help *new_help;
@@ -339,7 +343,8 @@ int u_help(BASE *base)
 /*
  * Show next help screen (if it is possible)
  */
-int u_help_next(BASE *base)
+int
+u_help_next(BASE *base)
 {
 	W *w = base->parent;
 
@@ -357,7 +362,8 @@ int u_help_next(BASE *base)
 /*
  * Show previous help screen (if it is possible)
  */
-int u_help_prev(BASE *base)
+int
+u_help_prev(BASE *base)
 {
 	W *w = base->parent;
 

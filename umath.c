@@ -8,13 +8,14 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.18 2017/12/06 21:41:04 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.19 2017/12/06 23:02:07 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
 
 #include "b.h"
 #include "pw.h"
+#include "umath.h"
 #include "utils.h"
 #include "vs.h"
 #include "charmap.h"

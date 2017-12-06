@@ -8,7 +8,7 @@
 
 #include "config.h"
 
-__RCSID("$MirOS: contrib/code/jupp/builtin.c,v 1.6 2017/12/02 02:07:23 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/builtin.c,v 1.7 2017/12/06 23:02:01 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -19,17 +19,18 @@ __RCSID("$MirOS: contrib/code/jupp/builtin.c,v 1.6 2017/12/02 02:07:23 tg Exp $"
 
 #define zcmp(a,b) strcmp((char *)(a), (char *)(b))
 
-JFILE *jfopen(unsigned char *name, const char *mode)
+JFILE *
+jfopen(const unsigned char *name, const char *mode)
 {
 	if (name[0] == '*') {
 		int x;
-		char *xname;
+		char *xname, *cp;
 
-		xname = strdup((char *)name + 1);
-		name = (void *)xname;
-		while ((x = *name++)) {
+		xname = strdup((const char *)name + 1);
+		cp = xname;
+		while ((x = *cp++)) {
 			if (x >= 'A' && x <= 'Z')
-				name[-1] = x - 'A' + 'a';
+				cp[-1] = x - 'A' + 'a';
 		}
 
 		for (x = 0; builtins[x]; x += 2) {
@@ -44,7 +45,7 @@ JFILE *jfopen(unsigned char *name, const char *mode)
 		joe_free(xname);
 		return 0;
 	} else {
-		FILE *f = fopen((char *)name, (char *)mode);
+		FILE *f = fopen((const char *)name, (const char *)mode);
 		if (f) {
 			JFILE *j = (JFILE *)joe_malloc(sizeof(JFILE));
 			j->f = f;

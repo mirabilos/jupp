@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.16 2017/12/06 21:41:04 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.17 2017/12/06 23:02:07 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -24,10 +24,6 @@ __RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.16 2017/12/06 21:41:04 tg Exp $")
 #include <sys/utime.h>
 #define HAVEUTIME 1
 #endif
-#endif
-
-#ifdef WITH_SELINUX
-int copy_security_context(const char *from_file, const char *to_file);
 #endif
 
 #include "b.h"
@@ -104,7 +100,8 @@ void genexmsg(BW *bw, int saved, unsigned char *name)
 }
 
 /* For ^X ^C */
-void genexmsgmulti(BW *bw, int saved, int skipped)
+static void
+genexmsgmulti(BW *bw, int saved, int skipped)
 {
 	if (saved)
 		if (skipped)
@@ -202,9 +199,7 @@ cp(unsigned char *from, int g, unsigned char *tmpfn, unsigned char *to)
 	utime(to, &utbuf);
 #endif
 
-#ifdef WITH_SELINUX
 	copy_security_context(from, to);
-#endif
 
 	return 0;
 }
@@ -270,21 +265,23 @@ backup(BW *bw)
 /* Continuation structure */
 
 struct savereq {
-	int (*callback) ();
+	int (*callback)(BW *, struct savereq *, int, int *);
 	unsigned char *name;
 	B *first;
 	int not_saved;	/* Set if a modified file was not saved */
 	int rename;	/* Set if we're renaming the file during save */
 };
 
-struct savereq *mksavereq(int (*callback)(), unsigned char *name, B *first,int rename_)
+static struct savereq *
+mksavereq(int (*callback)(BW *, struct savereq *, int, int *),
+    unsigned char *name, B *first, int dorename)
 {
 	struct savereq *req = (struct savereq *) joe_malloc(sizeof(struct savereq));
 	req->callback = callback;
 	req->name = name;
 	req->first = first;
 	req->not_saved = 0;
-	req->rename = rename_;
+	req->rename = dorename;
 	return req;
 }
 
@@ -481,7 +478,8 @@ int usave(BW *bw)
 
 /* Load file to edit */
 
-int doedit1(BW *bw,int c,unsigned char *s,int *notify)
+static int
+doedit1(BW *bw,int c,unsigned char *s,int *notify)
 {
 	int ret = 0;
 	int er;
@@ -579,7 +577,8 @@ int doedit1(BW *bw,int c,unsigned char *s,int *notify)
 	}
 }
 
-int doedit(BW *bw, unsigned char *s, void *obj, int *notify)
+static int
+doedit(BW *bw, unsigned char *s, void *obj, int *notify)
 {
 	B *b;
 
@@ -631,7 +630,8 @@ int uswitch(BW *bw)
 	}
 }
 
-int doscratch(BW *bw, unsigned char *s, void *obj, int *notify)
+static int
+doscratch(BW *bw, unsigned char *s, void *obj, int *notify)
 {
 	int ret = 0;
 	int er;

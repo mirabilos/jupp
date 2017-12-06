@@ -8,14 +8,16 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/regex.c,v 1.9 2017/12/06 16:38:46 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/regex.c,v 1.10 2017/12/06 23:02:04 tg Exp $");
 
 #include "b.h"
 #include "charmap.h"
+#include "regex.h"
 #include "utils.h"
 #include "vs.h"
 
-int escape(int isutf8,unsigned char **a, int *b)
+int
+escape(int isutf8, unsigned char **a, int *b)
 {
 	int c;
 	unsigned char *s = *a;

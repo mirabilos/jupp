@@ -2,7 +2,7 @@
 #define _JOE_TYPES_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.20 2017/12/06 21:41:03 tg Exp $");
+__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.21 2017/12/06 23:02:06 tg Exp $");
 #endif
 
 /* Prefix to make string constants unsigned */
@@ -24,6 +24,14 @@ __IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.20 2017/12/06 2
 #define TYPEMENU	0x0800
 #define TYPEQW		0x1000
 
+/* polymorph function pointers, which do not use compiler type checking */
+#if 0
+typedef int jpoly_int();
+typedef void jpoly_void();
+#else
+/* same content as above, but system header */
+#include <jupp.tmp.h>
+#endif
 
 typedef struct header H;
 typedef struct buffer B;
@@ -143,7 +151,7 @@ struct recmac {
 struct cmd {
 	const unsigned char *name;	/* Command name */
 	const unsigned char *negarg;	/* Command to use if arg was negative */
-	int	(*func) ();	/* Function bound to name */
+	jpoly_int *func;	/* Function bound to name */
 	MACRO	*m;		/* Macro bound to name */
 	int	flag;		/* Execution flags */
 	int	arg;		/* 0= arg is meaningless, 1= ok */
@@ -219,16 +227,16 @@ struct kbd {
 
 
 struct watom {
-	unsigned char	*context;	/* Context name */
-	void	(*disp) ();	/* Display window */
-	void	(*follow) ();	/* Called to have window follow cursor */
-	int	(*abort) ();	/* Common user functions */
-	int	(*rtn) ();
-	int	(*type) ();
-	void	(*resize) ();	/* Called when window changed size */
-	void	(*move) ();	/* Called when window moved */
-	void	(*ins) ();	/* Called on line insertions */
-	void	(*del) ();	/* Called on line deletions */
+	unsigned char *context;	/* Context name */
+	jpoly_void *disp;	/* Display window */
+	jpoly_void *follow;	/* Called to have window follow cursor */
+	jpoly_int *abort;	/* Common user functions */
+	jpoly_int *rtn;		
+	jpoly_int *type;	
+	jpoly_void *resize;	/* Called when window changed size */
+	jpoly_void *move;	/* Called when window moved */
+	jpoly_void *ins;	/* Called on line insertions */
+	jpoly_void *del;	/* Called on line deletions */
 	int	what;		/* Type of this thing */
 };
 
@@ -323,9 +331,9 @@ struct menu {
 	int	saved_co;	/* Saved #columns of screen */
 	SCREEN	*t;		/* Screen we're on */
 	int	h, w, x, y;
-	int	(*abrt) ();	/* Abort callback function */
-	int	(*func) ();	/* Return callback function */
-	int	(*backs) ();	/* Backspace callback function */
+	jpoly_int *abrt;	/* Abort callback function */
+	jpoly_int *func;	/* Return callback function */
+	jpoly_int *backs;	/* Backspace callback function */
 	void	*object;
 };
 
@@ -474,10 +482,10 @@ struct cap {
 
 
 struct pw {
-	int	(*pfunc) ();	/* Func which gets called when RTN is hit */
-	int	(*abrt) ();	/* Func which gets called when window is aborted */
-	int	(*tab) ();	/* Func which gets called when TAB is hit */
-	unsigned char	*prompt;	/* Prompt string */
+	jpoly_int *pfunc;	/* Func which gets called when RTN is hit */
+	jpoly_int *abrt;	/* Func which gets called when window is aborted */
+	jpoly_int *tab;		/* Func which gets called when TAB is hit */
+	unsigned char *prompt;	/* Prompt string */
 	int	promptlen;	/* Width of prompt string */
 	int	promptofst;	/* Prompt scroll offset */
 	B	*hist;		/* History buffer */
@@ -490,8 +498,8 @@ struct stditem {
 
 struct query {
 	W	*parent;	/* Window we're in */
-	int	(*func) ();	/* Func. which gets called when key is hit */
-	int	(*abrt) ();
+	jpoly_int *func;	/* Func. which gets called when key is hit */
+	jpoly_int *abrt;
 	void	*object;
 	unsigned char	*prompt;	/* Prompt string */
 	int	promptlen;	/* Width of prompt string */
@@ -504,9 +512,9 @@ struct mpx {
 	int	ackfd;		/* Packetizer response descriptor */
 	int	kpid;		/* Packetizer process id */
 	int	pid;		/* Client process id */
-	void	(*func) ();	/* Function to call when read occures */
+	jpoly_void *func;	/* Function to call when read occures */
 	void	*object;	/* First arg to pass to function */
-	void	(*die) ();	/* Function: call when client dies or closes */
+	jpoly_void *die;	/* Function: call when client dies or closes */
 	void	*dieobj;
 };
 

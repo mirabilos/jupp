@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tw.c,v 1.13 2017/12/02 02:07:33 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tw.c,v 1.14 2017/12/06 23:02:05 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -33,6 +33,7 @@ __RCSID("$MirOS: contrib/code/jupp/tw.c,v 1.13 2017/12/02 02:07:33 tg Exp $");
 #include "vs.h"
 #include "syntax.h"
 #include "charmap.h"
+#include "tw.h"
 #include "w.h"
 
 #if !HAVE_DECL_CTIME
@@ -98,7 +99,8 @@ static void resizetw(BW *bw, int wi, int he)
  *
  */
 
-unsigned char *get_context(BW *bw)
+static unsigned char *
+get_context(BW *bw)
 {
 	P *p = pdup(bw->cursor);
 	static unsigned char buf1[stdsiz];

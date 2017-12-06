@@ -8,13 +8,14 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/qw.c,v 1.7 2017/12/02 04:32:40 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/qw.c,v 1.8 2017/12/06 23:02:04 tg Exp $");
 
 #include <stdlib.h>
 
 #include "utils.h"
 #include "vs.h"
 #include "charmap.h"
+#include "qw.h"
 #include "scrn.h"
 #include "w.h"
 
@@ -91,7 +92,7 @@ static int utypeqw(QW *qw, int c)
 	W *win;
 	W *w = qw->parent;
 	int *notify = w->notify;
-	int (*func) ();
+	jpoly_int *func;
 	void *object = qw->object;
 
 	if (locale_map->type) {
@@ -116,7 +117,7 @@ static int abortqw(QW *qw)
 {
 	W *win = qw->parent->win;
 	void *object = qw->object;
-	int (*abrt) () = qw->abrt;
+	jpoly_int *abrt = qw->abrt;
 
 	vsrm(qw->prompt);
 	joe_free(qw);
@@ -170,7 +171,7 @@ static WATOM watqwsr = {
 
 /* Create a query window */
 
-QW *mkqw(W *w, unsigned char *prompt, int len, int (*func) (/* ??? */), int (*abrt) (/* ??? */), void *object, int *notify)
+QW *mkqw(W *w, unsigned char *prompt, int len, jpoly_int *func, jpoly_int *abrt, void *object, int *notify)
 {
 	W *new;
 	QW *qw;
@@ -197,7 +198,7 @@ QW *mkqw(W *w, unsigned char *prompt, int len, int (*func) (/* ??? */), int (*ab
 /* Same as above, but cursor is left in original window */
 /* For Ctrl-Meta thing */
 
-QW *mkqwna(W *w, unsigned char *prompt, int len, int (*func) (/* ??? */), int (*abrt) (/* ??? */), void *object, int *notify)
+QW *mkqwna(W *w, unsigned char *prompt, int len, jpoly_int *func, jpoly_int *abrt, void *object, int *notify)
 {
 	W *new;
 	QW *qw;
@@ -224,7 +225,7 @@ QW *mkqwna(W *w, unsigned char *prompt, int len, int (*func) (/* ??? */), int (*
 /* Same as above, but cursor is left in original window */
 /* For search and replace thing */
 
-QW *mkqwnsr(W *w, unsigned char *prompt, int len, int (*func) (/* ??? */), int (*abrt) (/* ??? */), void *object, int *notify)
+QW *mkqwnsr(W *w, unsigned char *prompt, int len, jpoly_int *func, jpoly_int *abrt, void *object, int *notify)
 {
 	W *new;
 	QW *qw;

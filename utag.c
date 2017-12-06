@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/utag.c,v 1.8 2017/12/06 21:41:05 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/utag.c,v 1.9 2017/12/06 23:02:08 tg Exp $");
 
 #include "b.h"
 #include "bw.h"
@@ -17,6 +17,7 @@ __RCSID("$MirOS: contrib/code/jupp/utag.c,v 1.8 2017/12/06 21:41:05 tg Exp $");
 #include "tab.h"
 #include "ufile.h"
 #include "usearch.h"
+#include "utag.h"
 #include "utils.h"
 #include "vs.h"
 #include "charmap.h"

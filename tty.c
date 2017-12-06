@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tty.c,v 1.31 2017/12/06 21:17:01 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tty.c,v 1.32 2017/12/06 23:02:05 tg Exp $");
 
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
@@ -1031,7 +1031,10 @@ static unsigned char **newenv(unsigned char **old, unsigned char *s)
 
 /* Create a shell process */
 
-MPX *mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args, void (*func) (/* ??? */), void *object, void (*die) (/* ??? */), void *dieobj)
+MPX *
+mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args,
+    void (*func)(B*, unsigned char *, int), void *object,
+    void (*die)(B*), void *dieobj)
 {
 	unsigned char buf[80];
 	int fds[2];

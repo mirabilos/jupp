@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.32 2017/12/06 21:41:02 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.33 2017/12/06 23:02:04 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -25,6 +25,7 @@ __RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.32 2017/12/06 21:41:02 tg Exp $");
 #include "menu.h"
 #include "path.h"
 #include "pw.h"
+#include "rc.h"
 #include "regex.h"
 #include "tw.h"
 #include "uedit.h"
@@ -658,7 +659,8 @@ static int syntaxcmplt(BW *bw)
 	return simple_cmplt(bw,syntaxes);
 }
 
-int check_for_hex(BW *bw)
+static int
+check_for_hex(BW *bw)
 {
 	W *w;
 	if (bw->o.hex)

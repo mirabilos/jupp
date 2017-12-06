@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/undo.c,v 1.7 2017/12/06 21:41:04 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/undo.c,v 1.8 2017/12/06 23:02:07 tg Exp $");
 
 #include <stdlib.h>
 
@@ -16,6 +16,7 @@ __RCSID("$MirOS: contrib/code/jupp/undo.c,v 1.7 2017/12/06 21:41:04 tg Exp $");
 #include "blocks.h"
 #include "queue.h"
 #include "ublock.h"
+#include "undo.h"
 #include "utils.h"
 #include "w.h"
 

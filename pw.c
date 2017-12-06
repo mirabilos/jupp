@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/pw.c,v 1.9 2017/12/02 02:07:29 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/pw.c,v 1.10 2017/12/06 23:02:03 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -91,7 +91,7 @@ static int rtnpw(BW *bw)
 	unsigned char *s;
 	W *win;
 	int *notify;
-	int (*pfunc) ();
+	jpoly_int *pfunc;
 	void *object;
 	long byte;
 
@@ -170,7 +170,7 @@ static int abortpw(BW *b)
 {
 	PW *pw = b->object;
 	void *object = pw->object;
-	int (*abrt) () = pw->abrt;
+	jpoly_int *abrt = pw->abrt;
 
 	W *win = b->parent->win;
 
@@ -200,7 +200,7 @@ WATOM watompw = {
 
 /* Create a prompt window */
 
-BW *wmkpw(W *w, unsigned char *prompt, B **history, int (*func) (), const unsigned char *huh, int (*abrt) (), int (*tab) (), void *object, int *notify, struct charmap *map)
+BW *wmkpw(W *w, unsigned char *prompt, B **history, jpoly_int *func, const unsigned char *huh, jpoly_int *abrt, jpoly_int *tab, void *object, int *notify, struct charmap *map)
 {
 	W *new;
 	PW *pw;

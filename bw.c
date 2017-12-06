@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.27 2017/12/06 21:16:54 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.28 2017/12/06 23:02:01 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -184,7 +184,8 @@ void bwfllw(BW *w)
    If the state is not known, it is computed and the state for all
    of the remaining lines of the window are also recalculated. */
 
-int get_highlight_state(BW *w,int line)
+static int
+get_highlight_state(BW *w, int line)
 {
 	P *tmp = 0;
 	int state;

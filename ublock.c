@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.22 2017/12/06 21:41:03 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.23 2017/12/06 23:02:06 tg Exp $");
 
 #include <sys/wait.h>
 #include <limits.h>
@@ -673,7 +673,8 @@ void setindent(BW *bw)
 /* Verifies that at least n indentation characters (for non-blank lines) match c */
 /* If n is 0 (for urindent), this fails if c is space but indentation begins with tab */
 
-int purity_check(int c, int n)
+static int
+purity_check(int c, int n)
 {
 	P *p = pdup(markb);
 	while (p->byte < markk->byte) {
@@ -697,7 +698,8 @@ int purity_check(int c, int n)
 /* Left indent check */
 /* Verify that there is enough whitespace to do the left indent */
 
-int lindent_check(int c, int n)
+static int
+lindent_check(int c, int n)
 {
 	P *p = pdup(markb);
 	int indwid;

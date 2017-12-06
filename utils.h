@@ -11,7 +11,7 @@
 #define _JOE_UTILS_H 1
 
 #ifdef EXTERN_B_C
-__IDSTRING(rcsid_utils_h, "$MirOS: contrib/code/jupp/utils.h,v 1.9 2017/12/06 21:17:04 tg Exp $");
+__IDSTRING(rcsid_utils_h, "$MirOS: contrib/code/jupp/utils.h,v 1.10 2017/12/06 23:02:08 tg Exp $");
 #endif
 
 #include <signal.h>
@@ -76,5 +76,9 @@ long ustolb(void *, void **, long, long, int);
 
 size_t ustoc_hex(const void *, int *, size_t);
 size_t ustoc_oct(const void *, int *, size_t);
+
+/* from selinux.c */
+
+int copy_security_context(const char *, const char *);
 
 #endif

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.24 2017/12/06 21:41:03 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.25 2017/12/06 23:02:06 tg Exp $");
 
 #include <string.h>
 
@@ -24,6 +24,7 @@ __RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.24 2017/12/06 21:41:03 tg Exp $")
 #include "qw.h"
 #include "scrn.h"
 #include "ublock.h"
+#include "uedit.h"
 #include "uformat.h"
 #include "umath.h"
 #include "utils.h"
@@ -978,7 +979,8 @@ int uinsc(BW *bw)
 
 /* Move p backwards to first non-blank line and return its indentation */
 
-int find_indent(P *p)
+static int
+find_indent(P *p)
 {
 	int x;
 	for (x=0; x != 10; ++x) {

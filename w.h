@@ -9,7 +9,7 @@
 #define _JOE_W_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_w_h, "$MirOS: contrib/code/jupp/w.h,v 1.7 2017/12/06 21:17:05 tg Exp $");
+__IDSTRING(rcsid_w_h, "$MirOS: contrib/code/jupp/w.h,v 1.8 2017/12/06 23:02:08 tg Exp $");
 #endif
 
 /***************/
@@ -62,11 +62,6 @@ SCREEN *screate(SCRN *scrn);
  * Screen size changed
  */
 void sresize(SCREEN *t);
-
-/* void chsize(SCREEN *t,int mul,int div)
- * Resize windows: each window is multiplied by the fraction mul/div
- */
-void chsize();
 
 /* W *wcreate(SCREEN *t,WATOM *watom,W *where,W *target,W *original,int height);
  *

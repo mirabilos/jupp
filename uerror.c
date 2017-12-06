@@ -8,13 +8,14 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uerror.c,v 1.9 2017/12/06 21:41:04 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uerror.c,v 1.10 2017/12/06 23:02:07 tg Exp $");
 
 #include "b.h"
 #include "bw.h"
 #include "main.h"
 #include "queue.h"
 #include "tw.h"
+#include "uerror.h"
 #include "ufile.h"
 #include "utils.h"
 #include "vs.h"
@@ -216,7 +217,8 @@ static long parserr(B *b)
 	return nerrs;
 }
 
-BW *find_a_good_bw(B *b)
+static BW *
+find_a_good_bw(B *b)
 {
 	W *w;
 	BW *bw = 0;

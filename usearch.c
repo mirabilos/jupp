@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.16 2017/12/06 21:41:04 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.17 2017/12/06 23:02:08 tg Exp $");
 
 #include <stdlib.h>
 
@@ -49,7 +49,8 @@ SRCHREC fsr = { {&fsr, &fsr}, 0, 0, 0 };
 unsigned char **word_list;
 
 #define MAX_WORD_SIZE 64
-unsigned char **get_word_list(B *b,int ignore)
+static unsigned char **
+get_word_list(B *b, int ignore)
 {
 	unsigned char buf[MAX_WORD_SIZE];
 	unsigned char *s;
@@ -98,7 +99,8 @@ unsigned char **get_word_list(B *b,int ignore)
 	return list;
 }
 
-void fcmplt_ins(BW *bw, unsigned char *line)
+static void
+fcmplt_ins(BW *bw, unsigned char *line)
 {
 	P *p;
 	int c;
@@ -130,7 +132,8 @@ void fcmplt_ins(BW *bw, unsigned char *line)
 	}
 }
 
-int fcmplt_abrt(BW *bw, int x, unsigned char *line)
+static int
+fcmplt_abrt(BW *bw, int x, unsigned char *line)
 {
 	if (line) {
 		fcmplt_ins(bw, line);
@@ -139,7 +142,8 @@ int fcmplt_abrt(BW *bw, int x, unsigned char *line)
 	return -1;
 }
 
-int fcmplt_rtn(MENU *m, int x, unsigned char *line)
+static int
+fcmplt_rtn(MENU *m, int x, unsigned char *line)
 {
 	fcmplt_ins(m->parent->win->object, m->list[x]);
 	vsrm(line);

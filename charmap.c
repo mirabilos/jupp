@@ -12,7 +12,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.25 2017/12/06 21:46:54 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.26 2017/12/06 23:02:01 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -1062,7 +1062,7 @@ pair_cmp(struct pair *a, struct pair *b)
 
 /* Predicate and conversion functions for byte-oriented charmaps */
 
-int
+static int
 byte_ispunct(struct charmap *map, int c)
 {
 	int ofst = (c >> 3);
@@ -1074,7 +1074,7 @@ byte_ispunct(struct charmap *map, int c)
 	    ((map->alnux_map[ofst] & bitn) == 0));
 }
 
-int
+static int
 byte_isprint(struct charmap *map, int c)
 {
 	int ofst = (c >> 3);
@@ -1085,13 +1085,13 @@ byte_isprint(struct charmap *map, int c)
 	return ((map->print_map[ofst] & bitn) != 0);
 }
 
-int
+static int
 byte_isspace(struct charmap *map, int c)
 {
 	return (c == 32 || (c >= 9 && c <= 13));
 }
 
-int
+static int
 byte_isalphx(struct charmap *map, int c)
 {
 	int ofst = (c >> 3);
@@ -1102,7 +1102,7 @@ byte_isalphx(struct charmap *map, int c)
 	return ((map->alphx_map[ofst] & bitn) != 0);
 }
 
-int
+static int
 byte_isalnux(struct charmap *map, int c)
 {
 	int ofst = (c >> 3);
@@ -1113,13 +1113,13 @@ byte_isalnux(struct charmap *map, int c)
 	return ((map->alnux_map[ofst] & bitn) != 0);
 }
 
-int
+static int
 byte_tolower(struct charmap *map, int c)
 {
 	return ((c < 0 || c > 255) ? c : map->lower_map[c]);
 }
 
-int
+static int
 byte_toupper(struct charmap *map, int c)
 {
 	return ((c < 0 || c > 255) ? c : map->upper_map[c]);
@@ -1332,7 +1332,7 @@ map_up(int c)
 	return ((c >= 'a' && c <= 'z') ? (c + 'A' - 'a') : c);
 }
 
-int
+static int
 map_name_cmp(const unsigned char *a, const unsigned char *b)
 {
 	unsigned char ca, cb;

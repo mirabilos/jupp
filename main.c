@@ -32,7 +32,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.36 2017/12/06 21:16:58 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.37 2017/12/06 23:02:03 tg Exp $");
 
 #include <fcntl.h>
 #include <string.h>
@@ -43,6 +43,7 @@ __RCSID("$MirOS: contrib/code/jupp/main.c,v 1.36 2017/12/06 21:16:58 tg Exp $");
 #include "help.h"
 #include "kbd.h"
 #include "macro.h"
+#include "main.h"
 #include "path.h"
 #include "rc.h"
 #include "scrn.h"
@@ -55,7 +56,7 @@ __RCSID("$MirOS: contrib/code/jupp/main.c,v 1.36 2017/12/06 21:16:58 tg Exp $");
 #include "syntax.h"
 #include "utils.h"
 
-extern int mid, dspasis, help, pgamnt, nobackups, lightoff, exask, lines, columns, dopadding, marking, dobeep;
+extern int mid, dspasis, pgamnt, nobackups, lightoff, exask, lines, columns, dopadding, marking, dobeep;
 
 extern int idleout;		/* Clear to use /dev/tty for screen */
 extern unsigned char *joeterm;

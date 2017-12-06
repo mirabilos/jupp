@@ -8,11 +8,12 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/menu.c,v 1.8 2017/12/02 02:07:29 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/menu.c,v 1.9 2017/12/06 23:02:03 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
 
+#include "menu.h"
 #include "scrn.h"
 #include "utils.h"
 #include "va.h"
@@ -368,7 +369,7 @@ static int umkey(MENU *m, int c)
 static int menuabort(MENU *m)
 {
 	W *w = m->parent;
-	int (*func) () = m->abrt;
+	jpoly_int *func = m->abrt;
 	void *object = m->object;
 	int x = m->cursor;
 	W *win = w->win;
@@ -401,7 +402,7 @@ void ldmenu(MENU *m, unsigned char **s, int cursor)
 	mconfig(m);
 }
 
-MENU *mkmenu(W *w, unsigned char **s, int (*func) (/* ??? */), int (*abrt) (/* ??? */), int (*backs) (/* ??? */), int cursor, void *object, int *notify)
+MENU *mkmenu(W *w, unsigned char **s, jpoly_int *func, jpoly_int *abrt, jpoly_int *backs, int cursor, void *object, int *notify)
 {
 	W *new;
 	MENU *m;

@@ -9,7 +9,7 @@
 #define _JOE_TTY_H 1
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_tty_h, "$MirOS: contrib/code/jupp/tty.h,v 1.12 2017/12/06 21:17:01 tg Exp $");
+__IDSTRING(rcsid_tty_h, "$MirOS: contrib/code/jupp/tty.h,v 1.13 2017/12/06 23:02:05 tg Exp $");
 #endif
 
 /* void ttopen(void);  Open the tty (attached to stdin) for use inside of JOE
@@ -168,13 +168,8 @@ void signrm(int);
  *   Function to call when process dies in 'die'
  *   The first arg passed to func and die is object and dieobj
  */
-MPX *mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args, void (*func) (/* ??? */), void *object, void (*die) (/* ??? */), void *dieobj);
+MPX *mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args, void (*func)(B*, unsigned char *, int), void *object, void (*die)(B*), void *dieobj);
 
-/* int subshell(int *ptyfd);
- * Execute a subshell.  Returns 'pid' of shell or zero if there was a
- * problem.  Returns file descriptor for the connected pty in 'ptyfd'.
- */
-int subshell();
 
 extern int noxon;
 extern int Baud;
