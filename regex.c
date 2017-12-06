@@ -8,17 +8,18 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/regex.c,v 1.7 2017/12/02 04:32:41 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/regex.c,v 1.8 2017/12/06 16:37:40 tg Exp $");
 
 #include "b.h"
 #include "charmap.h"
+#include "utils.h"
 #include "vs.h"
 
 int escape(int utf8_,unsigned char **a, int *b)
 {
 	int c;
 	unsigned char *s = *a;
-	int l = *b;
+	int l = *b, z;
 
 	if (*s == '\\' && l >= 2) {
 		++s; --l;
@@ -67,42 +68,15 @@ int escape(int utf8_,unsigned char **a, int *b)
 		case '5':
 		case '6':
 		case '7':
-			c = *s - '0';
-			++s; --l;
-			if (l > 0 && *s >= '0' && *s <= '7') {
-				c = c * 8 + s[1] - '0';
-				++s; --l;
-			}
-			if (l > 0 && *s >= '0' && *s <= '7') {
-				c = c * 8 + s[1] - '0';
-				++s; --l;
-			}
+			z = ustoc_oct(s, &c, l);
+			s += z;
+			l -= z;
 			break;
 		case 'x':
 		case 'X':
-			c = 0;
-			++s; --l;
-			if (l > 0 && *s >= '0' && *s <= '9') {
-				c = c * 16 + *s - '0';
-				++s; --l;
-			} else if (l > 0 && *s >= 'A' && *s <= 'F') {
-				c = c * 16 + *s - 'A' + 10;
-				++s; --l;
-			} else if (l > 0 && *s >= 'a' && *s <= 'f') {
-				c = c * 16 + *s - 'a' + 10;
-				++s; --l;
-			}
-
-			if (l > 0 && *s >= '0' && *s <= '9') {
-				c = c * 16 + *s - '0';
-				++s; --l;
-			} else if (l > 0 && *s >= 'A' && *s <= 'F') {
-				c = c * 16 + *s - 'A' + 10;
-				++s; --l;
-			} else if (l > 0 && *s >= 'a' && *s <= 'f') {
-				c = c * 16 + *s - 'a' + 10;
-				++s; --l;
-			}
+			z = ustoc_hex(s, &c, l);
+			s += z;
+			l -= z;
 			break;
 		default:
 			if (utf8_)

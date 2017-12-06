@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.22 2017/12/04 22:15:37 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.23 2017/12/06 16:37:40 tg Exp $");
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -2028,13 +2028,15 @@ unsigned char *parsens(unsigned char *s, long int *skip, long int *amnt)
 
 	*skip = 0;
 	*amnt = LONG_MAX;
-	for (x = sLEN(n) - 1; x > 0 && ((n[x] >= '0' && n[x] <= '9') || n[x] == 'x' || n[x] == 'X'); --x) ;
+	for (x = sLEN(n) - 1; x > 0 && ((n[x] >= '0' && n[x] <= '9') || (n[x] | 0x20) == 'x'); --x)
+		/* nothing */;
 	if (n[x] == ',') {
 		void *vp;
 
 		n[x] = 0;
 		*skip = ustol(n + x + 1, &vp, USTOL_EOS);
-		for (--x; x > 0 && ((n[x] >= '0' && n[x] <= '9') || n[x] == 'x' || n[x] == 'X'); --x) ;
+		for (--x; x > 0 && ((n[x] >= '0' && n[x] <= '9') || (n[x] | 0x20) == 'x'); --x)
+			/* nothing */;
 		if (n[x] == ',') {
 			n[x] = 0;
 			if (vp != NULL)
