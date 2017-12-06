@@ -8,14 +8,14 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/regex.c,v 1.8 2017/12/06 16:37:40 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/regex.c,v 1.9 2017/12/06 16:38:46 tg Exp $");
 
 #include "b.h"
 #include "charmap.h"
 #include "utils.h"
 #include "vs.h"
 
-int escape(int utf8_,unsigned char **a, int *b)
+int escape(int isutf8,unsigned char **a, int *b)
 {
 	int c;
 	unsigned char *s = *a;
@@ -79,7 +79,7 @@ int escape(int utf8_,unsigned char **a, int *b)
 			l -= z;
 			break;
 		default:
-			if (utf8_)
+			if (isutf8)
 				c = utf8_decode_fwrd(&s, &l);
 			else {
 				c = *s++;
@@ -87,7 +87,7 @@ int escape(int utf8_,unsigned char **a, int *b)
 			}
 			break;
 		}
-	} else if (utf8_) {
+	} else if (isutf8) {
 		c = utf8_decode_fwrd(&s,&l);
 	} else {
 		c = *s++;
@@ -98,7 +98,7 @@ int escape(int utf8_,unsigned char **a, int *b)
 	return c;
 }
 
-static int brack(int utf8_,unsigned char **a, int *la, int c)
+static int brack(int isutf8,unsigned char **a, int *la, int c)
 {
 	int inverse = 0;
 	int flag = 0;
@@ -126,12 +126,12 @@ static int brack(int utf8_,unsigned char **a, int *la, int c)
 		} else {
 			int cl, cr;
 
-			cl = escape(utf8_, &s, &l);
+			cl = escape(isutf8, &s, &l);
 
 			if (l >= 2 && s[0] == '-' && s[1] != ']') {
 				--l;
 				++s;
-				cr = escape(utf8_, &s, &l);
+				cr = escape(isutf8, &s, &l);
 				if (c >= cl && c <= cr)
 					flag = 1;
 			} else if (c == cl)
@@ -145,13 +145,13 @@ static int brack(int utf8_,unsigned char **a, int *la, int c)
 		return flag;
 }
 
-static void savec(int utf8_,unsigned char **pieces, int n, int c)
+static void savec(int isutf8,unsigned char **pieces, int n, int c)
 {
 	unsigned char buf[16];
 	int len;
 	unsigned char *s = NULL;
 
-	if (utf8_)
+	if (isutf8)
 		len = utf8_encode(buf,c);
 	else {
 		buf[0] = c;
@@ -217,7 +217,7 @@ static int skip_special(P *p)
 		goto skip;
 	case '{':
 		to = '}';
-skip:
+ skip:
 		do {
 			s = skip_special(p);
 		} while (s != to && s != NO_MORE_DATA);
@@ -247,14 +247,14 @@ int pmatch(unsigned char **pieces, unsigned char *regex, int len, P *p, int n, i
 	int c, d;
 	P *q = pdup(p);
 	P *o = NULL;
-	int utf8_ = p->b->o.charmap->type;
+	int isutf8 = p->b->o.charmap->type;
 	struct charmap *map = p->b->o.charmap;
 	struct utf8_sm sm;
 
 	utf8_init(&sm);
 
 	while (len) {
-		if (utf8_) {
+		if (isutf8) {
 			do {
 				c = utf8_decode(&sm,*regex++);
 				--len;
@@ -275,7 +275,7 @@ int pmatch(unsigned char **pieces, unsigned char *regex, int len, P *p, int n, i
 				d = pgetc(p);
 				if (d == NO_MORE_DATA)
 					goto fail;
-				savec(utf8_, pieces, n++, d);
+				savec(isutf8, pieces, n++, d);
 				break;
 			case 'n':
 			case 'r':
@@ -298,7 +298,7 @@ int pmatch(unsigned char **pieces, unsigned char *regex, int len, P *p, int n, i
 			case '9':
 				regex -= 2;
 				len += 2;
-				if (pgetc(p) != escape(utf8_, &regex, &len))
+				if (pgetc(p) != escape(isutf8, &regex, &len))
 					goto fail;
 				break;
 			case '*':
@@ -329,9 +329,9 @@ int pmatch(unsigned char **pieces, unsigned char *regex, int len, P *p, int n, i
 				d = pgetc(p);
 				if (d == NO_MORE_DATA)
 					goto fail;
-				if (!brack(utf8_, &regex, &len, d))
+				if (!brack(isutf8, &regex, &len, d))
 					goto fail;
-				savec(utf8_, pieces, n++, d);
+				savec(isutf8, pieces, n++, d);
 				break;
 			case '+':
 				{
@@ -355,13 +355,13 @@ int pmatch(unsigned char **pieces, unsigned char *regex, int len, P *p, int n, i
 						if (regex[1] == '[') {
 							regex += 2;
 							len -= 2;
-							brack(utf8_, &regex, &len, 0);
+							brack(isutf8, &regex, &len, 0);
 						} else {
-							d = escape(utf8_, &regex, &len);
+							d = escape(isutf8, &regex, &len);
 							if (icase)
 								d = joe_tolower(map,d);
 						}
-					} else if (utf8_) {
+					} else if (isutf8) {
 						if ((d = utf8_decode_fwrd(&regex, &len)) < 0)
 							goto done;
 						else if (icase)
@@ -397,7 +397,7 @@ int pmatch(unsigned char **pieces, unsigned char *regex, int len, P *p, int n, i
 							if (oregex[1] == '[') {
 								tregex += 2;
 								tlen -= 2;
-								match = brack(utf8_, &tregex, &tlen, c);
+								match = brack(isutf8, &tregex, &tlen, c);
 							} else
 								match = (d == c);
 						} else {
@@ -407,8 +407,7 @@ int pmatch(unsigned char **pieces, unsigned char *regex, int len, P *p, int n, i
 								match = (c == d);
 						}
 					} while (c != NO_MORE_DATA && match);
-
-				      done:
+ done:
 					if (r) {
 						pset(p, r);
 						prm(r);
@@ -454,13 +453,13 @@ int pmatch(unsigned char **pieces, unsigned char *regex, int len, P *p, int n, i
 			}
 		}
 	}
-succeed:
+ succeed:
 	if (o)
 		prm(o);
 	prm(q);
 	return 1;
 
-fail:
+ fail:
 	if (o)
 		prm(o);
 	pset(p, q);
