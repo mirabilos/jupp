@@ -4,12 +4,12 @@
  *		(C) 1992 Joseph H. Allen
  *
  *	This file is part of JOE (Joe's Own Editor)
- */ 
+ */
 #ifndef _JOE_TERMCAP_H
 #define _JOE_TERMCAP_H 1
- 
+
 #ifdef EXTERN
-__IDSTRING(rcsid_termcap_h, "$MirOS: contrib/code/jupp/termcap.h,v 1.7 2017/12/06 21:17:00 tg Exp $");
+__IDSTRING(rcsid_termcap_h, "$MirOS: contrib/code/jupp/termcap.h,v 1.8 2017/12/06 23:17:35 tg Exp $");
 #endif
 
 /* CAP *getcap(char *s,int baud,void (*out)(void *outptr,char c),void *outptr);
@@ -92,9 +92,9 @@ void rmcap(CAP *cap);
 
    'cap' is the CAP returned by getcap which contains the baud rate and output
    function.
-   
+
    'str' is the string to execute.  If 'str'==NULL, nothing happens.
-   
+
    'l' is the number of lines effected by this string.  For example, if you
    use the clear to end of screen capability, the number of lines between
    the current cursor position and the end of the screen should be
@@ -110,9 +110,9 @@ void texec(CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int a3);
 
    'cap' is the CAP returned by getcap which contains the baud rate and output
    functions.
-   
+
    'str' is the string to execute.  If 'str'==NULL, tcost return 10000.
-   
+
    'l' is the number of lines effected by this string.  Ex: if you
    use the clear to end of screen capability, the number of lines between
    the current cursor position and the end of the screen should be

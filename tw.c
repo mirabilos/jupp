@@ -1,4 +1,4 @@
-/* 
+/*
  *	Text editing windows
  *	Copyright
  *		(C) 1992 Joseph H. Allen
@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tw.c,v 1.14 2017/12/06 23:02:05 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tw.c,v 1.15 2017/12/06 23:17:35 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -84,7 +84,7 @@ static void resizetw(BW *bw, int wi, int he)
  *
  * There are actually two possibilities:
  *
- * We want the first line- 
+ * We want the first line-
  *
  * int
  * foo(int x,int y) {
@@ -135,7 +135,7 @@ get_context(BW *bw)
 			    	*/
 			    	break;
 			}
-			
+
 		}
 	} while (!buf1[0] && pprevl(p));
 

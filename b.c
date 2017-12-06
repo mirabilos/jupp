@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.24 2017/12/06 21:16:54 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.25 2017/12/06 23:17:32 tg Exp $");
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -783,7 +783,7 @@ int prgetc(P *p)
 			p->valcol = 1;
 			p->col -= joe_wcwidth(1,d);
 		}
-		
+
 		return d;
 #endif
 	}

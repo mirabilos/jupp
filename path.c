@@ -1,4 +1,4 @@
-/* 
+/*
  *	Directory and path functions
  *	Copyright
  *		(C) 1992 Joseph H. Allen
@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.15 2017/12/06 21:16:58 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.16 2017/12/06 23:17:34 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>

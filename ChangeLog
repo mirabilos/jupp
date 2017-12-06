@@ -283,7 +283,7 @@ Wed May  5 2004  Joe Allen <jhallen@world.std.com>
 	Now parses charmap files.
 
 Wed May  5 2004  Joe Allen <jhallen@world.std.com>
- 	* bw.c charmap.c main.c qw.c qw.h regex.c regex.h 
+ 	* bw.c charmap.c main.c qw.c qw.h regex.c regex.h
  	syntax.c types.h uisrch.c usearch.c utf8.c utf8.h:
 
 	Regex search now works properly with UTF-8 chars.
@@ -312,10 +312,10 @@ Tue May  4 2004  Joe Allen <jhallen@world.std.com>
 	Change koi8-T to koi8-t.
 
 Tue May  4 2004  Joe Allen <jhallen@world.std.com>
-	* ChangeLog TODO b.c bw.c charmap.c charmap.h cmd.c help.c 
- 	i18n.c i18n.h joerc.in jpicorc.in jstarrc.in macro.c main.c 
- 	menu.c pw.c pw.h rc.c regex.c rjoerc.in scrn.c scrn.h syntax.c 
- 	types.h ublock.c uedit.c uerror.c ufile.c uformat.c umath.c 
+	* ChangeLog TODO b.c bw.c charmap.c charmap.h cmd.c help.c
+ 	i18n.c i18n.h joerc.in jpicorc.in jstarrc.in macro.c main.c
+ 	menu.c pw.c pw.h rc.c regex.c rjoerc.in scrn.c scrn.h syntax.c
+ 	types.h ublock.c uedit.c uerror.c ufile.c uformat.c umath.c
  	usearch.c ushell.c utag.c utf8.c utils.c utils.h w.c:
 
 	Everything about character set is now contained in struct charmap.
@@ -556,8 +556,8 @@ Sat Apr 17 2004  Joe Allen <jhallen@world.std.com>
 	Oops: fixed status line.
 
 Fri Apr 16 2004  Joe Allen <jhallen@world.std.com>
- 	* ChangeLog TODO cmd.c macro.c pw.c pw.h rc.c regex.c ublock.c 
- 	uedit.c ufile.c umath.c usearch.c ushell.c utag.c utf8.c w.c 
+ 	* ChangeLog TODO cmd.c macro.c pw.c pw.h rc.c regex.c ublock.c
+ 	uedit.c ufile.c umath.c usearch.c ushell.c utag.c utf8.c w.c
  	w.h:
 
 	UTF-8 now supported in file names and prompts.
@@ -732,7 +732,7 @@ Thu Apr  1 2004  Joe Allen <jhallen@world.std.com>
 
 Tue Mar 30 2004  Joe Allen <jhallen@world.std.com>
 	* uedit.c, syntax.c, syntax.h, types.h, bw.c:
-	Next steps for syntax highlighting: 
+	Next steps for syntax highlighting:
 		Now there is a real parser, so syntax files
 		can be defined (although, it only loads
 		the C language c.jsf for now).
@@ -859,7 +859,7 @@ Mon May  5 2003  Vitezslav Samel <samel@mail.cz>
 
 	* NEWS, configure.ac, main.c:
 	update NEWS; bump up version; update copyright year
-	
+
 Sat May  3 2003  Vitezslav Samel <samel@mail.cz>
 	* README:
 	delete untrue statements and mention the new build system;
@@ -1178,7 +1178,7 @@ Wed Nov 28 2001  Vitezslav Samel <samel@mail.cz>
 
 Thu Nov 22 2001  Marek 'Marx' Grac <xgrac@fi.muni.cz>
 	* *.h, *.c: almost all definitions are in types.h (except those from
-	vs.h, va.h). 
+	vs.h, va.h).
 
 Thu Nov 22 2001  Marek 'marx' Grac <xgrac@fi.muni.cz>
 	* uedit.c: correction of last change
@@ -1412,29 +1412,29 @@ Thu Jul 20 2001  Marek 'Marx' Grac <xgrac@fi.muni.cz>
 
 Thu Jul 19 2001  Marek 'Marx' Grac <xgrac@fi.muni.cz>
 	* help.c, help.h, main.c: help system was rebuilt
-	
+
 Thu Jul 19 2001  Vitezslav Samel <samel@mail.cz>
-	* joe.1, ufile.c: new feature 'backup suffix', when the system 
+	* joe.1, ufile.c: new feature 'backup suffix', when the system
 	environment SIMPLE_BACKUP_SUFFIX is set then it is used instead of ~.
 	Inspired by patch program.
-	
+
 Thu Jul 19 2001  Vitezslav Samel <samel@mail.cz>
 	* lot of files: patch which removes a lot of warnings.
-	
+
 Wed Jul 04 2001  Marek 'Marx' Grac <xgrac@fi.muni.cz>
 
 	* b.c, main.c, path.c, path.h, rc.c, ufile.c: Function 'ossep'
 	was completly removed because it was not possible to access
 	files like test\ in UNIX like systems.
-	
+
 Wed Jul 04 2001  Marek 'Marx' Grac <xgrac@fi.muni.cz>
 
 	* ufile.c: Several minor changes.
-	
+
 Wed Jul 04 2001  Marek 'Marx' Grac <xgrac@fi.muni.cz>
 
-	* ufile.c: Problem with freezing when saving unmodified file 
-	is solved. But it is possible that this patch is only partial	
+	* ufile.c: Problem with freezing when saving unmodified file
+	is solved. But it is possible that this patch is only partial
 
 Wed Jul 04 2001  Marek 'Marx' Grac <xgrac@fi.muni.cz>
 
@@ -1453,4 +1453,4 @@ Wed Jul 02 2001  Marek 'Marx' Grac <xgrac@fi.muni.cz>
 	able to find patch :(
 
 ______________________________________________________________________
-$MirOS: contrib/code/jupp/ChangeLog,v 1.9 2016/11/06 20:14:44 tg Exp $
+$MirOS: contrib/code/jupp/ChangeLog,v 1.10 2017/12/06 23:17:32 tg Exp $

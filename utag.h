@@ -1,4 +1,4 @@
-/* 
+/*
  *	tags file symbol lookup
  *	Copyright
  *		(C) 1992 Joseph H. Allen
@@ -9,7 +9,7 @@
 #define _JOE_UTAG_H 1
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_utag_h, "$MirOS: contrib/code/jupp/utag.h,v 1.5 2017/12/06 21:17:03 tg Exp $");
+__IDSTRING(rcsid_utag_h, "$MirOS: contrib/code/jupp/utag.h,v 1.6 2017/12/06 23:17:36 tg Exp $");
 #endif
 
 int utag(BW *bw);

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uformat.c,v 1.6 2017/12/06 23:02:07 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uformat.c,v 1.7 2017/12/06 23:17:36 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -412,7 +412,7 @@ int uformat(BW *bw)
 		indent = bw->o.lmargin;
 
 	/* Cut paragraph into new buffer */
-	
+
 	/* New buffer needs to inherit UTF-8 and CR-LF options */
 	buf = bcpy(p, bw->cursor);
 	buf->o.crlf = p->b->o.crlf;
@@ -473,10 +473,10 @@ int uformat(BW *bw)
 					f = 1;
 			}
 			prm(d);
-			
+
 			/* Skip past the whitespace.  Skip over indentations */
 		      loop:
-			
+
 			c = brch(b);
 			if (c == '\n') {
 				if (b->byte == curoff)

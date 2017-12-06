@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/help.c,v 1.12 2017/12/06 23:02:02 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/help.c,v 1.13 2017/12/06 23:17:33 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -31,10 +31,10 @@ __RCSID("$MirOS: contrib/code/jupp/help.c,v 1.12 2017/12/06 23:02:02 tg Exp $");
 
 struct help *help_actual = NULL;			/* actual help screen */
 
-/* 
+/*
  * Process help file
  * Returns 0 if the help file was succefully processed
- *        -1 if the help file couldn't be opened 
+ *        -1 if the help file couldn't be opened
  *        NOT_ENOUGH_MEMORY if there is not enough memory
  */
 int
@@ -123,7 +123,7 @@ help_init(const unsigned char *filename)
 	jfclose(fd);					/* close help file */
 
 	fprintf(stderr, "done\n");
-	
+
 	while (help_actual && help_actual->prev) {	/* move to first help screen */
 		help_actual = help_actual->prev;
 	}
@@ -261,7 +261,7 @@ help_display(SCREEN *t)
 							++str;
 							--x;
 							continue;
-						case 0:	
+						case 0:
 							--x;
 							continue;
 						}
@@ -284,7 +284,7 @@ help_display(SCREEN *t)
 }
 
 /*
- * Show help screen 
+ * Show help screen
  */
 int
 help_on(SCREEN *t)

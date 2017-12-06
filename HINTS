@@ -116,7 +116,7 @@ will not insert.
 
 - You can use ^KC to copy a block as usual.  If overtype mode is selected,
   the block will overwrite the destination data without changing the size of
-  the file.  Otherwise it inserts. 
+  the file.  Otherwise it inserts.
 
 - Hit ESC x byte <Enter>, to jump to a particular byte offset.  Hex values
   can be entered into this prompt like this: 0x2000.
@@ -124,4 +124,4 @@ will not insert.
 - Search, incremental search, and search & replace all operate as usual.
 
 ___________________________________________________________________
-$MirOS: contrib/code/jupp/HINTS,v 1.14 2017/12/06 21:48:48 tg Exp $
+$MirOS: contrib/code/jupp/HINTS,v 1.15 2017/12/06 23:17:32 tg Exp $

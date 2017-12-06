@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uisrch.c,v 1.11 2017/12/06 23:02:07 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uisrch.c,v 1.12 2017/12/06 23:17:36 tg Exp $");
 
 #include <stdlib.h>
 
@@ -213,7 +213,7 @@ static int itype(BW *bw, int c, struct isrch *isrch, int *notify)
 		} else {
 			buf[0] = c;
 			buf_len = 1;
-		}		
+		}
 
 		isrch->quote = 0;
 		iappend(bw, isrch, buf, buf_len);

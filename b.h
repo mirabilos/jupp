@@ -9,7 +9,7 @@
 #define _JOE_B_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_b_h, "$MirOS: contrib/code/jupp/b.h,v 1.7 2017/12/06 21:16:54 tg Exp $");
+__IDSTRING(rcsid_b_h, "$MirOS: contrib/code/jupp/b.h,v 1.8 2017/12/06 23:17:32 tg Exp $");
 #endif
 
 /* 31744 */
@@ -94,7 +94,7 @@ P *prfind(P *p, unsigned char *s, int len);
 P *prifind(P *p, unsigned char *s, int len);
 
 /* copy text between 'from' and 'to' into new buffer */
-B *bcpy(P *from, P *to);	
+B *bcpy(P *from, P *to);
 
 void pcoalesce(P *p);
 
@@ -103,7 +103,7 @@ void bdel(P *from, P *to);
 /* insert buffer 'b' into another at 'p' */
 P *binsb(P *p, B *b);
 /* insert a block 'blk' of size 'amnt' into buffer at 'p' */
-P *binsm(P *p, unsigned char *blk, int amnt); 
+P *binsm(P *p, unsigned char *blk, int amnt);
 
 /* insert character 'c' into buffer at 'p' */
 P *binsc(P *p, int c);

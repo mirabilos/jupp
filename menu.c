@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/menu.c,v 1.9 2017/12/06 23:02:03 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/menu.c,v 1.10 2017/12/06 23:17:34 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -51,7 +51,7 @@ static void menudisp(MENU *m)
 		col = 0;
 		for (x = 0; x != m->perline && y*m->perline+x+m->top<m->nitems; ++x) {
 			int atr;
-	
+
 			if (x + y*m->perline + m->top == m->cursor)
 				atr = INVERSE;
 			else
@@ -410,7 +410,7 @@ MENU *mkmenu(W *w, unsigned char **s, jpoly_int *func, jpoly_int *abrt, jpoly_in
 	int h = (w->main->h*40) / 100; /* 40% of window size */
 	if (!h)
 		h = 1;
-	
+
 	if (s) {
 		lines = mlines(s,w->t->w-1);
 		if (lines < h)

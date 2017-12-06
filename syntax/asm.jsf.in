@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/syntax/asm.jsf.in,v 1.4 2017/12/02 05:38:05 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/asm.jsf.in,v 1.5 2017/12/06 23:17:37 tg Exp $
 #-
 # JOE syntax highlight file for assembly language
 
@@ -59,7 +59,7 @@ done
 	*		preinc
 	" \t"		preinc_ws
 	"\n"		reset
-	
+
 :preinc_ws Preproc
 	*		prebad		recolor=-1
 	" \t"		preinc_ws
@@ -69,12 +69,12 @@ done
 :preinc_local IncLocal
 	*		preinc_local
 	"\"\n"		reset
-	
+
 :preinc_system IncSystem
 	*		preinc_system
 	">\n"		reset
 
-:prebad	Bad	
+:prebad	Bad
 	*		prebad
 	"\n"		reset
 
@@ -83,7 +83,7 @@ done
 	*		predef
 	" \t"		predef_ws
 	"\n"		reset
-	
+
 :predef_ws Preproc
 	*		prebad		recolor=-1
 	" \t"		predef_ws
@@ -99,12 +99,12 @@ done
 	"\n"		reset
 	"\\"		preproc_cont
 	"/"		preproc_slash
-	
+
 :preproc_slash Preproc
 	*		preproc		noeat
 	"*"		comment		recolor=-2
 	"/"		line_comment	recolor=-2
-	
+
 :preproc_cont Preproc
 	*		preproc_cont
 	"\n"		preproc

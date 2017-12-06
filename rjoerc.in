@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/rjoerc.in,v 1.23 2017/01/11 00:41:18 tg Exp $
+ $MirOS: contrib/code/jupp/rjoerc.in,v 1.24 2017/12/06 23:17:35 tg Exp $
 
                          Initialization file for JOE
                             Restricted access Joe
@@ -124,7 +124,7 @@
   %x  Context (first non-indented line going backwards)
 
  These formatting escape sequences may also be given:
- 
+
   \i  Inverse
   \u  Underline
   \b  Bold

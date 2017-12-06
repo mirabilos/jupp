@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jmacsrc.in,v 1.23 2017/01/11 00:41:17 tg Exp $
+ $MirOS: contrib/code/jupp/jmacsrc.in,v 1.24 2017/12/06 23:17:33 tg Exp $
 
                          Initialization file for JOE
                                 GNU-Emacs Joe
@@ -103,7 +103,7 @@
   %y  Syntax
 
  The formatting escape sequences may also be given:
- 
+
   \i  Inverse
   \u  Underline
   \b  Bold

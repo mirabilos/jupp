@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.28 2017/12/06 23:02:01 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.29 2017/12/06 23:17:33 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -310,8 +310,8 @@ void bwdel(BW *w, long int l, long int n, int flg)
 /* Update a single line */
 
 static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long int scr, long int from, long int to,int st,BW *bw)
-        
-      
+
+
             			/* Screen line address */
       				/* Window */
      				/* Buffer pointer */

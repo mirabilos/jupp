@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/syntax/diff.jsf.in,v 1.6 2013/02/15 19:38:47 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/diff.jsf.in,v 1.7 2017/12/06 23:17:37 tg Exp $
 #-
 # JOE syntax highlight file for diff/patch files
 #
@@ -59,7 +59,7 @@ done
 
 :udiff_o2 Idle
 	*		garbage		recolor=-3	buffer
-	"-"		udiff_o3	
+	"-"		udiff_o3
 
 :udiff_o3 Idle
 	*		garbage		recolor=-4	buffer
@@ -79,7 +79,7 @@ done
 
 :udiff_n2 Idle
 	*		garbage		recolor=-3	buffer
-	"+"		udiff_n3	
+	"+"		udiff_n3
 
 :udiff_n3 Idle
 	*		garbage		recolor=-4	buffer
@@ -246,7 +246,7 @@ done
 
 :cdiff_o2 Idle
 	*		garbage		recolor=-3	buffer
-	"*"		cdiff_o3	
+	"*"		cdiff_o3
 
 :cdiff_o3 Idle
 	*		garbage		recolor=-4	buffer
@@ -270,7 +270,7 @@ done
 
 :cdiff_n2 Idle
 	*		garbage		recolor=-3	buffer
-	"-"		cdiff_n3	
+	"-"		cdiff_n3
 
 :cdiff_n3 Idle
 	*		garbage		recolor=-4	buffer
@@ -303,7 +303,7 @@ done
 
 :cdiff_ho2 Idle
 	*		garbage		recolor=-3	buffer
-	"*"		cdiff_ho3	
+	"*"		cdiff_ho3
 
 :cdiff_ho3 Idle
 	*		garbage		recolor=-4	buffer
@@ -325,7 +325,7 @@ done
 
 :cdiff_ho7 Idle
 	*		garbage		recolor=-3	buffer
-	"*"		cdiff_ho8	
+	"*"		cdiff_ho8
 
 :cdiff_ho8 Idle
 	*		garbage		recolor=-4	buffer
@@ -346,7 +346,7 @@ done
 
 :cdiff_hn2 Idle
 	*		garbage		recolor=-3	buffer
-	"-"		cdiff_hn3	
+	"-"		cdiff_hn3
 
 :cdiff_hn3 Idle
 	*		garbage		recolor=-4	buffer
@@ -368,7 +368,7 @@ done
 
 :cdiff_hn7 Idle
 	*		garbage		recolor=-3	buffer
-	"-"		cdiff_hn8	
+	"-"		cdiff_hn8
 
 :cdiff_hn8 Idle
 	*		garbage		recolor=-4	buffer

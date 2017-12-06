@@ -2,7 +2,7 @@
 #define _JOE_TYPES_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.21 2017/12/06 23:02:06 tg Exp $");
+__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.22 2017/12/06 23:17:35 tg Exp $");
 #endif
 
 /* Prefix to make string constants unsigned */
@@ -231,8 +231,8 @@ struct watom {
 	jpoly_void *disp;	/* Display window */
 	jpoly_void *follow;	/* Called to have window follow cursor */
 	jpoly_int *abort;	/* Common user functions */
-	jpoly_int *rtn;		
-	jpoly_int *type;	
+	jpoly_int *rtn;
+	jpoly_int *type;
 	jpoly_void *resize;	/* Called when window changed size */
 	jpoly_void *move;	/* Called when window moved */
 	jpoly_void *ins;	/* Called on line insertions */

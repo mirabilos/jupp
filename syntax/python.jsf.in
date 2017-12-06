@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/syntax/python.jsf.in,v 1.5 2012/10/23 16:29:16 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/python.jsf.in,v 1.6 2017/12/06 23:17:38 tg Exp $
 #-
 # JOE syntax highlight file for Python
 
@@ -98,7 +98,7 @@
 :docstr_dq_esc DocEscape
 	*		docstr_dq
 	"\n"		docstr_dq	recolor=-2
-	
+
 :first_digit Constant
 	*		idle	noeat
 	"xX"		hex

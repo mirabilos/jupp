@@ -1,7 +1,7 @@
 /*
  *	*rc file parser
  *	Copyright
- *		(C) 1992 Joseph H. Allen; 
+ *		(C) 1992 Joseph H. Allen;
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
@@ -9,7 +9,7 @@
 #define _JOE_RC_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_rc_h, "$MirOS: contrib/code/jupp/rc.h,v 1.7 2017/12/06 21:16:59 tg Exp $");
+__IDSTRING(rcsid_rc_h, "$MirOS: contrib/code/jupp/rc.h,v 1.8 2017/12/06 23:17:35 tg Exp $");
 #endif
 
 extern OPTIONS pdefault;

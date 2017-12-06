@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/syntax/php.jsf.in,v 1.5 2012/09/02 14:46:52 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/php.jsf.in,v 1.6 2017/12/06 23:17:38 tg Exp $
 #-
 # JOE syntax highlight file for PHP
 
@@ -100,7 +100,7 @@
 :string_dq_esc Escape
 	*		string_dq
 	"\n"		string_dq	recolor=-2
-	
+
 :first_digit Constant
 	*		idle	noeat
 	"xX"		hex
