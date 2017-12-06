@@ -457,12 +457,12 @@
 \i \i  \\^  \\$  matches beg./end of line         \\?     match any single char      \i \i
 \i \i  \\<  \\>  matches beg./end of word         \\*     match 0 or more chars      \i \i
 \i \i  \\c      matches balanced C expression    \\\\     matches a backslash (\\)    \i \i
-\i \i  \\[a-z]  matches one of a set             \\n     matches a newline          \i \i
+\i \i  \\[a-z]  matches one of a set, ^ inverts  \\n     matches a newline          \i \i
 \i \i  \\+      matches 0 or more of the character which follows the \\+            \i \i
 \i \i \u\bSpecial replace sequences:\b\u                                                  \i \i
 \i \i  \\\\      replaced with a backslash (\\)    \\n     replaced with a newline    \i \i
 \i \i  \\&      replaced with the text which matched the search string             \i \i
-\i \i  \\0 - 9  replaced with text which matched \bN\bth \\?, \\*, \\c, \\[a-z] or \\+      \i \i
+\i \i  \\0 - 9  replaced with text which matched \bN+1\bth \\?, \\*, \\c, \\[a-z] or \\+    \i \i
 }
 
 {Names
