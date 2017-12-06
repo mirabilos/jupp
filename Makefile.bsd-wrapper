@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.14 2017/12/03 01:49:12 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.15 2017/12/06 21:46:54 tg Exp $
 #-
 # make -f Makefile.bsd-wrapper CFPREFIX=/usr/mpkg sysconfjoesubdir=/joe
 
@@ -30,10 +30,7 @@ CFARGS+=	--enable-win32reloc
 FSFISLIB=	No
 
 .ifdef __CRAZY
-COPTS+=		-Wno-old-style-definition \
-		-Wno-unused-parameter -Wno-strict-prototypes \
-		-Wno-cast-qual \
-		-Wno-missing-prototypes -Wno-missing-declarations
+COPTS+=		-Wno-unused-parameter -Wno-cast-qual
 .endif
 
 joe.1: config.status
