@@ -10,9 +10,9 @@ Disable the following warnings; the code doesn't cope with it:
 UTF-8
 -----
 
-Do note that the joerc files must be written using the 8-bit encoding
-(probably ISO-8859-1), not UTF-8. Syntax files, on the other hand,
-absolutely must be written in UTF-8 since jupp29.
+Do note that the joerc files must be written using the 8-bit encoding,
+not in UTF-8. Syntax files, on the other hand, absolutely must be
+written in UTF-8 since jupp29.
 
 JOE now handles two classes of character sets: UTF-8 and byte coded (like
 ISO-8859-1).  It can not yet handle other major classes such as UTF-16 or
@@ -30,7 +30,7 @@ work.
 
 The character set for the terminal and the default character set assumed for
 files is determined by the 'LC_ALL' environment variable (and if that's not
-set, LC_CTYPE and LANG are also checked).
+set, LC_CTYPE and LANG are also checked). 'JOECHARMAP' overrides this value.
 
 For example, if LC_ALL is set to:
 
@@ -124,4 +124,4 @@ will not insert.
 - Search, incremental search, and search & replace all operate as usual.
 
 ___________________________________________________________________
-$MirOS: contrib/code/jupp/HINTS,v 1.13 2017/12/06 21:46:54 tg Exp $
+$MirOS: contrib/code/jupp/HINTS,v 1.14 2017/12/06 21:48:48 tg Exp $
