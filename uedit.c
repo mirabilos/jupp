@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.25 2017/12/06 23:02:06 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.26 2017/12/06 23:41:15 tg Exp $");
 
 #include <string.h>
 
@@ -1064,7 +1064,6 @@ int utypebw_raw(BW *bw, int k, int no_decode)
 		while (n--)
 			utypebw_raw(bw, ' ', 0);
 	} else {
-		int upd;
 		int simple;
 		int x;
 
@@ -1082,7 +1081,6 @@ int utypebw_raw(BW *bw, int k, int no_decode)
 				return 0;
 		}
 
-		upd = bw->parent->t->t->updtab[bw->y + bw->cursor->line - bw->top->line];
 		simple = 1;
 
 		if (pisblank(bw->cursor))
@@ -1152,7 +1150,8 @@ int utypebw_raw(BW *bw, int k, int no_decode)
 			int *attr = t->attr + y * t->co;
 			x += bw->x;
 
-			if (!upd && piseol(bw->cursor) && !bw->o.highlight)
+			if (!bw->parent->t->t->updtab[bw->y + bw->cursor->line - bw->top->line] &&
+			    piseol(bw->cursor) && !bw->o.highlight)
 				t->updtab[y] = 0;
 			if (markb &&
 			    markk &&
