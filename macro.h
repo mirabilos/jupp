@@ -9,40 +9,40 @@
 #define _JOE_MACRO_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_macro_h, "$MirOS: contrib/code/jupp/macro.h,v 1.4 2017/12/02 17:00:49 tg Exp $");
+__IDSTRING(rcsid_macro_h, "$MirOS: contrib/code/jupp/macro.h,v 1.5 2017/12/06 21:16:57 tg Exp $");
 #endif
 
 /* Set when macro is recording: for status line */
 extern struct recmac *recmac;
 
 /* Macro construction functions */
-MACRO *mkmacro PARAMS((int k, int arg, int n, CMD *cmd));
-void addmacro PARAMS((MACRO *macro, MACRO *m));
-MACRO *dupmacro PARAMS((MACRO *mac));
-void rmmacro PARAMS((MACRO *macro));
-MACRO *macstk PARAMS((MACRO *m, int k));
-MACRO *macsta PARAMS((MACRO *m, int a));
+MACRO *mkmacro(int k, int arg, int n, CMD *cmd);
+void addmacro(MACRO *macro, MACRO *m);
+MACRO *dupmacro(MACRO *mac);
+void rmmacro(MACRO *macro);
+MACRO *macstk(MACRO *m, int k);
+MACRO *macsta(MACRO *m, int a);
 
-void chmac PARAMS((void));
+void chmac(void);
 
 /* Text to macro / Macro to text */
-MACRO *mparse PARAMS((MACRO *m, unsigned char *buf, int *sta));
-unsigned char *mtext PARAMS((unsigned char *s, MACRO *m));
+MACRO *mparse(MACRO *m, unsigned char *buf, int *sta);
+unsigned char *mtext(unsigned char *s, MACRO *m);
 
 /* Execute a macro */
 extern MACRO *curmacro;
-int exemac PARAMS((MACRO *m));
-int exmacro PARAMS((MACRO *m, int u));
+int exemac(MACRO *m);
+int exmacro(MACRO *m, int u);
 
 /* Keyboard macros user interface */
-int uplay PARAMS((BW *bw, int c));
-int ustop PARAMS((void));
-int urecord PARAMS((BW *bw, int c));
-int uquery PARAMS((BW *bw));
-int umacros PARAMS((BW *bw));
+int uplay(BW *bw, int c);
+int ustop(void);
+int urecord(BW *bw, int c);
+int uquery(BW *bw);
+int umacros(BW *bw);
 
 /* Repeat prefix user command */
-int uarg PARAMS((BW *bw));
-int uuarg PARAMS((BW *bw, int c));
+int uarg(BW *bw);
+int uuarg(BW *bw, int c);
 
 #endif

@@ -9,18 +9,18 @@
 #define _JOE_KBD_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_kbd_h, "$MirOS: contrib/code/jupp/kbd.h,v 1.4 2017/12/02 17:00:49 tg Exp $");
+__IDSTRING(rcsid_kbd_h, "$MirOS: contrib/code/jupp/kbd.h,v 1.5 2017/12/06 21:16:57 tg Exp $");
 #endif
 
 /* KMAP *mkkmap(void);
  * Create an empty keymap
  */
-KMAP *mkkmap PARAMS((void));
+KMAP *mkkmap(void);
 
 /* void rmkmap(KMAP *kmap);
  * Free a key map
  */
-void rmkmap PARAMS((KMAP *kmap));
+void rmkmap(KMAP *kmap);
 
 /* int kadd(KMAP *kmap,char *seq,void *bind);
  * Add a key sequence binding to a key map
@@ -48,12 +48,12 @@ void rmkmap PARAMS((KMAP *kmap));
  * is speicified, then the key sequences
  * ^K A, ^K B, ^K C, ... ^K Z are all bound.
  */
-int kadd PARAMS((CAP *cap, KMAP *kmap, unsigned char *seq, void *bind));
+int kadd(CAP *cap, KMAP *kmap, unsigned char *seq, void *bind);
 
 /* void kcpy(KMAP *dest,KMAP *src);
  * Copy all of the entries in the 'src' keymap into the 'dest' keymap
  */
-void kcpy PARAMS((KMAP *dest, KMAP *src));
+void kcpy(KMAP *dest, KMAP *src);
 
 /* int kdel(KMAP *kmap,char *seq);
  * Delete a binding from a keymap
@@ -62,18 +62,18 @@ void kcpy PARAMS((KMAP *dest, KMAP *src));
  *        -1 if the given key sequence was invalid
  *         1 if the given key sequence did not exist
  */
-int kdel PARAMS((KMAP *kmap, unsigned char *seq));
+int kdel(KMAP *kmap, unsigned char *seq);
 
 /* KBD *mkkbd(KMAP *kmap);
    Create a keyboard handler which uses the given keymap
 */
-KBD *mkkbd PARAMS((KMAP *kmap));
+KBD *mkkbd(KMAP *kmap);
 
 /* void rmkbd(KBD *);
  *
  * Eliminate a keyboard handler
  */
-void rmkbd PARAMS((KBD *k));
+void rmkbd(KBD *k);
 
 /* void *dokey(KBD *kbd,int k);
    Handle a key for a KBD:
@@ -82,6 +82,6 @@ void rmkbd PARAMS((KBD *k));
 
      Returns binding for a completed key sequence
 */
-void *dokey PARAMS((KBD *kbd, int n));
+void *dokey(KBD *kbd, int n);
 
 #endif

@@ -17,11 +17,9 @@
  */
 
 #include "config.h"
-#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
 
-__RCSID("$MirOS: contrib/code/jupp/i18n.c,v 1.29 2017/12/03 02:36:01 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/i18n.c,v 1.30 2017/12/06 21:16:56 tg Exp $");
 
 #include "charmap.h"
 #include "utils.h"

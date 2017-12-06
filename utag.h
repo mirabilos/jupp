@@ -9,9 +9,9 @@
 #define _JOE_UTAG_H 1
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_utag_h, "$MirOS: contrib/code/jupp/utag.h,v 1.4 2017/12/02 17:00:52 tg Exp $");
+__IDSTRING(rcsid_utag_h, "$MirOS: contrib/code/jupp/utag.h,v 1.5 2017/12/06 21:17:03 tg Exp $");
 #endif
 
-int utag PARAMS((BW *bw));
+int utag(BW *bw);
 
 #endif

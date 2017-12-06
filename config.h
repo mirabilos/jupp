@@ -22,7 +22,6 @@
 #define HAVE_STDLIB_H 1
 #define HAVE_UNISTD_H 1
 #define RETSIGTYPE void
-#define PARAMS(protos) protos
 #endif
 
 #ifdef HAVE_SYS_TYPES_H
@@ -137,7 +136,7 @@ size_t strlcpy(char *, const char *, size_t)
 #endif
 
 #ifdef EXTERN
-__IDSTRING(rcsid_config_h, "$MirOS: contrib/code/jupp/config.h,v 1.12 2017/12/04 22:15:38 tg Exp $");
+__IDSTRING(rcsid_config_h, "$MirOS: contrib/code/jupp/config.h,v 1.13 2017/12/06 21:16:55 tg Exp $");
 #endif
 
 #endif /* ifndef _JOE_CONFIG_H */

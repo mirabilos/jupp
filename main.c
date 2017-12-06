@@ -32,13 +32,11 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.35 2017/12/03 02:39:32 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.36 2017/12/06 21:16:58 tg Exp $");
 
 #include <fcntl.h>
 #include <string.h>
-#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
 #include <unistd.h>
 
 #include "b.h"

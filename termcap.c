@@ -8,14 +8,10 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/termcap.c,v 1.18 2017/12/06 16:37:40 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/termcap.c,v 1.19 2017/12/06 21:17:00 tg Exp $");
 
-#ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
-#endif
-#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
 
 #include "blocks.h"
 #include "path.h"

@@ -9,7 +9,7 @@
 #define _JOE_TERMCAP_H 1
  
 #ifdef EXTERN
-__IDSTRING(rcsid_termcap_h, "$MirOS: contrib/code/jupp/termcap.h,v 1.6 2017/12/02 17:00:50 tg Exp $");
+__IDSTRING(rcsid_termcap_h, "$MirOS: contrib/code/jupp/termcap.h,v 1.7 2017/12/06 21:17:00 tg Exp $");
 #endif
 
 /* CAP *getcap(char *s,int baud,void (*out)(void *outptr,char c),void *outptr);
@@ -49,13 +49,13 @@ __IDSTRING(rcsid_termcap_h, "$MirOS: contrib/code/jupp/termcap.h,v 1.6 2017/12/0
  * done for self-refering 'tc=filename' links (so all of core will be
  * allocated if there are any).
  */
-CAP *getcap PARAMS((unsigned char *name, unsigned int baudrate, void (*out) (unsigned char *, unsigned char), void *outptr));
+CAP *getcap(unsigned char *name, unsigned int baudrate, void (*out) (unsigned char *, unsigned char), void *outptr);
 
 /* CAP *setcap(CAP *cap,int baud,void (*out)(void *outptr,char c),void *outptr);
  *
  * Reset baud, out and outptr for a CAP
  */
-CAP *setcap PARAMS((CAP *cap, unsigned int baudrate, void (*out) (unsigned char *, unsigned char), void *outptr));
+CAP *setcap(CAP *cap, unsigned int baudrate, void (*out) (unsigned char *, unsigned char), void *outptr);
 
 /* char *jgetstr(CAP *cap,char *name);
  *
@@ -64,27 +64,27 @@ CAP *setcap PARAMS((CAP *cap, unsigned int baudrate, void (*out) (unsigned char 
  * the buffer used to load the termcap entry.  It should not be modified or
  * freed.
  */
-unsigned char *jgetstr PARAMS((CAP *cap, unsigned char *name));
+unsigned char *jgetstr(CAP *cap, unsigned char *name);
 
 /* int getflag(CAP *cap,char *name);
  *
  * Return true if the named capability is found in 'cap'.  A fast binary
  * search is used to lookup the capability.
  */
-int getflag PARAMS((CAP *cap, unsigned char *name));
+int getflag(CAP *cap, unsigned char *name);
 
 /* int getnum(CAP *cap,char *name);
  *
  * Return value of numeric capability or return -1 if it's not found.  A fast
  * binary search is used to lookup the capability.
  */
-int getnum PARAMS((CAP *cap, unsigned char *name));
+int getnum(CAP *cap, unsigned char *name);
 
 /* void rmcap(CAP *cap);
  *
  * Eliminate a CAP entry.
  */
-void rmcap PARAMS((CAP *cap));
+void rmcap(CAP *cap);
 
 /* void texec(CAP *cap,char *str,int l,int a0,int a1,int a2,int a3);
 
@@ -102,7 +102,7 @@ void rmcap PARAMS((CAP *cap));
 
    'a0' - 'a1' are the arguments for the string
 */
-void texec PARAMS((CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int a3));
+void texec(CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int a3);
 
 /* int tcost(CAP *cap,char *str, int l, int a0, int a1, int a2, int a3);
    Return cost in number of characters which need to be sent
@@ -120,7 +120,7 @@ void texec PARAMS((CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, in
 
    'a0' - 'a3' are arguements passed to the string
 */
-int tcost PARAMS((CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int a3));
+int tcost(CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int a3);
 
 /* char *tcompile(CAP *cap,char *str,int a0,int a1,int a2,int a3);
 
@@ -128,13 +128,13 @@ int tcost PARAMS((CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int
    string (see vs.h) containing the compiled string capability.
    Pad characters are not placed in the string.
 */
-unsigned char *tcompile PARAMS((CAP *cap, unsigned char *s, int a0, int a1, int a2, int a3));
+unsigned char *tcompile(CAP *cap, unsigned char *s, int a0, int a1, int a2, int a3);
 
-int tgetent PARAMS((char *, const char *));
-int tgetflag PARAMS((char *));
-int tgetnum PARAMS((char *));
-int tputs PARAMS((const char *, int, int (*)(int)));
-char *tgetstr PARAMS((char *, char **));
-char *tgoto PARAMS((const char *, int, int));
+int tgetent(char *, const char *);
+int tgetflag(char *);
+int tgetnum(char *);
+int tputs(const char *, int, int (*)(int));
+char *tgetstr(char *, char **);
+char *tgoto(const char *, int, int);
 
 #endif

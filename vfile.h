@@ -9,7 +9,7 @@
 #define _JOE_VFILE_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_vfile_h, "$MirOS: contrib/code/jupp/vfile.h,v 1.6 2017/12/04 22:15:40 tg Exp $");
+__IDSTRING(rcsid_vfile_h, "$MirOS: contrib/code/jupp/vfile.h,v 1.7 2017/12/06 21:17:05 tg Exp $");
 #endif
 
 /* Additions:
@@ -39,7 +39,7 @@ extern VPAGE **vheaders;	/* Array of headers */
  * Open a temporary virtual file.  File goes away when closed.  No actual
  * file is generated if everything fits in memory.
  */
-VFILE *vtmp PARAMS((void));
+VFILE *vtmp(void);
 
 /* long vsize(VFILE *);
  *
@@ -58,21 +58,21 @@ VFILE *vtmp PARAMS((void));
  *
  * Close a file.
  */
-void vclose PARAMS((VFILE *vfile));
+void vclose(VFILE *vfile);
 
 /* void vflsh(void);
  *
  * Write all changed pages to the disk
  */
 
-void vflsh PARAMS((void));
+void vflsh(void);
 
 /* void vflshf(VFILE *vfile);
  *
  * Write changed pages for a specific file to the disk
  */
 
-void vflshf PARAMS((VFILE *vfile));
+void vflshf(VFILE *vfile);
 
 /* char *vlock(VFILE *vfile,long addr);
  *
@@ -94,7 +94,7 @@ void vflshf PARAMS((VFILE *vfile));
  * ever might want to is to implement your own version of valloc()).
  */
 
-unsigned char *vlock PARAMS((VFILE *vfile, unsigned long addr));
+unsigned char *vlock(VFILE *vfile, unsigned long addr);
 
 /* VPAGE *vheader(char *);
  * Return address of page header for given page
@@ -130,5 +130,5 @@ unsigned char *vlock PARAMS((VFILE *vfile, unsigned long addr));
  * Returns file address of beginning of allocated space
  */
 
-long my_valloc PARAMS((VFILE *vfile, long int size));
+long my_valloc(VFILE *vfile, long int size);
 #endif

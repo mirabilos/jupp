@@ -9,31 +9,31 @@
 #define _JOE_MENU_H 1
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_menu_h, "$MirOS: contrib/code/jupp/menu.h,v 1.4 2017/12/02 17:00:49 tg Exp $");
+__IDSTRING(rcsid_menu_h, "$MirOS: contrib/code/jupp/menu.h,v 1.5 2017/12/06 21:16:58 tg Exp $");
 #endif
 
 /* Create a menu */
 /* FIXME: ??? ---> */
-MENU *mkmenu PARAMS((W *w, unsigned char **s, int (*func) (/* ??? */), int (*abrt) (/* ??? */), int (*backs) (/* ??? */), int cursor, void *object, int *notify));
+MENU *mkmenu(W *w, unsigned char **s, int (*func) (/* ??? */), int (*abrt) (/* ??? */), int (*backs) (/* ??? */), int cursor, void *object, int *notify);
 
 /* Menu user functions */
 
-int umuparw PARAMS((MENU *m));
-int umdnarw PARAMS((MENU *m));
-int umpgup PARAMS((MENU *m));
-int umpgdn PARAMS((MENU *m));
-int umltarw PARAMS((MENU *m));
-int umrtarw PARAMS((MENU *m));
-int umtab PARAMS((MENU *m));
-int umbof PARAMS((MENU *m));
-int umeof PARAMS((MENU *m));
-int umbol PARAMS((MENU *m));
-int umeol PARAMS((MENU *m));
-int umbacks PARAMS((MENU *m));
+int umuparw(MENU *m);
+int umdnarw(MENU *m);
+int umpgup(MENU *m);
+int umpgdn(MENU *m);
+int umltarw(MENU *m);
+int umrtarw(MENU *m);
+int umtab(MENU *m);
+int umbof(MENU *m);
+int umeof(MENU *m);
+int umbol(MENU *m);
+int umeol(MENU *m);
+int umbacks(MENU *m);
 
-void ldmenu PARAMS((MENU *m, unsigned char **s, int cursor));
+void ldmenu(MENU *m, unsigned char **s, int cursor);
 
-unsigned char *mcomplete PARAMS((MENU *m));
-unsigned char *find_longest PARAMS((unsigned char **lst));
+unsigned char *mcomplete(MENU *m);
+unsigned char *find_longest(unsigned char **lst);
 
 #endif

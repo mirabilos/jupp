@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.63 2017/12/04 21:46:21 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.64 2017/12/06 21:16:55 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -177,7 +177,6 @@ AC_HEADER_TIME
 
 # Checks for typedefs, structures, and compiler characteristics.
 
-AC_C_PROTOTYPES
 AC_C_CONST
 AC_SYS_LARGEFILE
 if test "$cross_compiling" = "yes" ; then
@@ -273,15 +272,6 @@ AC_CHECK_DECLS([ctime], [], [], [AC_INCLUDES_DEFAULT
 ])
 
 joe_REINSTALL_SIGHANDLERS
-
-AH_VERBATIM([_PARAMS],[/* Check to see if we can use strict prototypes */
-#ifndef PARAMS
-#  ifdef PROTOTYPES
-#    define PARAMS(protos) protos
-#  else
-#    define PARAMS(protos) ()
-#  endif
-#endif])
 
 # Check for programs..
 AC_CHECK_PROG(SPELL,aspell,aspell,ispell)

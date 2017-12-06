@@ -9,15 +9,13 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.23 2017/12/06 16:37:40 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.24 2017/12/06 21:16:54 tg Exp $");
 
 #include <unistd.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <limits.h>
-#ifdef HAVE_PWD_H
 #include <pwd.h>
-#endif
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>

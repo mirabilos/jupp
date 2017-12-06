@@ -9,16 +9,16 @@
 #define _JOE_UERROR_H 1
 
 #ifdef EXTERN_B_C
-__IDSTRING(rcsid_uerror_h, "$MirOS: contrib/code/jupp/uerror.h,v 1.4 2017/12/02 17:00:51 tg Exp $");
+__IDSTRING(rcsid_uerror_h, "$MirOS: contrib/code/jupp/uerror.h,v 1.5 2017/12/06 21:17:02 tg Exp $");
 #endif
 
-int unxterr PARAMS((BW *bw));
-int uprverr PARAMS((BW *bw));
-int parserrb PARAMS((B *b));
-int uparserr PARAMS((BW *bw));
-void inserr PARAMS((unsigned char *name, long int where, long int n, int bol));
-void delerr PARAMS((unsigned char *name, long int where, long int n));
-void abrerr PARAMS((unsigned char *name));
-void saverr PARAMS((unsigned char *name));
+int unxterr(BW *bw);
+int uprverr(BW *bw);
+int parserrb(B *b);
+int uparserr(BW *bw);
+void inserr(unsigned char *name, long int where, long int n, int bol);
+void delerr(unsigned char *name, long int where, long int n);
+void abrerr(unsigned char *name);
+void saverr(unsigned char *name);
 
 #endif

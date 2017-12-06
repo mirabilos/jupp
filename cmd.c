@@ -9,11 +9,9 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/cmd.c,v 1.19 2017/12/02 02:07:25 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/cmd.c,v 1.20 2017/12/06 21:16:55 tg Exp $");
 
-#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
 #include <string.h>
 
 #include "b.h"
@@ -241,7 +239,7 @@ CMD cmds[] = {
 	{US "shell", TYPETW + TYPEPW + TYPEMENU + TYPEQW, ushell, NULL, 0, NULL},
 	{US "shrinkw", TYPETW, ushrnk, NULL, 1, US "groww"},
 	{US "splitw", TYPETW, usplitw, NULL, 0, NULL},
-	{US "stat", TYPETW + TYPEPW, ustat, NULL, 0, NULL},
+	{US "stat", TYPETW + TYPEPW, ustat_j, NULL, 0, NULL},
 	{US "stop", TYPETW + TYPEPW + TYPEMENU + TYPEQW, ustop, NULL, 0, NULL},
 	{US "swap", TYPETW + TYPEPW + EFIXXCOL, uswap, NULL, 0, NULL},
 	{US "switch", TYPETW + TYPEPW, uswitch, NULL, 0, NULL},

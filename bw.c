@@ -8,12 +8,10 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.26 2017/12/04 22:15:38 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.27 2017/12/06 21:16:54 tg Exp $");
 
 #include <string.h>
-#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
 #include <limits.h>
 
 #ifdef HAVE_BSD_STRING_H
@@ -945,7 +943,7 @@ void bwrm(BW *w)
 	joe_free(w);
 }
 
-int ustat(BW *bw)
+int ustat_j(BW *bw)
 {
 	static unsigned char buf[80];
 	int c = brch(bw->cursor);

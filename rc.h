@@ -9,30 +9,30 @@
 #define _JOE_RC_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_rc_h, "$MirOS: contrib/code/jupp/rc.h,v 1.6 2017/12/02 17:00:49 tg Exp $");
+__IDSTRING(rcsid_rc_h, "$MirOS: contrib/code/jupp/rc.h,v 1.7 2017/12/06 21:16:59 tg Exp $");
 #endif
 
 extern OPTIONS pdefault;
 extern OPTIONS fdefault;
-void setopt PARAMS((B *b, unsigned char *name));
+void setopt(B *b, unsigned char *name);
 
 /* KMAP *kmap_getcontext(char *name);
  * Find and return the KMAP for a given context name.  If none is found, an
  * empty kmap is created, bound to the context name, and returned.
  */
-KMAP *kmap_getcontext PARAMS((unsigned char *name, int docreate));
+KMAP *kmap_getcontext(unsigned char *name, int docreate);
 
 /* int procrc(CAP *cap, char *name);  Process an rc file
    Returns 0 for success
           -1 for file not found
            1 for syntax error (errors written to stderr)
 */
-int procrc PARAMS((CAP *cap, unsigned char *name));
+int procrc(CAP *cap, unsigned char *name);
 
-int glopt PARAMS((unsigned char *s, unsigned char *arg, OPTIONS *options, int set));
+int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options, int set);
 
-int umode PARAMS((BW *bw));
+int umode(BW *bw);
 
-void lazy_opts PARAMS((OPTIONS *o));
+void lazy_opts(OPTIONS *o);
 
 #endif

@@ -8,23 +8,15 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tty.c,v 1.30 2017/12/02 02:07:33 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tty.c,v 1.31 2017/12/06 21:17:01 tg Exp $");
 
-#ifdef HAVE_SYS_STAT_H
-#include <sys/stat.h>
-#endif
-#ifdef HAVE_SYS_IOCTL_H
-#include <sys/ioctl.h>
-#endif
-#ifdef HAVE_FCNTL_H
-#include <fcntl.h>
-#endif
-#ifdef HAVE_SYS_WAIT_H
-#include <sys/wait.h>
-#endif
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
 #endif
+#include <sys/stat.h>
+#include <sys/ioctl.h>
+#include <sys/wait.h>
+#include <fcntl.h>
 
 #include <errno.h>
 #include <string.h>
@@ -724,7 +716,7 @@ void ttgtsz(int *x, int *y)
 /* void ttshell(char *s);  Run a shell command or if 's' is zero, run a
  * sub-shell
  */
-static void ttshell PARAMS((unsigned char *cmd));
+static void ttshell(unsigned char *cmd);
 static const char shmsg[] =
     "You are at the command shell.  Type 'exit' to return\n";
 

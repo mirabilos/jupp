@@ -9,7 +9,7 @@
 #define _JOE_PATH_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_path_h, "$MirOS: contrib/code/jupp/path.h,v 1.13 2017/12/02 17:00:49 tg Exp $");
+__IDSTRING(rcsid_path_h, "$MirOS: contrib/code/jupp/path.h,v 1.14 2017/12/06 21:16:58 tg Exp $");
 #endif
 
 #if defined(__MSDOS__) || defined(__DJGPP__) || defined(__EMX__) || \
@@ -23,14 +23,14 @@ __IDSTRING(rcsid_path_h, "$MirOS: contrib/code/jupp/path.h,v 1.13 2017/12/02 17:
 #endif
 
 #if HAVE_BACKSLASH_PATHS
-unsigned char *joesep PARAMS((unsigned char *path));
+unsigned char *joesep(unsigned char *path);
 #else
 #define joesep(path) (path)
 #endif
 
 #if JUPP_WIN32RELOC
 extern unsigned char has_JOERC, *get_JOERC;
-void init_JOERC PARAMS((void));
+void init_JOERC(void);
 #else
 #define has_JOERC	1
 #define get_JOERC	JOERC
@@ -45,8 +45,8 @@ void init_JOERC PARAMS((void));
  * The name part of "/hello/" is ""
  * The name part if "/" is ""
  */
-unsigned char *namprt PARAMS((unsigned char *path));
-unsigned char *namepart PARAMS((unsigned char *tmp, unsigned char *path))
+unsigned char *namprt(unsigned char *path);
+unsigned char *namepart(unsigned char *tmp, unsigned char *path)
     ATTR_BOUNDED((__minbytes__,1,1024));
 
 /* char *dirprt(char *path);
@@ -59,8 +59,8 @@ unsigned char *namepart PARAMS((unsigned char *tmp, unsigned char *path))
  *
  * dirprt_ptr points to just beyond what dirprt returns.
  */
-unsigned char *dirprt PARAMS((unsigned char *path));
-unsigned char *dirprt_ptr PARAMS((unsigned char *path));
+unsigned char *dirprt(unsigned char *path);
+unsigned char *dirprt_ptr(unsigned char *path);
 
 /* char *begprt(char *path);
  * Return the beginning part of a path.
@@ -69,7 +69,7 @@ unsigned char *dirprt_ptr PARAMS((unsigned char *path));
  * The beginning part of "/hello/" is "/"
  * The beginning part of "/" is "/"
  */
-unsigned char *begprt PARAMS((unsigned char *path));
+unsigned char *begprt(unsigned char *path);
 
 /* char *endprt(char *path);
  * Return the ending part of a path.
@@ -78,7 +78,7 @@ unsigned char *begprt PARAMS((unsigned char *path));
  * The ending part of "/hello/" is "hello/"
  * The ending part of "/" is ""
  */
-unsigned char *endprt PARAMS((unsigned char *path));
+unsigned char *endprt(unsigned char *path);
 
 /* int mkpath(char *path);
  * Make sure path exists.  If it doesn't, try to create it
@@ -88,7 +88,7 @@ unsigned char *endprt PARAMS((unsigned char *path));
  * the drive and path will be elsewhere (not necessarily where they
  * were before mkpath was called).
  */
-int mkpath PARAMS((unsigned char *path));
+int mkpath(unsigned char *path);
 
 /* char *mktmp(char *, int *);
  * Create an empty temporary file.  The file name created is the string passed
@@ -96,7 +96,7 @@ int mkpath PARAMS((unsigned char *path));
  * string six chars long which makes this file unique.
  * If second argument is not NULL, fd is kept open and stored there.
 */
-unsigned char *mktmp PARAMS((unsigned char *where, int *fdp));
+unsigned char *mktmp(unsigned char *where, int *fdp);
 
 /* Change drive and directory */
 #define chddir chdir
@@ -118,17 +118,17 @@ unsigned char *mktmp PARAMS((unsigned char *where, int *fdp));
  *  '-' may be specified in sets by placing it at the ends
  *  '[' may be specified in sets by placing it first
  */
-int rmatch PARAMS((unsigned char *a, unsigned char *b));
-int isreg PARAMS((unsigned char *s));
+int rmatch(unsigned char *a, unsigned char *b);
+int isreg(unsigned char *s);
 
 /* char **rexpnd(char *path,char *pattern);
  * Generate array (see va.h) of file names from directory in 'path'
  * which match the pattern 'pattern'
  */
-unsigned char **rexpnd PARAMS((unsigned char *word));
+unsigned char **rexpnd(unsigned char *word);
 
-int chJpwd PARAMS((const unsigned char *path));
-int chpwd PARAMS((const unsigned char *path));
-unsigned char *pwd PARAMS((void));
+int chJpwd(const unsigned char *path);
+int chpwd(const unsigned char *path);
+unsigned char *pwd(void);
 
 #endif

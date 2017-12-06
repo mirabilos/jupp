@@ -9,9 +9,9 @@
 #define _JOE_TAB_H 1
 
 #ifdef EXTERN_UFILE_C
-__IDSTRING(rcsid_tab_h, "$MirOS: contrib/code/jupp/tab.h,v 1.4 2017/12/02 17:00:50 tg Exp $");
+__IDSTRING(rcsid_tab_h, "$MirOS: contrib/code/jupp/tab.h,v 1.5 2017/12/06 21:17:00 tg Exp $");
 #endif
 
-int cmplt PARAMS((BW *bw));
+int cmplt(BW *bw);
 
 #endif

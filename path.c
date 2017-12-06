@@ -8,23 +8,17 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.14 2017/12/04 22:15:38 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.15 2017/12/06 21:16:58 tg Exp $");
 
-#ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
-#endif
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
 #ifdef HAVE_PATHS_H
 #  include <paths.h>	/* for _PATH_TMP */
 #endif
-#ifdef HAVE_LIMITS_H
 #include <limits.h>
-#endif
-#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
 
 #ifdef HAVE_BSD_STRING_H
 #include <bsd/string.h>

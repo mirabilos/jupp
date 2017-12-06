@@ -8,14 +8,14 @@
 #define _JOE_USHELL_H 1
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_ushell_h, "$MirOS: contrib/code/jupp/ushell.h,v 1.5 2017/12/02 17:00:52 tg Exp $");
+__IDSTRING(rcsid_ushell_h, "$MirOS: contrib/code/jupp/ushell.h,v 1.6 2017/12/06 21:17:03 tg Exp $");
 #endif
 
-int ubknd PARAMS((BW *bw));
-int ukillpid PARAMS((BW *bw));
-int urun PARAMS((BW *bw));
-int ubuild PARAMS((BW *bw));
+int ubknd(BW *bw);
+int ukillpid(BW *bw);
+int urun(BW *bw);
+int ubuild(BW *bw);
 
-const void *getushell PARAMS((void));
+const void *getushell(void);
 
 #endif

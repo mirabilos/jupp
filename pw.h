@@ -9,28 +9,28 @@
 #define _JOE_PW_H 1
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_pw_h, "$MirOS: contrib/code/jupp/pw.h,v 1.6 2017/12/02 17:00:49 tg Exp $");
+__IDSTRING(rcsid_pw_h, "$MirOS: contrib/code/jupp/pw.h,v 1.7 2017/12/06 21:16:58 tg Exp $");
 #endif
 
 /* BW *wmkpw(BW *bw,char *prompt,int (*func)(),char *huh,int (*abrt)(),
              int (*tab)(),void *object,int *notify);
  * Create a prompt window for the given window
  */
-BW *wmkpw PARAMS((W *w, unsigned char *prompt, B **history, int (*func) (), const unsigned char *huh, int (*abrt) (), int (*tab) (), void *object, int *notify, struct charmap *map));
+BW *wmkpw(W *w, unsigned char *prompt, B **history, int (*func) (), const unsigned char *huh, int (*abrt) (), int (*tab) (), void *object, int *notify, struct charmap *map);
 
-int ucmplt PARAMS((BW *bw, int k));
+int ucmplt(BW *bw, int k);
 
 /* Function for TAB completion */
 
-unsigned char **regsub PARAMS((unsigned char **z, int len, unsigned char *s));
+unsigned char **regsub(unsigned char **z, int len, unsigned char *s);
 
-void cmplt_ins PARAMS((BW *bw,unsigned char *line));
+void cmplt_ins(BW *bw,unsigned char *line);
 
-int cmplt_abrt PARAMS((BW *bw,int x, unsigned char *line));
+int cmplt_abrt(BW *bw,int x, unsigned char *line);
 
-int cmplt_rtn PARAMS((MENU *m,int x,unsigned char *line));
+int cmplt_rtn(MENU *m,int x,unsigned char *line);
 
-int simple_cmplt PARAMS((BW *bw,unsigned char **list));
+int simple_cmplt(BW *bw,unsigned char **list);
 
 extern WATOM watompw;
 

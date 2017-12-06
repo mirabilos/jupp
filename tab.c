@@ -8,12 +8,9 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tab.c,v 1.7 2017/12/02 02:07:32 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tab.c,v 1.8 2017/12/06 21:17:00 tg Exp $");
 
-#ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
-#endif
-
 #include <stdlib.h>
 
 #include "b.h"

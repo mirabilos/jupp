@@ -9,13 +9,13 @@
 #define _JOE_POSHIST_H 1
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_poshist_h, "$MirOS: contrib/code/jupp/poshist.h,v 1.4 2017/12/02 17:00:49 tg Exp $");
+__IDSTRING(rcsid_poshist_h, "$MirOS: contrib/code/jupp/poshist.h,v 1.5 2017/12/06 21:16:58 tg Exp $");
 #endif
 
-void afterpos PARAMS((void));
-void aftermove PARAMS((W *w, P *p));
-void windie PARAMS((W *w));
-int uprevpos PARAMS((BW *bw));
-int unextpos PARAMS((BW *bw));
+void afterpos(void);
+void aftermove(W *w, P *p);
+void windie(W *w);
+int uprevpos(BW *bw);
+int unextpos(BW *bw);
 
 #endif

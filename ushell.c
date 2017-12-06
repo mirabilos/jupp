@@ -8,18 +8,12 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ushell.c,v 1.8 2017/12/02 02:07:36 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ushell.c,v 1.9 2017/12/06 21:17:03 tg Exp $");
 
-#include <unistd.h>
-#ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
-#endif
-#ifdef HAVE_SIGNAL_H
 #include <signal.h>
-#endif
-#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
+#include <unistd.h>
 
 #include "b.h"
 #include "main.h"

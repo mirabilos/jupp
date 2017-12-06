@@ -11,24 +11,22 @@
 #define _JOE_UTILS_H 1
 
 #ifdef EXTERN_B_C
-__IDSTRING(rcsid_utils_h, "$MirOS: contrib/code/jupp/utils.h,v 1.8 2017/12/02 17:00:52 tg Exp $");
+__IDSTRING(rcsid_utils_h, "$MirOS: contrib/code/jupp/utils.h,v 1.9 2017/12/06 21:17:04 tg Exp $");
 #endif
 
-#ifdef HAVE_SIGNAL_H
 #include <signal.h>
-#endif
 
 /*
  * Functions which return minimum/maximum of two numbers
  */
-unsigned int uns_min PARAMS((unsigned int a, unsigned int b));
-signed int int_min PARAMS((signed int a, int signed b));
-signed long long_max PARAMS((signed long a, signed long b));
-signed long long_min PARAMS((signed long a, signed long b));
+unsigned int uns_min(unsigned int a, unsigned int b);
+signed int int_min(signed int a, int signed b);
+signed long long_max(signed long a, signed long b);
+signed long long_min(signed long a, signed long b);
 
 /* Versions of 'read' and 'write' which automatically retry when interrupted */
-ssize_t joe_read PARAMS((int fd, void *buf, size_t siz));
-ssize_t joe_write PARAMS((int fd, void *buf, size_t siz));
+ssize_t joe_read(int fd, void *buf, size_t siz);
+ssize_t joe_write(int fd, void *buf, size_t siz);
 
 /* wrappers to *alloc routines */
 #define joe_malloc malloc
@@ -47,16 +45,16 @@ typedef RETSIGTYPE (*sighandler_t)(int);
 #endif
 
 /* wrapper to hide signal interface differrencies */
-int joe_set_signal PARAMS((int signum, sighandler_t handler));
+int joe_set_signal(int signum, sighandler_t handler);
 
-int parse_ws PARAMS((unsigned char **p,int cmt));
-int parse_ident PARAMS((unsigned char **p,unsigned char *buf,int len));
-int parse_kw PARAMS((unsigned char **p,unsigned char *kw));
-int parse_tows PARAMS((unsigned char **p,unsigned char *buf));
-int parse_field PARAMS((unsigned char **p,unsigned char *field));
-int parse_char PARAMS((unsigned char  **p,unsigned char c));
-int parse_string PARAMS((unsigned char **p,unsigned char *buf,int len));
-int parse_range PARAMS((unsigned char **p,int *first,int *second));
+int parse_ws(unsigned char **p,int cmt);
+int parse_ident(unsigned char **p,unsigned char *buf,int len);
+int parse_kw(unsigned char **p,unsigned char *kw);
+int parse_tows(unsigned char **p,unsigned char *buf);
+int parse_field(unsigned char **p,unsigned char *field);
+int parse_char(unsigned char  **p,unsigned char c);
+int parse_string(unsigned char **p,unsigned char *buf,int len);
+int parse_range(unsigned char **p,int *first,int *second);
 
 void tty_xonoffbaudrst(void);
 

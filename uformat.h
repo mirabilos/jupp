@@ -9,16 +9,16 @@
 #define _JOE_UFORMAT_H 1
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_uformat_h, "$MirOS: contrib/code/jupp/uformat.h,v 1.4 2017/12/02 17:00:51 tg Exp $");
+__IDSTRING(rcsid_uformat_h, "$MirOS: contrib/code/jupp/uformat.h,v 1.5 2017/12/06 21:17:02 tg Exp $");
 #endif
 
-int ucenter PARAMS((BW *bw));
-P *pbop PARAMS((P *p));
-P *peop PARAMS((P *p));
-int ubop PARAMS((BW *bw));
-int ueop PARAMS((BW *bw));
-void wrapword PARAMS((P *p, long int indent, int french, unsigned char *indents));
-int uformat PARAMS((BW *bw));
-int ufmtblk PARAMS((BW *bw));
+int ucenter(BW *bw);
+P *pbop(P *p);
+P *peop(P *p);
+int ubop(BW *bw);
+int ueop(BW *bw);
+void wrapword(P *p, long int indent, int french, unsigned char *indents);
+int uformat(BW *bw);
+int ufmtblk(BW *bw);
 
 #endif

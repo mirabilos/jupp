@@ -9,20 +9,20 @@
 #define _JOE_USEARCH_H 1
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_usearch_h, "$MirOS: contrib/code/jupp/usearch.h,v 1.4 2017/12/02 17:00:51 tg Exp $");
+__IDSTRING(rcsid_usearch_h, "$MirOS: contrib/code/jupp/usearch.h,v 1.5 2017/12/06 21:17:03 tg Exp $");
 #endif
 
-SRCH *mksrch PARAMS((unsigned char *pattern, unsigned char *replacement, int ignore, int backwards, int repeat, int replace, int rest));
-void rmsrch PARAMS((SRCH *srch));
+SRCH *mksrch(unsigned char *pattern, unsigned char *replacement, int ignore, int backwards, int repeat, int replace, int rest);
+void rmsrch(SRCH *srch);
 
-int dopfnext PARAMS((BW *bw, SRCH *srch, int *notify));
+int dopfnext(BW *bw, SRCH *srch, int *notify);
 
-int pffirst PARAMS((BW *bw));
-int pfnext PARAMS((BW *bw));
+int pffirst(BW *bw);
+int pfnext(BW *bw);
 
-int pqrepl PARAMS((BW *bw));
-int prfirst PARAMS((BW *bw));
+int pqrepl(BW *bw);
+int prfirst(BW *bw);
 
-int ufinish PARAMS((BW *bw));
+int ufinish(BW *bw);
 
 #endif

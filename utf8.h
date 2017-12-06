@@ -9,7 +9,7 @@
 #define _Iutf8 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_utf8_h, "$MirOS: contrib/code/jupp/utf8.h,v 1.6 2017/12/02 17:00:52 tg Exp $");
+__IDSTRING(rcsid_utf8_h, "$MirOS: contrib/code/jupp/utf8.h,v 1.7 2017/12/06 21:17:04 tg Exp $");
 #endif
 
 #include "i18n.h"
@@ -21,7 +21,7 @@ __IDSTRING(rcsid_utf8_h, "$MirOS: contrib/code/jupp/utf8.h,v 1.6 2017/12/02 17:0
  * returns length (not including terminator).
  */
 
-int utf8_encode PARAMS((unsigned char *buf,int c));
+int utf8_encode(unsigned char *buf,int c);
 
 /* UTF-8 decoder state machine */
 
@@ -40,23 +40,23 @@ struct utf8_sm {
  *                   -3: no sequence started, but character is between 128 - 191, 254 or 255
  */
 
-int utf8_decode PARAMS((struct utf8_sm *utf8_sm,unsigned char c));
+int utf8_decode(struct utf8_sm *utf8_sm,unsigned char c);
 
-int utf8_decode_string PARAMS((unsigned char *s));
+int utf8_decode_string(unsigned char *s);
 
-int utf8_decode_fwrd PARAMS((unsigned char **p,int *plen));
+int utf8_decode_fwrd(unsigned char **p,int *plen);
 
 /* Initialize state machine */
 
-void utf8_init PARAMS((struct utf8_sm *utf8_sm));
+void utf8_init(struct utf8_sm *utf8_sm);
 
 void joe_locale();
-void to_utf8 PARAMS((struct charmap *map,unsigned char *s,int c));
-int from_utf8 PARAMS((struct charmap *map,unsigned char *s));
+void to_utf8(struct charmap *map,unsigned char *s,int c);
+int from_utf8(struct charmap *map,unsigned char *s);
 
 extern int utf8;
 
-int mk_wcwidth PARAMS((int wide,int c));
+int mk_wcwidth(int wide,int c);
 
 extern struct charmap *locale_map;	/* Default bytemap of terminal */
 extern struct charmap *utf8_map;	/* Bytemap for UTF-8 */

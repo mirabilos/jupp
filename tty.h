@@ -9,7 +9,7 @@
 #define _JOE_TTY_H 1
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_tty_h, "$MirOS: contrib/code/jupp/tty.h,v 1.11 2017/12/04 22:15:39 tg Exp $");
+__IDSTRING(rcsid_tty_h, "$MirOS: contrib/code/jupp/tty.h,v 1.12 2017/12/06 21:17:01 tg Exp $");
 #endif
 
 /* void ttopen(void);  Open the tty (attached to stdin) for use inside of JOE
@@ -46,8 +46,8 @@ __IDSTRING(rcsid_tty_h, "$MirOS: contrib/code/jupp/tty.h,v 1.11 2017/12/04 22:15
  *     baud) and 'TIMES'==3, the output buffer size is set to 333 characters.
  *     Each time this buffer is completely flushed, 1/3 of a second will go by.
  */
-void ttopen PARAMS((void));
-void ttopnn PARAMS((void));
+void ttopen(void);
+void ttopnn(void);
 extern unsigned long upc;
 extern unsigned baud;
 
@@ -64,8 +64,8 @@ extern unsigned baud;
  * (3) Call signrm().  There is also 'void ttyclsn(void)' which does not do
  *     the this step.
  */
-void ttclose PARAMS((void));
-void ttclsn PARAMS((void));
+void ttclose(void);
+void ttclsn(void);
 
 /* int ttgetc(void);  Flush the output and get the next character from the tty
  *
@@ -76,7 +76,7 @@ void ttclsn PARAMS((void));
  *
  * (3) Clear 'have'
  */
-int ttgetc PARAMS((void));
+int ttgetc(void);
 
 /* void ttputc(char c);  Write a character to the output buffer.  If it becomes
  * full, call ttflsh()
@@ -90,12 +90,12 @@ extern unsigned char *obuf;
 /* void ttputs(char *s);  Write a string to the output buffer.  Any time the
  * output buffer gets full, call ttflsh()
  */
-void ttputs PARAMS((unsigned char *s));
+void ttputs(unsigned char *s);
 
 /* void ttsusp(void);  Suspend the process, or if the UNIX can't do it, call
  * ttshell(NULL)
  */
-void ttsusp PARAMS((void));
+void ttsusp(void);
 
 /* int ttflsh(void);  Flush the output buffer and check for typeahead.
  *
@@ -125,7 +125,7 @@ void ttsusp PARAMS((void));
  *     ttflsh gets called.  'leave' should also be set before shell escapes and
  *     suspends.
  */
-int ttflsh PARAMS((void));
+int ttflsh(void);
 
 extern int have;
 extern int leave;
@@ -135,11 +135,11 @@ extern int leave;
  * It is called with 'n' set to the number of the caught signal or 0 if the
  * input closed.
  */
-RETSIGTYPE ttsig PARAMS((int sig)) __attribute__((__noreturn__));
+RETSIGTYPE ttsig(int sig)__attribute__((__noreturn__));
 
 /* void ttgtsz(int *x,int *y);  Get size of screen from ttsize/winsize
  * structure */
-void ttgtsz PARAMS((int *x, int *y));
+void ttgtsz(int *x, int *y);
 
 /* You don't have to call these: ttopen/ttclose does it for you.  These
  * may be needed to make your own shell escape sequences.
@@ -150,11 +150,11 @@ void ttgtsz PARAMS((int *x, int *y));
  * and trap the software terminate and hangup signals (SIGTERM, SIGHUP) so
  * that 'ttsig' gets called.
  */
-void sigjoe PARAMS((void));
+void sigjoe(void);
 
 /* void signrm(int inchild);  Set above signals back to their default values.
  */
-void signrm PARAMS((int));
+void signrm(int);
 
 /* MPX *mpxmk(int fd,int pid,
  *             void (*func)(),void *object,
@@ -168,18 +168,18 @@ void signrm PARAMS((int));
  *   Function to call when process dies in 'die'
  *   The first arg passed to func and die is object and dieobj
  */
-MPX *mpxmk PARAMS((int *ptyfd, const unsigned char *cmd, unsigned char **args, void (*func) (/* ??? */), void *object, void (*die) (/* ??? */), void *dieobj));
+MPX *mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args, void (*func) (/* ??? */), void *object, void (*die) (/* ??? */), void *dieobj);
 
 /* int subshell(int *ptyfd);
  * Execute a subshell.  Returns 'pid' of shell or zero if there was a
  * problem.  Returns file descriptor for the connected pty in 'ptyfd'.
  */
-int subshell PARAMS(());
+int subshell();
 
 extern int noxon;
 extern int Baud;
 
-void tickoff PARAMS((void));
-void tickon PARAMS((void));
+void tickoff(void);
+void tickon(void);
 
 #endif

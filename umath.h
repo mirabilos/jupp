@@ -9,12 +9,10 @@
 #define _JOE_UMATH_H 1
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_umath_h, "$MirOS: contrib/code/jupp/umath.h,v 1.10 2017/12/02 17:00:51 tg Exp $");
+__IDSTRING(rcsid_umath_h, "$MirOS: contrib/code/jupp/umath.h,v 1.11 2017/12/06 21:17:03 tg Exp $");
 #endif
 
-#ifdef HAVE_SIGNAL_H
 #include <signal.h>
-#endif
 
 extern volatile sig_atomic_t merrf;
 extern const unsigned char *merrt;

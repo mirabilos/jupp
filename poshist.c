@@ -8,11 +8,9 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/poshist.c,v 1.4 2017/12/02 18:50:03 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/poshist.c,v 1.5 2017/12/06 21:16:58 tg Exp $");
 
-#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
 
 #include "b.h"
 #include "queue.h"

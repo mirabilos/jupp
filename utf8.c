@@ -10,13 +10,10 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/utf8.c,v 1.21 2017/12/02 04:32:43 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/utf8.c,v 1.22 2017/12/06 21:17:04 tg Exp $");
 
-#include <string.h>
-
-#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
+#include <string.h>
 
 #ifdef __CYGWIN__
 #include <cygwin/version.h>

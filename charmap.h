@@ -10,7 +10,7 @@
 #define _Icharmap 1
 
 #ifdef EXTERN
-__RCSID("$MirOS: contrib/code/jupp/charmap.h,v 1.10 2017/12/04 21:53:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/charmap.h,v 1.11 2017/12/06 21:16:55 tg Exp $");
 #endif
 
 /* For sorted from_map entries */
@@ -66,8 +66,8 @@ struct charmap {
 #define joe_isspace(map,c) ((map)->is_space((map),(c)))
 #define joe_isalphx(map,c) ((map)->is_alphx((map),(c)))
 #define joe_isalnux(map,c) ((map)->is_alnux((map),(c)))
-int joe_isblank PARAMS((struct charmap *map,int c));
-int joe_isspace_eof PARAMS((struct charmap *map,int c));
+int joe_isblank(struct charmap *map,int c);
+int joe_isspace_eof(struct charmap *map,int c);
 
 /* Conversion functions */
 
@@ -75,16 +75,16 @@ int joe_isspace_eof PARAMS((struct charmap *map,int c));
 #define joe_toupper(map,c) ((map)->to_upper((map),(c)))
 #define joe_to_uni(map,c) ((map)->to_uni((map),(c)))
 #define joe_from_uni(map,c) ((map)->from_uni((map),(c)))
-unsigned char *joe_strtolower PARAMS((unsigned char *s));
+unsigned char *joe_strtolower(unsigned char *s);
 
 /* Find (load if necessary) a character set */
-struct charmap *find_charmap PARAMS((const unsigned char *name));
+struct charmap *find_charmap(const unsigned char *name);
 
 /* Get available encodings */
-unsigned char **get_encodings PARAMS((void));
+unsigned char **get_encodings(void);
 
-int to_uni PARAMS((struct charmap *cset, int c));
-int from_uni PARAMS((struct charmap *cset, int c));
+int to_uni(struct charmap *cset, int c);
+int from_uni(struct charmap *cset, int c);
 
 #include "utf8.h"
 

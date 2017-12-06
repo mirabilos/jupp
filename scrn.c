@@ -8,11 +8,9 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.31 2017/12/04 22:15:39 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.32 2017/12/06 21:16:59 tg Exp $");
 
-#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#endif
 #include <string.h>
 
 #include "bw.h"

@@ -9,7 +9,7 @@
 #define _JOE_SCRN_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_scrn_h, "$MirOS: contrib/code/jupp/scrn.h,v 1.8 2017/12/04 22:15:39 tg Exp $");
+__IDSTRING(rcsid_scrn_h, "$MirOS: contrib/code/jupp/scrn.h,v 1.9 2017/12/06 21:17:00 tg Exp $");
 #endif
 
 #include "tty.h"		/* ttputc() */
@@ -21,25 +21,25 @@ extern int skiptop;
  * Open the screen (sets TTY mode so that screen may be used immediatly after
  * the 'nopen').
  */
-SCRN *nopen PARAMS((CAP *cap));
+SCRN *nopen(CAP *cap);
 
 /* void nresize(SCRN *t,int w,int h);
  *
  * Change size of screen.  For example, call this when you find out that
  * the Xterm changed size.
  */
-void nresize PARAMS((SCRN *t, int w, int h));
+void nresize(SCRN *t, int w, int h);
 
 /* void nredraw(SCRN *t);
  *
  * Invalidate all state variables for the terminal.  This way, everything gets
  * redrawn.
  */
-void nredraw PARAMS((SCRN *t));
+void nredraw(SCRN *t);
 
-void npartial PARAMS((SCRN *t));
-void nescape PARAMS((SCRN *t));
-void nreturn PARAMS((SCRN *t));
+void npartial(SCRN *t);
+void nescape(SCRN *t);
+void nreturn(SCRN *t);
 
 /* void nclose(SCRN *t);
  *
@@ -47,22 +47,22 @@ void nreturn PARAMS((SCRN *t));
  *
  * if 'flg' is set, tclose doesn't mess with the signals.
  */
-void nclose PARAMS((SCRN *t));
+void nclose(SCRN *t);
 
 /* int cpos(SCRN *t,int x,int y);
  *
  * Set cursor position
  */
-int cpos PARAMS((register SCRN *t, register int x, register int y));
+int cpos(register SCRN *t, register int x, register int y);
 
 /* int attr(SCRN *t,int a);
  *
  * Set attributes
  */
-int set_attr PARAMS((SCRN *t, int c));
+int set_attr(SCRN *t, int c);
 
 /* Encode character as utf8 */
-void utf8_putc PARAMS((int c));
+void utf8_putc(int c);
 
 /* void outatr(SCRN *t,int *scrn,int *attr,int x,int y,int c,int a);
  *
@@ -111,19 +111,19 @@ void utf8_putc PARAMS((int c));
 
 #define HAS_COMBINING 0x200000
 
-void outatr PARAMS((struct charmap *map,SCRN *t,int *scrn,int *attrf,int xx,int yy,int c,int a));
+void outatr(struct charmap *map,SCRN *t,int *scrn,int *attrf,int xx,int yy,int c,int a);
 
 /*
  * translate character and its attribute into something printable
  */
-void xlat PARAMS((int *attr, unsigned char *c));
-void xlat_utf_ctrl PARAMS((int *attr, unsigned char *c));
+void xlat(int *attr, unsigned char *c);
+void xlat_utf_ctrl(int *attr, unsigned char *c);
 
 /* int eraeol(SCRN *t,int x,int y);
  *
  * Erase from screen coordinate to end of line.
  */
-int eraeol PARAMS((SCRN *t, int x, int y));
+int eraeol(SCRN *t, int x, int y);
 
 /* void nscrlup(SCRN *t,int top,int bot,int amnt);
  *
@@ -131,7 +131,7 @@ int eraeol PARAMS((SCRN *t, int x, int y));
  * indicate which lines to scroll.  'bot' is the last line to scroll + 1.
  * 'amnt' is distance in lines to scroll.
  */
-void nscrlup PARAMS((SCRN *t, int top, int bot, int amnt));
+void nscrlup(SCRN *t, int top, int bot, int amnt);
 
 /* void nscrldn(SCRN *t,int top,int bot,int amnt);
  *
@@ -139,37 +139,37 @@ void nscrlup PARAMS((SCRN *t, int top, int bot, int amnt));
  * indicate which lines to scroll.  'bot' is the last line to scroll + 1.
  * 'amnt' is distance in lines to scroll.
  */
-void nscrldn PARAMS((SCRN *t, int top, int bot, int amnt));
+void nscrldn(SCRN *t, int top, int bot, int amnt);
 
 /* void nscroll(SCRN *t);
  *
  * Execute buffered scroll requests
  */
-void nscroll PARAMS((SCRN *t));
+void nscroll(SCRN *t);
 
 /* void magic(SCRN *t,int y,int *cur,int *new);
  *
  * Figure out and execute line shifting
  */
-void magic PARAMS((SCRN *t, int y, int *cs, int *ca, int *s, int *a,int placex));
+void magic(SCRN *t, int y, int *cs, int *ca, int *s, int *a,int placex);
 
-int clrins PARAMS((SCRN *t));
+int clrins(SCRN *t);
 
-int meta_color PARAMS((unsigned char *s));
+int meta_color(unsigned char *s);
 
 /* Generate a field */
-void genfield PARAMS((SCRN *t,int *scrn,int *attr,int x,int y,int ofst,unsigned char *s,int len,int atr,int width,int flg,int *fmt));
+void genfield(SCRN *t,int *scrn,int *attr,int x,int y,int ofst,unsigned char *s,int len,int atr,int width,int flg,int *fmt);
 
 /* Column width of a string takes into account utf-8) */
-int txtwidth PARAMS((unsigned char *s,int len));
+int txtwidth(unsigned char *s,int len);
 
 /* Generate a field: formatted */
-void genfmt PARAMS((SCRN *t, int x, int y, int ofst, const unsigned char *s, int flg));
+void genfmt(SCRN *t, int x, int y, int ofst, const unsigned char *s, int flg);
 
 /* Column width of formatted string */
-int fmtlen PARAMS((const unsigned char *s));
+int fmtlen(const unsigned char *s);
 
 /* Offset within formatted string of particular column */
-int fmtpos PARAMS((unsigned char *s, int goal));
+int fmtpos(unsigned char *s, int goal);
 
 #endif

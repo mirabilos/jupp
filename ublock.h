@@ -9,45 +9,45 @@
 #define _JOE_UBLOCK_H 1
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_ublock_h, "$MirOS: contrib/code/jupp/ublock.h,v 1.4 2017/12/02 17:00:51 tg Exp $");
+__IDSTRING(rcsid_ublock_h, "$MirOS: contrib/code/jupp/ublock.h,v 1.5 2017/12/06 21:17:01 tg Exp $");
 #endif
 
 extern int square;
 extern int lightoff;
 extern P *markb, *markk;
 
-void pinsrect PARAMS((P *cur, B *tmp, long int width, int usetabs));
-int ptabrect PARAMS((P *org, long int height, long int right));
-void pclrrect PARAMS((P *org, long int height, long int right, int usetabs));
-void pdelrect PARAMS((P *org, long int height, long int right));
-B *pextrect PARAMS((P *org, long int height, long int right));
-int markv PARAMS((int r));
-int umarkb PARAMS((BW *bw));
-int umarkk PARAMS((BW *bw));
-int uswap PARAMS((BW *bw));
-int umarkl PARAMS((BW *bw));
-int utomarkb PARAMS((BW *bw));
-int utomarkk PARAMS((BW *bw));
-int utomarkbk PARAMS((BW *bw));
-int ublkdel PARAMS((BW *bw));
-int upicokill PARAMS((BW *bw));
-int ublkmove PARAMS((BW *bw));
-int ublkcpy PARAMS((BW *bw));
-int dowrite PARAMS((BW *bw, unsigned char *s, void *object, int *notify));
-int doinsf PARAMS((BW *bw, unsigned char *s, void *object, int *notify));
-void setindent PARAMS((BW *bw));
-int urindent PARAMS((BW *bw));
-int ulindent PARAMS((BW *bw));
-int ufilt PARAMS((BW *bw));
-int unmark PARAMS((BW *bw));
-int udrop PARAMS((BW *bw));
-int utoggle_marking PARAMS((BW *bw));
-int ubegin_marking PARAMS((BW *bw));
-int uselect PARAMS((BW *bw));
-int upsh PARAMS((BW *bw));
-int upop PARAMS((BW *bw));
-int ulower PARAMS((BW *bw));
-int uupper PARAMS((BW *bw));
+void pinsrect(P *cur, B *tmp, long int width, int usetabs);
+int ptabrect(P *org, long int height, long int right);
+void pclrrect(P *org, long int height, long int right, int usetabs);
+void pdelrect(P *org, long int height, long int right);
+B *pextrect(P *org, long int height, long int right);
+int markv(int r);
+int umarkb(BW *bw);
+int umarkk(BW *bw);
+int uswap(BW *bw);
+int umarkl(BW *bw);
+int utomarkb(BW *bw);
+int utomarkk(BW *bw);
+int utomarkbk(BW *bw);
+int ublkdel(BW *bw);
+int upicokill(BW *bw);
+int ublkmove(BW *bw);
+int ublkcpy(BW *bw);
+int dowrite(BW *bw, unsigned char *s, void *object, int *notify);
+int doinsf(BW *bw, unsigned char *s, void *object, int *notify);
+void setindent(BW *bw);
+int urindent(BW *bw);
+int ulindent(BW *bw);
+int ufilt(BW *bw);
+int unmark(BW *bw);
+int udrop(BW *bw);
+int utoggle_marking(BW *bw);
+int ubegin_marking(BW *bw);
+int uselect(BW *bw);
+int upsh(BW *bw);
+int upop(BW *bw);
+int ulower(BW *bw);
+int uupper(BW *bw);
 extern int nstack;
 
 #endif
