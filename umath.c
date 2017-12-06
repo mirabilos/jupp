@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.19 2017/12/06 23:02:07 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.20 2017/12/06 23:58:38 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -261,7 +261,7 @@ B *mathhist = NULL;
 int umath(BW *bw)
 {
 	joe_set_signal(SIGFPE, fperr);
-	if (wmkpw(bw->parent, US "=", &mathhist, domath, US "math", NULL, NULL, NULL, NULL, locale_map)) {
+	if (wmkpw(bw->parent, UC "=", &mathhist, domath, UC "Math", NULL, NULL, NULL, NULL, locale_map)) {
 		return 0;
 	} else {
 		return -1;

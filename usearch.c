@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.17 2017/12/06 23:02:08 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.18 2017/12/06 23:58:38 tg Exp $");
 
 #include <stdlib.h>
 
@@ -567,7 +567,7 @@ static int set_options(BW *bw, unsigned char *s, SRCH *srch, int *notify)
 	}
 	vsrm(s);
 	if (srch->replace) {
-		if (wmkpw(bw->parent, US "Replace with (^C to abort): ", &replhist, set_replace, srchstr, pfabort, srch_cmplt, srch, notify, bw->b->o.charmap))
+		if (wmkpw(bw->parent, UC "Replace with (^C to abort): ", &replhist, set_replace, srchstr, pfabort, srch_cmplt, srch, notify, bw->b->o.charmap))
 			return 0;
 		else
 			return -1;
@@ -578,12 +578,12 @@ static int set_options(BW *bw, unsigned char *s, SRCH *srch, int *notify)
 static int set_pattern(BW *bw, unsigned char *s, SRCH *srch, int *notify)
 {
 	BW *pbw;
-	unsigned char *p;
+	const unsigned char *p;
 
 	if (icase)
-		p = US "case (S)ensitive (R)eplace (B)ackwards Bloc(K) NNN (^C to abort): ";
+		p = UC "case (S)ensitive (R)eplace (B)ackwards Bloc(K) NNN (^C to abort): ";
 	else
-		p = US "(I)gnore (R)eplace (B)ackwards Bloc(K) NNN (^C to abort): ";
+		p = UC "(I)gnore (R)eplace (B)ackwards Bloc(K) NNN (^C to abort): ";
 
 	vsrm(srch->pattern);
 	srch->pattern = s;
@@ -634,7 +634,7 @@ static int dofirst(BW *bw, int back, int repl)
 	srch->addr = bw->cursor->byte;
 	srch->wrap_p = pdup(bw->cursor);
 	srch->wrap_p->owner = &srch->wrap_p;
-	if (wmkpw(bw->parent, US "Find (^C to abort): ", &findhist, set_pattern, srchstr, pfabort, srch_cmplt, srch, NULL, bw->b->o.charmap))
+	if (wmkpw(bw->parent, UC "Find (^C to abort): ", &findhist, set_pattern, srchstr, pfabort, srch_cmplt, srch, NULL, bw->b->o.charmap))
 		return 0;
 	else {
 		rmsrch(srch);

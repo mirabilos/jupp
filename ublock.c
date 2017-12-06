@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.23 2017/12/06 23:02:06 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.24 2017/12/06 23:58:37 tg Exp $");
 
 #include <sys/wait.h>
 #include <limits.h>
@@ -1116,12 +1116,12 @@ int ufilt(BW *bw)
 {
 	switch (checkmark(bw)) {
 	case 0:
-		if (wmkpw(bw->parent, US "Command to filter block through (^C to abort): ", &filthist, dofilt, NULL, NULL, utypebw, NULL, NULL, locale_map))
+		if (wmkpw(bw->parent, UC "Command to filter block through (^C to abort): ", &filthist, dofilt, NULL, NULL, utypebw, NULL, NULL, locale_map))
 			return 0;
 		else
 			return -1;
 	case 1:
-		if (wmkpw(bw->parent, US "Command to filter file through (^C to abort): ", &filthist, dofilt, NULL, NULL, utypebw, NULL, NULL, locale_map))
+		if (wmkpw(bw->parent, UC "Command to filter file through (^C to abort): ", &filthist, dofilt, NULL, NULL, utypebw, NULL, NULL, locale_map))
 			return 0;
 		else
 			return -1;

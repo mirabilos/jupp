@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/macro.c,v 1.15 2017/12/06 23:02:03 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/macro.c,v 1.16 2017/12/06 23:58:37 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -578,7 +578,7 @@ static int doarg(BW *bw, unsigned char *s, void *object, int *notify)
 
 int uarg(BW *bw)
 {
-	if (wmkpw(bw->parent, US "No. times to repeat next command (^C to abort): ", NULL, doarg, NULL, NULL, utypebw, NULL, NULL, locale_map))
+	if (wmkpw(bw->parent, UC "No. times to repeat next command (^C to abort): ", NULL, doarg, NULL, NULL, utypebw, NULL, NULL, locale_map))
 		return 0;
 	else
 		return -1;

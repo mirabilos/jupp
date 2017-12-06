@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/cmd.c,v 1.22 2017/12/06 23:02:02 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/cmd.c,v 1.23 2017/12/06 23:58:36 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -81,7 +81,7 @@ static int do_keymap(BW *bw, unsigned char *s, void *object, int *notify)
 }
 static int ukeymap(BW *bw)
 {
-	if (wmkpw(bw->parent, US "Name of keymap to switch to: ", NULL,
+	if (wmkpw(bw->parent, UC "Name of keymap to switch to: ", NULL,
 	    do_keymap, NULL, NULL, utypebw, NULL, NULL, locale_map)) {
 		return (0);
 	}
@@ -443,7 +443,7 @@ B *cmdhist = NULL;
 
 int uexecmd(BW *bw)
 {
-	if (wmkpw(bw->parent, US "cmd: ", &cmdhist, docmd, US "cmd", NULL, cmdcmplt, NULL, NULL, locale_map)) {
+	if (wmkpw(bw->parent, UC "cmd: ", &cmdhist, docmd, UC "cmd", NULL, cmdcmplt, NULL, NULL, locale_map)) {
 		return 0;
 	} else {
 		return -1;
@@ -474,7 +474,7 @@ static int do_helpcard(BASE *base, unsigned char *s, void *object, int *notify)
 }
 int u_helpcard(BASE *base)
 {
-	if (wmkpw(base->parent, US "Name of help card to show: ", NULL,
+	if (wmkpw(base->parent, UC "Name of help card to show: ", NULL,
 	    do_helpcard, NULL, NULL, utypebw, NULL, NULL, locale_map)) {
 		return (0);
 	}

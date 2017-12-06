@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/utag.c,v 1.9 2017/12/06 23:02:08 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/utag.c,v 1.10 2017/12/06 23:58:39 tg Exp $");
 
 #include "b.h"
 #include "bw.h"
@@ -132,7 +132,7 @@ int utag(BW *bw)
 {
 	BW *pbw;
 
-	pbw = wmkpw(bw->parent, US "Tag search: ", &taghist, dotag, NULL, NULL, cmplt, NULL, NULL, locale_map);
+	pbw = wmkpw(bw->parent, UC "Tag search: ", &taghist, dotag, NULL, NULL, cmplt, NULL, NULL, locale_map);
 	if (pbw && joe_isalnux(bw->b->o.charmap,brch(bw->cursor))) {
 		P *p = pdup(bw->cursor);
 		P *q = pdup(p);

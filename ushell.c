@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ushell.c,v 1.10 2017/12/06 21:41:04 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ushell.c,v 1.11 2017/12/06 23:58:39 tg Exp $");
 
 #include <sys/stat.h>
 #include <signal.h>
@@ -160,7 +160,7 @@ B *runhist = NULL;
 
 int urun(BW *bw)
 {
-	if (wmkpw(bw->parent, US "Program to run: ", &runhist, dorun, US "Run", NULL, NULL, NULL, NULL, locale_map)) {
+	if (wmkpw(bw->parent, UC "Program to run: ", &runhist, dorun, UC "Run", NULL, NULL, NULL, NULL, locale_map)) {
 		return 0;
 	} else {
 		return -1;
@@ -177,13 +177,13 @@ B *buildhist = NULL;
 int ubuild(BW *bw)
 {
 	if (buildhist) {
-		if ((bw=wmkpw(bw->parent, US "Build command: ", &buildhist, dobuild, US "Run", NULL, NULL, NULL, NULL, locale_map))) {
+		if ((bw=wmkpw(bw->parent, UC "Build command: ", &buildhist, dobuild, UC "Run", NULL, NULL, NULL, NULL, locale_map))) {
 			uuparw(bw);
 			u_goto_eol(bw);
 			bw->cursor->xcol = piscol(bw->cursor);
 			return 0;
 		}
-	} else if (wmkpw(bw->parent, US "Enter build command (for example, 'make'): ", &buildhist, dobuild, US "Run", NULL, NULL, NULL, NULL, locale_map))
+	} else if (wmkpw(bw->parent, UC "Enter build command (for example, 'make'): ", &buildhist, dobuild, UC "Run", NULL, NULL, NULL, NULL, locale_map))
 			return 0;
 		return -1;
 }

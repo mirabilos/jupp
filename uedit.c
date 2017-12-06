@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.26 2017/12/06 23:41:15 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.27 2017/12/06 23:58:38 tg Exp $");
 
 #include <string.h>
 
@@ -692,7 +692,7 @@ static int doline(BW *bw, unsigned char *s, void *object, int *notify)
 
 int uline(BW *bw)
 {
-	if (wmkpw(bw->parent, US "Go to line (^C to abort): ", &linehist, doline, NULL, NULL, NULL, NULL, NULL, locale_map))
+	if (wmkpw(bw->parent, UC "Go to line (^C to abort): ", &linehist, doline, NULL, NULL, NULL, NULL, NULL, locale_map))
 		return 0;
 	else
 		return -1;
@@ -728,7 +728,7 @@ static int docol(BW *bw, unsigned char *s, void *object, int *notify)
 
 int ucol(BW *bw)
 {
-	if (wmkpw(bw->parent, US "Go to column (^C to abort): ", &colhist, docol, NULL, NULL, NULL, NULL, NULL, locale_map))
+	if (wmkpw(bw->parent, UC "Go to column (^C to abort): ", &colhist, docol, NULL, NULL, NULL, NULL, NULL, locale_map))
 		return 0;
 	else
 		return -1;
@@ -764,7 +764,7 @@ static int dobyte(BW *bw, unsigned char *s, void *object, int *notify)
 
 int ubyte(BW *bw)
 {
-	if (wmkpw(bw->parent, US "Go to byte (^C to abort): ", &bytehist, dobyte, NULL, NULL, NULL, NULL, NULL, locale_map))
+	if (wmkpw(bw->parent, UC "Go to byte (^C to abort): ", &bytehist, dobyte, NULL, NULL, NULL, NULL, NULL, locale_map))
 		return 0;
 	else
 		return -1;
@@ -1222,7 +1222,7 @@ static int doquote(BW *bw, int c, void *object, int *notify)
 			if (bw->b->o.charmap->type)
 				goto unopoo;
  uhex_uni:
-			if (!wmkpw(bw->parent, US "Unicode (ISO-10646) character in hex (^C to abort): ", &unicodehist, dounicode,
+			if (!wmkpw(bw->parent, UC "Unicode (ISO-10646) character in hex (^C to abort): ", &unicodehist, dounicode,
 			           NULL, NULL, NULL, NULL, NULL, locale_map))
 				return 0;
 			else
@@ -1603,7 +1603,7 @@ static int domsg(BASE *b, unsigned char *s, void *object, int *notify)
 
 int umsg(BASE *b)
 {
-	if (wmkpw(b->parent, US "Msg (^C to abort): ", NULL, domsg, NULL, NULL, NULL, NULL, NULL, locale_map))
+	if (wmkpw(b->parent, UC "Msg (^C to abort): ", NULL, domsg, NULL, NULL, NULL, NULL, NULL, locale_map))
 		return 0;
 	else
 		return -1;
@@ -1625,7 +1625,7 @@ static int dotxt(BW *bw, unsigned char *s, void *object, int *notify)
 
 int utxt(BW *bw)
 {
-	if (wmkpw(bw->parent, US "Insert (^C to abort): ", NULL, dotxt, NULL, NULL, utypebw, NULL, NULL, bw->b->o.charmap))
+	if (wmkpw(bw->parent, UC "Insert (^C to abort): ", NULL, dotxt, NULL, NULL, utypebw, NULL, NULL, bw->b->o.charmap))
 		return 0;
 	else
 		return -1;

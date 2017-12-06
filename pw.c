@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/pw.c,v 1.10 2017/12/06 23:02:03 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/pw.c,v 1.11 2017/12/06 23:58:37 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -200,7 +200,7 @@ WATOM watompw = {
 
 /* Create a prompt window */
 
-BW *wmkpw(W *w, unsigned char *prompt, B **history, jpoly_int *func, const unsigned char *huh, jpoly_int *abrt, jpoly_int *tab, void *object, int *notify, struct charmap *map)
+BW *wmkpw(W *w, const unsigned char *prompt, B **history, jpoly_int *func, const unsigned char *huh, jpoly_int *abrt, jpoly_int *tab, void *object, int *notify, struct charmap *map)
 {
 	W *new;
 	PW *pw;
@@ -220,7 +220,7 @@ BW *wmkpw(W *w, unsigned char *prompt, B **history, jpoly_int *func, const unsig
 	pw->abrt = abrt;
 	pw->tab = tab;
 	pw->object = object;
-	pw->prompt = (unsigned char *)strdup((char *)prompt);
+	pw->prompt = (unsigned char *)strdup((const char *)prompt);
 	pw->promptlen = fmtlen(prompt);
 	pw->promptofst = 0;
 	pw->pfunc = func;
