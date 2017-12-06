@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.15 2017/12/04 22:00:43 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.16 2017/12/06 21:41:04 tg Exp $");
 
 #include <stdlib.h>
 
@@ -89,9 +89,9 @@ unsigned char **get_word_list(B *b,int ignore)
 
 	for (idx = 0;idx != h->len;++idx)
 		for (t = h->tab[idx];t;t=t->next)
-			list = vaadd(list, t->name);
+			list = vaadd(list, /* checked */ US t->name);
 	if (list)
-		vasort(list,sLEN(list));
+		vasort(list, sLEN(list));
 
 	htrm(h);
 
@@ -280,7 +280,7 @@ static P *searchf(BW *bw,SRCH *srch, P *p)
 			break;
 	}
 	if (wrap && !srch->wrap_flag && srch->wrap_p) {
-		msgnw(bw->parent, US "Wrapped");
+		msgnw(bw->parent, UC "Wrapped");
 		srch->wrap_flag = 1;
 		p_goto_bof(start);
 		goto wrapped;
@@ -337,7 +337,7 @@ static P *searchb(BW *bw,SRCH *srch, P *p)
 	}
 
 	if (wrap && !srch->wrap_flag && srch->wrap_p) {
-		msgnw(bw->parent, US "Wrapped");
+		msgnw(bw->parent, UC "Wrapped");
 		srch->wrap_flag = 1;
 		p_goto_eof(start);
 		goto wrapped;
@@ -660,7 +660,7 @@ static int doreplace(BW *bw, SRCH *srch)
 	P *q;
 
 	if (bw->b->rdonly) {
-		msgnw(bw->parent, US "Read only");
+		msgnw(bw->parent, UC "Read only");
 		return -1;
 	}
 	if (markk)
@@ -854,9 +854,9 @@ int dopfnext(BW *bw, SRCH *srch, int *notify)
  bye:
 		if (!srch->flg && !srch->rest) {
 			if (srch->valid && srch->block_restrict)
-				msgnw(bw->parent, US "Not found (search restricted to marked block)");
+				msgnw(bw->parent, UC "Not found (search restricted to marked block)");
 			else
-				msgnw(bw->parent, US "Not found");
+				msgnw(bw->parent, UC "Not found");
 			ret = -1;
 		}
 		break;

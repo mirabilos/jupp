@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.32 2017/12/06 21:16:59 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.33 2017/12/06 21:41:02 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -689,7 +689,7 @@ SCRN *nopen(CAP *cap)
 		texec(t->cap, t->cl, 1, 0, 0, 0, 0);
 
 /* Initialize variable screen size dependant vars */
-	t->htab = calloc(256, sizeof(struct hentry));
+	t->htab = calloc(256, sizeof(struct s_hentry));
 
 	nresize(t, t->co, t->li);
 
@@ -729,7 +729,7 @@ void nresize(SCRN *t, int w, int h)
 	t->syntab = calloc(t->li, sizeof(int));
 	t->compose = calloc(t->co, sizeof(int));
 	t->ofst = calloc(t->co, sizeof(int));
-	t->ary = calloc(t->co, sizeof(struct hentry));
+	t->ary = calloc(t->co, sizeof(struct s_hentry));
 
 	nredraw(t);
 }
@@ -1300,14 +1300,14 @@ static void dodelchr(SCRN *t, int x, int y, int n)
 
 void magic(SCRN *t, int y, int *cs, int *ca,int *s, int *a, int placex)
 {
-	struct hentry *htab = t->htab;
+	struct s_hentry *htab = t->htab;
 	int *ofst = t->ofst;
 	int aryx = 1;
 	int x;
 
 	if (!(t->im || t->ic || t->IC) || !(t->dc || t->DC))
 		return;
-	mset(htab, 0, 256 * sizeof(struct hentry));
+	mset(htab, 0, 256 * sizeof(struct s_hentry));
 
 	msetI(ofst, 0, t->co);
 

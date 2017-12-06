@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.21 2017/12/06 21:17:01 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.22 2017/12/06 21:41:03 tg Exp $");
 
 #include <sys/wait.h>
 #include <limits.h>
@@ -300,7 +300,7 @@ int utoggle_marking(BW *bw)
 		prm(markk); markk=0;
 		updall();
 		marking = 0;
-		msgnw(bw->parent, US "Selection cleared.");
+		msgnw(bw->parent, UC "Selection cleared.");
 		return 0;
 	} else if (markk) {
 		/* Clear selection and start new one */
@@ -308,7 +308,7 @@ int utoggle_marking(BW *bw)
 		prm(markk); markk=0;
 		updall();
 		marking = 1;
-		msgnw(bw->parent, US "Selection started.");
+		msgnw(bw->parent, UC "Selection started.");
 		return umarkb(bw);
 	} else if (markb && markb->b==bw->cursor->b) {
 		marking = 0;
@@ -325,7 +325,7 @@ int utoggle_marking(BW *bw)
 		return 0;
 	} else {
 		marking = 1;
-		msgnw(bw->parent, US "Selection started.");
+		msgnw(bw->parent, UC "Selection started.");
 		return umarkb(bw);
 	}
 }
@@ -432,7 +432,7 @@ int ublkdel(BW *bw)
 		if (lightoff)
 			unmark(bw);
 	} else {
-		msgnw(bw->parent, US "No block");
+		msgnw(bw->parent, UC "No block");
 		return -1;
 	}
 	return 0;
@@ -469,7 +469,7 @@ int ublkmove(BW *bw)
 {
 	if (markv(1)) {
 		if (markb->b->rdonly) {
-			msgnw(bw->parent, US "Read only");
+			msgnw(bw->parent, UC "Read only");
 			return -1;
 		}
 		if (square) {
@@ -520,7 +520,7 @@ int ublkmove(BW *bw)
 			return 0;
 		}
 	}
-	msgnw(bw->parent, US "No block");
+	msgnw(bw->parent, UC "No block");
 	return -1;
 }
 
@@ -576,7 +576,7 @@ int ublkcpy(BW *bw)
 			return 0;
 		}
 	} else {
-		msgnw(bw->parent, US "No block");
+		msgnw(bw->parent, UC "No block");
 		return -1;
 	}
 }
@@ -620,7 +620,7 @@ int dowrite(BW *bw, unsigned char *s, void *object, int *notify)
 		}
 	} else {
 		vsrm(s);
-		msgnw(bw->parent, US "No block");
+		msgnw(bw->parent, UC "No block");
 		return -1;
 	}
 }
@@ -773,7 +773,7 @@ int urindent(BW *bw)
 			prm(p);
 		} else {
 			/* Purity failure */
-			msgnw(bw->parent,US "Selected lines not properly indented");
+			msgnw(bw->parent,UC "Selected lines not properly indented");
 			return 1;
 		}
 	}
@@ -856,7 +856,7 @@ int ulindent(BW *bw)
 			prm(q);
 		} else {
 			/* Purity failure */
-			msgnw(bw->parent,US "Selected lines not properly indented");
+			msgnw(bw->parent, UC "Selected lines not properly indented");
 			return 1;
 		}
 	}
@@ -904,7 +904,7 @@ int doinsf(BW *bw, unsigned char *s, void *object, int *notify)
 			updall();
 			return 0;
 		} else {
-			msgnw(bw->parent, US "No block");
+			msgnw(bw->parent, UC "No block");
 			return -1;
 	} else {
 		int ret = 0;
@@ -966,19 +966,19 @@ static int dofilt(BW *bw, unsigned char *s, void *object, int *notify)
 		flg = 1;
 		goto ok;
 	} if (!markv(1)) {
-		msgnw(bw->parent, US "No block");
+		msgnw(bw->parent, UC "No block");
 		return -1;
 	}
       ok:
 
 	if (pipe(fr)) {
-		msgnw(bw->parent, US "Pipe error");
+		msgnw(bw->parent, UC "Pipe error");
 		return (-1);
 	}
 	if ((tf = mktmp(NULL, &fw)) == NULL) {
 		close(fr[0]);
 		close(fr[1]);
-		msgnw(bw->parent, US "Cannot create temporary file");
+		msgnw(bw->parent, UC "Cannot create temporary file");
 		return (-1);
 	}
 	unlink((char *)tf);
@@ -1125,7 +1125,7 @@ int ufilt(BW *bw)
 			return -1;
 	case 2:
 	default:
-		msgnw(bw->parent, US "No block");
+		msgnw(bw->parent, UC "No block");
 		return -1;
 	}
 }

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ushell.c,v 1.9 2017/12/06 21:17:03 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ushell.c,v 1.10 2017/12/06 21:41:04 tg Exp $");
 
 #include <sys/stat.h>
 #include <signal.h>
@@ -125,7 +125,7 @@ static int doushell(BW *bw, unsigned char *cmd, int *notify, int build)
 		*notify = 1;
 	}
 	if (bw->b->pid) {
-		msgnw(bw->parent, US "Program already running in this window");
+		msgnw(bw->parent, UC "Program already running in this window");
 		varm(s);
 		return -1;
 	}
@@ -133,7 +133,7 @@ static int doushell(BW *bw, unsigned char *cmd, int *notify, int build)
 
 	if (!(m = mpxmk(&bw->b->out, name, s, cdata, bw->b, build ? cdone_parse : cdone, bw->b))) {
 		varm(s);
-		msgnw(bw->parent, US "No ptys available");
+		msgnw(bw->parent, UC "No ptys available");
 		return -1;
 	} else {
 		bw->b->pid = m->pid;
@@ -144,7 +144,7 @@ static int doushell(BW *bw, unsigned char *cmd, int *notify, int build)
 int ubknd(BW *bw)
 {
 	if (!getenv("SHELL")) {
-        	msgnw(bw->parent, US "\"SHELL\" environment variable not defined or exported");
+        	msgnw(bw->parent, UC "\"SHELL\" environment variable not defined or exported");
         }
 	return doushell(bw, NULL, NULL, 0);
 }

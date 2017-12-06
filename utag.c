@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/utag.c,v 1.7 2017/12/04 21:53:35 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/utag.c,v 1.8 2017/12/06 21:41:05 tg Exp $");
 
 #include "b.h"
 #include "bw.h"
@@ -38,7 +38,7 @@ static int dotag(BW *bw, unsigned char *s, void *obj, int *notify)
 	}
 	f = fopen("tags", "r");
 	if (!f) {
-		msgnw(bw->parent, US "Couldn't open tags file");
+		msgnw(bw->parent, UC "Couldn't open tags file");
 		vsrm(s);
 		vsrm(t);
 		return -1;
@@ -84,7 +84,7 @@ static int dotag(BW *bw, unsigned char *s, void *obj, int *notify)
 							dofollows();
 							mid = omid;
 						} else {
-							msgnw(bw->parent, US "Invalid line number");
+							msgnw(bw->parent, UC "Invalid line number");
 						}
 					} else {
 						if (buf[y] == '/' || buf[y] == '?') {
@@ -118,7 +118,7 @@ static int dotag(BW *bw, unsigned char *s, void *obj, int *notify)
 			}
 		}
 	}
-	msgnw(bw->parent, US "Not found");
+	msgnw(bw->parent, UC "Not found");
 	vsrm(s);
 	vsrm(t);
 	fclose(f);

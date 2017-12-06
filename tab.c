@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tab.c,v 1.8 2017/12/06 21:17:00 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tab.c,v 1.9 2017/12/06 21:41:03 tg Exp $");
 
 #include <sys/stat.h>
 #include <stdlib.h>
@@ -206,7 +206,7 @@ static int tabrtn(MENU *m, int cursor, TAB *tab)
 		vsrm(e);
 		tab->pattern = vsncpy(NULL, 0, sc("*"));
 		if (!treload(m->object, m, m->parent->win->object, 0, NULL)) {
-			msgnw(m->parent, US "Couldn't read directory ");
+			msgnw(m->parent, UC "Couldn't read directory ");
 			vsrm(tab->pattern);
 			tab->pattern = orgpattern;
 			vsrm(tab->path);
@@ -265,7 +265,7 @@ static int tabbacks(MENU *m, int cursor, TAB *tab)
 	tab->pattern = vsncpy(NULL, 0, sc("*"));
 
 	if (!treload(m->object, m, m->parent->win->object, 1, NULL)) {
-		msgnw(m->parent, US "Couldn't read directory ");
+		msgnw(m->parent, UC "Couldn't read directory ");
 		vsrm(tab->pattern);
 		tab->pattern = orgpattern;
 		vsrm(tab->path);

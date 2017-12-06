@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uerror.c,v 1.8 2017/12/04 21:53:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uerror.c,v 1.9 2017/12/06 21:41:04 tg Exp $");
 
 #include "b.h"
 #include "bw.h"
@@ -134,10 +134,11 @@ static int parseit(struct charmap *map,unsigned char *s, long int row)
 
 	do {
 		/* Skip to first word */
-		for (x = y; s[x] && !(joe_isalnux(map,s[x]) || s[x] == '.' || s[x] == '/'); ++x) ;
+		for (x = y; s[x] && !(joe_isalnux(map, s[x]) || s[x] == '.' || s[x] == '/'); ++x)
+			/* nothing */;
 
 		/* Skip to end of first word */
-		for (y = x; joe_isalnux(map,s[y]) || s[y] == '.' || s[y] == '/'; ++y)
+		for (y = x; joe_isalnux(map, s[y]) || s[y] == '.' || s[y] == '/'; ++y)
 			if (s[y] == '.')
 				flg = 1;
 	} while (!flg && x!=y);
@@ -275,7 +276,7 @@ int unxterr(BW *bw)
 	int omid;
 
 	if (errptr->link.next == &errors) {
-		msgnw(bw->parent, US "No more errors");
+		msgnw(bw->parent, UC "No more errors");
 		return -1;
 	}
 	errptr = errptr->link.next;
@@ -300,7 +301,7 @@ int uprverr(BW *bw)
 	int omid;
 
 	if (errptr->link.prev == &errors) {
-		msgnw(bw->parent, US "No more errors");
+		msgnw(bw->parent, UC "No more errors");
 		return -1;
 	}
 	errptr = errptr->link.prev;

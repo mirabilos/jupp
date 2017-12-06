@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/undo.c,v 1.6 2017/12/06 21:17:03 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/undo.c,v 1.7 2017/12/06 21:41:04 tg Exp $");
 
 #include <stdlib.h>
 
@@ -436,7 +436,7 @@ int uyankpop(BW *bw)
 int unotmod(BW *bw)
 {
 	bw->b->changed = 0;
-	msgnw(bw->parent, US "Modified flag cleared");
+	msgnw(bw->parent, UC "Modified flag cleared");
 	return 0;
 }
 
@@ -451,7 +451,7 @@ int ucopy(BW *bw)
 			unmark(bw);
 		return 0;
 	} else {
-		msgnw(bw->parent, US "No block");
+		msgnw(bw->parent, UC "No block");
 		return -1;
 	}
 }

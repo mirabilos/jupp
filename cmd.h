@@ -9,7 +9,7 @@
 #define _JOE_CMD_H 1
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_cmd_h, "$MirOS: contrib/code/jupp/cmd.h,v 1.7 2017/12/06 21:16:55 tg Exp $");
+__IDSTRING(rcsid_cmd_h, "$MirOS: contrib/code/jupp/cmd.h,v 1.8 2017/12/06 21:41:02 tg Exp $");
 #endif
 
 extern CMD cmds[];		/* Built-in commands */
@@ -31,8 +31,8 @@ extern int dobeep;
 /* CMD *findcmd(char *s);
  * Return command address for given name
  */
-CMD *findcmd(unsigned char *s);
-void addcmd(unsigned char *s, MACRO *m);
+CMD *findcmd(const unsigned char *s);
+void addcmd(const unsigned char *s, MACRO *m);
 
 /* Execute a command.  Returns return value of command */
 int execmd(CMD *cmd, int k);

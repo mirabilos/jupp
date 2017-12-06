@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.17 2017/12/06 21:17:02 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.18 2017/12/06 21:41:04 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -308,7 +308,7 @@ calcl(BW *bw, unsigned char *s)
 int
 unomath(BW *bw)
 {
-	msgnw(bw->parent, US "Sorry, compiled without Math");
+	msgnw(bw->parent, UC "Sorry, compiled without Math");
 	return (-1);
 }
 #endif

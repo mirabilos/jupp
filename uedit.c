@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.23 2017/12/04 22:15:40 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.24 2017/12/06 21:41:03 tg Exp $");
 
 #include <string.h>
 
@@ -684,7 +684,7 @@ static int doline(BW *bw, unsigned char *s, void *object, int *notify)
 		if (merrf)
 			msgnw(bw->parent, merrt);
 		else
-			msgnw(bw->parent, US "Invalid line number");
+			msgnw(bw->parent, UC "Invalid line number");
 		return -1;
 	}
 }
@@ -720,7 +720,7 @@ static int docol(BW *bw, unsigned char *s, void *object, int *notify)
 		if (merrf)
 			msgnw(bw->parent, merrt);
 		else
-			msgnw(bw->parent, US "Invalid column number");
+			msgnw(bw->parent, UC "Invalid column number");
 		return -1;
 	}
 }
@@ -756,7 +756,7 @@ static int dobyte(BW *bw, unsigned char *s, void *object, int *notify)
 		if (merrf)
 			msgnw(bw->parent, merrt);
 		else
-			msgnw(bw->parent, US "Invalid byte number");
+			msgnw(bw->parent, UC "Invalid byte number");
 		return -1;
 	}
 }
@@ -1555,7 +1555,7 @@ static int dofwrdc(BW *bw, int k, void *object, int *notify)
 				break;
 	}
 	if (c == NO_MORE_DATA) {
-		msgnw(bw->parent, US "Not found");
+		msgnw(bw->parent, UC "Not found");
 		prm(q);
 		return -1;
 	} else {

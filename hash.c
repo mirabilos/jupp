@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/hash.c,v 1.4 2017/12/02 02:07:26 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/hash.c,v 1.5 2017/12/06 21:41:02 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -20,7 +20,7 @@ __RCSID("$MirOS: contrib/code/jupp/hash.c,v 1.4 2017/12/02 02:07:26 tg Exp $");
 
 static HENTRY *freentry = NULL;
 
-unsigned long hash(unsigned char *s)
+unsigned long hash(const unsigned char *s)
 {
 	unsigned long accu = 0;
 
@@ -45,7 +45,7 @@ void htrm(HASH *ht)
 	joe_free(ht);
 }
 
-void *htadd(HASH *ht, unsigned char *name, void *val)
+void *htadd(HASH *ht, const unsigned char *name, void *val)
 {
 	int idx = hash(name) & ht->len;
 	HENTRY *entry;
@@ -66,7 +66,7 @@ void *htadd(HASH *ht, unsigned char *name, void *val)
 	return entry->val = val;
 }
 
-void *htfind(HASH *ht, unsigned char *name)
+void *htfind(HASH *ht, const unsigned char *name)
 {
 	HENTRY *e;
 
