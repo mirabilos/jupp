@@ -2,7 +2,7 @@
 #define _JOE_TYPES_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.25 2017/12/07 02:10:18 tg Exp $");
+__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.26 2017/12/07 02:13:05 tg Exp $");
 #endif
 
 /* Prefix to make string constants unsigned */
@@ -586,7 +586,7 @@ struct search {
 	int	replace;	/* Set if this is search & replace */
 	int	rest;		/* Set to do remainder of search & replace w/o query */
 	unsigned char	*entire;	/* Entire matched string */
-	unsigned char	*pieces[26];	/* Peices of the matched string */
+	unsigned char	*pieces[26];	/* Pieces of the matched string */
 	int	flg;		/* Set after prompted for first replace */
 	SRCHREC	recs;		/* Search & replace position history */
 	P	*markb, *markk;	/* Original marks */

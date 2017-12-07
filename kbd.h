@@ -9,7 +9,7 @@
 #define _JOE_KBD_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_kbd_h, "$MirOS: contrib/code/jupp/kbd.h,v 1.5 2017/12/06 21:16:57 tg Exp $");
+__IDSTRING(rcsid_kbd_h, "$MirOS: contrib/code/jupp/kbd.h,v 1.6 2017/12/07 02:13:05 tg Exp $");
 #endif
 
 /* KMAP *mkkmap(void);
@@ -45,7 +45,7 @@ void rmkmap(KMAP *kmap);
  * a range-fill of the form: <KEY> TO <KEY>
  *
  * So for example, if the sequence: ^K A TO Z
- * is speicified, then the key sequences
+ * is specified, then the key sequences
  * ^K A, ^K B, ^K C, ... ^K Z are all bound.
  */
 int kadd(CAP *cap, KMAP *kmap, unsigned char *seq, void *bind);
