@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ushell.c,v 1.11 2017/12/06 23:58:39 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ushell.c,v 1.12 2017/12/07 02:10:19 tg Exp $");
 
 #include <sys/stat.h>
 #include <signal.h>
@@ -54,10 +54,12 @@ static void cdone_parse(B *b)
 static void cfollow(B *b,long byte)
 {
 	W *w;
-	 if ((w = maint->topwin) != NULL) {
+	if ((w = maint->topwin) != NULL) {
 	 	do {
-	 		if ((w->watom->what&TYPETW) && ((BW *)w->object)->b==b && ((BW *)w->object)->cursor->byte==byte) {
-	 			BW *bw = (BW *)w->object;
+	 		if ((w->watom->what & TYPETW) &&
+			    w->object.bw->b == b &&
+			    w->object.bw->cursor->byte == byte) {
+	 			BW *bw = w->object.bw;
 	 			p_goto_eof(bw->cursor);
 				bw->cursor->xcol = piscol(bw->cursor);
 	 		}

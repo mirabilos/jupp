@@ -9,7 +9,7 @@
 #define _JOE_W_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_w_h, "$MirOS: contrib/code/jupp/w.h,v 1.8 2017/12/06 23:02:08 tg Exp $");
+__IDSTRING(rcsid_w_h, "$MirOS: contrib/code/jupp/w.h,v 1.9 2017/12/07 02:10:20 tg Exp $");
 #endif
 
 /***************/
@@ -155,8 +155,8 @@ void msgout(W *w);			/* Output msgnw/msgnwt messages */
 
 /* Common user functions */
 
-int urtn(BASE *b, int k);		/* User hit return */
-int utype(BASE *b, int k);		/* User types a character */
+int urtn(jobject jO, int k);		/* User hit return */
+int utype(jobject jO, int k);		/* User types a character */
 int uretyp(BASE *bw);			/* Refresh the screen */
 int ugroww(BASE *bw);			/* Grow current window */
 int uexpld(BASE *bw);			/* Explode current window or show all windows */

@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.18 2017/12/06 23:58:38 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.19 2017/12/07 02:10:18 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -503,7 +503,7 @@ doedit1(BW *bw,int c,unsigned char *s,int *notify)
 					brm(b);
 					return -1;
 				}
-				bw = (BW *) maint->curwin->object;
+				bw = maint->curwin->object.bw;
 			}
 		}
 		if (er) {
@@ -515,7 +515,7 @@ doedit1(BW *bw,int c,unsigned char *s,int *notify)
 		object = bw->object;
 		w = bw->parent;
 		bwrm(bw);
-		w->object = (void *) (bw = bwmk(w, b, 0));
+		w->object.bw = bw = bwmk(w, b, 0);
 		wredraw(bw->parent);
 		bw->object = object;
 		vsrm(s);
@@ -543,7 +543,7 @@ doedit1(BW *bw,int c,unsigned char *s,int *notify)
 					brm(b);
 					return -1;
 				}
-				bw = (BW *) maint->curwin->object;
+				bw = maint->curwin->object.bw;
 			}
 		}
 		if (er) {
@@ -555,7 +555,7 @@ doedit1(BW *bw,int c,unsigned char *s,int *notify)
 		object = bw->object;
 		w = bw->parent;
 		bwrm(bw);
-		w->object = (void *) (bw = bwmk(w, b, 0));
+		w->object.bw = bw = bwmk(w, b, 0);
 		wredraw(bw->parent);
 		bw->object = object;
 		vsrm(s);
@@ -653,7 +653,7 @@ doscratch(BW *bw, unsigned char *s, void *obj, int *notify)
 				brm(b);
 				return -1;
 			}
-			bw = (BW *) maint->curwin->object;
+			bw = maint->curwin->object.bw;
 		}
 	}
 	if (er && er != -1) {
@@ -663,7 +663,7 @@ doscratch(BW *bw, unsigned char *s, void *obj, int *notify)
 	object = bw->object;
 	w = bw->parent;
 	bwrm(bw);
-	w->object = (void *) (bw = bwmk(w, b, 0));
+	w->object.bw = bw = bwmk(w, b, 0);
 	wredraw(bw->parent);
 	bw->object = object;
 	vsrm(s);
@@ -710,7 +710,7 @@ static int dorepl(BW *bw, unsigned char *s, void *obj, int *notify)
 		orphit(bw);
 	}
 	bwrm(bw);
-	w->object = (void *) (bw = bwmk(w, b, 0));
+	w->object.bw = bw = bwmk(w, b, 0);
 	wredraw(bw->parent);
 	bw->object = object;
 	vsrm(s);
@@ -747,7 +747,7 @@ int unbuf(BW *bw)
 		orphit(bw);
 	}
 	bwrm(bw);
-	w->object = (void *) (bw = bwmk(w, b, 0));
+	w->object.bw = bw = bwmk(w, b, 0);
 	wredraw(bw->parent);
 	bw->object = object;
 	return 0;
@@ -775,7 +775,7 @@ int upbuf(BW *bw)
 		orphit(bw);
 	}
 	bwrm(bw);
-	w->object = (void *) (bw = bwmk(w, b, 0));
+	w->object.bw = bw = bwmk(w, b, 0);
 	wredraw(bw->parent);
 	bw->object = object;
 	return 0;
@@ -890,26 +890,26 @@ static int dolose(BW *bw, int c, void *object, int *notify)
 
 	if ((w = maint->topwin) != NULL) {
 		do {
-			if ((w->watom->what&TYPETW) && ((BW *)w->object)->b==b) {
+			if ((w->watom->what & TYPETW) && w->object.bw->b == b) {
 				if ((new_b = borphan()) != NULL) {
-					BW *bw_ = (BW *)w->object;
-					void *object_ = bw_->object;
+					BW *bw2 = w->object.bw;
+					void *object_ = bw2->object;
 					/* FIXME: Shouldn't we wabort() and wcreate here to kill
 					   any prompt windows? */
 
-					bwrm(bw_);
-					w->object = (void *) (bw_ = bwmk(w, new_b, 0));
+					bwrm(bw2);
+					w->object.bw = bw2 = bwmk(w, new_b, 0);
 					wredraw(w);
-					bw_->object = object_;
+					bw2->object = object_;
 				} else {
-					BW *bw_ = (BW *)w->object;
-					object = bw_->object;
-					bwrm(bw_);
-					w->object = (void *) (bw_ = bwmk(w, bfind(US ""), 0));
+					BW *bw2 = w->object.bw;
+					object = bw2->object;
+					bwrm(bw2);
+					w->object.bw = bw2 = bwmk(w, bfind(US ""), 0);
 					wredraw(w);
-					bw_->object = object;
-					if (bw_->o.mnew)
-						exemac(bw_->o.mnew);
+					bw2->object = object;
+					if (bw2->o.mnew)
+						exemac(bw2->o.mnew);
 				}
 			}
 		w = w->link.next;
@@ -940,7 +940,7 @@ int ulose(BW *bw)
 static int dobuf(MENU *m, int x, unsigned char **s)
 {
 	unsigned char *name;
-	BW *bw = m->parent->win->object;
+	BW *bw = m->parent->win->object.bw;
 	int *notify = m->parent->notify;
 
 	m->parent->notify = 0;
@@ -998,7 +998,7 @@ static int doquerysave(BW *bw,int c,struct savereq *req,int *notify)
 			rmsavereq(req);
 			return -1;
 		}
-		bw = w->object;
+		bw = w->object.bw;
 		if (bw->b==req->first) {
 			if (notify)
 				*notify = 1;
@@ -1045,7 +1045,7 @@ int uquerysave(BW *bw)
 			return doquerysave(bw,0,mksavereq(query_next,NULL,first,0),NULL);
 		else if (unbuf(bw))
 			return -1;
-		bw = w->object;
+		bw = w->object.bw;
 	} while(bw->b!=first);
 
 	genexmsgmulti(bw,0,0);

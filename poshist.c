@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/poshist.c,v 1.6 2017/12/06 23:02:03 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/poshist.c,v 1.7 2017/12/07 02:10:17 tg Exp $");
 
 #include <stdlib.h>
 
@@ -86,7 +86,7 @@ int unextpos(BW *bw)
 		if (!curpos->p || !curpos->w) {
 			goto lp;
 		}
-		if (w->t->curwin == curpos->w && curpos->p->byte == ((BW *) w->t->curwin->object)->cursor->byte) {
+		if (w->t->curwin == curpos->w && curpos->p->byte == w->t->curwin->object.bw->cursor->byte) {
 			goto lp;
 		}
 		if (w->t->curwin != curpos->w) {
@@ -96,7 +96,7 @@ int unextpos(BW *bw)
 			}
 		}
 		w = w->t->curwin;
-		bw = (BW *) w->object;
+		bw = w->object.bw;
 		if (bw->cursor->byte != curpos->p->byte) {
 			pset(bw->cursor, curpos->p);
 		}
@@ -116,7 +116,7 @@ int uprevpos(BW *bw)
 		if (!curpos->p || !curpos->w) {
 			goto lp;
 		}
-		if (w->t->curwin == curpos->w && curpos->p->byte == ((BW *) w->t->curwin->object)->cursor->byte) {
+		if (w->t->curwin == curpos->w && curpos->p->byte == w->t->curwin->object.bw->cursor->byte) {
 			goto lp;
 		}
 		if (w->t->curwin != curpos->w) {
@@ -126,7 +126,7 @@ int uprevpos(BW *bw)
 			}
 		}
 		w = w->t->curwin;
-		bw = (BW *) w->object;
+		bw = w->object.bw;
 		if (bw->cursor->byte != curpos->p->byte) {
 			pset(bw->cursor, curpos->p);
 		}

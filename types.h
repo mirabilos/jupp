@@ -2,7 +2,7 @@
 #define _JOE_TYPES_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.24 2017/12/07 01:00:32 tg Exp $");
+__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.25 2017/12/07 02:10:18 tg Exp $");
 #endif
 
 /* Prefix to make string constants unsigned */
@@ -68,6 +68,13 @@ typedef struct srchrec SRCHREC;
 typedef struct vpage VPAGE;
 typedef struct vfile VFILE;
 
+/* window.object* */
+typedef union {
+	BASE *base;
+	MENU *menu;
+	BW *bw;
+	QW *qw;
+} jobject;
 
 struct header {
 	LINK(H)	link;		/* LINK ??? */
@@ -231,16 +238,17 @@ struct kbd {
 
 
 struct watom {
-	unsigned char *context;	/* Context name */
-	jpoly_void *disp;	/* Display window */
-	jpoly_void *follow;	/* Called to have window follow cursor */
-	jpoly_int *abort;	/* Common user functions */
-	jpoly_int *rtn;
-	jpoly_int *type;
-	jpoly_void *resize;	/* Called when window changed size */
-	jpoly_void *move;	/* Called when window moved */
-	jpoly_void *ins;	/* Called on line insertions */
-	jpoly_void *del;	/* Called on line deletions */
+	unsigned char *context;		/* Context name */
+	void (*disp)(jobject, int);	/* Display window */
+	void (*follow)(jobject);	/* Display window */
+	int (*abort)(jobject);		/* Common user functions */
+	int (*rtn)(jobject);
+	int (*type)(jobject, int);
+					/* Called when… */
+	void (*resize)(jobject, int, int);	/* window changed size */
+	void (*move)(jobject, int, int);	/* window moved */
+	void (*ins)(BW *, B *, long, long, int);	/* on line insertions */
+	void (*del)(BW *, B *, long, long, int);	/* on line deletions */
 	int	what;		/* Type of this thing */
 };
 
@@ -285,17 +293,7 @@ struct window {
 	int	curx, cury;	/* Cursor position within window */
 	KBD	*kbd;		/* Keyboard handler for this window */
 	WATOM	*watom;		/* The type of this window */
-	void	*object;	/* Object which inherits this */
-#if 0
-	union {			/* FIXME: instead of void *object we should */
-		BW	*bw;	/* use this union to get strict type checking */
-		PW	*pw;	/* from C compiler (need to check and change */
-		QW	*qw;	/* all of the occurrencies of ->object) */
-		TW	*tw;
-		MENU	*menu;
-		BASE	*base;
-	} object;
-#endif
+	jobject	object;		/* Object which inherits this */
 
 	const unsigned char *msgt;	/* Message at top of window */
 	const unsigned char *msgb;	/* Message at bottom of window */

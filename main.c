@@ -32,7 +32,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.37 2017/12/06 23:02:03 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.38 2017/12/07 02:10:16 tg Exp $");
 
 #include <fcntl.h>
 #include <string.h>
@@ -80,7 +80,7 @@ void dofollows(void)
 	W *w = maint->curwin;
 
 	do {
-		if (w->y != -1 && w->watom->follow && w->object)
+		if (w->y != -1 && w->watom->follow && w->object.base)
 			w->watom->follow(w->object);
 		w = (W *) (w->link.next);
 	} while (w != maint->curwin);
@@ -112,7 +112,7 @@ void edupd(int flg)
 	w = maint->curwin;
 	do {
 		if (w->y != -1) {
-			if (w->object && w->watom->disp)
+			if (w->object.base && w->watom->disp)
 				w->watom->disp(w->object, flg);
 			msgout(w);
 		}
@@ -414,7 +414,7 @@ main_init(int argc, char **argv, char **envp, SCRN **np)
 		    locale_map->name, locale_map->type ? "©" : "(c)",
 		    fdefault.hmsg ? " " : "",
 		    fdefault.hmsg ? fdefault.hmsg : "");
-		msgnw(((BASE *)lastw(maint)->object)->parent, msgbuf);
+		msgnw(lastw(maint)->object.base->parent, msgbuf);
 	}
 
 	*np = n;

@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/cmd.c,v 1.23 2017/12/06 23:58:36 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/cmd.c,v 1.24 2017/12/07 02:10:16 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -272,7 +272,7 @@ C("yapp", TYPETW + TYPEPW + EKILL, uyapp, NULL, 0, NULL)
 
 int execmd(CMD *cmd, int k)
 {
-	BW *bw = (BW *) maint->curwin->object;
+	BW *bw = maint->curwin->object.bw;
 	int ret = -1;
 
 	/* Send data to shell window: this is broken ^K ^H (help) sends its ^H to shell */
@@ -301,7 +301,7 @@ int execmd(CMD *cmd, int k)
 
 	/* Complete selection for block commands */
 	if ((cmd->flag & EBLOCK) && marking)
-		utoggle_marking(maint->curwin->object);
+		utoggle_marking(maint->curwin->object.bw);
 
 	if ((maint->curwin->watom->what & TYPETW) && bw->b->rdonly && (cmd->flag & EMOD)) {
 		msgnw(bw->parent, UC "Read only");
@@ -321,7 +321,7 @@ int execmd(CMD *cmd, int k)
 		return 0;
 
 	/* cmd->func could have changed bw on us */
-	bw = (BW *) maint->curwin->object;
+	bw = maint->curwin->object.bw;
 
 	/* Maintain position history */
 	/* If command was not a positioning command */

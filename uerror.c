@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uerror.c,v 1.10 2017/12/06 23:02:07 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uerror.c,v 1.11 2017/12/07 02:10:18 tg Exp $");
 
 #include "b.h"
 #include "bw.h"
@@ -225,8 +225,9 @@ find_a_good_bw(B *b)
 	/* Find lowest window with buffer */
 	if ((w = maint->topwin) != NULL) {
 		do {
-			if ((w->watom->what&TYPETW) && ((BW *)w->object)->b==b && w->y>=0)
-				bw = (BW *)w->object;
+			if ((w->watom->what & TYPETW) &&
+			    w->object.bw->b == b && w->y >= 0)
+				bw = w->object.bw;
 			w = w->link.next;
 		} while (w != maint->topwin);
 	}
@@ -236,7 +237,7 @@ find_a_good_bw(B *b)
 	if ((w = maint->topwin) != NULL) {
 		do {
 			if ((w->watom->what&TYPETW) && w->y>=0)
-				bw = (BW *)w->object;
+				bw = w->object.bw;
 			w = w->link.next;
 		} while (w != maint->topwin);
 	}
@@ -285,7 +286,7 @@ int unxterr(BW *bw)
 	if (!bw->b->name || strcmp(errptr->file, bw->b->name)) {
 		if (doswitch(bw, vsdup(errptr->file), NULL, NULL))
 			return -1;
-		bw = (BW *) maint->curwin->object;
+		bw = maint->curwin->object.bw;
 	}
 	omid = mid;
 	mid = 1;
@@ -310,7 +311,7 @@ int uprverr(BW *bw)
 	if (!bw->b->name || strcmp(errptr->file, bw->b->name)) {
 		if (doswitch(bw, vsdup(errptr->file), NULL, NULL))
 			return -1;
-		bw = (BW *) maint->curwin->object;
+		bw = maint->curwin->object.bw;
 	}
 	omid = mid;
 	mid = 1;

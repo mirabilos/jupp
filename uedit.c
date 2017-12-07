@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.27 2017/12/06 23:58:38 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.28 2017/12/07 02:10:18 tg Exp $");
 
 #include <string.h>
 
@@ -606,7 +606,7 @@ void scrdn(BW *bw, int n, int flg)
 
 int upgup(BW *bw)
 {
-	bw = (BW *) bw->parent->main->object;
+	bw = bw->parent->main->object.bw;
 	if (bw->o.hex ? bw->cursor->byte < 16 : !bw->cursor->line)
 		return -1;
 	if (pgamnt < 0)
@@ -622,7 +622,7 @@ int upgup(BW *bw)
 
 int upgdn(BW *bw)
 {
-	bw = (BW *) bw->parent->main->object;
+	bw = bw->parent->main->object.bw;
 	if (bw->o.hex ? bw->cursor->byte/16 == bw->b->eof->byte/16 : bw->cursor->line == bw->b->eof->line)
 		return -1;
 	if (pgamnt < 0)
@@ -638,7 +638,7 @@ int upgdn(BW *bw)
 
 int uupslide(BW *bw)
 {
-	bw = (BW *) bw->parent->main->object;
+	bw = bw->parent->main->object.bw;
 	if (bw->o.hex ? bw->top->byte/16 : bw->top->line) {
 		if (bw->o.hex ? bw->top->byte/16 + bw->h -1 != bw->cursor->byte/16 : bw->top->line + bw->h - 1 != bw->cursor->line)
 			udnarw(bw);
@@ -650,7 +650,7 @@ int uupslide(BW *bw)
 
 int udnslide(BW *bw)
 {
-	bw = (BW *) bw->parent->main->object;
+	bw = bw->parent->main->object.bw;
 	if (bw->o.hex ? bw->top->line/16 + bw->h <= bw->top->b->eof->byte/16 : bw->top->line + bw->h <= bw->top->b->eof->line) {
 		if (bw->o.hex ? bw->top->byte/16 != bw->cursor->byte/16 : bw->top->line != bw->cursor->line)
 			uuparw(bw);
@@ -1166,9 +1166,9 @@ int utypebw_raw(BW *bw, int k, int no_decode)
 	return 0;
 }
 
-int utypebw(BW *bw, int k)
+int utypebw(jobject jO, int k)
 {
-	return utypebw_raw(bw, k, 0);
+	return utypebw_raw(jO.bw, k, 0);
 }
 
 /* Quoting */
@@ -1414,8 +1414,8 @@ static int doctrl(BW *bw, int c, void *object, int *notify)
 		*notify = 1;
 	bw->o.overtype = 0;
 	if (bw->parent->huh == srchstr && c == '\n') {
-		utypebw(bw, '\\');
-		utypebw(bw, 'n');
+		utypebw_raw(bw, '\\', 0);
+		utypebw_raw(bw, 'n', 0);
 	} else
 		utypebw_raw(bw, c, 1);
 	bw->o.overtype = org;
@@ -1434,8 +1434,10 @@ int uctrl(BW *bw)
 /* User hit Return.  Deal with autoindent.
  */
 
-int rtntw(BW *bw)
+int rtntw(jobject jO)
 {
+	BW *bw = jO.bw;
+
 	if (bw->o.overtype) {
 		p_goto_eol(bw->cursor);
 		if (piseof(bw->cursor))
@@ -1618,7 +1620,7 @@ static int dotxt(BW *bw, unsigned char *s, void *object, int *notify)
 	if (notify)
 		*notify = 1;
 	for (x = 0; x != sLEN(s); ++x)
-		utypebw(bw, s[x]);
+		utypebw_raw(bw, s[x], 0);
 	vsrm(s);
 	return 0;
 }

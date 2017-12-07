@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/utag.c,v 1.10 2017/12/06 23:58:39 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/utag.c,v 1.11 2017/12/07 02:10:19 tg Exp $");
 
 #include "b.h"
 #include "bw.h"
@@ -65,7 +65,7 @@ static int dotag(BW *bw, unsigned char *s, void *obj, int *notify)
 					fclose(f);
 					return -1;
 				}
-				bw = (BW *) maint->curwin->object;
+				bw = maint->curwin->object.bw;
 				buf[y] = c;
 				while (buf[y] == ' ' || buf[y] == '\t') {
 					++y;

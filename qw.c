@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/qw.c,v 1.8 2017/12/06 23:02:04 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/qw.c,v 1.9 2017/12/07 02:10:17 tg Exp $");
 
 #include <stdlib.h>
 
@@ -19,8 +19,9 @@ __RCSID("$MirOS: contrib/code/jupp/qw.c,v 1.8 2017/12/06 23:02:04 tg Exp $");
 #include "scrn.h"
 #include "w.h"
 
-static void dispqw(QW *qw)
+static void dispqw(jobject jO, int flg __attribute__((__unused__)))
 {
+	QW *qw = jO.qw;
 	W *w = qw->parent;
 
 	/* Scroll buffer and position prompt */
@@ -49,8 +50,9 @@ static void dispqw(QW *qw)
 		 NULL);
 }
 
-static void dispqwn(QW *qw)
+static void dispqwn(jobject jO, int flg __attribute__((__unused__)))
 {
+	QW *qw = jO.qw;
 	W *w = qw->parent;
 
 	/* Scroll buffer and position prompt */
@@ -60,10 +62,10 @@ static void dispqwn(QW *qw)
 		qw->promptofst = 0;
 
 	/* Set cursor position */
-	if (w->win->watom->follow && w->win->object)
+	if (w->win->watom->follow && w->win->object.base)
 		w->win->watom->follow(w->win->object);
-	if (w->win->watom->disp && w->win->object)
-		w->win->watom->disp(w->win->object);
+	if (w->win->watom->disp && w->win->object.base)
+		w->win->watom->disp(w->win->object, 1);
 	w->curx = w->win->curx;
 	w->cury = w->win->cury + w->win->y - w->y;
 
@@ -87,8 +89,9 @@ static void dispqwn(QW *qw)
 
 struct utf8_sm qw_sm;
 
-static int utypeqw(QW *qw, int c)
+static int utypeqw(jobject jO, int c)
 {
+	QW *qw = jO.qw;
 	W *win;
 	W *w = qw->parent;
 	int *notify = w->notify;
@@ -105,7 +108,7 @@ static int utypeqw(QW *qw, int c)
 	func = qw->func;
 	vsrm(qw->prompt);
 	joe_free(qw);
-	w->object = NULL;
+	w->object.base = NULL;
 	w->notify = NULL;
 	wabort(w);
 	if (func)
@@ -113,8 +116,9 @@ static int utypeqw(QW *qw, int c)
 	return -1;
 }
 
-static int abortqw(QW *qw)
+static int abortqw(jobject jO)
 {
+	QW *qw = jO.qw;
 	W *win = qw->parent->win;
 	void *object = qw->object;
 	jpoly_int *abrt = qw->abrt;
@@ -183,7 +187,7 @@ QW *mkqw(W *w, unsigned char *prompt, int len, jpoly_int *func, jpoly_int *abrt,
 		return NULL;
 	}
 	wfit(new->t);
-	new->object = (void *) (qw = (QW *) joe_malloc(sizeof(QW)));
+	new->object.qw = qw = (QW *)joe_malloc(sizeof(QW));
 	qw->parent = new;
 	qw->prompt = vsncpy(NULL, 0, prompt, len);
 	qw->promptlen = len;
@@ -210,7 +214,7 @@ QW *mkqwna(W *w, unsigned char *prompt, int len, jpoly_int *func, jpoly_int *abr
 		return NULL;
 	}
 	wfit(new->t);
-	new->object = (void *) (qw = (QW *) joe_malloc(sizeof(QW)));
+	new->object.qw = qw = (QW *)joe_malloc(sizeof(QW));
 	qw->parent = new;
 	qw->prompt = vsncpy(NULL, 0, prompt, len);
 	qw->promptlen = len;
@@ -237,7 +241,7 @@ QW *mkqwnsr(W *w, unsigned char *prompt, int len, jpoly_int *func, jpoly_int *ab
 		return NULL;
 	}
 	wfit(new->t);
-	new->object = (void *) (qw = (QW *) joe_malloc(sizeof(QW)));
+	new->object.qw = qw = (QW *)joe_malloc(sizeof(QW));
 	qw->parent = new;
 	qw->prompt = vsncpy(NULL, 0, prompt, len);
 	qw->promptlen = len;

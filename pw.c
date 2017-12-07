@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/pw.c,v 1.12 2017/12/07 00:41:11 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/pw.c,v 1.13 2017/12/07 02:10:17 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -34,8 +34,9 @@ __RCSID("$MirOS: contrib/code/jupp/pw.c,v 1.12 2017/12/07 00:41:11 tg Exp $");
 extern int smode;
 extern int dobeep;
 
-static void disppw(BW *bw, int flg)
+static void disppw(jobject jO, int flg)
 {
+	BW *bw = jO.bw;
 	W *w = bw->parent;
 	PW *pw = (PW *) bw->object;
 
@@ -84,8 +85,9 @@ static void disppw(BW *bw, int flg)
 
 extern volatile int dostaupd;
 
-static int rtnpw(BW *bw)
+static int rtnpw(jobject jO)
 {
+	BW *bw = jO.bw;
 	W *w = bw->parent;
 	PW *pw = (PW *) bw->object;
 	unsigned char *s;
@@ -141,7 +143,7 @@ static int rtnpw(BW *bw)
 	bwrm(bw);
 	joe_free(pw->prompt);
 	joe_free(pw);
-	w->object = NULL;
+	w->object.base = NULL;
 	notify = w->notify;
 	w->notify = 0;
 	wabort(w);
@@ -178,8 +180,9 @@ static void delpw(BW *bw, B *b, long l, long n, int flg)
 	}
 }
 
-static int abortpw(BW *b)
+static int abortpw(jobject jO)
 {
+	BW *b = jO.bw;
 	PW *pw = b->object;
 	void *object = pw->object;
 	jpoly_int *abrt = pw->abrt;
@@ -226,7 +229,7 @@ BW *wmkpw(W *w, const unsigned char *prompt, B **history, jpoly_int *func, const
 		return NULL;
 	}
 	wfit(new->t);
-	new->object = (void *) (bw = bwmk(new, bmk(NULL), 1));
+	new->object.bw = bw = bwmk(new, bmk(NULL), 1);
 	bw->b->o.charmap = map;
 	bw->object = (void *) (pw = (PW *) joe_malloc(sizeof(PW)));
 	pw->abrt = abrt;
@@ -290,7 +293,7 @@ int cmplt_abrt(BW *bw, int x, unsigned char *line)
 
 int cmplt_rtn(MENU *m, int x, unsigned char *line)
 {
-	cmplt_ins(m->parent->win->object, m->list[x]);
+	cmplt_ins(m->parent->win->object.bw, m->list[x]);
 	vsrm(line);
 	m->object = NULL;
 	wabort(m->parent);

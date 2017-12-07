@@ -9,7 +9,7 @@
 #define _JOE_UEDIT_H 1
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_uedit_h, "$MirOS: contrib/code/jupp/uedit.h,v 1.8 2017/12/06 21:17:02 tg Exp $");
+__IDSTRING(rcsid_uedit_h, "$MirOS: contrib/code/jupp/uedit.h,v 1.9 2017/12/07 02:10:18 tg Exp $");
 #endif
 
 extern int pgamnt;
@@ -51,11 +51,11 @@ int udelel(BW *bw);
 int udelbl(BW *bw);
 int udelln(BW *bw);
 int uinsc(BW *bw);
-int utypebw(BW *bw, int k);
+int utypebw(jobject, int k);
 int utypebw_raw(BW *bw, int k, int no_decode);
 int uquote(BW *bw);
 int uquote8(BW *bw);
-int rtntw(BW *bw);
+int rtntw(jobject);
 int uopen(BW *bw);
 int usetmark(BW *bw, int c);
 int ugomark(BW *bw, int c);

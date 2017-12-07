@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.34 2017/12/06 23:58:37 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.35 2017/12/07 02:10:17 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -666,8 +666,8 @@ check_for_hex(BW *bw)
 	if (bw->o.hex)
 		return 1;
 	for (w = bw->parent->link.next; w != bw->parent; w = w->link.next)
-		if ((w->watom == &watomtw || w->watom == &watompw) && ((BW *)w->object)->b == bw->b &&
-		    ((BW *)w->object)->o.hex)
+		if ((w->watom == &watomtw || w->watom == &watompw) &&
+		    w->object.bw->b == bw->b && w->object.bw->o.hex)
 		    	return 1;
 	return 0;
 }
@@ -717,7 +717,7 @@ static int encodingcmplt(BW *bw)
 
 static int doopt(MENU *m, int x, void *object, int flg)
 {
-	BW *bw = m->parent->win->object;
+	BW *bw = m->parent->win->object.bw;
 	int *xx;
 	unsigned char buf[OPT_BUF_SIZE];
 	int *notify = m->parent->notify;

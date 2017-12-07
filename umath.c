@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.20 2017/12/06 23:58:38 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.21 2017/12/07 02:10:19 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -160,7 +160,7 @@ calc(BW *bw, unsigned char *s)
 {
 	double result;
 	struct var *v;
-	BW *tbw = bw->parent->main->object;
+	BW *tbw = bw->parent->main->object.bw;
 
 	if (math_exp) {
 		free(math_exp);

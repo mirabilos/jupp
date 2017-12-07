@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.18 2017/12/06 23:58:38 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.19 2017/12/07 02:10:19 tg Exp $");
 
 #include <stdlib.h>
 
@@ -145,7 +145,7 @@ fcmplt_abrt(BW *bw, int x, unsigned char *line)
 static int
 fcmplt_rtn(MENU *m, int x, unsigned char *line)
 {
-	fcmplt_ins(m->parent->win->object, m->list[x]);
+	fcmplt_ins(m->parent->win->object.bw, m->list[x]);
 	vsrm(line);
 	m->object = NULL;
 	wabort(m->parent);
@@ -236,8 +236,11 @@ int ufinish(BW *bw)
 
 static int srch_cmplt(BW *bw)
 {
-	utypebw(bw, 9);
-		return 0;
+	jobject jO;
+
+	jO.bw = bw;
+	utypebw(jO, 9);
+	return 0;
 }
 
 /* Search forward.
@@ -622,13 +625,15 @@ static int dofirst(BW *bw, int back, int repl)
 	}
 	if (bw->parent->huh == srchstr) {
 		long byte;
+		jobject jO;
 
 		p_goto_eol(bw->cursor);
 		byte = bw->cursor->byte;
 		p_goto_bol(bw->cursor);
 		if (byte == bw->cursor->byte)
 			prgetc(bw->cursor);
-		return urtn((BASE *)bw, -1);
+		jO.bw = bw;
+		return urtn(jO, -1);
 	}
 	srch = setmark(mksrch(NULL, NULL, 0, back, -1, repl, 0));
 	srch->addr = bw->cursor->byte;

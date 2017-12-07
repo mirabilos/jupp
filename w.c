@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/w.c,v 1.9 2017/12/06 21:17:05 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/w.c,v 1.10 2017/12/07 02:10:19 tg Exp $");
 
 #include <stdlib.h>
 
@@ -217,8 +217,8 @@ void scrins(B *b, long l, long n, int flg)
 	if ((w = scr->topwin) != NULL) {
 		do {
 			if (w->y >= 0) {
-				if (w->object && w->watom->ins)
-					w->watom->ins(w->object, b, l, n, flg);
+				if (w->object.base && w->watom->ins)
+					w->watom->ins(w->object.bw, b, l, n, flg);
 			}
 		w = w->link.next;
 		} while (w != scr->topwin);
@@ -232,8 +232,8 @@ void scrdel(B *b, long l, long n, int flg)
 	if ((w = scr->topwin) != NULL) {
 		do {
 			if (w->y >= 0) {
-				if (w->object && w->watom->del)
-					w->watom->del(w->object, b, l, n, flg);
+				if (w->object.base && w->watom->del)
+					w->watom->del(w->object.bw, b, l, n, flg);
 			}
 		w = w->link.next;
 		} while (w != scr->topwin);
@@ -369,7 +369,7 @@ void wfit(SCREEN *t)
 	w = t->topwin;
 	do {
 		if (w->ny >= 0) {
-			if (w->object) {
+			if (w->object.base) {
 				if (w->watom->move)
 					w->watom->move(w->object, w->x, w->ny);
 				if (w->watom->resize)
@@ -588,7 +588,7 @@ W *wcreate(SCREEN *t, WATOM *watom, W *where, W *target, W *original, int height
 	new->huh = huh;
 	new->orgwin = original;
 	new->watom = watom;
-	new->object = NULL;
+	new->object.base = NULL;
 	new->msgb = NULL;
 	new->msgt = NULL;
 	/* Set window's target and family */
@@ -667,7 +667,7 @@ static int doabort(W *w, int *ret)
 		amnt = 0;
 	}
 	deque(W, link, w);
-	if (w->watom->abort && w->object) {
+	if (w->watom->abort && w->object.base) {
 		*ret = w->watom->abort(w->object);
 		if (w->notify)
 			*w->notify = -1;
@@ -750,18 +750,22 @@ void msgnwt(W *w, const unsigned char *s)
 	w->msgt = s;
 }
 
-int urtn(BASE *b, int k)
+int urtn(jobject jO, int k)
 {
+	BASE *b = jO.base;
+
 	if (b->parent->watom->rtn)
-		return b->parent->watom->rtn(b, k);
+		return b->parent->watom->rtn(jO);
 	else
 		return -1;
 }
 
-int utype(BASE *b, int k)
+int utype(jobject jO, int k)
 {
+	BASE *b = jO.base;
+
 	if (b->parent->watom->type)
-		return b->parent->watom->type(b, k);
+		return b->parent->watom->type(jO, k);
 	else
 		return -1;
 }

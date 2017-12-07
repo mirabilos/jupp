@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tw.c,v 1.15 2017/12/06 23:17:35 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tw.c,v 1.16 2017/12/07 02:10:17 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -47,8 +47,9 @@ int keepup = 0;
 
 /* Move text window */
 
-static void movetw(BW *bw, int x, int y)
+static void movetw(jobject jO, int x, int y)
 {
+	BW *bw = jO.bw;
 	TW *tw = (TW *) bw->object;
 
 	if (y || !staen) {
@@ -68,8 +69,10 @@ static void movetw(BW *bw, int x, int y)
 
 /* Resize text window */
 
-static void resizetw(BW *bw, int wi, int he)
+static void resizetw(jobject jO, int wi, int he)
 {
+	BW *bw = jO.bw;
+
 	if (bw->parent->ny || !staen)
 		bwresz(bw, wi - (bw->o.linums ? LINCOLS : 0), he - 1);
 	else
@@ -395,16 +398,17 @@ static unsigned char *stagen(unsigned char *stalin, BW *bw, unsigned char *s, in
 	return stalin;
 }
 
-static void disptw(BW *bw, int flg)
+static void disptw(jobject jO, int flg)
 {
+	BW *bw = jO.bw;
 	W *w = bw->parent;
 	TW *tw = (TW *) bw->object;
 
 	if (bw->o.linums != bw->linums) {
 		bw->linums = bw->o.linums;
-		resizetw(bw, w->w, w->h);
-		movetw(bw, w->x, w->y);
-		bwfllw(bw);
+		resizetw(jO, w->w, w->h);
+		movetw(jO, w->x, w->y);
+		bwfllw(jO);
 	}
 
 	if (bw->o.hex) {
@@ -476,7 +480,7 @@ int usplitw(BW *bw)
 	if (!new)
 		return -1;
 	wfit(new->t);
-	new->object = (void *) (newbw = bwmk(new, bw->b, 0));
+	new->object.bw = newbw = bwmk(new, bw->b, 0);
 	++bw->b->count;
 	newbw->offset = bw->offset;
 	newbw->object = (void *) (newtw = (TW *) joe_malloc(sizeof(TW)));
@@ -502,7 +506,7 @@ int uduptw(BW *bw)
 		return -1;
 	if (demotegroup(w))
 		new->t->topwin = new;
-	new->object = (void *) (newbw = bwmk(new, bw->b, 0));
+	new->object.bw = newbw = bwmk(new, bw->b, 0);
 	++bw->b->count;
 	newbw->offset = bw->offset;
 	newbw->object = (void *) (newtw = (TW *) joe_malloc(sizeof(TW)));
@@ -561,7 +565,7 @@ int abortit(BW *bw)
 			   any prompt windows? */
 
 			bwrm(bw);
-			w->object = (void *) (bw = bwmk(w, b, 0));
+			w->object.bw = bw = bwmk(w, b, 0);
 			wredraw(bw->parent);
 			bw->object = object;
 			return 0;
@@ -569,7 +573,7 @@ int abortit(BW *bw)
 	bwrm(bw);
 	vsrm(tw->stalin);
 	joe_free(tw);
-	w->object = NULL;
+	w->object.base = NULL;
 	wabort(w);	/* Eliminate this window and it's children */
 	return 0;
 }
@@ -659,7 +663,7 @@ int uabortbuf(BW *bw)
 		void *object = bw->object;
 
 		bwrm(bw);
-		w->object = (void *) (bw = bwmk(w, b, 0));
+		w->object.bw = bw = bwmk(w, b, 0);
 		wredraw(bw->parent);
 		bw->object = object;
 		return 0;
@@ -672,7 +676,7 @@ int uabortbuf(BW *bw)
 
 int utw0(BASE *b)
 {
-	BW *bw = b->parent->main->object;
+	BW *bw = b->parent->main->object.bw;
 
 	if (countmain(b->parent->t) == 1)
 		return -1;
@@ -697,7 +701,7 @@ int utw1(BASE *b)
 			wnext(t);
 		} while (t->curwin->main == mainw && t->curwin != starting);
 		if (t->curwin->main != mainw) {
-			BW *bw = t->curwin->main->object;
+			BW *bw = t->curwin->main->object.bw;
 			utw0((BASE *)bw);
 			yn = 1;
 			goto loop;
@@ -712,7 +716,7 @@ void setline(B *b, long int line)
 
 	do {
 		if (w->watom->what == TYPETW) {
-			BW *bw = w->object;
+			BW *bw = w->object.bw;
 
 			if (bw->b == b) {
 				long oline = bw->top->line;
@@ -738,8 +742,8 @@ BW *wmktw(SCREEN *t, B *b)
 
 	w = wcreate(t, &watomtw, NULL, NULL, NULL, t->h, NULL, NULL);
 	wfit(w->t);
-	w->object = (void *) (bw = bwmk(w, b, 0));
-	bw->object = (void *) (tw = (TW *) joe_malloc(sizeof(TW)));
+	w->object.bw = bw = bwmk(w, b, 0);
+	bw->object = (void *)(tw = (TW *)joe_malloc(sizeof(TW)));
 	iztw(tw, w->y);
 	return bw;
 }

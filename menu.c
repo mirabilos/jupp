@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/menu.c,v 1.10 2017/12/06 23:17:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/menu.c,v 1.11 2017/12/07 02:10:16 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -25,16 +25,18 @@ extern int dostaupd;
 
 static void mconfig(MENU *);
 
-static void menufllw(MENU *m)
+static void menufllw(jobject jO)
 {
+	MENU *m = jO.menu;
 	if (m->cursor < m->top)
 		m->top = m->cursor - m->cursor % m->perline;
 	else if (m->cursor >= m->top+m->perline*m->h)
 		m->top = m->cursor - m->cursor % m->perline - m->perline*(m->h-1);
 }
 
-static void menudisp(MENU *m)
+static void menudisp(jobject jO, int flg __attribute__((__unused__)))
 {
+	MENU *m = jO.menu;
 	int col;
 	int x;
 	int y;
@@ -94,14 +96,16 @@ static void menudisp(MENU *m)
 	    (m->width + 1) + (col < m->width ? col : m->width);
 }
 
-static void menumove(MENU *m, int x, int y)
+static void menumove(jobject jO, int x, int y)
 {
+	MENU *m = jO.menu;
 	m->x = x;
 	m->y = y;
 }
 
-static void menuresz(MENU *m, int wi, int he)
+static void menuresz(jobject jO, int wi, int he)
 {
+	MENU *m = jO.menu;
 	m->w = wi;
 	m->h = he;
 }
@@ -309,8 +313,9 @@ int umpgdn(MENU *m)
 
 }
 
-static int umrtn(MENU *m)
+static int umrtn(jobject jO)
 {
+	MENU *m = jO.menu;
 	dostaupd = 1;
 	if (m->func)
 		return m->func(m, m->cursor, m->object, 0);
@@ -326,8 +331,9 @@ int umbacks(MENU *m)
 		return -1;
 }
 
-static int umkey(MENU *m, int c)
+static int umkey(jobject jO, int c)
 {
+	MENU *m = jO.menu;
 	int x;
 	int n = 0;
 
@@ -355,7 +361,7 @@ static int umkey(MENU *m, int c)
 		for (x = 0; x != m->nitems; ++x)
 			if ((m->list[x][0] & 0x1F) == c) {
 				m->cursor = x;
-				return umrtn(m);
+				return umrtn(jO);
 			}
 	do {
 		++m->cursor;
@@ -366,8 +372,9 @@ static int umkey(MENU *m, int c)
 	return -1;
 }
 
-static int menuabort(MENU *m)
+static int menuabort(jobject jO)
 {
+	MENU *m = jO.menu;
 	W *w = m->parent;
 	jpoly_int *func = m->abrt;
 	void *object = m->object;
@@ -425,7 +432,7 @@ MENU *mkmenu(W *w, unsigned char **s, jpoly_int *func, jpoly_int *abrt, jpoly_in
 		return NULL;
 	}
 	wfit(new->t);
-	new->object = (void *) (m = (MENU *) joe_malloc(sizeof(MENU)));
+	new->object.menu = m = (MENU *)joe_malloc(sizeof(MENU));
 	m->parent = new;
 	m->func = func;
 	m->abrt = abrt;

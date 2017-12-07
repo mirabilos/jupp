@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.29 2017/12/06 23:17:33 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.30 2017/12/07 02:10:15 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -172,8 +172,9 @@ static void bwfllwt(BW *w)
 
 /* For either */
 
-void bwfllw(BW *w)
+void bwfllw(jobject jO)
 {
+	BW *w = jO.bw;
 	if (w->o.hex)
 		bwfllwh(w);
 	else
@@ -681,7 +682,7 @@ void bwgenh(BW *w)
 			from = markb->byte;
 			to = markk->byte;
 		}
-	else if (marking && w == (BW *)maint->curwin->object && markb && markb->b == w->b && w->cursor->byte != markb->byte && !from) {
+	else if (marking && w == maint->curwin->object.bw && markb && markb->b == w->b && w->cursor->byte != markb->byte && !from) {
 		if (square) {
 			from = long_min(w->cursor->xcol, markb->xcol);
 			to = long_max(w->cursor->xcol, markb->xcol);
@@ -692,7 +693,7 @@ void bwgenh(BW *w)
 		}
 	}
 
-	if (marking && w == (BW *)maint->curwin->object)
+	if (marking && w == maint->curwin->object.bw)
 		msetI(t->updtab + w->y, 1, w->h);
 
 	if (dosquare) {
@@ -795,7 +796,7 @@ void bwgen(BW *w, int linums)
 			from = markb->byte;
 			to = markk->byte;
 		}
-	else if (marking && w==maint->curwin->object && markb && markb->b == w->b && w->cursor->byte != markb->byte && !from) {
+	else if (marking && w == maint->curwin->object.bw && markb && markb->b == w->b && w->cursor->byte != markb->byte && !from) {
 		if (square) {
 			from = long_min(w->cursor->xcol, markb->xcol);
 			to = long_max(w->cursor->xcol, markb->xcol);
@@ -808,7 +809,7 @@ void bwgen(BW *w, int linums)
 		}
 	}
 
-	if (marking && w==maint->curwin->object)
+	if (marking && w == maint->curwin->object.bw)
 		msetI(t->updtab + w->y, 1, w->h);
 
 	y = w->cursor->line - w->top->line + w->y;

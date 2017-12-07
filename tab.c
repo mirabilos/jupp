@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tab.c,v 1.10 2017/12/06 23:02:05 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tab.c,v 1.11 2017/12/07 02:10:17 tg Exp $");
 
 #include <sys/stat.h>
 #include <stdlib.h>
@@ -206,7 +206,7 @@ static int tabrtn(MENU *m, int cursor, TAB *tab)
 		}
 		vsrm(e);
 		tab->pattern = vsncpy(NULL, 0, sc("*"));
-		if (!treload(m->object, m, m->parent->win->object, 0, NULL)) {
+		if (!treload(m->object, m, m->parent->win->object.bw, 0, NULL)) {
 			msgnw(m->parent, UC "Couldn't read directory ");
 			vsrm(tab->pattern);
 			tab->pattern = orgpattern;
@@ -219,7 +219,7 @@ static int tabrtn(MENU *m, int cursor, TAB *tab)
 			return 0;
 		}
 	} else {		/* Select name */
-		BW *bw = m->parent->win->object;
+		BW *bw = m->parent->win->object.bw;
 
 		insnam(bw, tab->path, tab->files[cursor], (tab->type[cursor]==F_DIR), tab->ofst);
 		rmtab(tab);
@@ -236,7 +236,7 @@ static int tabrtn(MENU *m, int cursor, TAB *tab)
 static int tabrtn1(MENU *m, int cursor, TAB *tab)
 {
 	/* New way: just add directory to path */
-	BW *bw = m->parent->win->object;
+	BW *bw = m->parent->win->object.bw;
 
 	insnam(bw, tab->path, tab->files[cursor], (tab->type[cursor]==F_DIR ? 1 : 0), tab->ofst);
 	rmtab(tab);
@@ -265,7 +265,7 @@ static int tabbacks(MENU *m, int cursor, TAB *tab)
 	vsrm(e);
 	tab->pattern = vsncpy(NULL, 0, sc("*"));
 
-	if (!treload(m->object, m, m->parent->win->object, 1, NULL)) {
+	if (!treload(m->object, m, m->parent->win->object.bw, 1, NULL)) {
 		msgnw(m->parent, UC "Couldn't read directory ");
 		vsrm(tab->pattern);
 		tab->pattern = orgpattern;
