@@ -367,6 +367,7 @@ Although, if merged, it must be disabled by default like mksh’s HISTFILE is:
   18:48⎜«asarch» That would be for a wish list then: to keep the
        ⎜    list of all opened files with their last position
   Natureshadow agrees with me that this is a JOE antifeature
+   but then desires the file directory path history
 
   Update documentation.
 
@@ -569,6 +570,10 @@ Other requests:
   labels, instead of fdefault; add UI to apply an ftype, including
   fdefault, to the current buffer (requested by Wayne Cuddy)
 • regex needs groups like 「\+\(foo\)」
+• regex needs alternative modes (POSIX BRE, ERE; PCRE optional?)
+  because of the \0 vs. \1 confusion (and WTF @ \N letters!)
+• ^KE could offer the last directory from a file that was saved
+  with a / somewhere (file_prompt in joe 4.4 wmkpw)
 • bracketed paste mode should disable autoindent, wordwrap,
   updating the status line, …(?) ⇐ implemented using a “paste”
   labeled ftype that is switched to using the UI (command)
@@ -585,4 +590,4 @@ Other requests:
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.43 2017/12/03 01:43:50 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.44 2017/12/07 00:05:08 tg Exp $
