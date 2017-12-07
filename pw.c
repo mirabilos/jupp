@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/pw.c,v 1.11 2017/12/06 23:58:37 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/pw.c,v 1.12 2017/12/07 00:41:11 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -98,14 +98,26 @@ static int rtnpw(BW *bw)
 	p_goto_eol(bw->cursor);
 	byte = bw->cursor->byte;
 	p_goto_bol(bw->cursor);
-	s = brvs(bw->cursor, (int) (byte - bw->cursor->byte));
+	s = brvs(bw->cursor, (int)(byte - bw->cursor->byte));
 	if (pw->hist) {
 		if (bw->b->changed) {
 			P *q = pdup(pw->hist->eof);
+			P *r = pdup(q);
+			unsigned char *s2;
+			long byte2;
 
-			binsm(q, s, (int) (byte - bw->cursor->byte));
-			p_goto_eof(q);
-			binsc(q, '\n');
+			pprevl(r);
+			byte2 = r->byte;
+			p_goto_bol(r);
+			s2 = brs(r, (int)(byte2 - r->byte));
+			prm(r);
+			byte2 = strcmp(s, s2);
+			joe_free(s2);
+			if (byte2) {
+				binsm(q, s, (int)(byte - bw->cursor->byte));
+				p_goto_eof(q);
+				binsc(q, '\n');
+			}
 			prm(q);
 		} else {
 			P *q = pdup(pw->hist->bof);
