@@ -19,7 +19,7 @@
 #include "config.h"
 #include <stdlib.h>
 
-__RCSID("$MirOS: contrib/code/jupp/i18n.c,v 1.31 2017/12/06 21:46:55 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/i18n.c,v 1.32 2017/12/07 01:00:31 tg Exp $");
 
 #include "charmap.h"
 #include "utils.h"
@@ -6938,6 +6938,7 @@ CPPFLAGS+=	-DTEST -DTEST_I18N
 
 .ifdef __CRAZY
 COPTS+=		-Wno-unused-parameter -Wno-cast-qual
+COPTS+=		-Wno-strict-prototypes
 .endif
 
 .include <bsd.prog.mk>
