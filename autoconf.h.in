@@ -38,6 +38,9 @@
 /* Define to 1 if you have the <fcntl.h> header file. */
 #undef HAVE_FCNTL_H
 
+/* Define to 1 if you have the `fork' function. */
+#undef HAVE_FORK
+
 /* Define to 1 if fseeko (and presumably ftello) exists and is declared. */
 #undef HAVE_FSEEKO
 
@@ -119,9 +122,6 @@
 
 /* We have SELinux functions */
 #undef HAVE_SELINUX_FUN
-
-/* We have SELinux headers */
-#undef HAVE_SELINUX_HDR
 
 /* Define to 1 if you have the <selinux/selinux.h> header file. */
 #undef HAVE_SELINUX_SELINUX_H
@@ -237,6 +237,9 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
+/* Define to 1 if you have the `unsetenv' function. */
+#undef HAVE_UNSETENV
+
 /* Define to 1 if you have the <util.h> header file. */
 #undef HAVE_UTIL_H
 
@@ -251,6 +254,12 @@
 
 /* Define if isblank() works with expressions with side effects */
 #undef HAVE_WORKING_ISBLANK
+
+/* Unix absolute paths base */
+#undef JOERC
+
+/* Use Win32 argv0-relative paths? */
+#undef JUPP_WIN32RELOC
 
 /* Define to 1 if `lstat' dereferences a symlink specified with a trailing
    slash. */
@@ -276,9 +285,6 @@
 
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
-
-/* Define to 1 if the C compiler supports function prototypes. */
-#undef PROTOTYPES
 
 /* Define as the return type of signal handlers (`int' or `void'). */
 #undef RETSIGTYPE
@@ -307,6 +313,9 @@
 /* The size of `void *', as computed by sizeof. */
 #undef SIZEOF_VOID_P
 
+/* Reduce memory footprint slightly */
+#undef SMALL
+
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
@@ -319,6 +328,12 @@
 /* Version number of package */
 #undef VERSION
 
+/* We have fork(2) and want to use it */
+#undef WANT_FORK
+
+/* Can we use the FPU? */
+#undef WANT_MATH
+
 /* Number of bits in a file offset, on hosts where this is settable. */
 #undef _FILE_OFFSET_BITS
 
@@ -327,18 +342,6 @@
 
 /* Define for large files, on AIX-style hosts. */
 #undef _LARGE_FILES
-
-/* Check to see if we can use strict prototypes */
-#ifndef PARAMS
-#  ifdef PROTOTYPES
-#    define PARAMS(protos) protos
-#  else
-#    define PARAMS(protos) ()
-#  endif
-#endif
-
-/* Define like PROTOTYPES; this can be used by system headers. */
-#undef __PROTOTYPES
 
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
