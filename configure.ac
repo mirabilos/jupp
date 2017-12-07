@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.64 2017/12/06 21:16:55 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.65 2017/12/07 00:48:10 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -6,7 +6,7 @@
 AC_PREREQ(2.54)
 
 #### Here's the only place where to change version number ####
-AC_INIT(joe, 3.1jupp31dev)
+AC_INIT(joe, 3.1jupp32)
 #### But see main.c for the Copyright (c) owner and year! ####
 AC_CONFIG_SRCDIR([b.c])
 
@@ -256,6 +256,13 @@ else
 	echo "DISabling Math support for lack of an FPU!"
 fi
 
+AC_ARG_ENABLE([small],
+[  --enable-small          reduce memory footprint by a few KiB],
+	use_small=$enableval, use_small=no)
+if test x"$use_small" = x"yes"; then
+	# for constrained systems (like 8 MiB RAM total) only
+	AC_DEFINE([SMALL], [1], [Reduce memory footprint slightly])
+fi
 
 AC_CHECK_DECLS([strlcpy, strlcat, popen])
 AC_CHECK_DECLS([ctime], [], [], [AC_INCLUDES_DEFAULT
