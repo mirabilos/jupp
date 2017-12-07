@@ -9,10 +9,9 @@
 #define _JOE_B_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_b_h, "$MirOS: contrib/code/jupp/b.h,v 1.8 2017/12/06 23:17:32 tg Exp $");
+__IDSTRING(rcsid_b_h, "$MirOS: contrib/code/jupp/b.h,v 1.9 2017/12/07 00:35:13 tg Exp $");
 #endif
 
-/* 31744 */
 extern unsigned char stdbuf[stdsiz];
 
 extern int force;		/* Set to have final '\n' added to file */
