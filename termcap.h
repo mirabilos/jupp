@@ -9,7 +9,7 @@
 #define _JOE_TERMCAP_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_termcap_h, "$MirOS: contrib/code/jupp/termcap.h,v 1.8 2017/12/06 23:17:35 tg Exp $");
+__IDSTRING(rcsid_termcap_h, "$MirOS: contrib/code/jupp/termcap.h,v 1.9 2017/12/08 02:46:46 tg Exp $");
 #endif
 
 /* CAP *getcap(char *s,int baud,void (*out)(void *outptr,char c),void *outptr);
@@ -64,21 +64,21 @@ CAP *setcap(CAP *cap, unsigned int baudrate, void (*out) (unsigned char *, unsig
  * the buffer used to load the termcap entry.  It should not be modified or
  * freed.
  */
-unsigned char *jgetstr(CAP *cap, unsigned char *name);
+const unsigned char *jgetstr(CAP *cap, const unsigned char *name);
 
 /* int getflag(CAP *cap,char *name);
  *
  * Return true if the named capability is found in 'cap'.  A fast binary
  * search is used to lookup the capability.
  */
-int getflag(CAP *cap, unsigned char *name);
+int getflag(CAP *cap, const unsigned char *name);
 
 /* int getnum(CAP *cap,char *name);
  *
  * Return value of numeric capability or return -1 if it's not found.  A fast
  * binary search is used to lookup the capability.
  */
-int getnum(CAP *cap, unsigned char *name);
+int getnum(CAP *cap, const unsigned char *name);
 
 /* void rmcap(CAP *cap);
  *
@@ -102,7 +102,8 @@ void rmcap(CAP *cap);
 
    'a0' - 'a1' are the arguments for the string
 */
-void texec(CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int a3);
+void texec(CAP *cap, const unsigned char *s, int l,
+    int a0, int a1, int a2, int a3);
 
 /* int tcost(CAP *cap,char *str, int l, int a0, int a1, int a2, int a3);
    Return cost in number of characters which need to be sent
@@ -120,7 +121,8 @@ void texec(CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int a3);
 
    'a0' - 'a3' are arguements passed to the string
 */
-int tcost(CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int a3);
+int tcost(CAP *cap, const unsigned char *s, int l,
+    int a0, int a1, int a2, int a3);
 
 /* char *tcompile(CAP *cap,char *str,int a0,int a1,int a2,int a3);
 
@@ -128,7 +130,8 @@ int tcost(CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int a3);
    string (see vs.h) containing the compiled string capability.
    Pad characters are not placed in the string.
 */
-unsigned char *tcompile(CAP *cap, unsigned char *s, int a0, int a1, int a2, int a3);
+unsigned char *tcompile(CAP *cap, const unsigned char *s,
+    int a0, int a1, int a2, int a3);
 
 int tgetent(char *, const char *);
 int tgetflag(char *);

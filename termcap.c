@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/termcap.c,v 1.21 2017/12/08 02:28:06 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/termcap.c,v 1.22 2017/12/08 02:46:46 tg Exp $");
 
 #include <sys/stat.h>
 #include <stdlib.h>
@@ -349,7 +349,7 @@ CAP *getcap(unsigned char *name, unsigned int baud, void (*out) (unsigned char *
 	varm(npbuf);
 	vsrm(name);
 
-	cap->pad = jgetstr(cap, US "pc");
+	cap->pad = jgetstr(cap, UC "pc");
 	if (dopadding)
 		cap->dopadding = 1;
 	else
@@ -362,7 +362,8 @@ CAP *getcap(unsigned char *name, unsigned int baud, void (*out) (unsigned char *
 	return setcap(cap, baud, out, outptr);
 }
 
-static struct sortentry *findcap(CAP *cap, unsigned char *name)
+static struct sortentry *
+findcap(CAP *cap, const unsigned char *name)
 {
 	int x, y, z;
 	int found;
@@ -392,7 +393,8 @@ CAP *setcap(CAP *cap, unsigned int baud, void (*out) (unsigned char *, unsigned 
 	return cap;
 }
 
-int getflag(CAP *cap, unsigned char *name)
+int
+getflag(CAP *cap, const unsigned char *name)
 {
 #ifdef TERMINFO
 	if (cap->abuf)
@@ -401,13 +403,15 @@ int getflag(CAP *cap, unsigned char *name)
 	return findcap(cap, name) != NULL;
 }
 
-unsigned char *jgetstr(CAP *cap, unsigned char *name)
+const unsigned char *
+jgetstr(CAP *cap, const unsigned char *name)
 {
 	struct sortentry *s;
 
 #ifdef TERMINFO
 	if (cap->abuf)
-		return (unsigned char *)tgetstr((char *)name, (char **)&cap->abufp);
+		return (const unsigned char *)tgetstr((char *)name,
+		    (char **)&cap->abufp);
 #endif
 	s = findcap(cap, name);
 	if (s)
@@ -416,7 +420,8 @@ unsigned char *jgetstr(CAP *cap, unsigned char *name)
 		return NULL;
 }
 
-int getnum(CAP *cap, unsigned char *name)
+int
+getnum(CAP *cap, const unsigned char *name)
 {
 	struct sortentry *s;
 
@@ -426,7 +431,7 @@ int getnum(CAP *cap, unsigned char *name)
 #endif
 	s = findcap(cap, name);
 	if (s && s->value)
-		return atoi((char *)(s->value));
+		return atoi((const char *)(s->value));
 	return -1;
 }
 
@@ -440,7 +445,8 @@ void rmcap(CAP *cap)
 	free(cap);
 }
 
-static unsigned char escape(unsigned char **s)
+static unsigned char
+escape(const unsigned char **s)
 {
 	unsigned char c = *(*s)++;
 	int i;
@@ -496,7 +502,8 @@ static int outout(int c)
 }
 #endif
 
-void texec(CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int a3)
+void
+texec(CAP *cap, const unsigned char *s, int l, int a0, int a1, int a2, int a3)
 {
 	int c, tenth = 0, x;
 	int args[4];
@@ -512,7 +519,7 @@ void texec(CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int a3)
 		unsigned char *aa;
 
 		outcap = cap;
-		aa = (unsigned char *)tgoto((char *)s, a1, a0);
+		aa = (unsigned char *)tgoto((const char *)s, a1, a0);
 		tputs((char *)aa, l, outout);
 		return;
 	}
@@ -679,9 +686,9 @@ static void cst(unsigned char *ptr, unsigned char c)
 	++total;
 }
 
-int tcost(CAP *cap, unsigned char *s, int l, int a0, int a1, int a2, int a3)
+int tcost(CAP *cap, const unsigned char *s, int l, int a0, int a1, int a2, int a3)
 {
-	void (*out) (unsigned char *, unsigned char) = cap->out;
+	void (*out)(unsigned char *, unsigned char) = cap->out;
 
 	if (!s)
 		return 10000;
@@ -698,7 +705,8 @@ static void cpl(unsigned char *ptr, unsigned char c)
 	ssp = vsadd(ssp, c);
 }
 
-unsigned char *tcompile(CAP *cap, unsigned char *s, int a0, int a1, int a2, int a3)
+unsigned char *
+tcompile(CAP *cap, const unsigned char *s, int a0, int a1, int a2, int a3)
 {
 	void (*out) (unsigned char *, unsigned char) = cap->out;
 	int divider = cap->div;

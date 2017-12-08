@@ -2,7 +2,7 @@
 #define _JOE_TYPES_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.27 2017/12/08 02:00:42 tg Exp $");
+__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.28 2017/12/08 02:46:46 tg Exp $");
 #endif
 
 /* Prefix to make string constants unsigned */
@@ -351,11 +351,11 @@ struct scrn {
 	int	li;		/* Screen height */
 	int	co;		/* Screen width */
 
-	unsigned char	*ti;		/* Initialization string */
-	unsigned char	*cl;		/* Home and clear screen... really an
-				   init. string */
-	unsigned char	*cd;		/* Clear to end of screen */
-	unsigned char	*te;		/* Restoration string */
+	const unsigned char *ti;	/* Initialisation string */
+	const unsigned char *cl;	/* Home and clear screen... really an
+					   init. string */
+	const unsigned char *cd;	/* Clear to end of screen */
+	const unsigned char *te;	/* Restoration string */
 
 	int	haz;		/* Terminal can't print ~s */
 	int	os;		/* Terminal overstrikes */
@@ -364,73 +364,73 @@ struct scrn {
 	int	am;		/* Terminal has autowrap, but not magicwrap */
 	int	xn;		/* Terminal has magicwrap */
 
-	unsigned char	*so;		/* Enter standout (inverse) mode */
-	unsigned char	*se;		/* Exit standout mode */
+	const unsigned char *so;	/* Enter standout (inverse) mode */
+	const unsigned char *se;	/* Exit standout mode */
 
-	unsigned char	*us;		/* Enter underline mode */
-	unsigned char	*ue;		/* Exit underline mode */
-	unsigned char	*uc;		/* Single time underline character */
+	const unsigned char *us;	/* Enter underline mode */
+	const unsigned char *ue;	/* Exit underline mode */
+	const unsigned char *uc;	/* Single time underline character */
 
 	int	ms;		/* Ok to move when in standout/underline mode */
 
-	unsigned char	*mb;		/* Enter blinking mode */
-	unsigned char	*md;		/* Enter bold mode */
-	unsigned char	*mh;		/* Enter dim mode */
-	unsigned char	*mr;		/* Enter inverse mode */
-	unsigned char	*me;		/* Exit above modes */
+	const unsigned char *mb;	/* Enter blinking mode */
+	const unsigned char *md;	/* Enter bold mode */
+	const unsigned char *mh;	/* Enter dim mode */
+	const unsigned char *mr;	/* Enter inverse mode */
+	const unsigned char *me;	/* Exit above modes */
 
-	unsigned char	*Sb;		/* Set background color */
-	unsigned char	*Sf;		/* Set foregrond color */
+	const unsigned char *Sb;	/* Set background color */
+	const unsigned char *Sf;	/* Set foregrond color */
 	int	ut;		/* Screen erases with background color */
 
 	int	da, db;		/* Extra lines exist above, below */
-	unsigned char	*al, *dl, *AL, *DL;	/* Insert/delete lines */
-	unsigned char	*cs;		/* Set scrolling region */
+	const unsigned char *al, *dl, *AL, *DL;	/* Insert/delete lines */
+	const unsigned char *cs;		/* Set scrolling region */
 	int	rr;		/* Set for scrolling region relative addressing */
-	unsigned char	*sf, *SF, *sr, *SR;	/* Scroll */
+	const unsigned char *sf, *SF, *sr, *SR;	/* Scroll */
 
-	unsigned char	*dm, *dc, *DC, *ed;	/* Delete characters */
-	unsigned char	*im, *ic, *IC, *ip, *ei;	/* Insert characters */
+	const unsigned char *dm, *dc, *DC, *ed;	/* Delete characters */
+	const unsigned char *im, *ic, *IC, *ip, *ei;	/* Insert characters */
 	int	mi;		/* Set if ok to move while in insert mode */
 
-	unsigned char	*bs;		/* Move cursor left 1 */
+	const unsigned char *bs;	/* Move cursor left 1 */
 	int	cbs;
-	unsigned char	*lf;		/* Move cursor down 1 */
+	const unsigned char *lf;	/* Move cursor down 1 */
 	int	clf;
-	unsigned char	*up;		/* Move cursor up 1 */
+	const unsigned char *up;	/* Move cursor up 1 */
 	int	cup;
-	unsigned char	*nd;		/* Move cursor right 1 */
+	const unsigned char *nd;	/* Move cursor right 1 */
 
-	unsigned char	*ta;		/* Move cursor to next tab stop */
+	const unsigned char *ta;	/* Move cursor to next tab stop */
 	int	cta;
-	unsigned char	*bt;		/* Move cursor to previous tab stop */
+	const unsigned char *bt;	/* Move cursor to previous tab stop */
 	int	cbt;
-	int	tw;		/* Tab width */
+	int	tw;			/* Tab width */
 
-	unsigned char	*ho;		/* Home cursor to upper left */
+	const unsigned char *ho;	/* Home cursor to upper left */
 	int	cho;
-	unsigned char	*ll;		/* Home cursor to lower left */
+	const unsigned char *ll;	/* Home cursor to lower left */
 	int	cll;
-	unsigned char	*cr;		/* Move cursor to left edge */
+	const unsigned char *cr;	/* Move cursor to left edge */
 	int	ccr;
-	unsigned char	*RI;		/* Move cursor right n */
+	const unsigned char *RI;	/* Move cursor right n */
 	int	cRI;
-	unsigned char	*LE;		/* Move cursor left n */
+	const unsigned char *LE;	/* Move cursor left n */
 	int	cLE;
-	unsigned char	*UP;		/* Move cursor up n */
+	const unsigned char *UP;	/* Move cursor up n */
 	int	cUP;
-	unsigned char	*DO;		/* Move cursor down n */
+	const unsigned char *DO;	/* Move cursor down n */
 	int	cDO;
-	unsigned char	*ch;		/* Set cursor column */
+	const unsigned char *ch;	/* Set cursor column */
 	int	cch;
-	unsigned char	*cv;		/* Set cursor row */
+	const unsigned char *cv;	/* Set cursor row */
 	int	ccv;
-	unsigned char	*cV;		/* Goto beginning of specified line */
+	const unsigned char *cV;	/* Goto beginning of specified line */
 	int	ccV;
-	unsigned char	*cm;		/* Set cursor row and column */
+	const unsigned char *cm;	/* Set cursor row and column */
 	int	ccm;
 
-	unsigned char	*ce;		/* Clear to end of line */
+	const unsigned char *ce;	/* Clear to end of line */
 	int	cce;
 
 	/* Basic abilities */
@@ -473,7 +473,7 @@ struct cap {
 
 	int	div;		/* tenths of MS per char */
 	int	baud;		/* Baud rate */
-	unsigned char	*pad;		/* Padding string or NULL to use NUL */
+	const unsigned char *pad;	/* Padding string or NULL to use NUL */
 	void	(*out) (unsigned char *, unsigned char);		/* Character output routine */
 	void	*outptr;	/* First arg passed to output routine.  Second
 				   arg is character to write */
