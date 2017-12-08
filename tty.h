@@ -9,7 +9,7 @@
 #define _JOE_TTY_H 1
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_tty_h, "$MirOS: contrib/code/jupp/tty.h,v 1.13 2017/12/06 23:02:05 tg Exp $");
+__IDSTRING(rcsid_tty_h, "$MirOS: contrib/code/jupp/tty.h,v 1.14 2017/12/08 02:04:01 tg Exp $");
 #endif
 
 /* void ttopen(void);  Open the tty (attached to stdin) for use inside of JOE
@@ -85,7 +85,11 @@ extern int obufp;
 extern int obufsiz;
 extern unsigned char *obuf;
 
-#define ttputc(c) { obuf[obufp++] = (c); if(obufp == obufsiz) ttflsh(); }
+#define ttputc(c) do {		\
+	obuf[obufp++] = (c);	\
+	if (obufp == obufsiz)	\
+		ttflsh();	\
+} while (/* CONSTCOND */ 0)
 
 /* void ttputs(char *s);  Write a string to the output buffer.  Any time the
  * output buffer gets full, call ttflsh()
@@ -135,7 +139,7 @@ extern int leave;
  * It is called with 'n' set to the number of the caught signal or 0 if the
  * input closed.
  */
-RETSIGTYPE ttsig(int sig)__attribute__((__noreturn__));
+RETSIGTYPE ttsig(int sig) __attribute__((__noreturn__));
 
 /* void ttgtsz(int *x,int *y);  Get size of screen from ttsize/winsize
  * structure */
@@ -168,7 +172,9 @@ void signrm(int);
  *   Function to call when process dies in 'die'
  *   The first arg passed to func and die is object and dieobj
  */
-MPX *mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args, void (*func)(B*, unsigned char *, int), void *object, void (*die)(B*), void *dieobj);
+MPX *mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args,
+    void (*func)(B *, unsigned char *, int), void *object,
+    void (*die)(B *), void *dieobj);
 
 
 extern int noxon;
