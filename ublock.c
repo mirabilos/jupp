@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.25 2017/12/08 01:16:37 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.26 2017/12/08 01:18:06 tg Exp $");
 
 #include <sys/wait.h>
 #include <limits.h>
@@ -871,7 +871,7 @@ int doinsf(BW *bw, unsigned char *s, void *object, int *notify)
 {
 	if (notify)
 		*notify = 1;
-	if (square)
+	if (square) {
 		if (markv(1)) {
 			B *tmp;
 			long width = markk->xcol - markb->xcol;
@@ -908,6 +908,7 @@ int doinsf(BW *bw, unsigned char *s, void *object, int *notify)
 		} else {
 			msgnw(bw->parent, UC "No block");
 			return -1;
+		}
 	} else {
 		int ret = 0;
 		B *tmp = bload(s);
