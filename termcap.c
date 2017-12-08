@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/termcap.c,v 1.22 2017/12/08 02:46:46 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/termcap.c,v 1.23 2017/12/08 02:57:18 tg Exp $");
 
 #include <sys/stat.h>
 #include <stdlib.h>
@@ -39,7 +39,8 @@ static const unsigned char defentry[] = "\
 
 /* Return true if termcap line matches name */
 
-static int match(unsigned char *s, unsigned char *name)
+static int
+match(const unsigned char *s, const unsigned char *name)
 {
 	if (s[0] == 0 || s[0] == '#')
 		return 0;
@@ -58,7 +59,8 @@ static int match(unsigned char *s, unsigned char *name)
 
 /* Find termcap entry in a file */
 
-static unsigned char *lfind(unsigned char *s, int pos, FILE *fd, unsigned char *name)
+static unsigned char *
+lfind(unsigned char *s, int pos, FILE *fd, const unsigned char *name)
 {
 	int c, x;
 
@@ -87,7 +89,7 @@ static unsigned char *lfind(unsigned char *s, int pos, FILE *fd, unsigned char *
 			else
 				return vstrunc(s, x);
 		else if (c == '\r')
-			/* do nothing */;
+			/* nothing */;
 		else {
 			s = vsset(s, x, c);
 			++x;
@@ -100,7 +102,7 @@ static unsigned char *lfind(unsigned char *s, int pos, FILE *fd, unsigned char *
 			else
 				break;
 		else if (c == '\r')
-			/* do nothing */;
+			/* nothing */;
 		else {
 			s = vsset(s, x, c);
 			++x;
@@ -111,7 +113,8 @@ static unsigned char *lfind(unsigned char *s, int pos, FILE *fd, unsigned char *
 
 /* Lookup termcap entry in index */
 
-static off_t findidx(FILE *file, unsigned char *name)
+static off_t
+findidx(FILE *file, const unsigned char *name)
 {
 	unsigned char buf[80];
 	off_t addr = 0;
@@ -255,7 +258,7 @@ CAP *getcap(unsigned char *name, unsigned int baud, void (*out) (unsigned char *
 	do {
 		cap->tbuf[x] = 0;
 		while (x && cap->tbuf[--x] != ':')
-			/* do nothing */;
+			/* nothing */;
 	} while (x && (!cap->tbuf[x + 1] || cap->tbuf[x + 1] == ':'));
 
 	if (cap->tbuf[x + 1] == 't' && cap->tbuf[x + 2] == 'c' && cap->tbuf[x + 3] == '=') {
@@ -272,7 +275,7 @@ CAP *getcap(unsigned char *name, unsigned int baud, void (*out) (unsigned char *
  doline:
 	pp = cap->tbuf + ti;
 
-/* Process line at pp */
+	/* Process line at pp */
 
  loop:
 	while (*pp && *pp != ':')
@@ -296,10 +299,8 @@ CAP *getcap(unsigned char *name, unsigned int baud, void (*out) (unsigned char *
 		x = 0;
 		y = cap->sortlen;
 		z = -1;
-		if (!y) {
-			/* dead store: z = 0; */
+		if (!y)
 			goto in;
-		}
 		while (z != (x + y) / 2) {
 			int found;
 
@@ -510,7 +511,7 @@ texec(CAP *cap, const unsigned char *s, int l, int a0, int a1, int a2, int a3)
 	int vars[128];
 	int *a = args;
 
-/* Do nothing if there is no string */
+	/* Do nothing if there is no string */
 	if (!s)
 		return;
 
@@ -525,13 +526,13 @@ texec(CAP *cap, const unsigned char *s, int l, int a0, int a1, int a2, int a3)
 	}
 #endif
 
-/* Copy args into array (yuk) */
+	/* Copy args into array (yuk) */
 	args[0] = a0;
 	args[1] = a1;
 	args[2] = a2;
 	args[3] = a3;
 
-/* Get tenths of MS of padding needed */
+	/* Get tenths of MS of padding needed */
 	while (*s >= '0' && *s <= '9')
 		tenth = tenth * 10 + *s++ - '0';
 	tenth *= 10;
@@ -540,13 +541,13 @@ texec(CAP *cap, const unsigned char *s, int l, int a0, int a1, int a2, int a3)
 		tenth += *s++ - '0';
 	}
 
-/* Check if we have to multiply by number of lines */
+	/* Check if we have to multiply by number of lines */
 	if (*s == '*') {
 		++s;
 		tenth *= l;
 	}
 
-/* Output string */
+	/* Output string */
 	while ((c = *s++) != '\0')
 		if (c == '%' && *s) {
 			switch (x = a[0], c = escape(&s)) {

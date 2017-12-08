@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.37 2017/12/08 02:46:45 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.38 2017/12/08 02:57:17 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -474,8 +474,8 @@ SCRN *nopen(CAP *cap)
 	}
 	if (pastetite && t->cap->paste_on && t->cap->paste_off) {
 		if (notite) {
-			t->ti = (void *)strdup(t->cap->paste_on);
-			t->te = (void *)strdup(t->cap->paste_off);
+			t->ti = t->cap->paste_on;
+			t->te = t->cap->paste_off;
 		} else {
 			size_t n1, n2;
 			char *cp;
@@ -643,7 +643,7 @@ SCRN *nopen(CAP *cap)
 
 	t->cce = tcost(t->cap, t->ce = jgetstr(t->cap, UC "ce"), 1, 2, 2, 0, 0);
 
-/* Make sure terminal can do absolute positioning */
+	/* Make sure terminal can do absolute positioning */
 	if (t->cm)
 		goto ok;
 	if (t->ch && t->cv)
@@ -657,38 +657,33 @@ SCRN *nopen(CAP *cap)
 	leave = 1;
 	ttclose();
 	signrm(0);
-#ifdef DEBUG
-	/* these are strings, but I do not know if %s is appropriate -mirabilos */
-	fprintf(stderr,"cm=%d ch=%d cv=%d ho=%d lf=%d DO=%d ll=%d up=%d UP=%d cr=%d\n",
-		       t->cm, t->ch, t->cv, t->ho, t->lf, t->DO, t->ll, t->up, t->UP, t->cr);
-#endif
 	fprintf(stderr,"Sorry, your terminal can't do absolute cursor positioning.\nIt's broken\n");
 	return NULL;
  ok:
 
-/* Determine if we can scroll */
+	/* Determine if we can scroll */
 	if (((t->sr || t->SR) && (t->sf || t->SF) && t->cs) || ((t->al || t->AL) && (t->dl || t->DL)))
 		t->scroll = 1;
 	else if (baud < 38400)
 		mid = 1;
 
-/* Determine if we can ins/del within lines */
+	/* Determine if we can ins/del within lines */
 	if ((t->im || t->ic || t->IC) && (t->dc || t->DC))
 		t->insdel = 1;
 
-/* Adjust for high baud rates */
+	/* Adjust for high baud rates */
 	if (baud >= 38400) {
 		t->scroll = 0;
 		t->insdel = 0;
 	}
 
-/* Send out terminal initialization string */
+	/* Send out terminal initialisation string */
 	if (t->ti)
 		texec(t->cap, t->ti, 1, 0, 0, 0, 0);
 	if (!skiptop && t->cl)
 		texec(t->cap, t->cl, 1, 0, 0, 0, 0);
 
-/* Initialize variable screen size dependant vars */
+	/* Initialise variable screen size-dependent vars */
 	t->htab = calloc(256, sizeof(struct s_hentry));
 
 	nresize(t, t->co, t->li);
@@ -734,9 +729,10 @@ void nresize(SCRN *t, int w, int h)
 	nredraw(t);
 }
 
-/* Calculate cost of positioning the cursor using only relative cursor
- * positioning functions: t->(lf, DO, up, UP, bs, LE, RI, ta, bt) and rewriting
- * characters (to move right)
+/*
+ * Calculate cost of positioning the cursor using only relative cursor
+ * positioning functions: t->(lf, DO, up, UP, bs, LE, RI, ta, bt) and
+ * rewriting characters (to move right)
  *
  * This doesn't use the am and bw capabilities although it probably could.
  */
@@ -745,11 +741,11 @@ static int relcost(register SCRN *t, register int x, register int y, register in
 {
 	int cost = 0;
 
-/* If we don't know the cursor position, force use of absolute positioning */
+	/* If we don't know the cursor position, force use of absolute positioning */
 	if (oy == -1 || ox == -1)
 		return 10000;
 
-/* First adjust row */
+	/* First adjust row */
 	if (y > oy) {
 		int dist = y - oy;
 
@@ -792,9 +788,9 @@ static int relcost(register SCRN *t, register int x, register int y, register in
 			return 10000;
 	}
 
-/* Now adjust column */
+	/* Now adjust column */
 
-/* Use tabs */
+	/* Use tabs */
 	if (x > ox && t->ta) {
 		int dist = x - ox;
 		int ntabs = (dist + ox % t->tw) / t->tw;
@@ -838,7 +834,7 @@ static int relcost(register SCRN *t, register int x, register int y, register in
 			return cost + cstover;
 	}
 
-/* Use simple motions */
+	/* Use simple motions */
 	if (x < ox) {
 		int dist = ox - x;
 
@@ -884,9 +880,10 @@ static void cposs(register SCRN *t, register int x, register int y)
 	int hy;
 	int hl;
 
-/* Home y position is usually 0, but it is 'top' if we have scrolling region
- * relative addressing
- */
+	/*
+	 * Home y position is usually 0, but it is 'top' if we have
+	 * scrolling region relative addressing
+	 */
 	if (t->rr) {
 		hy = t->top;
 		hl = t->bot - 1;
@@ -895,14 +892,16 @@ static void cposs(register SCRN *t, register int x, register int y)
 		hl = t->li - 1;
 	}
 
-/* Assume best way is with only using relative cursor positioning */
+	/* Assume best way is with only using relative cursor positioning */
 
 	bestcost = relcost(t, x, y, t->x, t->y);
 	bestway = 0;
 
-/* Now check if combinations of absolute cursor positioning functions are
- * better (or necessary in case one or both cursor positions are unknown)
- */
+	/*
+	 * Now check if combinations of absolute cursor positioning
+	 * functions are better (or necessary in case one or both cursor
+	 * positions are unknown)
+	 */
 
 	if (t->ccm < bestcost) {
 		cost = tcost(t->cap, t->cm, 1, y, x, 0, 0);
@@ -996,9 +995,11 @@ static void cposs(register SCRN *t, register int x, register int y)
 		}
 	}
 
-/* Do absolute cursor positioning if we don't know the cursor position or
- * if it is faster than doing only relative cursor positioning
- */
+	/*
+	 * Do absolute cursor positioning if we don't know the cursor
+	 * position or if it is faster than doing only relative cursor
+	 * positioning
+	 */
 
 	switch (bestway) {
 	case 1:
@@ -1069,9 +1070,9 @@ static void cposs(register SCRN *t, register int x, register int y)
 		break;
 	}
 
-/* Use relative cursor position functions if we're not there yet */
+	/* Use relative cursor position functions if we're not there yet */
 
-/* First adjust row */
+	/* First adjust row */
 	if (y > t->y) {
 		/* Have to go down */
 		if (!t->lf || t->cDO < (y - t->y) * t->clf) {
@@ -1094,7 +1095,7 @@ static void cposs(register SCRN *t, register int x, register int y)
 			}
 	}
 
-/* Use tabs */
+	/* Use tabs */
 	if (x > t->x && t->ta) {
 		int ntabs = (x - t->x + t->x % t->tw) / t->tw;
 		int cstunder = x % t->tw + t->cta * ntabs;
@@ -1147,7 +1148,7 @@ static void cposs(register SCRN *t, register int x, register int y)
 		}
 	}
 
-/* Now adjust column */
+	/* Now adjust column */
 	if (x < t->x) {
 		/* Have to go left */
 		if (!t->bs || t->cLE < (t->x - x) * t->cbs) {
@@ -1170,28 +1171,6 @@ static void cposs(register SCRN *t, register int x, register int y)
 				++t->x;
 			}
 		}
-
-		/* if (t->cRI < x - t->x) { */
-/*		} else {
-			int *s = t->scrn + t->x + t->y * t->co;
-			int *a = t->attr + t->x + t->y * t->co;
-
-			if (t->ins)
-				clrins(t);
-			while (x > t->x) {
-				int atr, c;
-				if(*s==-1) c=' ', atr=0;
-				else c= *s, atr= *a;
-
-				if (atr != t->attrib)
-					set_attr(t, atr);
-				utf8_putc(c);
-				++s;
-				++a;
-				++t->x;
-			}
-		}
-*/
 	}
 }
 
@@ -1311,7 +1290,7 @@ void magic(SCRN *t, int y, int *cs, int *ca,int *s, int *a, int placex)
 
 	msetI(ofst, 0, t->co);
 
-/* Build hash table */
+	/* Build hash table */
 	for (x = 0; x != t->co - 1; ++x) {
 		t->ary[aryx].next = htab[cs[x] & 255].next;
 		t->ary[aryx].loc = x;
@@ -1319,7 +1298,7 @@ void magic(SCRN *t, int y, int *cs, int *ca,int *s, int *a, int placex)
 		htab[cs[x] & 255].next = aryx++;
 	}
 
-/* Build offset table */
+	/* Build offset table */
 	for (x = 0; x < t->co - 1;)
 		if (htab[s[x] & 255].loc >= 15)
 			ofst[x++] = t->co - 1;
@@ -1371,7 +1350,7 @@ void magic(SCRN *t, int y, int *cs, int *ca,int *s, int *a, int placex)
 			x += maxlen;
 		}
 
-/* Apply scrolling commands */
+	/* Apply scrolling commands */
 
 	for (x = 0; x != t->co - 1; ++x) {
 		int q = ofst[x];
