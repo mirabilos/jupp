@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.27 2017/12/08 02:17:20 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.28 2017/12/08 02:28:04 tg Exp $");
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -2170,13 +2170,13 @@ B *bload(unsigned char *s)
 	b->rdonly = b->o.readonly;
 
 	/* Close stream */
-err:
+ err:
 	if (s[0] == '!')
 		pclose(fi);
 	else if (strcmp(n, "-"))
 		fclose(fi);
 
-opnerr:
+ opnerr:
 	if (s[0] == '!') {
 		ttopnn();
 		nreturn(maint->t);
@@ -2398,7 +2398,7 @@ int bsavefd(P *p, int fd, long int size)
 	}
 	prm(np);
 	return error = 0;
-err:
+ err:
 	prm(np);
 	return error = 5;
 }
@@ -2465,7 +2465,7 @@ int bsave(P *p, unsigned char *s, long int size, int flag)
 		prm(q);
 	}
 
-err:
+ err:
 	if (s[0] == '!')
 		pclose(f);
 	else if (strcmp(s, "-"))
@@ -2480,7 +2480,7 @@ err:
 			p->b->mod_time = sbuf.st_mtime;
 	}
 
-opnerr:
+ opnerr:
 	if (s[0] == '!' || !strcmp(s, "-")) {
 		ttopnn();
 		nreturn(maint->t);

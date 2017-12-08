@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uisrch.c,v 1.14 2017/12/08 02:17:24 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uisrch.c,v 1.15 2017/12/08 02:28:08 tg Exp $");
 
 #include <stdlib.h>
 
@@ -197,9 +197,7 @@ static int itype(BW *bw, int c, struct isrch *isrch, int *notify)
 		unsigned char buf[16];
 		int buf_len;
 		/* Search */
-
-		in:
-
+ in:
 		/* Convert to/from utf-8 */
 		if (locale_map->type && !bw->b->o.charmap->type) {
 			utf8_encode(buf,c);

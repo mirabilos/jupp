@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/undo.c,v 1.9 2017/12/08 02:00:43 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/undo.c,v 1.10 2017/12/08 02:28:08 tg Exp $");
 
 #include <stdlib.h>
 
@@ -123,7 +123,7 @@ int uundo(BW *bw)
 	if (undo->ptr->link.prev == &undo->recs)
 		return -1;
 	upto = undo->ptr->link.prev->unit;
-      loop:
+ loop:
 	undo->ptr = undo->ptr->link.prev;
 	pgoto(bw->cursor, undo->ptr->where);
 	inundo = 1;

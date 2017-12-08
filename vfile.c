@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/vfile.c,v 1.14 2017/12/08 02:00:43 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/vfile.c,v 1.15 2017/12/08 02:28:08 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -46,7 +46,7 @@ void vflsh(void)
 
 	for (vfile = vfiles.link.next; vfile != &vfiles; vfile = vfile->link.next) {
 		last = -1;
-	      loop:
+ loop:
 		addr = LONG_MAX;
 		vlowest = NULL;
 		for (x = 0; x != HTSIZE; x++)
@@ -84,7 +84,7 @@ void vflshf(VFILE *vfile)
 	long addr;
 	int x;
 
-      loop:
+ loop:
 	addr = LONG_MAX;
 	vlowest = NULL;
 	for (x = 0; x != HTSIZE; x++)
@@ -195,7 +195,7 @@ unsigned char *vlock(VFILE *vfile, unsigned long addr)
 	if (write(2, "vfile: out of memory\n", 21)) {}
 	exit(1);
 
-      gotit:
+ gotit:
 	vp->addr = addr;
 	vp->vfile = vfile;
 	vp->dirty = 0;

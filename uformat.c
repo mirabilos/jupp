@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uformat.c,v 1.8 2017/12/08 02:00:42 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uformat.c,v 1.9 2017/12/08 02:28:07 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -62,7 +62,7 @@ int ucenter(BW *bw)
 	for (x = 0; x != (bw->o.lmargin + bw->o.rmargin) / 2 - (endcol - begcol) / 2; ++x)
 		binsc(p, ' ');
 
-      done:
+ done:
 	if (!pnextl(p)) {
 		binsc(p, '\n');
 		pgetc(p);
@@ -231,7 +231,7 @@ int ubop(BW *bw)
 {
 	P *q = pdup(bw->cursor);
 
-      up:
+ up:
 	while (pisnpara(q) && !pisbof(q) && (!within || !markb || q->byte > markb->byte))
 		pprevl(q);
 	pbop(q);
@@ -252,7 +252,7 @@ int ueop(BW *bw)
 {
 	P *q = pdup(bw->cursor);
 
-      up:
+ up:
 	while (pisnpara(q) && !piseof(q))
 		pnextl(q);
 	pbop(q);
@@ -475,8 +475,7 @@ int uformat(BW *bw)
 			prm(d);
 
 			/* Skip past the whitespace.  Skip over indentations */
-		      loop:
-
+ loop:
 			c = brch(b);
 			if (c == '\n') {
 				if (b->byte == curoff)

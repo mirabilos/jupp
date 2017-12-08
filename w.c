@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/w.c,v 1.11 2017/12/08 02:00:44 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/w.c,v 1.12 2017/12/08 02:28:08 tg Exp $");
 
 #include <stdlib.h>
 
@@ -263,7 +263,7 @@ void wfit(SCREEN *t)
 
 	dostaupd = 1;
 
-      tryagain:
+ tryagain:
 	y = t->wind;
 	left = t->h - y;
 	pw = NULL;
@@ -334,7 +334,7 @@ void wfit(SCREEN *t)
 						l = pw;
 				}
 				/* Scroll windows between l and w */
-			      loop1:
+ loop1:
 				if (l->ny >= 0 && l->y >= 0)
 					nscrldn(t->t, l->y, l->ny + uns_min(l->h, l->nh), l->ny - l->y);
 				if (w != l) {
@@ -351,7 +351,7 @@ void wfit(SCREEN *t)
 						l = pw;
 				}
 				/* Scroll windows between l and w */
-			      loop0:
+ loop0:
 				if (w->ny >= 0 && w->y >= 0)
 					nscrlup(t->t, w->ny, w->y + uns_min(w->h, w->nh), w->y - w->ny);
 				if (w != l) {
@@ -642,7 +642,7 @@ static int doabort(W *w, int *ret)
 	w->y = -2;
 	if (w->t->topwin == w)
 		w->t->topwin = w->link.next;
-      loop:
+ loop:
 	z = w->t->topwin;
 	do {
 		if (z->orgwin == w)

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/termcap.c,v 1.20 2017/12/08 02:00:41 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/termcap.c,v 1.21 2017/12/08 02:28:06 tg Exp $");
 
 #include <sys/stat.h>
 #include <stdlib.h>
@@ -64,7 +64,7 @@ static unsigned char *lfind(unsigned char *s, int pos, FILE *fd, unsigned char *
 
 	if (!s)
 		s = vsmk(1024);
-      loop:
+ loop:
 	while (c = getc(fd), c == ' ' || c == '\t' || c == '#')
 		do {
 			c = getc(fd);
@@ -212,7 +212,7 @@ CAP *getcap(unsigned char *name, unsigned int baud, void (*out) (unsigned char *
 
 	cap->tbuf = vstrunc(cap->tbuf, 0);
 
-      nextfile:
+ nextfile:
 	if (!npbuf[y]) {
 		fprintf(stderr, "Couldn't load termcap entry.  Using ansi default\n");
 		ti = 0;
@@ -250,7 +250,7 @@ CAP *getcap(unsigned char *name, unsigned int baud, void (*out) (unsigned char *
 	if (sLEN(cap->tbuf) == ti)
 		goto nextfile;
 
-      checktc:
+ checktc:
 	x = sLEN(cap->tbuf);
 	do {
 		cap->tbuf[x] = 0;
@@ -269,19 +269,19 @@ CAP *getcap(unsigned char *name, unsigned int baud, void (*out) (unsigned char *
 		goto nextfile;
 	}
 
-      doline:
+ doline:
 	pp = cap->tbuf + ti;
 
 /* Process line at pp */
 
-      loop:
+ loop:
 	while (*pp && *pp != ':')
 		++pp;
 	if (*pp) {
 		int q;
 
 		*pp++ = 0;
-	      loop1:
+ loop1:
 		if (pp[0] == ' ' || pp[0] == '\t')
 			goto loop;
 		for (q = 0; pp[q] && pp[q] != '#' && pp[q] != '=' && pp[q] != '@' && pp[q] != ':'; ++q) ;
@@ -323,7 +323,7 @@ CAP *getcap(unsigned char *name, unsigned int baud, void (*out) (unsigned char *
 					goto loop;
 			}
 		}
-	      in:
+ in:
 		if (cap->sortlen == sortsiz)
 			cap->sort = realloc(cap->sort, (sortsiz += 32) * sizeof(struct sortentry));
 		mmove(cap->sort + y + 1, cap->sort + y, (cap->sortlen++ - y) * sizeof(struct sortentry));

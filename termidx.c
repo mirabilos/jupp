@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/termidx.c,v 1.6 2017/12/02 02:07:33 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/termidx.c,v 1.7 2017/12/08 02:28:06 tg Exp $");
 
 #include <string.h>
 
@@ -18,7 +18,7 @@ static void gen(unsigned char *s, FILE *fd)
 	int c, x;
 	off_t addr = 0, oaddr;
 
-      loop:
+ loop:
 	while (c = getc(fd), c == ' ' || c == '\t' || c == '#')
 		do {
 			c = getc(fd);

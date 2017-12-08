@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.32 2017/12/08 02:17:21 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.33 2017/12/08 02:28:04 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -358,7 +358,8 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 
 	if (col == scr)
 		goto loop;
-      lp:			/* Display next character */
+ lp:
+	/* Display next character */
 	if (amnt)
 		do {
 			if (ungetit== -1)
@@ -372,7 +373,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 			if (p->b->o.crlf && bc == '\r') {
 				++byte;
 				if (!--amnt) {
-				      pppl:
+ pppl:
 					if (bp == p->ptr + SEGSIZ) {
 						if (pnext(p)) {
 							bp = p->ptr;
@@ -392,7 +393,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 					++amnt;
 					goto eobl;
 				}
-			      nnnl:
+ nnnl:
 				--byte;
 				++amnt;
 			}
@@ -470,8 +471,8 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 		goto lp;
 	}
 	goto eof;
-
-      loop:			/* Display next character */
+ loop:
+	/* Display next character */
 	if (amnt)
 		do {
 			if (ungetit== -1)
@@ -485,7 +486,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 			if (p->b->o.crlf && bc == '\r') {
 				++byte;
 				if (!--amnt) {
-				      ppl:
+ ppl:
 					if (bp == p->ptr + SEGSIZ) {
 						if (pnext(p)) {
 							bp = p->ptr;
@@ -505,7 +506,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 					++amnt;
 					goto eobl;
 				}
-			      nnl:
+ nnl:
 				--byte;
 				++amnt;
 			}
@@ -612,17 +613,17 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 		goto loop;
 	}
 	goto eof;
-
-      eobl:			/* End of buffer line found.  Erase to end of screen line */
+ eobl:
+	/* End of buffer line found.  Erase to end of screen line */
 	++p->line;
-      eof:
+ eof:
 	if (x != w)
 		done = eraeol(t, x, y);
 	else
 		done = 0;
 
 /* Set p to bp/amnt */
-      bye:
+ bye:
 	if (bp - p->ptr <= p->hdr->hole)
 		p->ofst = bp - p->ptr;
 	else
@@ -630,7 +631,7 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 	p->byte = byte;
 	return done;
 
-      eosl:
+ eosl:
 	if (bp - p->ptr <= p->hdr->hole)
 		p->ofst = bp - p->ptr;
 	else

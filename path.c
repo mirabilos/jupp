@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.17 2017/12/08 02:17:21 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.18 2017/12/08 02:28:05 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -198,7 +198,7 @@ int mkpath(unsigned char *path)
 				return 1;
 		}
 		*s = c;
-	      in:
+ in:
 		while (*s == '/')
 			++s;
 		path = s;

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tty.c,v 1.34 2017/12/08 02:17:23 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tty.c,v 1.35 2017/12/08 02:28:06 tg Exp $");
 
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
@@ -1213,7 +1213,7 @@ mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args,
 		   mode.  This allows us to read any remaining data- then
 		   read returns 0 and we know we're done. */
 
-	      loop:
+ loop:
 		pack.who = m;
 		pack.ch = 0;
 

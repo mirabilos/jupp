@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/menu.c,v 1.13 2017/12/08 02:17:21 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/menu.c,v 1.14 2017/12/08 02:28:05 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -228,7 +228,7 @@ int umdnarw(MENU *m)
 {
 	int col = m->cursor % m->perline;
 
-        m->cursor -= col;
+	m->cursor -= col;
 
 	if (m->cursor + m->perline < m->nitems) {
 		m->cursor += m->perline;

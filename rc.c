@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.38 2017/12/08 02:17:22 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.39 2017/12/08 02:28:05 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -203,7 +203,7 @@ void setopt(B *b, unsigned char *parsed_name)
 	b->o = fdefault;
 	lazy_opts(&b->o);
 
-	done:
+ done:
 	for (x = 0; x!=26; ++x)
 		vsrm(pieces[x]);
 }
@@ -1089,7 +1089,7 @@ int procrc(CAP *cap, unsigned char *name)
 				}
 
 				m = 0;
-			      macroloop:
+ macroloop:
 				m = mparse(m, buf, &x);
 				if (x == -1) {
 					err = 1;

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.35 2017/12/08 02:17:22 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.36 2017/12/08 02:28:06 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -1887,32 +1887,26 @@ void genfmt(SCRN *t, int x, int y, int ofst, const unsigned char *s, int flg)
 
 	while ((c = *s++) != '\0')
 		if (c == '\\') {
-			switch (c = *s++) {
+			switch ((c = *s++) | 0x20) {
 			case 'u':
-			case 'U':
 				atr ^= UNDERLINE;
 				break;
 			case 'i':
-			case 'I':
 				atr ^= INVERSE;
 				break;
 			case 'b':
-			case 'B':
 				atr ^= BOLD;
 				break;
 			case 'd':
-			case 'D':
 				atr ^= DIM;
 				break;
 			case 'f':
-			case 'F':
 				atr ^= BLINK;
 				break;
-			case 0:
-				--s;
-				break;
 			default: {
-				if (col++ >= ofst) {
+				if (!c)
+					--s;
+				else if (col++ >= ofst) {
 					outatr(locale_map, t, scrn, attr, x, y, (c&0x7F), atr);
 					++scrn;
 					++attr;

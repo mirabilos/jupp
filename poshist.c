@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/poshist.c,v 1.7 2017/12/07 02:10:17 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/poshist.c,v 1.8 2017/12/08 02:28:05 tg Exp $");
 
 #include <stdlib.h>
 
@@ -80,7 +80,7 @@ int unextpos(BW *bw)
 {
 	W *w = bw->parent;
 
-      lp:
+ lp:
 	if (curpos->link.next != &pos && curpos != &pos) {
 		curpos = curpos->link.next;
 		if (!curpos->p || !curpos->w) {
@@ -110,7 +110,7 @@ int uprevpos(BW *bw)
 {
 	W *w = bw->parent;
 
-      lp:
+ lp:
 	if (curpos->link.prev != &pos) {
 		curpos = curpos->link.prev;
 		if (!curpos->p || !curpos->w) {

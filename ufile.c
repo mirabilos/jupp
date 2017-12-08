@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.23 2017/12/08 02:00:42 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.24 2017/12/08 02:28:07 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -940,7 +940,8 @@ int ubufed(BW *bw)
 static int doquerysave(BW *bw,int c,struct savereq *req,int *notify)
 {
 	W *w = bw->parent;
-	if (c == 'y' || c == 'Y') {
+
+	if ((c | 0x20) == 'y') {
 		if (bw->b->name && bw->b->name[0])
 			return dosave1(bw, vsncpy(NULL,0,sz(bw->b->name)), req, notify);
 		else {
@@ -954,11 +955,11 @@ static int doquerysave(BW *bw,int c,struct savereq *req,int *notify)
 				return -1;
 			}
 		}
-	} else if (c == 'n' || c == 'N') {
+	} else if ((c | 0x20) == 'n') {
 		/* Find next buffer to save */
 		if (bw->b->changed)
 			req->not_saved = 1;
-		next:
+ next:
 		if (unbuf(bw)) {
 			if (notify)
 				*notify = 1;
@@ -982,7 +983,7 @@ static int doquerysave(BW *bw,int c,struct savereq *req,int *notify)
 		joe_snprintf_1(buf,1024,"File %s has been modified.  Save it (y,n,^C)? ",bw->b->name ? bw->b->name : US "(Unnamed)" );
 		if (mkqw(bw->parent, sz(buf), doquerysave, NULL, req, notify)) {
 			return 0;
-			} else {
+		} else {
 			/* Should be in abort function */
 			rmsavereq(req);
 			return -1;

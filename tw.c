@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tw.c,v 1.18 2017/12/08 02:17:23 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tw.c,v 1.19 2017/12/08 02:28:07 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -115,7 +115,7 @@ get_context(BW *bw)
 		p_goto_bol(p);
 		if (!pisindent(p) && !pisblank(p)) {
 			/* Uncomment to get the last line instead of the first line (see above)
-			next:
+ next:
 			*/
 			brzs(p,stdbuf,stdsiz-1);
 			/* Ignore comment and block structuring lines */
@@ -696,7 +696,7 @@ int utw1(BASE *b)
 
 	do {
 		yn = 0;
-	      loop:
+ loop:
 		do {
 			wnext(t);
 		} while (t->curwin->main == mainw && t->curwin != starting);
