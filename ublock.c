@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.24 2017/12/06 23:58:37 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.25 2017/12/08 01:16:37 tg Exp $");
 
 #include <sys/wait.h>
 #include <limits.h>
@@ -968,18 +968,20 @@ static int dofilt(BW *bw, unsigned char *s, void *object, int *notify)
 		flg = 1;
 		goto ok;
 	} if (!markv(1)) {
+		vsrm(s);
 		msgnw(bw->parent, UC "No block");
 		return -1;
 	}
-      ok:
-
+ ok:
 	if (pipe(fr)) {
+		vsrm(s);
 		msgnw(bw->parent, UC "Pipe error");
 		return (-1);
 	}
 	if ((tf = mktmp(NULL, &fw)) == NULL) {
 		close(fr[0]);
 		close(fr[1]);
+		vsrm(s);
 		msgnw(bw->parent, UC "Cannot create temporary file");
 		return (-1);
 	}

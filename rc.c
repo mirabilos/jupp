@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.35 2017/12/07 02:10:17 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.36 2017/12/08 01:16:37 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -683,6 +683,7 @@ static int doencoding(BW *bw, unsigned char *s, int *xx, int *notify)
 		map = fdefault.charmap;
 
 	if (map && map->type && check_for_hex(bw)) {
+		vsrm(s);
 		msgnw(bw->parent, UC "UTF-8 encoding not allowed with hex-edit windows");
 		if (notify)
 			*notify = 1;

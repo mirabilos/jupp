@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/cmd.c,v 1.24 2017/12/07 02:10:16 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/cmd.c,v 1.25 2017/12/08 01:16:36 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -67,8 +67,10 @@ static int do_keymap(BW *bw, unsigned char *s, void *object, int *notify)
 
 	if (notify)
 		*notify = 1;
-	if (!s || !*s || !(new_kmap = kmap_getcontext(s, 0)))
+	if (!*s || !(new_kmap = kmap_getcontext(s, 0))) {
+		vsrm(s);
 		return (-1);
+	}
 	if (bw->o.context != (unsigned char *)main_context)
 		free(bw->o.context);
 	bw->o.context = strcmp((char *)s, main_context) ?
@@ -76,6 +78,7 @@ static int do_keymap(BW *bw, unsigned char *s, void *object, int *notify)
 	rmkbd(bw->parent->kbd);
 	bw->parent->kbd = mkkbd(new_kmap);
 	joe_snprintf_1((char *)msgbuf, JOE_MSGBUFSIZE, "New keymap: %s", s);
+	vsrm(s);
 	msgnw(bw->parent, msgbuf);
 	return (0);
 }
@@ -459,7 +462,8 @@ static int do_helpcard(BASE *base, unsigned char *s, void *object, int *notify)
 
 	if (notify)
 		*notify = 1;
-	if (!s || !*s) {
+	if (!*s) {
+		vsrm(s);
 		while (help_actual->prev != NULL)
 			/* find the first help entry */
 			help_actual = help_actual->prev;
@@ -467,9 +471,11 @@ static int do_helpcard(BASE *base, unsigned char *s, void *object, int *notify)
 		return (0);
 	}
 	if ((new_help = find_context_help(s)) != NULL) {
+		vsrm(s);
 		help_actual = new_help;
 		return (help_on(base->parent->t));
 	}
+	vsrm(s);
 	return (-1);
 }
 int u_helpcard(BASE *base)

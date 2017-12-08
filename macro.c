@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/macro.c,v 1.16 2017/12/06 23:58:37 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/macro.c,v 1.17 2017/12/08 01:16:37 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -567,6 +567,7 @@ static int doarg(BW *bw, unsigned char *s, void *object, int *notify)
 		*notify = 1;
 	num = calcl(bw, s);
 	if (merrf) {
+		vsrm(s);
 		msgnw(bw->parent, merrt);
 		return -1;
 	}

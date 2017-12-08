@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ushell.c,v 1.12 2017/12/07 02:10:19 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ushell.c,v 1.13 2017/12/08 01:16:37 tg Exp $");
 
 #include <sys/stat.h>
 #include <signal.h>
@@ -129,17 +129,21 @@ static int doushell(BW *bw, unsigned char *cmd, int *notify, int build)
 	if (bw->b->pid) {
 		msgnw(bw->parent, UC "Program already running in this window");
 		varm(s);
+		vsrm(cmd);
 		return -1;
 	}
 	p_goto_eof(bw->cursor);
 
 	if (!(m = mpxmk(&bw->b->out, name, s, cdata, bw->b, build ? cdone_parse : cdone, bw->b))) {
 		varm(s);
+		vsrm(cmd);
 		msgnw(bw->parent, UC "No ptys available");
 		return -1;
 	} else {
 		bw->b->pid = m->pid;
 	}
+	varm(s);
+	vsrm(cmd);
 	return 0;
 }
 
