@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.20 2017/12/08 01:29:59 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.21 2017/12/08 01:42:03 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -479,102 +479,67 @@ int usave(BW *bw)
 /* Load file to edit */
 
 static int
-doedit1(BW *bw,int c,unsigned char *s,int *notify)
+doedit1(BW *bw, int c, unsigned char *s, int *notify)
 {
 	int ret = 0;
 	int er;
 	void *object;
 	W *w;
 	B *b;
-	if (c=='y' || c=='Y') {
+
+	switch (c | 0x20) {
+	case 'y':
 		/* Reload from file */
-
-		if (notify) {
-			*notify = 1;
-		}
-
-		b = bfind_reload(s);
-		er = error;
-		if (bw->b->count >= 1 && (bw->b->changed || bw->b->name)) {
-			if (orphan) {
-				orphit(bw);
-			} else {
-				if (uduptw(bw)) {
-					brm(b);
-					return -1;
-				}
-				bw = maint->curwin->object.bw;
-			}
-		}
-		if (er) {
-			msgnwt(bw->parent, msgs[-er]);
-			if (er != -1) {
-				ret = -1;
-			}
-		}
-		object = bw->object;
-		w = bw->parent;
-		bwrm(bw);
-		w->object.bw = bw = bwmk(w, b, 0);
-		wredraw(bw->parent);
-		bw->object = object;
-		vsrm(s);
-		if (er == -1 && bw->o.mnew) {
-			exemac(bw->o.mnew);
-		}
-		if (er == 0 && bw->o.mold) {
-			exemac(bw->o.mold);
-		}
-		return ret;
-	} else if(c=='n' || c=='N') {
+		c = 1;
+		break;
+	case 'n':
 		/* Edit already loaded buffer */
-
-		if (notify) {
-			*notify = 1;
-		}
-
-		b = bfind(s);
-		er = error;
-		if (bw->b->count == 1 && (bw->b->changed || bw->b->name)) {
-			if (orphan) {
-				orphit(bw);
-			} else {
-				if (uduptw(bw)) {
-					brm(b);
-					return -1;
-				}
-				bw = maint->curwin->object.bw;
-			}
-		}
-		if (er) {
-			msgnwt(bw->parent, msgs[-er]);
-			if (er != -1) {
-				ret = -1;
-			}
-		}
-		object = bw->object;
-		w = bw->parent;
-		bwrm(bw);
-		w->object.bw = bw = bwmk(w, b, 0);
-		wredraw(bw->parent);
-		bw->object = object;
-		vsrm(s);
-		if (er == -1 && bw->o.mnew) {
-			exemac(bw->o.mnew);
-		}
-		if (er == 0 && bw->o.mold) {
-			exemac(bw->o.mold);
-		}
-		return ret;
-	} else {
+		c = 0;
+		break;
+	default:
+		/* Ask what todo */
 		/* FIXME: need abort handler to prevent leak */
 		if (mkqw(bw->parent, sc("Load original file from disk (y,n,^C)? "), doedit1, NULL, s, notify))
-			return 0;
-		else {
-			vsrm(s);
-			return -1;
+			return (0);
+		vsrm(s);
+		return (-1);
+	}
+
+	if (notify)
+		*notify = 1;
+
+	b = c ? bfind_reload(s) : bfind(s);
+	er = error;
+	c = c ? (bw->b->count >= 1) : (bw->b->count == 1);
+
+	if (c && (bw->b->changed || bw->b->name)) {
+		if (orphan) {
+			orphit(bw);
+		} else {
+			if (uduptw(bw)) {
+				brm(b);
+				return (-1);
+			}
+			bw = maint->curwin->object.bw;
 		}
 	}
+	if (er) {
+		msgnwt(bw->parent, msgs[-er]);
+		if (er != -1)
+			ret = -1;
+	}
+	object = bw->object;
+	w = bw->parent;
+	bwrm(bw);
+	w->object.bw = bw = bwmk(w, b, 0);
+	wredraw(bw->parent);
+	bw->object = object;
+	vsrm(s);
+	if (er == -1 && bw->o.mnew)
+		exemac(bw->o.mnew);
+	if (er == 0 && bw->o.mold)
+		exemac(bw->o.mold);
+	return (ret);
 }
 
 static int
