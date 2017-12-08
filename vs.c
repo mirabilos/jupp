@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/vs.c,v 1.10 2017/12/02 02:07:38 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/vs.c,v 1.11 2017/12/08 02:00:43 tg Exp $");
 
 #include <stdlib.h>
 
@@ -18,7 +18,7 @@ __RCSID("$MirOS: contrib/code/jupp/vs.c,v 1.10 2017/12/02 02:07:38 tg Exp $");
 
 sELEMENT *vsmk(int len)
 {
-	int *new = (int *) joe_malloc((1 + len) * sizeof(sELEMENT) + 2 * sizeof(int));
+	int *new = malloc((1 + len) * sizeof(sELEMENT) + 2 * sizeof(int));
 
 	new[0] = len;
 	new[1] = 0;
@@ -29,7 +29,7 @@ sELEMENT *vsmk(int len)
 void vsrm(sELEMENT *vary)
 {
 	if (vary)
-		joe_free((int *) vary - 2);
+		free((int *)vary - 2);
 }
 
 int slen(const sELEMENT *ary)
@@ -49,7 +49,7 @@ sELEMENT *vsensure(sELEMENT *vary, int len)
 		vary = vsmk(len);
 	else if (len > sSiz(vary)) {
 		len += (len >> 2);
-		vary = (sELEMENT *)(2 + (int *) joe_realloc((int *) vary - 2, (len + 1) * sizeof(sELEMENT) + 2 * sizeof(int)));
+		vary = (sELEMENT *)(2 + (int *)realloc((int *)vary - 2, (len + 1) * sizeof(sELEMENT) + 2 * sizeof(int)));
 
 		sSiz(vary) = len;
 	}

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uisrch.c,v 1.12 2017/12/06 23:17:36 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uisrch.c,v 1.13 2017/12/08 02:00:42 tg Exp $");
 
 #include <stdlib.h>
 
@@ -51,7 +51,7 @@ static void rmisrch(struct isrch *isrch)
 		vsrm(isrch->pattern);
 		vsrm(isrch->prompt);
 		frchn(&fri, &isrch->irecs);
-		joe_free(isrch);
+		free(isrch);
 	}
 }
 
@@ -259,9 +259,11 @@ static int itype(BW *bw, int c, struct isrch *isrch, int *notify)
 	}
 }
 
-static int doisrch(BW *bw, int dir)
-{				/* Create a struct isrch */
-	struct isrch *isrch = (struct isrch *) joe_malloc(sizeof(struct isrch));
+/* Create a struct isrch */
+static int
+doisrch(BW *bw, int dir)
+{
+	struct isrch *isrch = malloc(sizeof(struct isrch));
 
 	izque(IREC, link, &isrch->irecs);
 	isrch->pattern = vsncpy(NULL, 0, NULL, 0);

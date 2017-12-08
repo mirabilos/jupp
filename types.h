@@ -2,7 +2,7 @@
 #define _JOE_TYPES_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.26 2017/12/07 02:13:05 tg Exp $");
+__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.27 2017/12/08 02:00:42 tg Exp $");
 #endif
 
 /* Prefix to make string constants unsigned */
@@ -557,7 +557,7 @@ struct undorec {
 	long	len;		/* Length of insert or delete */
 	int	del;		/* Set if this is a delete */
 	B	*big;		/* Set to buffer containing a large amount of deleted data */
-	unsigned char	*small;		/* Set to malloc block containg a small amount of deleted data */
+	unsigned char *small;	/* Set to malloc block containg a small amount of deleted data */
 };
 
 struct undo {

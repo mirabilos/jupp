@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/undo.c,v 1.8 2017/12/06 23:02:07 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/undo.c,v 1.9 2017/12/08 02:00:43 tg Exp $");
 
 #include <stdlib.h>
 
@@ -48,7 +48,7 @@ static void frrec(UNDOREC *rec)
 {
 	if (rec->del) {
 		if (rec->len < SMALL)
-			joe_free(rec->small);
+			free(rec->small);
 		else {
 			B *b = rec->big;
 
@@ -263,13 +263,13 @@ static void yankdel(long where, B *b)
 					rec->big = bmk(NULL);
 					binsm(rec->big->bof, rec->small, (int) rec->len);
 					boffline(rec->big);
-					joe_free(rec->small);
+					free(rec->small);
 				}
 				bonline(rec->big);
 				binsb(rec->big->eof, bcpy(b->bof, b->eof));
 				boffline(rec->big);
 			} else {
-				rec->small = (unsigned char *) joe_realloc(rec->small, rec->len + size);
+				rec->small = realloc(rec->small, rec->len + size);
 				brmem(b->bof, rec->small + rec->len, (int) size);
 			}
 			rec->len += size;
@@ -279,13 +279,13 @@ static void yankdel(long where, B *b)
 					rec->big = bmk(NULL);
 					binsm(rec->big->bof, rec->small, (int) rec->len);
 					boffline(rec->big);
-					joe_free(rec->small);
+					free(rec->small);
 				}
 				bonline(rec->big);
 				binsb(rec->big->bof, bcpy(b->bof, b->eof));
 				boffline(rec->big);
 			} else {
-				rec->small = (unsigned char *) joe_realloc(rec->small, rec->len + size);
+				rec->small = realloc(rec->small, rec->len + size);
 				mmove(rec->small + size, rec->small, (int) rec->len);
 				brmem(b->bof, rec->small, (int) size);
 			}
@@ -298,8 +298,8 @@ static void yankdel(long where, B *b)
 			}
 			rec = alrec();
 			if (size < SMALL) {
-				rec->small = (unsigned char *) joe_malloc(size);
-				brmem(b->bof, rec->small, (int) b->eof->byte);
+				rec->small = malloc(size);
+				brmem(b->bof, rec->small, (int)b->eof->byte);
 			} else {
 				rec->big = bcpy(b->bof, b->eof);
 				boffline(rec->big);
@@ -335,13 +335,13 @@ void undodel(UNDO *undo, long where, B *b)
 				rec->big = bmk(NULL);
 				binsm(rec->big->bof, rec->small, (int) rec->len);
 				boffline(rec->big);
-				joe_free(rec->small);
+				free(rec->small);
 			}
 			bonline(rec->big);
 			binsb(rec->big->eof, b);
 			boffline(rec->big);
 		} else {
-			rec->small = (unsigned char *) joe_realloc(rec->small, rec->len + size);
+			rec->small = realloc(rec->small, rec->len + size);
 			brmem(b->bof, rec->small + rec->len, (int) size);
 			brm(b);
 		}
@@ -352,13 +352,13 @@ void undodel(UNDO *undo, long where, B *b)
 				rec->big = bmk(NULL);
 				binsm(rec->big->bof, rec->small, (int) rec->len);
 				boffline(rec->big);
-				joe_free(rec->small);
+				free(rec->small);
 			}
 			bonline(rec->big);
 			binsb(rec->big->bof, b);
 			boffline(rec->big);
 		} else {
-			rec->small = (unsigned char *) joe_realloc(rec->small, rec->len + size);
+			rec->small = realloc(rec->small, rec->len + size);
 			mmove(rec->small + size, rec->small, (int) rec->len);
 			brmem(b->bof, rec->small, (int) size);
 			brm(b);
@@ -368,7 +368,7 @@ void undodel(UNDO *undo, long where, B *b)
 	} else {
 		rec = alrec();
 		if (size < SMALL) {
-			rec->small = (unsigned char *) joe_malloc(size);
+			rec->small = malloc(size);
 			brmem(b->bof, rec->small, (int) b->eof->byte);
 			brm(b);
 		} else {

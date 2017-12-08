@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/qw.c,v 1.9 2017/12/07 02:10:17 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/qw.c,v 1.10 2017/12/08 02:00:40 tg Exp $");
 
 #include <stdlib.h>
 
@@ -107,7 +107,7 @@ static int utypeqw(jobject jO, int c)
 	win = qw->parent->win;
 	func = qw->func;
 	vsrm(qw->prompt);
-	joe_free(qw);
+	free(qw);
 	w->object.base = NULL;
 	w->notify = NULL;
 	wabort(w);
@@ -124,7 +124,7 @@ static int abortqw(jobject jO)
 	jpoly_int *abrt = qw->abrt;
 
 	vsrm(qw->prompt);
-	joe_free(qw);
+	free(qw);
 	if (abrt)
 		return abrt(win->object, object);
 	else
@@ -187,7 +187,7 @@ QW *mkqw(W *w, unsigned char *prompt, int len, jpoly_int *func, jpoly_int *abrt,
 		return NULL;
 	}
 	wfit(new->t);
-	new->object.qw = qw = (QW *)joe_malloc(sizeof(QW));
+	new->object.qw = qw = malloc(sizeof(QW));
 	qw->parent = new;
 	qw->prompt = vsncpy(NULL, 0, prompt, len);
 	qw->promptlen = len;
@@ -214,7 +214,7 @@ QW *mkqwna(W *w, unsigned char *prompt, int len, jpoly_int *func, jpoly_int *abr
 		return NULL;
 	}
 	wfit(new->t);
-	new->object.qw = qw = (QW *)joe_malloc(sizeof(QW));
+	new->object.qw = qw = malloc(sizeof(QW));
 	qw->parent = new;
 	qw->prompt = vsncpy(NULL, 0, prompt, len);
 	qw->promptlen = len;
@@ -241,7 +241,7 @@ QW *mkqwnsr(W *w, unsigned char *prompt, int len, jpoly_int *func, jpoly_int *ab
 		return NULL;
 	}
 	wfit(new->t);
-	new->object.qw = qw = (QW *)joe_malloc(sizeof(QW));
+	new->object.qw = qw = malloc(sizeof(QW));
 	qw->parent = new;
 	qw->prompt = vsncpy(NULL, 0, prompt, len);
 	qw->promptlen = len;

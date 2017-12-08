@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/cmd.c,v 1.25 2017/12/08 01:16:36 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/cmd.c,v 1.26 2017/12/08 02:00:38 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -384,7 +384,7 @@ CMD *findcmd(const unsigned char *s)
 
 void addcmd(const unsigned char *s, MACRO *m)
 {
-	CMD *cmd = (CMD *) joe_malloc(sizeof(CMD));
+	CMD *cmd = malloc(sizeof(CMD));
 
 	if (!cmdhash)
 		izcmds();

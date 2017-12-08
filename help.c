@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/help.c,v 1.13 2017/12/06 23:17:33 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/help.c,v 1.14 2017/12/08 02:00:39 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -56,7 +56,7 @@ help_init(const unsigned char *filename)
 
 	while (jfgets((char *)buf, sizeof(buf), fd)) {
 		if (buf[0] == '{') {			/* start of help screen */
-			if (!(tmp = (struct help *) joe_malloc(sizeof(struct help)))) {
+			if (!(tmp = malloc(sizeof(struct help)))) {
 				return NOT_ENOUGH_MEMORY;
 			}
 
@@ -70,18 +70,18 @@ help_init(const unsigned char *filename)
 				bfl = strlen((char *)buf);
 				if (hlpsiz + bfl > hlpbsz) {
 					if (tmp->text) {
-						tempbuf = (unsigned char *) joe_realloc(tmp->text, hlpbsz + bfl + 1024);
+						tempbuf = realloc(tmp->text, hlpbsz + bfl + 1024);
 						if (!tempbuf) {
-							joe_free(tmp->text);
-							joe_free(tmp);
+							free(tmp->text);
+							free(tmp);
 							return NOT_ENOUGH_MEMORY;
 						} else {
 							tmp->text = tempbuf;
 						}
 					} else {
-						tmp->text = (unsigned char *) joe_malloc(bfl + 1024);
+						tmp->text = malloc(bfl + 1024);
 						if (!tmp->text) {
-							joe_free(tmp);
+							free(tmp);
 							return NOT_ENOUGH_MEMORY;
 						} else {
 							tmp->text[0] = 0;
@@ -106,8 +106,8 @@ help_init(const unsigned char *filename)
 				fflush(stderr);
 				if (fgets((char *)buf, 8, stdin) == NULL ||
 				    (!((buf[0] == 'y') || (buf[0] == 'Y')))) {
-					joe_free(tmp->text);
-					joe_free(tmp);
+					free(tmp->text);
+					free(tmp);
 					return 0;
 				} else {
 					tmp->prev = help_actual;

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uformat.c,v 1.7 2017/12/06 23:17:36 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uformat.c,v 1.8 2017/12/08 02:00:42 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -347,7 +347,7 @@ void wrapword(P *p, long int indent, int french, unsigned char *indents)
 			}
 
 		if (rmf)
-			joe_free(indents);
+			free(indents);
 	}
 
 	/* Move cursor back to original position */
@@ -519,7 +519,7 @@ int uformat(BW *bw)
 	binsc(p, '\n');
 	prm(p);
 	brm(buf);
-	joe_free(indents);
+	free(indents);
 	return 0;
 }
 

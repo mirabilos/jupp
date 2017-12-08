@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.33 2017/12/06 21:41:02 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.34 2017/12/08 02:00:40 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -482,7 +482,7 @@ SCRN *nopen(CAP *cap)
 
 			n1 = t->ti ? strlen(t->ti) : 0;
 			n2 = strlen(t->cap->paste_on);
-			cp = joe_malloc(n1 + n2 + 1);
+			cp = malloc(n1 + n2 + 1);
 			if (t->ti)
 				memcpy(cp, t->ti, n1);
 			memcpy(cp + n1, t->cap->paste_on, n2 + 1);
@@ -490,7 +490,7 @@ SCRN *nopen(CAP *cap)
 
 			n1 = t->te ? strlen(t->te) : 0;
 			n2 = strlen(t->cap->paste_off);
-			cp = joe_malloc(n1 + n2 + 1);
+			cp = malloc(n1 + n2 + 1);
 			memcpy(cp, t->cap->paste_off, n2 + 1);
 			if (t->te)
 				memcpy(cp + n2, t->te, n1 + 1);
@@ -707,21 +707,21 @@ void nresize(SCRN *t, int w, int h)
 	t->li = h;
 	t->co = w;
 	if (t->sary)
-		joe_free(t->sary);
+		free(t->sary);
 	if (t->updtab)
-		joe_free(t->updtab);
+		free(t->updtab);
 	if (t->syntab)
-		joe_free(t->syntab);
+		free(t->syntab);
 	if (t->scrn)
-		joe_free(t->scrn);
+		free(t->scrn);
 	if (t->attr)
-		joe_free(t->attr);
+		free(t->attr);
 	if (t->compose)
-		joe_free(t->compose);
+		free(t->compose);
 	if (t->ofst)
-		joe_free(t->ofst);
+		free(t->ofst);
 	if (t->ary)
-		joe_free(t->ary);
+		free(t->ary);
 	t->scrn = calloc(t->li * t->co, sizeof(int));
 	t->attr = calloc(t->li * t->co, sizeof(int));
 	t->sary = calloc(t->li, sizeof(int));
@@ -1619,13 +1619,13 @@ void nclose(SCRN *t)
 		texec(t->cap, t->te, 1, 0, 0, 0, 0);
 	ttclose();
 	rmcap(t->cap);
-	joe_free(t->scrn);
-	joe_free(t->attr);
-	joe_free(t->sary);
-	joe_free(t->ofst);
-	joe_free(t->htab);
-	joe_free(t->ary);
-	joe_free(t);
+	free(t->scrn);
+	free(t->attr);
+	free(t->sary);
+	free(t->ofst);
+	free(t->htab);
+	free(t->ary);
+	free(t);
 }
 
 void nscrldn(SCRN *t, int top, int bot, int amnt)

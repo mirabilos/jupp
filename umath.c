@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.22 2017/12/08 01:30:00 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.23 2017/12/08 02:00:43 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -53,8 +53,7 @@ static struct var *get(unsigned char *str)
 			return v;
 		}
 	}
-	v = (struct var *) joe_malloc(sizeof(struct var));
-
+	v = malloc(sizeof(struct var));
 	v->set = 0;
 	v->next = vars;
 	vars = v;

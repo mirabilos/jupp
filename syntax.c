@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/syntax.c,v 1.20 2017/12/02 04:36:56 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/syntax.c,v 1.21 2017/12/08 02:00:41 tg Exp $");
 
 #include <limits.h>
 #include <stdlib.h>
@@ -137,7 +137,8 @@ int parse(struct high_syntax *syntax, P *line, int state)
 
 		/* Expand attribute array if necessary */
 		if(attr==attr_end) {
-			attr_buf = realloc(attr_buf,sizeof(int)*(attr_size*2));
+			attr_buf = realloc(attr_buf,
+			    sizeof(int) * (attr_size * 2));
 			attr = attr_buf + attr_size;
 			attr_size *= 2;
 			attr_end = attr_buf + attr_size;
@@ -216,7 +217,7 @@ static struct high_state *find_state(struct high_syntax *syntax, const unsigned 
 	/* It doesn't exist, so create it */
 	if(x==syntax->nstates) {
 		int y;
-		state=malloc(sizeof(struct high_state));
+		state = malloc(sizeof(struct high_state));
 		state->name=(const unsigned char *)strdup((const char *)name);
 		state->no=syntax->nstates;
 		state->color=FG_WHITE;
@@ -224,7 +225,8 @@ static struct high_state *find_state(struct high_syntax *syntax, const unsigned 
 			/* We're the first state */
 			syntax->default_cmd.new_state = state;
 		if(syntax->nstates==syntax->szstates)
-			syntax->states=realloc(syntax->states,sizeof(struct high_state *)*(syntax->szstates*=2));
+			syntax->states = realloc(syntax->states,
+			   sizeof(struct high_state *) * (syntax->szstates *= 2));
 		syntax->states[syntax->nstates++]=state;
 		for(y=0; y!=256; ++y)
 			state->cmd[y] = &syntax->default_cmd;
@@ -256,7 +258,7 @@ struct high_syntax *load_dfa(const unsigned char *name)
 
 	if(!attr_buf) {
 		attr_size = 1024;
-		attr_buf = malloc(sizeof(int)*attr_size);
+		attr_buf = calloc(attr_size, sizeof(int));
 	}
 
 	/* Find syntax table */
@@ -285,7 +287,7 @@ struct high_syntax *load_dfa(const unsigned char *name)
 	syntax->name = (const unsigned char *)strdup((const char *)name);
 	syntax->next = syntax_list;
 	syntax_list = syntax;
-	syntax->states = malloc(sizeof(struct high_state *)*(syntax->szstates=64));
+	syntax->states = malloc(sizeof(struct high_state *) * (syntax->szstates = 64));
 	syntax->sync_lines = 120;
 
 	memset(clist, 0, sizeof(clist));

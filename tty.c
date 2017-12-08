@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tty.c,v 1.32 2017/12/06 23:02:05 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tty.c,v 1.33 2017/12/08 02:00:41 tg Exp $");
 
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
@@ -401,7 +401,7 @@ baud_reset(int bbaud)
 		Baud = baud;
 	upc = DIVIDEND / baud;
 	if (obuf)
-		joe_free(obuf);
+		free(obuf);
 	if ((TIMES * upc) == 0)
 		obufsiz = 4096;
 	else {
@@ -411,7 +411,7 @@ baud_reset(int bbaud)
 	}
 	if (!obufsiz)
 		obufsiz = 1;
-	obuf = (unsigned char *) joe_malloc(obufsiz);
+	obuf = malloc(obufsiz);
 }
 
 /* Close terminal */
@@ -1010,8 +1010,9 @@ static unsigned char **newenv(unsigned char **old, unsigned char *s)
 	unsigned char **new;
 	int x, y, z;
 
-	for (x = 0; old[x]; ++x) ;
-	new = (unsigned char **) joe_malloc((x + 2) * sizeof(unsigned char *));
+	for (x = 0; old[x]; ++x)
+		/* nothing */;
+	new = malloc((x + 2) * sizeof(unsigned char *));
 
 	for (x = 0, y = 0; old[x]; ++x) {
 		for (z = 0; s[z] != '='; ++z)

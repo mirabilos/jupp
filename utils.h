@@ -11,7 +11,7 @@
 #define _JOE_UTILS_H 1
 
 #ifdef EXTERN_B_C
-__IDSTRING(rcsid_utils_h, "$MirOS: contrib/code/jupp/utils.h,v 1.10 2017/12/06 23:02:08 tg Exp $");
+__IDSTRING(rcsid_utils_h, "$MirOS: contrib/code/jupp/utils.h,v 1.11 2017/12/08 02:00:43 tg Exp $");
 #endif
 
 #include <signal.h>
@@ -27,12 +27,6 @@ signed long long_min(signed long a, signed long b);
 /* Versions of 'read' and 'write' which automatically retry when interrupted */
 ssize_t joe_read(int fd, void *buf, size_t siz);
 ssize_t joe_write(int fd, void *buf, size_t siz);
-
-/* wrappers to *alloc routines */
-#define joe_malloc malloc
-#define joe_calloc calloc
-#define joe_realloc realloc
-#define joe_free free
 
 #ifndef HAVE_SIGHANDLER_T
 typedef RETSIGTYPE (*sighandler_t)(int);

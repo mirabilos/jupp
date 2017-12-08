@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/kbd.c,v 1.8 2017/12/07 02:13:05 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/kbd.c,v 1.9 2017/12/08 02:00:39 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -23,7 +23,7 @@ __RCSID("$MirOS: contrib/code/jupp/kbd.c,v 1.8 2017/12/07 02:13:05 tg Exp $");
 
 KBD *mkkbd(KMAP *kmap)
 {
-	KBD *kbd = (KBD *) joe_malloc(sizeof(KBD));
+	KBD *kbd = malloc(sizeof(KBD));
 
 	kbd->topmap = kmap;
 	kbd->curmap = kmap;
@@ -35,7 +35,7 @@ KBD *mkkbd(KMAP *kmap)
 
 void rmkbd(KBD *k)
 {
-	joe_free(k);
+	free(k);
 }
 
 /* Process next key for KBD */
@@ -90,7 +90,7 @@ static int keyval(unsigned char *s)
 
 KMAP *mkkmap(void)
 {
-	KMAP *kmap = (KMAP *) joe_calloc(sizeof(KMAP), 1);
+	KMAP *kmap = calloc(1, sizeof(KMAP));
 
 	return kmap;
 }
@@ -106,7 +106,7 @@ void rmkmap(KMAP *kmap)
 	for (x = 0; x != KEYS; ++x)
 		if (kmap->keys[x].k == 1)
 			rmkmap(kmap->keys[x].value.submap);
-	joe_free(kmap);
+	free(kmap);
 }
 
 /* Parse a range */

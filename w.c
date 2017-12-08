@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/w.c,v 1.10 2017/12/07 02:10:19 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/w.c,v 1.11 2017/12/08 02:00:44 tg Exp $");
 
 #include <stdlib.h>
 
@@ -167,7 +167,7 @@ SCREEN *scr;
 
 SCREEN *screate(SCRN *scrn)
 {
-	SCREEN *t = (SCREEN *) joe_malloc(sizeof(SCREEN));
+	SCREEN *t = malloc(sizeof(SCREEN));
 
 	t->t = scrn;
 	t->w = scrn->co;
@@ -575,7 +575,7 @@ W *wcreate(SCREEN *t, WATOM *watom, W *where, W *target, W *original, int height
 		return NULL;
 
 	/* Create the window */
-	new = (W *) joe_malloc(sizeof(W));
+	new = malloc(sizeof(W));
 	new->notify = notify;
 	new->t = t;
 	new->w = t->w - 1;
@@ -605,7 +605,7 @@ W *wcreate(SCREEN *t, WATOM *watom, W *where, W *target, W *original, int height
 	if (original) {
 		if (original->h - height <= 2) {
 			/* Not enough space for window */
-			joe_free(new);
+			free(new);
 			return NULL;
 		} else
 			seth(original, original->h - height);
@@ -677,7 +677,7 @@ static int doabort(W *w, int *ret)
 			*w->notify = 1;
 	}
 	rmkbd(w->kbd);
-	joe_free(w);
+	free(w);
 	windie(w);
 	return amnt;
 }

@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.22 2017/12/08 01:43:17 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.23 2017/12/08 02:00:42 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -276,7 +276,8 @@ static struct savereq *
 mksavereq(int (*callback)(BW *, struct savereq *, int, int *),
     unsigned char *name, B *first, int dorename)
 {
-	struct savereq *req = (struct savereq *) joe_malloc(sizeof(struct savereq));
+	struct savereq *req = malloc(sizeof(struct savereq));
+
 	req->callback = callback;
 	req->name = name;
 	req->first = first;
@@ -288,7 +289,7 @@ mksavereq(int (*callback)(BW *, struct savereq *, int, int *),
 static void rmsavereq(struct savereq *req)
 {
 	vsrm(req->name);
-	joe_free(req);
+	free(req);
 }
 
 static int saver(BW *bw, int c, struct savereq *req, int *notify)
@@ -336,7 +337,7 @@ static int saver(BW *bw, int c, struct savereq *req, int *notify)
 		}
 	} else {
 		if (req->rename) {
-			joe_free(bw->b->name);
+			free(bw->b->name);
 			bw->b->name = 0;
 		}
 		if (!bw->b->name)
@@ -949,7 +950,7 @@ static int doquerysave(BW *bw,int c,struct savereq *req,int *notify)
 			if (pbw) {
 				return 0;
 			} else {
-				joe_free(req);
+				free(req);
 				return -1;
 			}
 		}

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.19 2017/12/07 02:10:19 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.20 2017/12/08 02:00:43 tg Exp $");
 
 #include <stdlib.h>
 
@@ -377,7 +377,7 @@ static SRCH *setmark(SRCH *srch)
 
 SRCH *mksrch(unsigned char *pattern, unsigned char *replacement, int ignore, int backwards, int repeat, int replace, int rest)
 {
-	SRCH *srch = (SRCH *) joe_malloc(sizeof(SRCH));
+	SRCH *srch = malloc(sizeof(SRCH));
 	int x;
 
 	srch->pattern = pattern;
@@ -427,7 +427,7 @@ void rmsrch(SRCH *srch)
 	vsrm(srch->pattern);
 	vsrm(srch->replacement);
 	vsrm(srch->entire);
-	joe_free(srch);
+	free(srch);
 	updall();
 }
 

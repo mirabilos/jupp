@@ -8,7 +8,7 @@
 
 #include "config.h"
 
-__RCSID("$MirOS: contrib/code/jupp/builtin.c,v 1.7 2017/12/06 23:02:01 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/builtin.c,v 1.8 2017/12/08 02:00:38 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -35,19 +35,19 @@ jfopen(const unsigned char *name, const char *mode)
 
 		for (x = 0; builtins[x]; x += 2) {
 			if (!zcmp(builtins[x], xname)) {
-				JFILE *j = (JFILE *)joe_malloc(sizeof(JFILE));
+				JFILE *j = malloc(sizeof(JFILE));
 				j->f = 0;
 				j->p = builtins[x + 1];
-				joe_free(xname);
+				free(xname);
 				return j;
 			}
 		}
-		joe_free(xname);
+		free(xname);
 		return 0;
 	} else {
 		FILE *f = fopen((const char *)name, (const char *)mode);
 		if (f) {
-			JFILE *j = (JFILE *)joe_malloc(sizeof(JFILE));
+			JFILE *j = malloc(sizeof(JFILE));
 			j->f = f;
 			j->p = 0;
 			return j;
@@ -62,7 +62,7 @@ int jfclose(JFILE *f)
 	int rtn = 0;
 	if (f->f)
 		rtn = fclose(f->f);
-	joe_free(f);
+	free(f);
 	return rtn;
 }
 

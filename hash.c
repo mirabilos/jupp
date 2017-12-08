@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/hash.c,v 1.5 2017/12/06 21:41:02 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/hash.c,v 1.6 2017/12/08 02:00:39 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -32,17 +32,17 @@ unsigned long hash(const unsigned char *s)
 
 HASH *htmk(int len)
 {
-	HASH *t = (HASH *) joe_malloc(sizeof(HASH));
+	HASH *t = malloc(sizeof(HASH));
 
 	t->len = len - 1;
-	t->tab = (HENTRY **) joe_calloc(sizeof(HENTRY *), len);
+	t->tab = calloc(len, sizeof(HENTRY *));
 	return t;
 }
 
 void htrm(HASH *ht)
 {
-	joe_free(ht->tab);
-	joe_free(ht);
+	free(ht->tab);
+	free(ht);
 }
 
 void *htadd(HASH *ht, const unsigned char *name, void *val)
@@ -52,7 +52,7 @@ void *htadd(HASH *ht, const unsigned char *name, void *val)
 	int x;
 
 	if (!freentry) {
-		entry = (HENTRY *) joe_malloc(sizeof(HENTRY) *64);
+		entry = calloc(64, sizeof(HENTRY));
 		for (x = 0; x != 64; ++x) {
 			entry[x].next = freentry;
 			freentry = entry + x;

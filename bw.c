@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.30 2017/12/07 02:10:15 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.31 2017/12/08 02:00:38 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -894,7 +894,7 @@ void bwresz(BW *w, int wi, int he)
 
 BW *bwmk(W *window, B *b, int prompt)
 {
-	BW *w = (BW *) joe_malloc(sizeof(BW));
+	BW *w = malloc(sizeof(BW));
 
 	w->parent = window;
 	w->b = b;
@@ -942,7 +942,7 @@ void bwrm(BW *w)
 	prm(w->top);
 	prm(w->cursor);
 	brm(w->b);
-	joe_free(w);
+	free(w);
 }
 
 int ustat_j(BW *bw)

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/vfile.c,v 1.13 2017/12/06 21:17:04 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/vfile.c,v 1.14 2017/12/08 02:00:43 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -116,7 +116,7 @@ void vflshf(VFILE *vfile)
 
 static unsigned char *mema(int align, int size)
 {
-	unsigned char *z = (unsigned char *) joe_malloc(align + size);
+	unsigned char *z = malloc(align + size);
 
 	return z + (align - ((size_t)z % align));
 }
@@ -142,7 +142,7 @@ unsigned char *vlock(VFILE *vfile, unsigned long addr)
 	}
 
 	if (curvalloc + PGSIZE <= maxvalloc) {
-		vp = (VPAGE *) joe_malloc(sizeof(VPAGE) * INC);
+		vp = malloc(sizeof(VPAGE) * INC);
 		if (vp) {
 			vp->data = (unsigned char *) mema(PGSIZE, PGSIZE * INC);
 			if (vp->data) {
@@ -150,20 +150,20 @@ unsigned char *vlock(VFILE *vfile, unsigned long addr)
 
 				curvalloc += PGSIZE * INC;
 				if (!vheaders) {
-					vheaders = (VPAGE **) joe_malloc((vheadsz = INC) * sizeof(VPAGE *));
+					vheaders = malloc((vheadsz = INC) * sizeof(VPAGE *));
 					vbase = vp->data;
 				} else if ((size_t)vp->data < (size_t)vbase) {
 					VPAGE **t = vheaders;
 					int amnt = (((size_t)vbase) - ((size_t)vp->data)) >> LPGSIZE;
 
-					vheaders = (VPAGE **) joe_malloc((amnt + vheadsz) * sizeof(VPAGE *));
+					vheaders = malloc((amnt + vheadsz) * sizeof(VPAGE *));
 					mmove(vheaders + amnt, t, vheadsz * sizeof(VPAGE *));
 					vheadsz += amnt;
 					vbase = vp->data;
-					joe_free(t);
+					free(t);
 				} else if (((((size_t)vp->data + PGSIZE * INC) - ((size_t)vbase)) >> LPGSIZE) > (unsigned long)vheadsz) {
-					vheaders = (VPAGE **)
-					    joe_realloc(vheaders, (vheadsz = (((((size_t)vp->data + PGSIZE * INC) - ((size_t)vbase)) >> LPGSIZE))) * sizeof(VPAGE *));
+					vheaders = realloc(vheaders,
+					    (vheadsz = (((((size_t)vp->data + PGSIZE * INC) - ((size_t)vbase)) >> LPGSIZE))) * sizeof(VPAGE *));
 				}
 				for (q = 1; q != INC; ++q) {
 					vp[q].next = freepages;
@@ -174,7 +174,7 @@ unsigned char *vlock(VFILE *vfile, unsigned long addr)
 				vheader(vp->data) = vp;
 				goto gotit;
 			}
-			joe_free(vp);
+			free(vp);
 			vp = NULL;
 		}
 	}
@@ -221,7 +221,7 @@ unsigned char *vlock(VFILE *vfile, unsigned long addr)
 
 VFILE *vtmp(void)
 {
-	VFILE *new = (VFILE *) joe_malloc(sizeof(VFILE));
+	VFILE *new = malloc(sizeof(VFILE));
 
 	new->fd = 0;
 	new->name = NULL;
@@ -254,7 +254,7 @@ void vclose(VFILE *vfile)
 	}
 	if (vfile->fd)
 		close(vfile->fd);
-	joe_free(deque_f(VFILE, link, vfile));
+	free(deque_f(VFILE, link, vfile));
 	for (x = 0; x != HTSIZE; x++)
 		for (pp = (VPAGE *) (htab + x), vp = pp->next; vp;)
 			if (vp->vfile == vfile) {

@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.36 2017/12/08 01:16:37 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.37 2017/12/08 02:00:40 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -61,7 +61,7 @@ KMAP *kmap_getcontext(unsigned char *name, int docreate)
 	if (!docreate)
 		return (NULL);
 
-	c = (struct context *) joe_malloc(sizeof(struct context));
+	c = malloc(sizeof(struct context));
 
 	c->next = contexts;
 	c->name = (unsigned char *)strdup((char *)name);
@@ -509,7 +509,7 @@ static int optx = 0; /* Menu cursor position: remember it for next time */
 
 static int doabrt1(BW *bw, int *xx)
 {
-	joe_free(xx);
+	free(xx);
 	return -1;
 }
 
@@ -519,7 +519,7 @@ static int doopt1(BW *bw, unsigned char *s, int *xx, int *notify)
 	int x = *xx;
 	long v;
 
-	joe_free(xx);
+	free(xx);
 	switch (glopts[x].type) {
 	case 1:
 		if (!*s) {
@@ -759,7 +759,7 @@ static int doopt(MENU *m, int x, void *object, int flg)
 		break;
 	case 1:
 		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, *glopts[x].set.i);
-		xx = (int *) joe_malloc(sizeof(int));
+		xx = malloc(sizeof(int));
 
 		*xx = x;
 		m->parent->notify = 0;
@@ -775,7 +775,7 @@ static int doopt(MENU *m, int x, void *object, int flg)
 			joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, *glopts[x].set.us);
 		else
 			joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, "");
-		xx = (int *) joe_malloc(sizeof(int));
+		xx = malloc(sizeof(int));
 
 		*xx = x;
 		m->parent->notify = 0;
@@ -789,7 +789,8 @@ static int doopt(MENU *m, int x, void *object, int flg)
 		goto in;
 	case 7:
 		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, *(int *) ((unsigned char *) &bw->o + glopts[x].ofst) + 1);
-	      in:xx = (int *) joe_malloc(sizeof(int));
+ in:
+		xx = malloc(sizeof(int));
 
 		*xx = x;
 		m->parent->notify = 0;
@@ -831,8 +832,8 @@ static int doabrt(MENU *m, int x, unsigned char **s)
 {
 	optx = x;
 	for (x = 0; s[x]; ++x)
-		joe_free(s[x]);
-	joe_free(s);
+		free(s[x]);
+	free(s);
 	return -1;
 }
 
@@ -843,10 +844,10 @@ int umode(BW *bw)
 
 	bw->b->o.readonly = bw->o.readonly = bw->b->rdonly;
 	for (size = 0; glopts[size].menu; ++size) ;
-	s = (unsigned char **) joe_malloc(sizeof(unsigned char *) * (size + 1));
+	s = calloc(size + 1, sizeof(unsigned char *));
 	len = 0;
 	for (x = 0; x < size; ++x) {
-		s[x] = (unsigned char *) joe_malloc(OPT_BUF_SIZE);
+		s[x] = malloc(OPT_BUF_SIZE);
 		if (glopts[x].menu[0] == ' ' || glopts[x].menu[1] == ' ')
 			strlcpy(s[x], glopts[x].menu, OPT_BUF_SIZE);
 		else {
@@ -944,7 +945,7 @@ int procrc(CAP *cap, unsigned char *name)
 			{
 				int x;
 
-				o = (OPTIONS *) joe_malloc(sizeof(OPTIONS));
+				o = malloc(sizeof(OPTIONS));
 				*o = fdefault;
 				for (x = 0; buf[x] && buf[x] != '\n' && buf[x] != ' ' && buf[x] != '\t'; ++x) ;
 				buf[x] = 0;

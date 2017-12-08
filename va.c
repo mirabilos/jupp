@@ -7,7 +7,7 @@
  */
 #include "config.h"
 
-__RCSID("$MirOS: contrib/code/jupp/va.c,v 1.5 2017/12/06 21:17:04 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/va.c,v 1.6 2017/12/08 02:00:43 tg Exp $");
 
 #include <stdlib.h>
 
@@ -16,7 +16,7 @@ __RCSID("$MirOS: contrib/code/jupp/va.c,v 1.5 2017/12/06 21:17:04 tg Exp $");
 
 aELEMENT *vamk(int len)
 {
-	int *new = (int *) joe_malloc((1 + len) * sizeof(aELEMENT) + 2 * sizeof(int));
+	int *new = malloc((1 + len) * sizeof(aELEMENT) + 2 * sizeof(int));
 
 	new[0] = len;
 	new[1] = 0;
@@ -28,7 +28,7 @@ void varm(aELEMENT *vary)
 {
 	if (vary) {
 		vazap(vary, 0, aLen(vary));
-		joe_free((int *) vary - 2);
+		free((int *)vary - 2);
 	}
 }
 
@@ -49,7 +49,7 @@ aELEMENT *vaensure(aELEMENT *vary, int len)
 		vary = vamk(len);
 	else if (len > aSiz(vary)) {
 		len += (len >> 2);
-		vary = (aELEMENT *)(2 + (int *) joe_realloc((int *) vary - 2, (len + 1) * sizeof(aELEMENT) + 2 * sizeof(int)));
+		vary = (aELEMENT *)(2 + (int *)realloc((int *)vary - 2, (len + 1) * sizeof(aELEMENT) + 2 * sizeof(int)));
 
 		aSiz(vary) = len;
 	}

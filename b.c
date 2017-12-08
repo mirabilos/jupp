@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.25 2017/12/06 23:17:32 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.26 2017/12/08 02:00:38 tg Exp $");
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -262,7 +262,7 @@ void brm(B *b)
 			prm(b->bof->link.next);
 		prm(b->bof);
 		if (b->name)
-			joe_free(b->name);
+			free(b->name);
 		demote(B, link, &frebufs, b);
 	}
 }
@@ -2532,7 +2532,7 @@ unsigned char *brmem(P *p, unsigned char *blk, int size)
 
 unsigned char *brs(P *p, int size)
 {
-	unsigned char *s = (unsigned char *) joe_malloc(size + 1);
+	unsigned char *s = malloc(size + 1);
 
 	s[size] = 0;
 	return brmem(p, s, size);

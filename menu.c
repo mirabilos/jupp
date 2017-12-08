@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/menu.c,v 1.11 2017/12/07 02:10:16 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/menu.c,v 1.12 2017/12/08 02:00:39 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -381,7 +381,7 @@ static int menuabort(jobject jO)
 	int x = m->cursor;
 	W *win = w->win;
 
-	joe_free(m);
+	free(m);
 	if (func)
 		return func(win->object, x, object);
 	else
@@ -432,7 +432,7 @@ MENU *mkmenu(W *w, unsigned char **s, jpoly_int *func, jpoly_int *abrt, jpoly_in
 		return NULL;
 	}
 	wfit(new->t);
-	new->object.menu = m = (MENU *)joe_malloc(sizeof(MENU));
+	new->object.menu = m = malloc(sizeof(MENU));
 	m->parent = new;
 	m->func = func;
 	m->abrt = abrt;

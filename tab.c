@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tab.c,v 1.11 2017/12/07 02:10:17 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tab.c,v 1.12 2017/12/08 02:00:41 tg Exp $");
 
 #include <sys/stat.h>
 #include <stdlib.h>
@@ -80,8 +80,8 @@ static int get_entries(TAB *tab, int prv)
 	tab->files = files;
 	vasort(files, tab->len);
 	if (tab->type)
-		joe_free(tab->type);
-	tab->type = (unsigned char *) joe_malloc(tab->len);
+		free(tab->type);
+	tab->type = malloc(tab->len);
 	for (a = 0; a != tab->len; a++) {
 		struct stat buf;
 		mset(&buf, 0, sizeof(struct stat));
@@ -184,8 +184,8 @@ static void rmtab(TAB *tab)
 	vsrm(tab->pattern);
 	varm(tab->files);
 	if (tab->type)
-		joe_free(tab->type);
-	joe_free(tab);
+		free(tab->type);
+	free(tab);
 }
 /*****************************************************************************/
 /****************** The user hit return **************************************/
@@ -312,7 +312,7 @@ int cmplt(BW *bw)
 	unsigned char **l;
 	int ofst;
 
-	tab = (TAB *) joe_malloc(sizeof(TAB));
+	tab = malloc(sizeof(TAB));
 	tab->files = NULL;
 	tab->type = NULL;
 	tab->list = NULL;

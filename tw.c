@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tw.c,v 1.16 2017/12/07 02:10:17 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tw.c,v 1.17 2017/12/08 02:00:41 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -483,7 +483,7 @@ int usplitw(BW *bw)
 	new->object.bw = newbw = bwmk(new, bw->b, 0);
 	++bw->b->count;
 	newbw->offset = bw->offset;
-	newbw->object = (void *) (newtw = (TW *) joe_malloc(sizeof(TW)));
+	newbw->object = newtw = malloc(sizeof(TW));
 	iztw(newtw, new->y);
 	pset(newbw->top, bw->top);
 	pset(newbw->cursor, bw->cursor);
@@ -509,7 +509,7 @@ int uduptw(BW *bw)
 	new->object.bw = newbw = bwmk(new, bw->b, 0);
 	++bw->b->count;
 	newbw->offset = bw->offset;
-	newbw->object = (void *) (newtw = (TW *) joe_malloc(sizeof(TW)));
+	newbw->object = newtw = malloc(sizeof(TW));
 	iztw(newtw, new->y);
 	pset(newbw->top, bw->top);
 	pset(newbw->cursor, bw->cursor);
@@ -572,7 +572,7 @@ int abortit(BW *bw)
 		}
 	bwrm(bw);
 	vsrm(tw->stalin);
-	joe_free(tw);
+	free(tw);
 	w->object.base = NULL;
 	wabort(w);	/* Eliminate this window and it's children */
 	return 0;
@@ -743,7 +743,7 @@ BW *wmktw(SCREEN *t, B *b)
 	w = wcreate(t, &watomtw, NULL, NULL, NULL, t->h, NULL, NULL);
 	wfit(w->t);
 	w->object.bw = bw = bwmk(w, b, 0);
-	bw->object = (void *)(tw = (TW *)joe_malloc(sizeof(TW)));
+	bw->object = tw = malloc(sizeof(TW));
 	iztw(tw, w->y);
 	return bw;
 }

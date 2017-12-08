@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/termcap.c,v 1.19 2017/12/06 21:17:00 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/termcap.c,v 1.20 2017/12/08 02:00:41 tg Exp $");
 
 #include <sys/stat.h>
 #include <stdlib.h>
@@ -148,7 +148,7 @@ CAP *getcap(unsigned char *name, unsigned int baud, void (*out) (unsigned char *
 
 	if (!name && !(name = joeterm) && !(name = (unsigned char *)getenv("TERM")))
 		return NULL;
-	cap = (CAP *) joe_malloc(sizeof(CAP));
+	cap = malloc(sizeof(CAP));
 	cap->tbuf = vsmk(4096);
 	cap->abuf = NULL;
 	cap->sort = NULL;
@@ -161,18 +161,18 @@ CAP *getcap(unsigned char *name, unsigned int baud, void (*out) (unsigned char *
 	}
 
 #ifdef TERMINFO
-	cap->abuf = (unsigned char *) joe_malloc(4096);
+	cap->abuf = malloc(4096);
 	cap->abufp = cap->abuf;
 	if (tgetent((char *)cap->tbuf, (char *)name) == 1)
 		return setcap(cap, baud, out, outptr);
 	else {
-		joe_free(cap->abuf);
+		free(cap->abuf);
 		cap->abuf = NULL;
 	}
 #endif
 
 	name = vsncpy(NULL, 0, sz(name));
-	cap->sort = (struct sortentry *) joe_malloc(sizeof(struct sortentry) * (sortsiz = 64));
+	cap->sort = malloc(sizeof(struct sortentry) * (sortsiz = 64));
 
 	cap->sortlen = 0;
 
@@ -214,14 +214,6 @@ CAP *getcap(unsigned char *name, unsigned int baud, void (*out) (unsigned char *
 
       nextfile:
 	if (!npbuf[y]) {
-/*
- varm(npbuf);
- vsrm(name);
- vsrm(cap->tbuf);
- joe_free(cap->sort);
- joe_free(cap);
- return 0;
-*/
 		fprintf(stderr, "Couldn't load termcap entry.  Using ansi default\n");
 		ti = 0;
 		cap->tbuf = vsncpy(cap->tbuf, 0, sc(defentry));
@@ -333,7 +325,7 @@ CAP *getcap(unsigned char *name, unsigned int baud, void (*out) (unsigned char *
 		}
 	      in:
 		if (cap->sortlen == sortsiz)
-			cap->sort = (struct sortentry *) joe_realloc(cap->sort, (sortsiz += 32) * sizeof(struct sortentry));
+			cap->sort = realloc(cap->sort, (sortsiz += 32) * sizeof(struct sortentry));
 		mmove(cap->sort + y + 1, cap->sort + y, (cap->sortlen++ - y) * sizeof(struct sortentry));
 
 		cap->sort[y].name = qq;
@@ -442,10 +434,10 @@ void rmcap(CAP *cap)
 {
 	vsrm(cap->tbuf);
 	if (cap->abuf)
-		joe_free(cap->abuf);
+		free(cap->abuf);
 	if (cap->sort)
-		joe_free(cap->sort);
-	joe_free(cap);
+		free(cap->sort);
+	free(cap);
 }
 
 static unsigned char escape(unsigned char **s)

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/pw.c,v 1.13 2017/12/07 02:10:17 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/pw.c,v 1.14 2017/12/08 02:00:39 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -114,7 +114,7 @@ static int rtnpw(jobject jO)
 			s2 = brs(r, (int)(byte2 - r->byte));
 			prm(r);
 			byte2 = strcmp(s, s2);
-			joe_free(s2);
+			free(s2);
 			if (byte2) {
 				binsm(q, s, (int)(byte - bw->cursor->byte));
 				p_goto_eof(q);
@@ -141,8 +141,8 @@ static int rtnpw(jobject jO)
 	pfunc = pw->pfunc;
 	object = pw->object;
 	bwrm(bw);
-	joe_free(pw->prompt);
-	joe_free(pw);
+	free(pw->prompt);
+	free(pw);
 	w->object.base = NULL;
 	notify = w->notify;
 	w->notify = 0;
@@ -190,8 +190,8 @@ static int abortpw(jobject jO)
 	W *win = b->parent->win;
 
 	bwrm(b);
-	joe_free(pw->prompt);
-	joe_free(pw);
+	free(pw->prompt);
+	free(pw);
 	if (abrt) {
 		return abrt(win->object, object);
 	} else {
@@ -231,7 +231,7 @@ BW *wmkpw(W *w, const unsigned char *prompt, B **history, jpoly_int *func, const
 	wfit(new->t);
 	new->object.bw = bw = bwmk(new, bmk(NULL), 1);
 	bw->b->o.charmap = map;
-	bw->object = (void *) (pw = (PW *) joe_malloc(sizeof(PW)));
+	bw->object = pw = malloc(sizeof(PW));
 	pw->abrt = abrt;
 	pw->tab = tab;
 	pw->object = object;
