@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.28 2017/12/07 02:10:18 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.29 2017/12/08 02:17:23 tg Exp $");
 
 #include <string.h>
 
@@ -1223,7 +1223,7 @@ static int doquote(BW *bw, int c, void *object, int *notify)
 				goto unopoo;
  uhex_uni:
 			if (!wmkpw(bw->parent, UC "Unicode (ISO-10646) character in hex (^C to abort): ", &unicodehist, dounicode,
-			           NULL, NULL, NULL, NULL, NULL, locale_map))
+				   NULL, NULL, NULL, NULL, NULL, locale_map))
 				return 0;
 			else
 				return -1;

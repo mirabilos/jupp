@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uisrch.c,v 1.13 2017/12/08 02:00:42 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uisrch.c,v 1.14 2017/12/08 02:17:24 tg Exp $");
 
 #include <stdlib.h>
 
@@ -110,6 +110,7 @@ static int itype(BW *bw, int c, struct isrch *isrch, int *notify)
 {
 	IREC *i;
 	int omid;
+	int tc;
 
 	if (isrch->quote) {
 		goto in;
@@ -230,20 +231,21 @@ static int itype(BW *bw, int c, struct isrch *isrch, int *notify)
 		/* Translate bytes to utf-8 */
 		unsigned char buf[16];
 		int x;
-		for (x=0; x!=sLEN(isrch->pattern); ++x) {
-			int c_ = to_uni(bw->b->o.charmap, isrch->pattern[x]);
-			utf8_encode(buf,c_);
-			isrch->prompt = vsncpy(sv(isrch->prompt),sz(buf));
+
+		for (x = 0; x != sLEN(isrch->pattern); ++x) {
+			tc = to_uni(bw->b->o.charmap, isrch->pattern[x]);
+			utf8_encode(buf, tc);
+			isrch->prompt = vsncpy(sv(isrch->prompt), sz(buf));
 		}
 	} else if (!locale_map->type && bw->b->o.charmap->type) {
 		/* Translate utf-8 to bytes */
 		unsigned char *p = isrch->pattern;
 		int len = sLEN(isrch->pattern);
+
 		while (len) {
-			int c_ = utf8_decode_fwrd(&p, &len);
-			if (c_ >= 0) {
-				c_ = from_uni(locale_map, c_);
-				isrch->prompt = vsadd(isrch->prompt, c_);
+			if ((tc = utf8_decode_fwrd(&p, &len)) >= 0) {
+				tc = from_uni(locale_map, tc);
+				isrch->prompt = vsadd(isrch->prompt, tc);
 			}
 		}
 	} else {

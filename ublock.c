@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.28 2017/12/08 01:42:02 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.29 2017/12/08 02:17:23 tg Exp $");
 
 #include <sys/wait.h>
 #include <limits.h>
@@ -1135,8 +1135,8 @@ int ulower(BW *bw)
 {
 	if (markv(1)) {
 		P *q;
-	        P *p;
-	        int c;
+		P *p;
+		int c;
 		B *b = bcpy(markb,markk);
 		/* Leave one character in buffer to keep pointers set properly... */
 		q = pdup(markk);
@@ -1165,8 +1165,8 @@ int uupper(BW *bw)
 {
 	if (markv(1)) {
 		P *q;
-	        P *p;
-	        int c;
+		P *p;
+		int c;
 		B *b = bcpy(markb,markk);
 		q = pdup(markk);
 		prgetc(q);

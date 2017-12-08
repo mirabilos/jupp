@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.31 2017/12/08 02:00:38 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.32 2017/12/08 02:17:21 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -313,11 +313,11 @@ void bwdel(BW *w, long int l, long int n, int flg)
 static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long int scr, long int from, long int to,int st,BW *bw)
 
 
-            			/* Screen line address */
-      				/* Window */
-     				/* Buffer pointer */
-         			/* Starting column to display */
-              			/* Range for marked block */
+				/* Screen line address */
+				/* Window */
+				/* Buffer pointer */
+				/* Starting column to display */
+				/* Range for marked block */
 {
 	int ox = x;
 	int tach, tach1;
@@ -332,10 +332,10 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 
 	struct utf8_sm utf8_sm;
 
-        int *syn = NULL;
-        P *tmp;
-        int idx=0;
-        int atr = 0;
+	int *syn = NULL;
+	P *tmp;
+	int idx=0;
+	int atr = 0;
 
 	utf8_init(&utf8_sm);
 

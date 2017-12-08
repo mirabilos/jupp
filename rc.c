@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.37 2017/12/08 02:00:40 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.38 2017/12/08 02:17:22 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -668,7 +668,7 @@ check_for_hex(BW *bw)
 	for (w = bw->parent->link.next; w != bw->parent; w = w->link.next)
 		if ((w->watom == &watomtw || w->watom == &watompw) &&
 		    w->object.bw->b == bw->b && w->object.bw->o.hex)
-		    	return 1;
+			return 1;
 	return 0;
 }
 

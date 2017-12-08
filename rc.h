@@ -9,7 +9,7 @@
 #define _JOE_RC_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_rc_h, "$MirOS: contrib/code/jupp/rc.h,v 1.8 2017/12/06 23:17:35 tg Exp $");
+__IDSTRING(rcsid_rc_h, "$MirOS: contrib/code/jupp/rc.h,v 1.9 2017/12/08 02:17:22 tg Exp $");
 #endif
 
 extern OPTIONS pdefault;
@@ -24,8 +24,8 @@ KMAP *kmap_getcontext(unsigned char *name, int docreate);
 
 /* int procrc(CAP *cap, char *name);  Process an rc file
    Returns 0 for success
-          -1 for file not found
-           1 for syntax error (errors written to stderr)
+	  -1 for file not found
+	   1 for syntax error (errors written to stderr)
 */
 int procrc(CAP *cap, unsigned char *name);
 

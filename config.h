@@ -60,7 +60,7 @@
 
 #include <stdio.h>
 #ifndef EOF
-#define EOF -1
+#define EOF (-1)
 #endif
 #define NO_MORE_DATA EOF
 
@@ -136,7 +136,7 @@ size_t strlcpy(char *, const char *, size_t)
 #endif
 
 #ifdef EXTERN
-__IDSTRING(rcsid_config_h, "$MirOS: contrib/code/jupp/config.h,v 1.13 2017/12/06 21:16:55 tg Exp $");
+__IDSTRING(rcsid_config_h, "$MirOS: contrib/code/jupp/config.h,v 1.14 2017/12/08 02:17:21 tg Exp $");
 #endif
 
 #endif /* ifndef _JOE_CONFIG_H */

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.34 2017/12/08 02:00:40 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.35 2017/12/08 02:17:22 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -657,10 +657,10 @@ SCRN *nopen(CAP *cap)
 	leave = 1;
 	ttclose();
 	signrm(0);
-#ifdef	DEBUG
+#ifdef DEBUG
 	/* these are strings, but I do not know if %s is appropriate -mirabilos */
-        fprintf(stderr,"cm=%d ch=%d cv=%d ho=%d lf=%d DO=%d ll=%d up=%d UP=%d cr=%d\n",
-                       t->cm, t->ch, t->cv, t->ho, t->lf, t->DO, t->ll, t->up, t->UP, t->cr);
+	fprintf(stderr,"cm=%d ch=%d cv=%d ho=%d lf=%d DO=%d ll=%d up=%d UP=%d cr=%d\n",
+		       t->cm, t->ch, t->cv, t->ho, t->lf, t->DO, t->ll, t->up, t->UP, t->cr);
 #endif
 	fprintf(stderr,"Sorry, your terminal can't do absolute cursor positioning.\nIt's broken\n");
 	return NULL;

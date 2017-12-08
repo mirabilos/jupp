@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.16 2017/12/06 23:17:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.17 2017/12/08 02:17:21 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -80,8 +80,8 @@ __RCSID("$MirOS: contrib/code/jupp/path.c,v 1.16 2017/12/06 23:17:34 tg Exp $");
 #endif
 #define skip_drive_letter(path)	do_if_drive_letter((path), (path) += 2)
 
-#ifndef		_PATH_TMP
-#    define	_PATH_TMP	"/tmp/"
+#ifndef _PATH_TMP
+#define _PATH_TMP	"/tmp/"
 #endif
 
 #if !defined(PATH_MAX) && !defined(HAVE_GET_CURRENT_DIR_NAME)

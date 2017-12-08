@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tw.c,v 1.17 2017/12/08 02:00:41 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tw.c,v 1.18 2017/12/08 02:17:23 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -128,15 +128,15 @@ get_context(BW *bw)
 			    (stdbuf[0]=='B' && stdbuf[1]=='E' && stdbuf[2]=='G' && stdbuf[3]=='I' && stdbuf[4]=='N') ||
 			    (stdbuf[0]=='-' && stdbuf[1]=='-') ||
 			    stdbuf[0]==';')) {
-			    	strlcpy(buf1,stdbuf,stdsiz);
+				strlcpy(buf1,stdbuf,stdsiz);
 				/* Uncomment to get the last line instead of the first line (see above)
-			    	if (pprevl(p)) {
-			    		p_goto_bol(p);
-			    		if (!pisindent(p) && !pisblank(p))
-			    			goto next;
-			    	}
-			    	*/
-			    	break;
+				if (pprevl(p)) {
+					p_goto_bol(p);
+					if (!pisindent(p) && !pisblank(p))
+						goto next;
+				}
+				*/
+				break;
 			}
 
 		}

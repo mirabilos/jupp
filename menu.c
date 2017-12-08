@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/menu.c,v 1.12 2017/12/08 02:00:39 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/menu.c,v 1.13 2017/12/08 02:17:21 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -64,17 +64,17 @@ static void menudisp(jobject jO, int flg __attribute__((__unused__)))
 
 			/* Generate field */
 			genfield(m->t->t,
-			         s + col,
-			         a + col,
-			         m->x + col,
-			         m->y + y,
-			         0,
-			         m->list[x + y*m->perline + m->top],
-			         strlen((char *)m->list[x + y*m->perline + m->top]),
-			         atr,
-			         m->width,
-			         0,
-				 NULL);
+			    s + col,
+			    a + col,
+			    m->x + col,
+			    m->y + y,
+			    0,
+			    m->list[x + y*m->perline + m->top],
+			    strlen((char *)m->list[x + y*m->perline + m->top]),
+			    atr,
+			    m->width,
+			    0,
+			    NULL);
 
 			col += m->width;
 

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/kbd.c,v 1.9 2017/12/08 02:00:39 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/kbd.c,v 1.10 2017/12/08 02:17:21 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -77,8 +77,8 @@ static int keyval(unsigned char *s)
 			return 127;
 		else
 			return s[1] & 0x1F;
-	else if ((s[0] == 'S' || s[0] == 's')
-		 && (s[1] == 'P' || s[1] == 'p') && !s[2])
+	else if (((s[0] | 0x20) == 's') &&
+	    ((s[1] | 0x20) == 'p') && !s[2])
 		return ' ';
 	else if (s[1] || !s[0])
 		return -1;

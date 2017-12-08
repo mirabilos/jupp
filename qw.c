@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/qw.c,v 1.10 2017/12/08 02:00:40 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/qw.c,v 1.11 2017/12/08 02:17:22 tg Exp $");
 
 #include <stdlib.h>
 
@@ -37,17 +37,17 @@ static void dispqw(jobject jO, int flg __attribute__((__unused__)))
 	/* Generate prompt */
 	w->t->t->updtab[w->y] = 1;
 	genfield(w->t->t,
-	         w->t->t->scrn + w->y * w->t->t->co + w->x,
-	         w->t->t->attr + w->y * w->t->t->co + w->x,
-	         w->x,
-	         w->y,
-	         qw->promptofst,
-	         qw->prompt,
-	         qw->promptlen,
-	         0,
-	         w->w - w->x,
-	         1,
-		 NULL);
+	    w->t->t->scrn + w->y * w->t->t->co + w->x,
+	    w->t->t->attr + w->y * w->t->t->co + w->x,
+	    w->x,
+	    w->y,
+	    qw->promptofst,
+	    qw->prompt,
+	    qw->promptlen,
+	    0,
+	    w->w - w->x,
+	    1,
+	    NULL);
 }
 
 static void dispqwn(jobject jO, int flg __attribute__((__unused__)))
@@ -72,17 +72,17 @@ static void dispqwn(jobject jO, int flg __attribute__((__unused__)))
 	/* Generate prompt */
 	w->t->t->updtab[w->y] = 1;
 	genfield(w->t->t,
-	         w->t->t->scrn + w->y * w->t->t->co + w->x,
-	         w->t->t->attr + w->y * w->t->t->co + w->x,
-	         w->x,
-	         w->y,
-	         qw->promptofst,
-	         qw->prompt,
-	         qw->promptlen,
-	         0,
-	         w->w - w->x,
-	         1,
-		 NULL);
+	    w->t->t->scrn + w->y * w->t->t->co + w->x,
+	    w->t->t->attr + w->y * w->t->t->co + w->x,
+	    w->x,
+	    w->y,
+	    qw->promptofst,
+	    qw->prompt,
+	    qw->promptlen,
+	    0,
+	    w->w - w->x,
+	    1,
+	    NULL);
 }
 
 /* When user hits a key in a query window */

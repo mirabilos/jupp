@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tty.c,v 1.33 2017/12/08 02:00:41 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tty.c,v 1.34 2017/12/08 02:17:23 tg Exp $");
 
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
@@ -913,9 +913,9 @@ static unsigned char *getpty(int *ptyfd)
 	static unsigned char name[32];
 	int ttyfd;
 
-        if (openpty(ptyfd, &ttyfd, name, NULL, NULL) == 0)
-           return(name);
-        else
+	if (openpty(ptyfd, &ttyfd, name, NULL, NULL) == 0)
+	   return(name);
+	else
 	   return (NULL);
 }
 
