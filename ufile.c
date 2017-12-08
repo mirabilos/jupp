@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.21 2017/12/08 01:42:03 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.22 2017/12/08 01:43:17 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -518,6 +518,7 @@ doedit1(BW *bw, int c, unsigned char *s, int *notify)
 		} else {
 			if (uduptw(bw)) {
 				brm(b);
+				vsrm(s);
 				return (-1);
 			}
 			bw = maint->curwin->object.bw;
