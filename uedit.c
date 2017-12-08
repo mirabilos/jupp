@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.29 2017/12/08 02:17:23 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.30 2017/12/08 03:24:16 tg Exp $");
 
 #include <string.h>
 
@@ -1218,7 +1218,7 @@ static int doquote(BW *bw, int c, void *object, int *notify)
 				return -1;
 			else
 				return 0;
-		} else if (c == 'u' || c == 'U') {
+		} else if ((c | 0x20) == 'u') {
 			if (bw->b->o.charmap->type)
 				goto unopoo;
  uhex_uni:
@@ -1227,7 +1227,7 @@ static int doquote(BW *bw, int c, void *object, int *notify)
 				return 0;
 			else
 				return -1;
-		} else if (c == 'r' || c == 'R') {
+		} else if ((c | 0x20) == 'r') {
 			if (!bw->b->o.charmap->type)
 				goto unopoo;
  uhex_raw:
@@ -1236,12 +1236,12 @@ static int doquote(BW *bw, int c, void *object, int *notify)
 				return -1;
 			else
 				return 0;
-		} else if (c == 'x' || c == 'X') {
+		} else if ((c | 0x20) == 'x') {
 			if (bw->b->o.charmap->type)
 				goto uhex_uni;
 			else
 				goto uhex_raw;
-		} else if (c == 'o' || c == 'O') {
+		} else if ((c | 0x20) == 'o') {
 			quotestate = 5;
 			if (!mkqwna(bw->parent, sc("ASCII 0---"), doquote, NULL, NULL, notify))
 				return -1;

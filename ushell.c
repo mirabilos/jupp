@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ushell.c,v 1.14 2017/12/08 02:17:24 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ushell.c,v 1.15 2017/12/08 03:24:16 tg Exp $");
 
 #include <sys/stat.h>
 #include <signal.h>
@@ -202,7 +202,7 @@ static int pidabort(BW *bw, int c, void *object, int *notify)
 	if (notify) {
 		*notify = 1;
 	}
-	if (c != 'y' && c != 'Y') {
+	if ((c | 0x20) != 'y') {
 		return -1;
 	}
 	if (bw->b->pid) {

@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/help.c,v 1.14 2017/12/08 02:00:39 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/help.c,v 1.15 2017/12/08 03:24:15 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -105,7 +105,7 @@ help_init(const unsigned char *filename)
 				fprintf(stderr, "Do you want to accept incomplete help screen (y/n)?");
 				fflush(stderr);
 				if (fgets((char *)buf, 8, stdin) == NULL ||
-				    (!((buf[0] == 'y') || (buf[0] == 'Y')))) {
+				    (buf[0] | 0x20) != 'y') {
 					free(tmp->text);
 					free(tmp);
 					return 0;

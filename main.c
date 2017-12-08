@@ -32,7 +32,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.39 2017/12/08 02:28:05 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.40 2017/12/08 03:24:15 tg Exp $");
 
 #include <fcntl.h>
 #include <string.h>
@@ -236,7 +236,7 @@ main_init(int argc, char **argv, char **envp, SCRN **np)
 			fprintf(stderr, "There were errors in '%s'.  Use it anyway?", s);
 			fflush(stderr);
 			if (fgets((char *)buf, 8, stdin) != NULL &&
-			    (buf[0] == 'y' || buf[0] == 'Y'))
+			    (buf[0] | 0x20) == 'y')
 				goto donerc;
 		}
 	}
@@ -255,7 +255,7 @@ main_init(int argc, char **argv, char **envp, SCRN **np)
 			fprintf(stderr, "There were errors in '%s'.  Use it anyway?", s);
 			fflush(stderr);
 			if (fgets((char *)buf, 8, stdin) != NULL &&
-			    (buf[0] == 'y' || buf[0] == 'Y'))
+			    (buf[0] | 0x20) == 'y')
 				goto donerc;
 		}
 	}
@@ -274,7 +274,7 @@ main_init(int argc, char **argv, char **envp, SCRN **np)
 		fprintf(stderr, "There were errors in '%s'.  Use it anyway?", s);
 		fflush(stderr);
 		if (fgets((char *)buf, 8, stdin) != NULL &&
-		    (buf[0] == 'y' || buf[0] == 'Y'))
+		    (buf[0] | 0x20) == 'y')
 			goto donerc;
 	}
 

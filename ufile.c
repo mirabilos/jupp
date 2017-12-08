@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.24 2017/12/08 02:28:07 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.25 2017/12/08 03:24:16 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -295,7 +295,7 @@ static void rmsavereq(struct savereq *req)
 static int saver(BW *bw, int c, struct savereq *req, int *notify)
 {
 	int fl;
-	if (c == 'n' || c == 'N') {
+	if ((c | 0x20) == 'n') {
 		msgnw(bw->parent, UC "Couldn't make backup file... file not saved");
 		if (req->callback) {
 			return req->callback(bw, req, -1, notify);
@@ -307,7 +307,7 @@ static int saver(BW *bw, int c, struct savereq *req, int *notify)
 			return -1;
 		}
 	}
-	if (c != 'y' && c != 'Y') {
+	if ((c | 0x20) != 'y') {
 		if (mkqw(bw->parent, sc("Could not make backup file.  Save anyway (y,n,^C)? "), saver, NULL, req, notify)) {
 			return 0;
 		} else {
@@ -386,9 +386,9 @@ static int dosave(BW *bw, struct savereq *req, int *notify)
 
 static int dosave2(BW *bw, int c, struct savereq *req, int *notify)
 {
-	if (c == 'y' || c == 'Y') {
+	if ((c | 0x20) == 'y') {
 		return dosave(bw, req, notify);
-	} else if (c == 'n' || c == 'N') {
+	} else if ((c | 0x20) == 'n') {
 		if (notify) {
 			*notify = 1;
 		}
@@ -406,9 +406,9 @@ static int dosave2(BW *bw, int c, struct savereq *req, int *notify)
 
 static int dosave2a(BW *bw, int c, struct savereq *req, int *notify)
 {
-	if (c == 'y' || c == 'Y') {
+	if ((c | 0x20) == 'y') {
 		return dosave(bw, req, notify);
-	} else if (c == 'n' || c == 'N') {
+	} else if ((c | 0x20) == 'n') {
 		if (notify) {
 			*notify = 1;
 		}
@@ -803,12 +803,12 @@ int uexsve(BW *bw)
 
 static int nask(BW *bw, int c, void *object, int *notify)
 {
-	if (c == 'y' || c == 'Y') {
+	if ((c | 0x20) == 'y') {
 		/* uexsve macro should be here... */
 		if(notify)
 			*notify = 1;
 		return 0;
-	} else if (c == 'n' || c == 'N') {
+	} else if ((c | 0x20) == 'n') {
 		if(notify)
 			*notify = -1;
 		genexmsg(bw, 0, NULL);
@@ -845,7 +845,7 @@ static int dolose(BW *bw, int c, void *object, int *notify)
 	if (notify) {
 		*notify = 1;
 	}
-	if (c != 'y' && c != 'Y') {
+	if ((c | 0x20) != 'y') {
 		return -1;
 	}
 
