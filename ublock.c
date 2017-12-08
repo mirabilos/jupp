@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.26 2017/12/08 01:18:06 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.27 2017/12/08 01:29:59 tg Exp $");
 
 #include <sys/wait.h>
 #include <limits.h>
@@ -884,6 +884,7 @@ int doinsf(BW *bw, unsigned char *s, void *object, int *notify)
 			if (error) {
 				msgnw(bw->parent, msgs[-error]);
 				brm(tmp);
+				vsrm(s);
 				return -1;
 			}
 			if (piscol(tmp->eof))
@@ -904,8 +905,10 @@ int doinsf(BW *bw, unsigned char *s, void *object, int *notify)
 			}
 			brm(tmp);
 			updall();
+			vsrm(s);
 			return 0;
 		} else {
+			vsrm(s);
 			msgnw(bw->parent, UC "No block");
 			return -1;
 		}

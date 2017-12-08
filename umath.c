@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.21 2017/12/07 02:10:19 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.22 2017/12/08 01:30:00 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -236,6 +236,7 @@ calc(BW *bw, unsigned char *s)
 static int domath(BW *bw, unsigned char *s, void *object, int *notify)
 {
 	calc(bw, s);
+	vsrm(s);
 
 	if (notify) {
 		*notify = 1;
@@ -244,7 +245,6 @@ static int domath(BW *bw, unsigned char *s, void *object, int *notify)
 		msgnw(bw->parent, merrt);
 		return -1;
 	}
-	vsrm(s);
 	memcpy(msgbuf, math_res, JOE_MSGBUFSIZE);
 	if (bw->parent->watom->what != TYPETW) {
 		binsm(bw->cursor, sz(msgbuf));

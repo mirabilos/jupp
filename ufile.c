@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.19 2017/12/07 02:10:18 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.20 2017/12/08 01:29:59 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -645,6 +645,7 @@ doscratch(BW *bw, unsigned char *s, void *obj, int *notify)
 
 	b = bfind_scratch(s);
 	er = error;
+	vsrm(s);
 	if (bw->b->count == 1 && (bw->b->changed || bw->b->name)) {
 		if (orphan) {
 			orphit(bw);
@@ -666,7 +667,6 @@ doscratch(BW *bw, unsigned char *s, void *obj, int *notify)
 	w->object.bw = bw = bwmk(w, b, 0);
 	wredraw(bw->parent);
 	bw->object = object;
-	vsrm(s);
 	if (er == -1 && bw->o.mnew) {
 		exemac(bw->o.mnew);
 	}
