@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.24 2017/12/08 02:28:08 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.25 2017/12/16 22:10:55 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -66,21 +66,20 @@ struct var *dumb;
 
 static double expr(int prec, struct var **rtv)
 {
+	unsigned char c;
 	double x = 0.0;
 	struct var *v = NULL;
 
 	while (*ptr == ' ' || *ptr == '\t') {
 		++ptr;
 	}
-	if ((*ptr >= 'a' && *ptr <= 'z') || (*ptr >= 'A' && *ptr <= 'Z')
-	    || *ptr == '_') {
-		unsigned char *s = ptr, c;
+	c = *ptr | 0x20;
+	if ((c >= 'a' && c <= 'z') || *ptr == '_') {
+		unsigned char *s = ptr;
 
-		while ((*ptr >= 'a' && *ptr <= 'z')
-		       || (*ptr >= 'A' && *ptr <= 'Z')
-		       || *ptr == '_' || (*ptr >= '0' && *ptr <= '9')) {
+		while (((c = *ptr | 0x20) >= 'a' && c <= 'z') ||
+		    *ptr == '_' || (*ptr >= '0' && *ptr <= '9'))
 			++ptr;
-		}
 		c = *ptr;
 		*ptr = 0;
 		v = get(s);

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.30 2017/12/08 03:24:16 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.31 2017/12/16 22:10:55 tg Exp $");
 
 #include <string.h>
 
@@ -1249,7 +1249,7 @@ static int doquote(BW *bw, int c, void *object, int *notify)
 				return 0;
 		} else {
  unopoo:
-			if ((c >= 0x40 && c <= 0x5F) || (c >= 'a' && c <= 'z'))
+			if ((c & ~0x20) >= 0x40 && (c & ~0x20) <= 0x5F)
 				c &= 0x1F;
 			if (c == '?')
 				c = 127;
@@ -1277,29 +1277,19 @@ static int doquote(BW *bw, int c, void *object, int *notify)
 		break;
 	case 3:
 		if (c >= '0' && c <= '9') {
-			joe_snprintf_1((char *)buf, sizeof(buf), "ASCII 0x%c-", c);
 			quoteval = c - '0';
-			quotestate = 4;
-			if (!mkqwna(bw->parent, sz(buf), doquote, NULL, NULL, notify))
-				return -1;
-			else
-				return 0;
-		} else if (c >= 'a' && c <= 'f') {
-			joe_snprintf_1((char *)buf, sizeof(buf), "ASCII 0x%c-", c + 'A' - 'a');
-			quoteval = c - 'a' + 10;
-			quotestate = 4;
-			if (!mkqwna(bw->parent, sz(buf), doquote, NULL, NULL, notify))
-				return -1;
-			else
-				return 0;
-		} else if (c >= 'A' && c <= 'F') {
+ uhex_3:
 			joe_snprintf_1((char *)buf, sizeof(buf), "ASCII 0x%c-", c);
-			quoteval = c - 'A' + 10;
 			quotestate = 4;
 			if (!mkqwna(bw->parent, sz(buf), doquote, NULL, NULL, notify))
 				return -1;
 			else
 				return 0;
+		}
+		c &= ~0x20;
+		if (c >= 'A' && c <= 'F') {
+			quoteval = c - 'A' + 10;
+			goto uhex_3;
 		}
 		break;
 	case 4:
@@ -1370,7 +1360,7 @@ static int doquote9(BW *bw, int c, void *object, int *notify)
 {
 	if (notify)
 		*notify = 1;
-	if ((c >= 0x40 && c <= 0x5F) || (c >= 'a' && c <= 'z'))
+	if ((c & ~0x20) >= 0x40 && (c & ~0x20) <= 0x5F)
 		c &= 0x1F;
 	if (c == '?')
 		c = 127;

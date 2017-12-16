@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/menu.c,v 1.14 2017/12/08 02:28:05 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/menu.c,v 1.15 2017/12/16 22:10:54 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -349,7 +349,8 @@ static int umkey(jobject jO, int c)
 		else
 			return -1;
 	}
-	if (!(((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z'))))
+	c |= 0x20;
+	if (c < 'a' || c > 'z')
 		return -1;
 	c &= 0x1F;
 	for (x = 0; x != m->nitems; ++x)

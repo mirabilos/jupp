@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.18 2017/12/08 02:28:05 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.19 2017/12/16 22:10:54 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -69,14 +69,17 @@ __RCSID("$MirOS: contrib/code/jupp/path.c,v 1.18 2017/12/08 02:28:05 tg Exp $");
 
 #if HAVE_DRIVE_LETTERS
 #define do_if_drive_letter(path, command) do {		\
-	if ((path)[1] == ':' && (			\
-	    ((path)[0] >= 'a' && (path)[0] <= 'z') ||	\
-	    ((path)[0] >= 'A' && (path)[0] <= 'Z'))) {	\
-		command;				\
+	if ((path)[1] == ':') {				\
+		drvltrhlprv = (path)[0] | 0x20;		\
+		if (drvltrhlprv >= 'a' &&		\
+		    drvltrhlprv <= 'z')			\
+			command;			\
 	}						\
 } while (/* CONSTCOND */ 0)
+#define drvltrhlpr unsigned char drvltrhlprv
 #else
 #define do_if_drive_letter(path, command) do { } while (/* CONSTCOND */ 0)
+#define drvltrhlpr /* nothing */
 #endif
 #define skip_drive_letter(path)	do_if_drive_letter((path), (path) += 2)
 
@@ -105,6 +108,7 @@ unsigned char *joesep(unsigned char *path)
 unsigned char *namprt(unsigned char *path)
 {
 	unsigned char *z;
+	drvltrhlpr;
 
 	skip_drive_letter(path);
 	z = path + slen(path);
@@ -116,6 +120,7 @@ unsigned char *namprt(unsigned char *path)
 unsigned char *namepart(unsigned char *tmp, unsigned char *path)
 {
 	unsigned char *z;
+	drvltrhlpr;
 
 	skip_drive_letter(path);
 	z = path + strlen((char *)path);
@@ -129,6 +134,7 @@ unsigned char *dirprt_ptr(unsigned char *path)
 {
 	unsigned char *b = path;
 	unsigned char *z = path + slen(path);
+	drvltrhlpr;
 
 	skip_drive_letter(b);
 	while ((z != b) && (z[-1] != '/'))
@@ -144,6 +150,7 @@ unsigned char *begprt(unsigned char *path)
 {
 	unsigned char *z = path + slen(path);
 	int drv = 0;
+	drvltrhlpr;
 
 	do_if_drive_letter(path, drv = 2);
 	while ((z != path + drv) && (z[-1] == '/'))
@@ -161,6 +168,7 @@ unsigned char *endprt(unsigned char *path)
 {
 	unsigned char *z = path + slen(path);
 	int drv = 0;
+	drvltrhlpr;
 
 	do_if_drive_letter(path, drv = 2);
 	while ((z != path + drv) && (z[-1] == '/'))

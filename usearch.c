@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.20 2017/12/08 02:00:43 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.21 2017/12/16 22:10:55 tg Exp $");
 
 #include <stdlib.h>
 
@@ -447,7 +447,7 @@ static P *insert(SRCH *srch, P *p, unsigned char *s, int len)
 			len -= x;
 			s += x;
 		} else if (len >= 2) {
-			if (((s[1] >= 'a' && s[1] <= 'z') || (s[1] >= 'A' && s[1] <= 'Z')) &&
+			if (((s[1] | 0x20) >= 'a' && (s[1] | 0x20) <= 'z') &&
 			    srch->pieces[(s[1] & 0x1f) - 1]) {
 				binsm(p, sv(srch->pieces[(s[1] & 0x1f) - 1]));
 				pfwrd(p, (long) sLEN(srch->pieces[(s[1] & 0x1f) - 1]));
