@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.65 2017/12/07 00:48:10 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.66 2017/12/16 22:38:03 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -124,7 +124,7 @@ if test x"$win32reloc" = x"yes"; then
 	JUPP_WIN32RELOC=1
 else
 	JUPP_WIN32RELOC=0
-	AC_DEFINE_UNQUOTED([JOERC], ["$sysconfdir$sysconfjoesubdir"], [Unix absolute paths base])
+	AC_DEFINE_UNQUOTED([JOERC], ["$sysconfdir$sysconfjoesubdir/"], [Unix absolute paths base])
 fi
 AC_DEFINE_UNQUOTED([JUPP_WIN32RELOC], [$JUPP_WIN32RELOC], [Use Win32 argv0-relative paths?])
 if test x"$win32reloc" = x"yes"; then
