@@ -1,7 +1,11 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.111 2017/12/03 03:26:18 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.112 2017/12/16 22:18:51 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
+
+- …
+
+JOE 3.1jupp32
 
 - Harmonise help rendering in jupprc (also for 2.8, 3.7, (NEW) 4.4)
 - Update internationalisation data to Unicode 10.0.0 with bugfixes
@@ -14,6 +18,13 @@ jupp-current
 - Add way to disable use of the FPU (including Math), for klibc
 - Make assume_color[sic!] actually work
 - Recognise libncursesw for tgetflag(3); add --disable-terminfo
+- Add a flag to disable SELinux even if found
+- Modernise C features to C89 (prototypes!)
+- Do not crash if inserting text from a macro after cursor moved
+- With -DSMALL, use 8 KiB less .bss
+- Do not write duplicate entries, e.g. into filename history
+- Begin handling some pointer polymorphism more correctly
+- Plug a few memory leaks
 
 JOE 3.1jupp31
 
