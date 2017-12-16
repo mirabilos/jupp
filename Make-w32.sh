@@ -1,5 +1,5 @@
 #!/bin/mksh
-# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.21 2017/12/07 01:00:30 tg Exp $
+# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.22 2017/12/16 22:05:25 tg Exp $
 
 usage() {
 	print -ru2 "Usage: $0 [-bCgn]"
@@ -54,6 +54,7 @@ cd mkw32/build
 export CFLAGS='-Os -march=i486 -mtune=pentium-mmx'
 export CPPFLAGS='-DJUPPRC_BUILTIN_NAME=\"jupp32rc\"'
 (( contb )) || mksh ../../configure \
+    --build=i486-pc-cygwin --host=i486-pc-cygwin \
     --prefix=c:/windows/system32 \
     --sysconfdir=c:/windows/system32 \
     --disable-dependency-tracking \
