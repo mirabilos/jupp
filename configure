@@ -4544,7 +4544,7 @@ else
 	JUPP_WIN32RELOC=0
 
 cat >>confdefs.h <<_ACEOF
-#define JOERC "$sysconfdir$sysconfjoesubdir"
+#define JOERC "$sysconfdir$sysconfjoesubdir/"
 _ACEOF
 
 fi
