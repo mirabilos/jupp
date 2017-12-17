@@ -561,6 +561,8 @@ Other requests:
 └───────────┘
 
 • replace all int with size_t where applicable
+• default utf8.c:locale_map to utf-8 when applicable (configure-time
+  option perhaps? Android definitely, Cygwin definitely not…)
 • merge syntax handling code from joe-3.7+
 • merge math from joe-3.7+
 • make -Wcast-qual clean
@@ -576,18 +578,25 @@ Other requests:
   with a / somewhere (file_prompt in joe 4.4 wmkpw)
 • bracketed paste mode should disable autoindent, wordwrap,
   updating the status line, …(?) ⇐ implemented using a “paste”
-  labeled ftype that is switched to using the UI (command)
+  labeled ftype (including using not the help cards for indication)
 • switch from autoconf to mirtoconf2
 • ANSI syntax highlighting; auto-turn it on in shell windows (‽)
   ⇒ would need to hide the ANSI chars, yet enable backspacing
-• handle combining characters in the scrn array somehow
+• redraw a line if it has been scrolled and had combining
+  characters in it before — actually, scrap that; make that:
+  handle Unicode combining characters, *at all* (in the scrn array)
 • add a soft line break flag: display as line-wrapped, do not
   save any newlines introduced by that
 • perhaps wrap at U+00AD?
-• put all configuration files into /usr/share; use XDG dirs for
-  overriding (HOME, maybe site?)
+• have an mdoc(7) page actually describing its keybindings
+• put all “configuration” into /usr/share/ and have them
+  (all, not just *rc) overridable from the user’s home; use XDG dirs
+  while at it maybe? and replace autoconf with mirtoconf, and use
+  serial numbers for versions (jupp-26 follows joe-3.1jupp25)
+• do charset conversion and support more charsets, both SBCS and
+  Unicode (UTF-{16,32}{BE,LE} for example) sponsored by ⮡ tarent
 • plug memory leaks (Valgrind reports a few)
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.44 2017/12/07 00:05:08 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.45 2017/12/17 03:12:28 tg Exp $
