@@ -3,7 +3,7 @@
     "coverity_scan": {
       "branch_pattern": "coverity_scan",
       "build_command": "make -C builddir fu",
-      "build_command_prepend": "rm -rf builddir && mkdir builddir builddir/full builddir/min && printf '%s\\n\\t%s\\n\\t%s\\n' 'fu:' 'cd full && exec make -j4' 'cd min && exec make -j4' >builddir/Makefile && cd builddir/full && sh ../../configure --disable-dependency-tracking && make clean && cd ../min && sh ../../configure --disable-dependency-tracking --disable-terminfo --disable-selinux --disable-search-libs --disable-getpwnam --disable-fork --disable-fpu --enable-small && make clean && cd ../..",
+      "build_command_prepend": "rm -rf builddir && mkdir builddir builddir/full builddir/min && printf '%s\\n\\t%s\\n\\t%s\\n' 'fu:' 'cd full && exec make -j4' '#cd min && exec make -j4' >builddir/Makefile && cd builddir/full && sh ../../configure --disable-dependency-tracking && make clean && cd ../min && sh ../../configure --disable-dependency-tracking --disable-terminfo --disable-selinux --disable-search-libs --disable-getpwnam --disable-fork --disable-fpu --enable-small && make clean && cd ../..",
       "notification_email": "tg@mirbsd.de",
       "project": {
         "description": "jupp Coverity",
