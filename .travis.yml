@@ -3,7 +3,7 @@
     "coverity_scan": {
       "branch_pattern": "coverity_scan",
       "build_command": "set -ex; for x in full min; do (cd builddir/$x && exec make -j4); done",
-      "build_command_prepend": "rm -rf builddir && mkdir builddir builddir/full builddir/min && cd builddir/full && sh configure --disable-dependency-tracking && cd ../min && sh configure --disable-dependency-tracking --disable-terminfo --disable-selinux --disable-search-libs --disable-getpwnam --disable-fork --disable-fpu --enable-small",
+      "build_command_prepend": "rm -rf builddir && mkdir builddir builddir/full builddir/min && cd builddir/full && sh configure --disable-dependency-tracking && make clean && cd ../min && sh configure --disable-dependency-tracking --disable-terminfo --disable-selinux --disable-search-libs --disable-getpwnam --disable-fork --disable-fpu --enable-small && make clean",
       "notification_email": "tg@mirbsd.de",
       "project": {
         "description": "jupp Coverity",
@@ -18,7 +18,7 @@
   "env": {
     "global": [
       {
-        "secure": "="
+        "secure": "osRxzOSRbdbIcZgPFPoxDWY2dk1RLtWJcumEbBg4mGTjyqBcoIoVdwESE1qJM4hwDnEPiMzGEQwDARywp0iSv2zyas6Gi11J+cVd29Lnyl/FXS5I91HO6DwgFVKuxOcV4dQ0pozU9abDPKjNpmcSK5N9twAvIf+wG+40wrUwA8wXMPmENywlZO35EEDXhWKjt35sn+BnTKGBaR2RuOTgaL5y5dhrtB6bHsNHqD6rYBBA6h57Hi+Vk9azkGWTvr+2wnYeVFzws7pAVZV8ATaZhB6wf224weT/HduS7sSqKgY4pLkiw6uNDcpZzET9rztHGusW8jjvgzz4bzW3BINDd4U4fwAyJ3kGJpmauvt4sau8OgnZPY6xf/nSlRlGMo8F9fFTvLFjmyKHQlNdbWaYjco1kbkAYhHreEMcP27TKWjue7gMFsdGHb2e+rCmYy5PDcLJ4Rc59QNI75rvdGGiADUQPXUGxz3BqGaawDtJXrrx/eIPfaXrX/EXhfbXOmw40bfzjokUiEukKhkgsqyASGU23yEt1V/7aUGW5giT2eKfpFfw/p3N8/dHmbDhciiVzZ1MehReclHbNEYfE3/CYEMaGyv0RtcssxwuUhg2+vkseeiakHlIh4ROYD+4KNjwiVWE3wxsNmE73lgjXtPOEHNoej9u4hd5p5tnuasPEjE="
       }
     ]
   },
