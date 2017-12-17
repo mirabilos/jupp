@@ -2,7 +2,7 @@
   "addons": {
     "coverity_scan": {
       "branch_pattern": "coverity_scan",
-      "build_command": "cd builddir/full && make -j4 && cd ../min && make -j4",
+      "build_command": "sh -xec 'cd builddir/full && make -j4 && cd ../min && make -j4'",
       "build_command_prepend": "rm -rf builddir && mkdir builddir builddir/full builddir/min && cd builddir/full && sh ../../configure --disable-dependency-tracking && make clean && cd ../min && sh ../../configure --disable-dependency-tracking --disable-terminfo --disable-selinux --disable-search-libs --disable-getpwnam --disable-fork --disable-fpu --enable-small && make clean",
       "notification_email": "tg@mirbsd.de",
       "project": {
