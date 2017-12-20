@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.20 2017/12/20 23:19:15 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.21 2017/12/20 23:43:54 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -238,12 +238,19 @@ unsigned char *mktmp(unsigned char *where, int *fdp)
 				   vsrm(); */
 #ifdef HAVE_MKSTEMP
 	joe_snprintf_1((char *)name, namesize, "%s/joe.tmp.XXXXXXXXXX", where);
-	if ((fd = mkstemp((char *)name)) == -1)
-		return (NULL);	/* FIXME: vflsh() and vflshf() */
-				/* expect mktmp() always succeed!!! */
-	fchmod(fd, 0600);	/* Linux glibc 2.0 mkstemp() creates it with */
-				/* 0666 mode --> change it to 0600, so nobody */
-				/* else sees content of temporary file */
+	if ((fd = mkstemp((char *)name)) == -1) {
+		vsrm(name);
+		/*
+		 * FIXME: vflsh() and vflshf()
+		 * expect mktmp() always succeed!
+		 */
+		return (NULL);
+	}
+	/*
+	 * Linux glibc 2.0 mkstemp() creates it with 0666 mode, ergo we
+	 * change it to 0600, so nobody else sees content of temporary file
+	 */
+	fchmod(fd, 0600);
 #else
 #warning "Waah, this is insane! Consider getting mkstemp!"
  loop:
@@ -254,8 +261,11 @@ unsigned char *mktmp(unsigned char *where, int *fdp)
 		close(fd);
 		goto loop;	/* FIXME: possible endless loop --> DoS attack */
 	}
-	if ((fd = open(name, O_RDWR | O_CREAT | O_EXCL, 0600)) == -1)
-		return (NULL);	/* FIXME: see above */
+	if ((fd = open(name, O_RDWR | O_CREAT | O_EXCL, 0600)) == -1) {
+		vsrm(name);
+		/* FIXME: see above */
+		return (NULL);
+	}
 #endif
 	if (fdp)
 		*fdp = fd;
