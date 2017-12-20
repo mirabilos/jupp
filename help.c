@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/help.c,v 1.15 2017/12/08 03:24:15 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/help.c,v 1.16 2017/12/20 22:22:45 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -155,19 +155,19 @@ find_context_help(const unsigned char *name)
 void
 help_display(SCREEN *t)
 {
-	unsigned char *str;
+	const unsigned char *str;
 	int y, x, z;
 	int atr = 0;
 
 	if (help_actual) {
 		str = help_actual->text;
 	} else {
-		str = NULL;
+		str = UC "";
 	}
 
 	for (y = skiptop; y != t->wind; ++y) {
 		if (t->t->updtab[y]) {
-			unsigned char *start = str;
+			const unsigned char *start = str;
 			int width=0;
 			int nspans=0;
 			int spanwidth;

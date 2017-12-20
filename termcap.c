@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/termcap.c,v 1.24 2017/12/20 22:02:39 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/termcap.c,v 1.25 2017/12/20 22:22:45 tg Exp $");
 
 #include <sys/stat.h>
 #include <stdlib.h>
@@ -508,7 +508,6 @@ texec(CAP *cap, const unsigned char *s, int l, int a0, int a1, int a2, int a3)
 {
 	int c, tenth = 0, x;
 	int args[4];
-	int vars[128];
 	int *a = args;
 	int *vars = NULL;
 
