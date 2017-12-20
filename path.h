@@ -9,7 +9,7 @@
 #define _JOE_PATH_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_path_h, "$MirOS: contrib/code/jupp/path.h,v 1.14 2017/12/06 21:16:58 tg Exp $");
+__IDSTRING(rcsid_path_h, "$MirOS: contrib/code/jupp/path.h,v 1.15 2017/12/20 23:19:15 tg Exp $");
 #endif
 
 #if defined(__MSDOS__) || defined(__DJGPP__) || defined(__EMX__) || \
@@ -118,7 +118,7 @@ unsigned char *mktmp(unsigned char *where, int *fdp);
  *  '-' may be specified in sets by placing it at the ends
  *  '[' may be specified in sets by placing it first
  */
-int rmatch(unsigned char *a, unsigned char *b);
+int rmatch(const unsigned char *a, const unsigned char *b);
 int isreg(unsigned char *s);
 
 /* char **rexpnd(char *path,char *pattern);

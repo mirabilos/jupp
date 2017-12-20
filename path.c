@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.19 2017/12/16 22:10:54 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.20 2017/12/20 23:19:15 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -264,7 +264,7 @@ unsigned char *mktmp(unsigned char *where, int *fdp)
 	return (name);
 }
 /********************************************************************/
-int rmatch(unsigned char *a, unsigned char *b)
+int rmatch(const unsigned char *a, const unsigned char *b)
 {
 	int flag, inv, c;
 

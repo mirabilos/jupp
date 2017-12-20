@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.39 2017/12/08 02:28:05 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.40 2017/12/20 23:19:15 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -173,7 +173,7 @@ void lazy_opts(OPTIONS *o)
 
 /* Set local options depending on file name and contents */
 
-void setopt(B *b, unsigned char *parsed_name)
+void setopt(B *b, const unsigned char *parsed_name)
 {
 	OPTIONS *o;
 	int x;

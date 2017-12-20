@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.30 2017/12/20 22:32:13 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.31 2017/12/20 23:19:14 tg Exp $");
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -2098,7 +2098,7 @@ B *bload(unsigned char *s)
 	if (!s || !s[0]) {
 		error = -1;
 		b = bmk(NULL);
-		setopt(b,US "");
+		setopt(b, UC "");
 		b->rdonly = b->o.readonly;
 		b->er = error;
 		return b;
@@ -2138,9 +2138,6 @@ B *bload(unsigned char *s)
 			error = -1;
 		else
 			error = -4;
-		b = bmk(NULL);
-		setopt(b,n);
-		b->rdonly = b->o.readonly;
 		goto opnerr;
 	}
 
@@ -2177,6 +2174,13 @@ B *bload(unsigned char *s)
 		fclose(fi);
 
  opnerr:
+	if (!b) {
+		/* error case */
+		b = bmk(NULL);
+		setopt(b,n);
+		b->rdonly = b->o.readonly;
+	}
+
 	if (s[0] == '!') {
 		ttopnn();
 		nreturn(maint->t);
@@ -2256,7 +2260,7 @@ B *bfind(unsigned char *s)
 	if (!s || !s[0]) {
 		error = -1;
 		b = bmk(NULL);
-		setopt(b,US "");
+		setopt(b, UC "");
 		b->rdonly = b->o.readonly;
 		b->internal = 0;
 		b->er = error;
@@ -2285,7 +2289,7 @@ B *bfind_scratch(unsigned char *s)
 	if (!s || !s[0]) {
 		error = -1;
 		b = bmk(NULL);
-		setopt(b,US "");
+		setopt(b, UC "");
 		b->rdonly = b->o.readonly;
 		b->internal = 0;
 		b->er = error;
