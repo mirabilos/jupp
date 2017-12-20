@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/termcap.c,v 1.23 2017/12/08 02:57:18 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/termcap.c,v 1.24 2017/12/20 22:02:39 tg Exp $");
 
 #include <sys/stat.h>
 #include <stdlib.h>
@@ -510,6 +510,7 @@ texec(CAP *cap, const unsigned char *s, int l, int a0, int a1, int a2, int a3)
 	int args[4];
 	int vars[128];
 	int *a = args;
+	int *vars = NULL;
 
 	/* Do nothing if there is no string */
 	if (!s)
@@ -633,10 +634,14 @@ texec(CAP *cap, const unsigned char *s, int l, int a0, int a1, int a2, int a3)
 					a[0] %= x;
 					break;
 				case 'l':
-					a[0] = vars[x];
+					if (vars)
+						a[0] = vars[x];
 					break;
 				case 's':
-					vars[x] = a[0];
+					if (!vars)
+						vars = calloc(256, sizeof(int));
+					if (vars)
+						vars[x] = a[0];
 					break;
 				default:
 					a[0] = x;
@@ -678,6 +683,8 @@ texec(CAP *cap, const unsigned char *s, int l, int a0, int a1, int a2, int a3)
 				tenth -= cap->div;
 			}
 	}
+
+	free(vars);
 }
 
 static int total;
