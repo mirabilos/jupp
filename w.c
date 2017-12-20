@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/w.c,v 1.12 2017/12/08 02:28:08 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/w.c,v 1.13 2017/12/20 22:52:11 tg Exp $");
 
 #include <stdlib.h>
 
@@ -677,8 +677,8 @@ static int doabort(W *w, int *ret)
 			*w->notify = 1;
 	}
 	rmkbd(w->kbd);
-	free(w);
 	windie(w);
+	free(w);
 	return amnt;
 }
 
