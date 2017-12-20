@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.26 2017/12/20 21:32:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.27 2017/12/20 23:35:52 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -144,7 +144,7 @@ int ushell(BW *bw)
 /* Copy a file */
 
 static int
-cp(unsigned char *from, int g, unsigned char *tmpfn, unsigned char *to)
+cp(const unsigned char *from, int g, const unsigned char *tmpfn, const unsigned char *to)
 {
 	int f, amnt;
 	struct stat sbuf;
@@ -157,11 +157,12 @@ cp(unsigned char *from, int g, unsigned char *tmpfn, unsigned char *to)
 #endif
 #endif
 
-	f = open((char *)from, O_RDONLY);
+	f = open((const char *)from, O_RDONLY);
 	if (f < 0) {
 		return -1;
 	}
 	if (fstat(f, &sbuf) < 0) {
+		close(f);
 		return -1;
 	}
 	if (fchmod(g, sbuf.st_mode & 0777)) {
