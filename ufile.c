@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.25 2017/12/08 03:24:16 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.26 2017/12/20 21:32:34 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -968,10 +968,12 @@ static int doquerysave(BW *bw,int c,struct savereq *req,int *notify)
 		}
 		bw = w->object.bw;
 		if (bw->b==req->first) {
+			int cached_not_saved = req->not_saved;
+
 			if (notify)
 				*notify = 1;
 			rmsavereq(req);
-			genexmsgmulti(bw,1,req->not_saved);
+			genexmsgmulti(bw,1,cached_not_saved);
 			return 0;
 		}
 		if (!bw->b->changed || bw->b->scratch)
