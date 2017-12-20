@@ -12,7 +12,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.27 2017/12/07 01:00:31 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.28 2017/12/20 23:04:40 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -1346,7 +1346,7 @@ map_name_cmp(const unsigned char *a, const unsigned char *b)
  into_the_loop:
 	while ((ca = *a) == '-' || ca == '_')
 		++a;
-	while ((cb = *b) == '-' || ca == '_')
+	while ((cb = *b) == '-' || cb == '_')
 		++b;
 	goto loop_beg;
  loop_end:
