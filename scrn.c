@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.38 2017/12/08 02:57:17 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.39 2017/12/20 23:40:35 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -657,6 +657,7 @@ SCRN *nopen(CAP *cap)
 	leave = 1;
 	ttclose();
 	signrm(0);
+	free(t);
 	fprintf(stderr,"Sorry, your terminal can't do absolute cursor positioning.\nIt's broken\n");
 	return NULL;
  ok:

@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.27 2017/12/20 23:35:52 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.28 2017/12/20 23:40:35 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -217,6 +217,7 @@ backup(BW *bw)
 	unsigned char name[1024];
 	unsigned char *simple_backup_suffix;
 	int fd;
+	int rv;
 
 	if (bw->b->backup || nobackups || !(bw->b->name) || !(bw->b->name[0]))
 		return (0);
@@ -254,11 +255,14 @@ backup(BW *bw)
 	if (cp(bw->b->name, fd, simple_backup_suffix, name)) {
 		close(fd);
 		unlink((char *)simple_backup_suffix);
-		return (1);
+		rv = 1;
+	} else {
+		bw->b->backup = 1;
+		rv = 0;
 	}
 
-	bw->b->backup = 1;
-	return (0);
+	vsrm(simple_backup_suffix);
+	return (rv);
 }
 
 /* Write file */
