@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/kbd.c,v 1.13 2017/12/20 21:55:17 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/kbd.c,v 1.14 2017/12/20 23:07:15 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -122,9 +122,9 @@ static unsigned char *range(unsigned char *seq, int *vv, int *ww)
 	seq[x] = 0;		/* Zero terminate the string */
 	v = keyval(seq);	/* Get key */
 	w = v;
+	seq[x] = c;		/* Restore the space or NUL */
 	if (w < 0)
 		return NULL;
-	seq[x] = c;		/* Restore the space or 0 */
 	for (seq += x; *seq == ' '; ++seq) ;	/* Skip over spaces */
 
 	/* Check for 'TO ' */
@@ -134,9 +134,9 @@ static unsigned char *range(unsigned char *seq, int *vv, int *ww)
 		c = seq[x];
 		seq[x] = 0;	/* Zero terminate the string */
 		w = keyval(seq);	/* Get key */
+		seq[x] = c;	/* Restore the space or NUL */
 		if (w < 0)
 			return NULL;
-		seq[x] = c;	/* Restore the space or 0 */
 		for (seq += x; *seq == ' '; ++seq) ;	/* Skip over spaces */
 	}
 
