@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uformat.c,v 1.10 2017/12/20 22:23:57 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uformat.c,v 1.11 2017/12/20 22:29:02 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -73,14 +73,15 @@ int ucenter(BW *bw)
 
 /* Return true if c is a character which can indent a paragraph */
 
-static int cpara(int c)
+static int
+cpara(int c)
 {
-	if (c == ' ' || c == '\t' || c == '\\' ||
-	    c == '>' || c == '|' || c == ':' || c == '*' || c == '/' ||
-	    c == ',' || c == '.' || c == '?' || c == ';' || c == ']' ||
-	    c == '}' || c == '=' || c == '+' || c == '-' || c == '_' ||
-	    c == ')' || c == '&' || c == '^' || c == '%' || c == '$' ||
-	    c == '#' || c == '@' || c == '!' || c == '~')
+	if (c == '\t' ||
+	    (c >= ' ' && c <= '&' && c != '"') ||
+	    (c >= /*(*/ ')' && c <= '/') ||
+	    (c >= ':' && c <= '@' && c != '<') ||
+	    (c >= '\\' && c <= '_') ||
+	    (c >= '|' && c <= '~'))
 		return 1;
 	else
 		return 0;
