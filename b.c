@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.29 2017/12/20 22:19:03 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.30 2017/12/20 22:32:13 tg Exp $");
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -2107,7 +2107,7 @@ B *bload(unsigned char *s)
 	n = parsens(s, &skip, &amnt);
 
 	/* Open file or stream */
-	if (n[0] == '!') {
+	if (s[0] == '!') {
 		nescape(maint->t);
 		ttclsn();
 		fi = popen((char *)(n + 1), "r");
