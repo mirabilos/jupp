@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.33 2017/12/08 02:28:04 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.34 2017/12/20 22:50:32 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -310,14 +310,20 @@ void bwdel(BW *w, long int l, long int n, int flg)
 
 /* Update a single line */
 
-static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long int scr, long int from, long int to,int st,BW *bw)
-
-
-				/* Screen line address */
-				/* Window */
-				/* Buffer pointer */
-				/* Starting column to display */
-				/* Range for marked block */
+static int
+lgen(SCRN *t, int y,
+    /* screen line address */
+    int *screen,
+    int *attr, int x,
+    /* window */
+    int w,
+    /* buffer pointer */
+    P *p,
+    /* starting column to display */
+    long int scr,
+    /* range for marked block */
+    long int from, long int to,
+    int st, BW *bw)
 {
 	int ox = x;
 	int tach, tach1;
@@ -428,7 +434,9 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 				goto eobl;
 			else {
 				int wid = 1;
-				if (p->b->o.charmap->type) {
+
+				/* should be p->b->o.charmap->type but for Coverity; they are identical here */
+				if (bw->b->o.charmap->type) {
 					c = utf8_decode(&utf8_sm,bc);
 
 					if (c>=0) /* Normal decoded character */
@@ -549,15 +557,20 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 			} else {
 				int wid = -1;
 				int utf8_char;
-				if (p->b->o.charmap->type) { /* UTF-8 */
 
+				/* should be p->b->o.charmap but it’s identical */
+				if (bw->b->o.charmap->type) {
+					/* UTF-8 */
 					utf8_char = utf8_decode(&utf8_sm,bc);
 
-					if (utf8_char >= 0) { /* Normal decoded character */
+					if (utf8_char >= 0) {
+						/* Normal decoded character */
 						wid = joe_wcwidth(1,utf8_char);
-					} else if(utf8_char== -1) { /* Character taken */
+					} else if (utf8_char == -1) {
+						/* Character taken */
 						wid = -1;
-					} else if(utf8_char== -2) { /* Incomplete sequence (FIXME: do something better here) */
+					} else if (utf8_char == -2) {
+						/* Incomplete sequence (FIXME: do something better here) */
  unget_cch:
 						ungetit = bc;
 						++amnt;
@@ -565,7 +578,8 @@ static int lgen(SCRN *t, int y, int *screen, int *attr, int x, int w, P *p, long
 						utf8_char = 0x1000FFFE;
 						wid = utf8_sm.ptr;
 						utf8_init(&utf8_sm);
-					} else if(utf8_char== -3) { /* Invalid UTF-8 start character 128-191, 254, 255 */
+					} else if (utf8_char == -3) {
+						/* Invalid UTF-8 start character 128-191, 254, 255 */
 						/* Show as control character */
 						wid = 1;
 						utf8_char = 0x1000FFFE;
