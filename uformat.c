@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uformat.c,v 1.9 2017/12/08 02:28:07 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uformat.c,v 1.10 2017/12/20 22:23:57 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -277,33 +277,8 @@ int ueop(BW *bw)
 void wrapword(P *p, long int indent, int french, unsigned char *indents)
 {
 	P *q;
-	int rmf = 0;
 	int c;
 	long to = p->byte;
-
-	/* Get indentation prefix from beginning of line */
-/*
-	if(!indents) {
-		int f = 0;
-		P *r = pdup(p);
-
-		p_goto_bol(r);
-		q = pdup(r);
-		while(cpara(c = brc(q))) {
-			if(!joe_isblank(c))
-				f = 1;
-			pgetc(q);
-		}
-		if(f) {
-			indents = brs(r, q->byte-r->byte);
-			rmf = 1;
-			if(indents[0] == '/' && indents[1] == '*')
-				indents[0] = ' ';
-		}
-		prm(r);
-		prm(q);
-	}
-*/
 
 	/* Get to beginning of word */
 	while (!pisbol(p) && piscol(p) > indent && !joe_isblank(p->b->o.charmap, prgetc(p)))
@@ -345,9 +320,6 @@ void wrapword(P *p, long int indent, int french, unsigned char *indents)
 				binsc(p, ' ');
 				++to;
 			}
-
-		if (rmf)
-			free(indents);
 	}
 
 	/* Move cursor back to original position */
