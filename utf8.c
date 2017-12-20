@@ -10,7 +10,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/utf8.c,v 1.22 2017/12/06 21:17:04 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/utf8.c,v 1.23 2017/12/20 23:53:29 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -265,9 +265,7 @@ joe_locale(void)
 #ifdef USE_LOCALE
 	if (!locale_map) {
 		setlocale(LC_ALL,"");
-		s = (unsigned char *)strdup(nl_langinfo(CODESET));
-
-		locale_map = find_charmap(s);
+		locale_map = find_charmap((const void *)nl_langinfo(CODESET));
 	}
 #else
 	if (!locale_map && s) {
@@ -283,8 +281,8 @@ joe_locale(void)
 	}
 #endif
 	if (!locale_map)
-		locale_map = find_charmap(US "ascii");
-	utf8_map = find_charmap(US "utf-8");
+		locale_map = find_charmap(UC "ascii");
+	utf8_map = find_charmap(UC "utf-8");
 
 #ifndef TEST
 #ifdef defutf8
