@@ -10,7 +10,7 @@
 #define _Icharmap 1
 
 #ifdef EXTERN
-__RCSID("$MirOS: contrib/code/jupp/charmap.h,v 1.11 2017/12/06 21:16:55 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/charmap.h,v 1.12 2017/12/20 23:33:56 tg Exp $");
 #endif
 
 /* For sorted from_map entries */
@@ -24,7 +24,7 @@ struct pair {
 
 struct charmap {
 	struct charmap *next;		/* Linked list of loaded character maps */
-	unsigned char *name;		/* Name of this one */
+	const unsigned char *name;	/* Name of this one */
 
 	int type;			/* 0=byte, 1=UTF-8 */
 
