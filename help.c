@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/help.c,v 1.16 2017/12/20 22:22:45 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/help.c,v 1.17 2017/12/21 00:00:11 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -49,15 +49,17 @@ help_init(const unsigned char *filename)
 	unsigned char *tempbuf;
 
 	if (!(fd = jfopen((const char *)filename, "r")))/* open the help file */
-		return -1;				/* return if we couldn't open the file */
+		return (-1);				/* return if we couldn't open the file */
 
 	fprintf(stderr, "Processing '%s'...", filename);
 	fflush(stderr);
 
 	while (jfgets((char *)buf, sizeof(buf), fd)) {
-		if (buf[0] == '{') {			/* start of help screen */
+		if (buf[0] == '{'/*}*/) {		/* start of help screen */
 			if (!(tmp = malloc(sizeof(struct help)))) {
-				return NOT_ENOUGH_MEMORY;
+ out:
+				jfclose(fd);
+				return (NOT_ENOUGH_MEMORY);
 			}
 
 			tmp->text = NULL;
@@ -66,7 +68,8 @@ help_init(const unsigned char *filename)
 			hlpbsz = 0;
 			tmp->name = vsncpy(NULL, 0, sz(buf + 1) - 1);
 
-			while ((jfgets((char *)buf, sizeof(buf), fd)) && (buf[0] != '}')) {
+			while ((jfgets((char *)buf, sizeof(buf), fd)) &&
+			    (buf[0] != /*{*/'}')) {
 				bfl = strlen((char *)buf);
 				if (hlpsiz + bfl > hlpbsz) {
 					if (tmp->text) {
@@ -74,7 +77,7 @@ help_init(const unsigned char *filename)
 						if (!tempbuf) {
 							free(tmp->text);
 							free(tmp);
-							return NOT_ENOUGH_MEMORY;
+							goto out;
 						} else {
 							tmp->text = tempbuf;
 						}
@@ -82,7 +85,7 @@ help_init(const unsigned char *filename)
 						tmp->text = malloc(bfl + 1024);
 						if (!tmp->text) {
 							free(tmp);
-							return NOT_ENOUGH_MEMORY;
+							goto out;
 						} else {
 							tmp->text[0] = 0;
 						}
@@ -93,7 +96,7 @@ help_init(const unsigned char *filename)
 				hlpsiz += bfl;
 				++tmp->lines;
 			}
-			if (buf[0] == '}') {		/* set new help screen as actual one */
+			if (buf[0] == /*{*/'}') {	/* set new help screen as actual one */
 				tmp->prev = help_actual;
 				tmp->next = NULL;
 				if (help_actual) {
@@ -101,14 +104,14 @@ help_init(const unsigned char *filename)
 				}
 				help_actual = tmp;
 			} else {
-				fprintf(stderr, "\nHelp file '%s' is not properly ended with } on new line.\n", filename);
+				fprintf(stderr, /*{*/ "\nHelp file '%s' is not properly ended with } on new line.\n", filename);
 				fprintf(stderr, "Do you want to accept incomplete help screen (y/n)?");
 				fflush(stderr);
 				if (fgets((char *)buf, 8, stdin) == NULL ||
 				    (buf[0] | 0x20) != 'y') {
 					free(tmp->text);
 					free(tmp);
-					return 0;
+					goto succ;
 				} else {
 					tmp->prev = help_actual;
 					tmp->next = NULL;
@@ -120,15 +123,17 @@ help_init(const unsigned char *filename)
 			}
 		}
 	}
-	jfclose(fd);					/* close help file */
-
 	fprintf(stderr, "done\n");
+succ:
+	/* close help file */
+	jfclose(fd);
 
-	while (help_actual && help_actual->prev) {	/* move to first help screen */
+	/* move to first help screen */
+	while (help_actual && help_actual->prev) {
 		help_actual = help_actual->prev;
 	}
 
-	return 0;
+	return (0);
 }
 
 /*
