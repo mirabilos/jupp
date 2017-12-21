@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/undo.c,v 1.10 2017/12/08 02:28:08 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/undo.c,v 1.11 2017/12/17 03:04:47 tg Exp $");
 
 #include <stdlib.h>
 
@@ -20,7 +20,7 @@ __RCSID("$MirOS: contrib/code/jupp/undo.c,v 1.10 2017/12/08 02:28:08 tg Exp $");
 #include "utils.h"
 #include "w.h"
 
-#define SMALL 1024
+#define SMALL_UNDOREC 1024
 
 static UNDO undos = { {&undos, &undos}, NULL, 0, { {NULL, NULL}, NULL, 0, 0, 0, 0, 0, NULL, NULL }, NULL, NULL, NULL };
 static UNDO frdos = { {&frdos, &frdos}, NULL, 0, { {NULL, NULL}, NULL, 0, 0, 0, 0, 0, NULL, NULL }, NULL, NULL, NULL };
@@ -47,7 +47,7 @@ static UNDOREC *alrec(void)
 static void frrec(UNDOREC *rec)
 {
 	if (rec->del) {
-		if (rec->len < SMALL)
+		if (rec->len < SMALL_UNDOREC)
 			free(rec->small);
 		else {
 			B *b = rec->big;
@@ -84,7 +84,7 @@ static void doundo(BW *bw, UNDOREC *ptr)
 	dostaupd = 1;
 
 	if (ptr->del) {
-		if (ptr->len < SMALL)
+		if (ptr->len < SMALL_UNDOREC)
 			binsm(bw->cursor, ptr->small, (int) ptr->len);
 		else {
 			B *b = ptr->big;
@@ -258,8 +258,8 @@ static void yankdel(long where, B *b)
 	rec = yanked.link.prev;
 	if (!inyank) {
 		if (rec != &yanked && where == rec->where && justkilled) {
-			if (rec->len + size >= SMALL) {
-				if (rec->len < SMALL) {
+			if (rec->len + size >= SMALL_UNDOREC) {
+				if (rec->len < SMALL_UNDOREC) {
 					rec->big = bmk(NULL);
 					binsm(rec->big->bof, rec->small, (int) rec->len);
 					boffline(rec->big);
@@ -274,8 +274,8 @@ static void yankdel(long where, B *b)
 			}
 			rec->len += size;
 		} else if (rec != &yanked && where + size == rec->where && justkilled) {
-			if (rec->len + size >= SMALL) {
-				if (rec->len < SMALL) {
+			if (rec->len + size >= SMALL_UNDOREC) {
+				if (rec->len < SMALL_UNDOREC) {
 					rec->big = bmk(NULL);
 					binsm(rec->big->bof, rec->small, (int) rec->len);
 					boffline(rec->big);
@@ -297,7 +297,7 @@ static void yankdel(long where, B *b)
 				--nyanked;
 			}
 			rec = alrec();
-			if (size < SMALL) {
+			if (size < SMALL_UNDOREC) {
 				rec->small = malloc(size);
 				brmem(b->bof, rec->small, (int)b->eof->byte);
 			} else {
@@ -330,8 +330,8 @@ void undodel(UNDO *undo, long where, B *b)
 	/* Store in undo buffer */
 	rec = undo->recs.link.prev;
 	if (rec != &undo->recs && rec->min && rec->del && where == rec->where) {
-		if (rec->len + size >= SMALL) {
-			if (rec->len < SMALL) {
+		if (rec->len + size >= SMALL_UNDOREC) {
+			if (rec->len < SMALL_UNDOREC) {
 				rec->big = bmk(NULL);
 				binsm(rec->big->bof, rec->small, (int) rec->len);
 				boffline(rec->big);
@@ -347,8 +347,8 @@ void undodel(UNDO *undo, long where, B *b)
 		}
 		rec->len += size;
 	} else if (rec != &undo->recs && rec->min && rec->del && where + size == rec->where) {
-		if (rec->len + size >= SMALL) {
-			if (rec->len < SMALL) {
+		if (rec->len + size >= SMALL_UNDOREC) {
+			if (rec->len < SMALL_UNDOREC) {
 				rec->big = bmk(NULL);
 				binsm(rec->big->bof, rec->small, (int) rec->len);
 				boffline(rec->big);
@@ -367,7 +367,7 @@ void undodel(UNDO *undo, long where, B *b)
 		rec->where = where;
 	} else {
 		rec = alrec();
-		if (size < SMALL) {
+		if (size < SMALL_UNDOREC) {
 			rec->small = malloc(size);
 			brmem(b->bof, rec->small, (int) b->eof->byte);
 			brm(b);
@@ -396,7 +396,7 @@ int uyank(BW *bw)
 	UNDOREC *ptr = yanked.link.prev;
 
 	if (ptr != &yanked) {
-		if (ptr->len < SMALL)
+		if (ptr->len < SMALL_UNDOREC)
 			binsm(bw->cursor, ptr->small, (int) ptr->len);
 		else {
 			B *b = ptr->big;

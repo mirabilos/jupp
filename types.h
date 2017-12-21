@@ -2,7 +2,7 @@
 #define _JOE_TYPES_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.28 2017/12/08 02:46:46 tg Exp $");
+__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.29 2017/12/20 21:55:17 tg Exp $");
 #endif
 
 /* Prefix to make string constants unsigned */
@@ -11,7 +11,6 @@ __IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.28 2017/12/08 0
 
 #define LINK(type) struct { type *next; type *prev; }
 
-#define KEYS		256
 #ifdef SMALL
 #define stdsiz		4096
 #else
@@ -223,9 +222,9 @@ struct key {
 	} value;
 };
 
-/* A map of keycode to command/sub-map bindings */
+/* A map of keycode (octet) to command/sub-map bindings */
 struct kmap {
-	KEY	keys[KEYS];	/* KEYs */
+	KEY	keys[256];	/* KEYs */
 };
 
 /** A keyboard handler **/

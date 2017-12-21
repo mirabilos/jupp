@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.28 2017/12/08 02:28:04 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.31 2017/12/20 23:19:14 tg Exp $");
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -2098,7 +2098,7 @@ B *bload(unsigned char *s)
 	if (!s || !s[0]) {
 		error = -1;
 		b = bmk(NULL);
-		setopt(b,US "");
+		setopt(b, UC "");
 		b->rdonly = b->o.readonly;
 		b->er = error;
 		return b;
@@ -2107,7 +2107,7 @@ B *bload(unsigned char *s)
 	n = parsens(s, &skip, &amnt);
 
 	/* Open file or stream */
-	if (n[0] == '!') {
+	if (s[0] == '!') {
 		nescape(maint->t);
 		ttclsn();
 		fi = popen((char *)(n + 1), "r");
@@ -2138,9 +2138,6 @@ B *bload(unsigned char *s)
 			error = -1;
 		else
 			error = -4;
-		b = bmk(NULL);
-		setopt(b,n);
-		b->rdonly = b->o.readonly;
 		goto opnerr;
 	}
 
@@ -2177,6 +2174,13 @@ B *bload(unsigned char *s)
 		fclose(fi);
 
  opnerr:
+	if (!b) {
+		/* error case */
+		b = bmk(NULL);
+		setopt(b,n);
+		b->rdonly = b->o.readonly;
+	}
+
 	if (s[0] == '!') {
 		ttopnn();
 		nreturn(maint->t);
@@ -2256,7 +2260,7 @@ B *bfind(unsigned char *s)
 	if (!s || !s[0]) {
 		error = -1;
 		b = bmk(NULL);
-		setopt(b,US "");
+		setopt(b, UC "");
 		b->rdonly = b->o.readonly;
 		b->internal = 0;
 		b->er = error;
@@ -2285,7 +2289,7 @@ B *bfind_scratch(unsigned char *s)
 	if (!s || !s[0]) {
 		error = -1;
 		b = bmk(NULL);
-		setopt(b,US "");
+		setopt(b, UC "");
 		b->rdonly = b->o.readonly;
 		b->internal = 0;
 		b->er = error;
@@ -2561,7 +2565,8 @@ unsigned char *brzs(P *p, unsigned char *buf, int size)
 
 /* Save edit buffers when editor dies */
 
-RETSIGTYPE ttsig(int sig)
+RETSIGTYPE
+ttsig(int sig)
 {
 	time_t tim = time(NULL);
 	B *b;
@@ -2570,18 +2575,17 @@ RETSIGTYPE ttsig(int sig)
 	struct stat sbuf;
 
 	if ((tmpfd = open("DEADJOE", O_RDWR | O_EXCL | O_CREAT, 0600)) < 0) {
+		struct stat cbuf;
+
 		if (lstat("DEADJOE", &sbuf) < 0)
 			_exit(-1);
 		if (!S_ISREG(sbuf.st_mode) || sbuf.st_uid != geteuid())
 			_exit(-1);
-		/*
-		   A race condition still exists between the lstat() and the open()
-		   systemcall, which leads to a possible denial-of-service attack
-		   by setting the file access mode to 600 for every file the
-		   user executing joe has permissions to.
-		   This can't be fixed w/o breacking the behavior of the orig. joe!
-		 */
 		if ((tmpfd = open("DEADJOE", O_RDWR | O_APPEND)) < 0)
+			_exit(-1);
+		/* https://stackoverflow.com/a/2917482/2171120 */
+		if (fstat(tmpfd, &cbuf) < 0 ||
+		    cbuf.st_dev != sbuf.st_dev || cbuf.st_ino != sbuf.st_ino)
 			_exit(-1);
 		if (fchmod(tmpfd, S_IRUSR | S_IWUSR) < 0)
 			_exit(-1);

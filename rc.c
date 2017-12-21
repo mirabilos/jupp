@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.39 2017/12/08 02:28:05 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.41 2017/12/20 23:53:29 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -167,13 +167,13 @@ void lazy_opts(OPTIONS *o)
 		o->charmap = fdefault.charmap;
 	/* Hex not allowed with UTF-8 */
 	if (o->hex && o->charmap->type) {
-		o->charmap = find_charmap(US "c");
+		o->charmap = find_charmap(UC "c");
 	}
 }
 
 /* Set local options depending on file name and contents */
 
-void setopt(B *b, unsigned char *parsed_name)
+void setopt(B *b, const unsigned char *parsed_name)
 {
 	OPTIONS *o;
 	int x;

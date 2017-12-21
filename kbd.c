@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/kbd.c,v 1.12 2017/12/08 03:24:15 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/kbd.c,v 1.14 2017/12/20 23:07:15 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -48,8 +48,7 @@ void *dokey(KBD *kbd, int n)
 	if (n < 0)
 		n += 256;
 
-	/* kmap->keys[KEYS]; */
-	if ((size_t)n >= (size_t)(KEYS))
+	if ((size_t)n >= (size_t)256)
 		return (NULL);
 
 	/* If we're starting from scratch, clear the keymap sequence buffer */
@@ -68,9 +67,11 @@ void *dokey(KBD *kbd, int n)
 	return bind;
 }
 
-/* Return key code for key name or -1 for syntax error */
+/* Return key code (0‥255) for key name or -1 for syntax error */
 
-static int keyval(unsigned char *s)
+/* coverity[ -tainted_data_return ] */
+static int
+keyval(unsigned char *s)
 {
 	if (s[0] == '^' && s[1] && !s[2])
 		if (s[1] == '?')
@@ -103,7 +104,7 @@ void rmkmap(KMAP *kmap)
 
 	if (!kmap)
 		return;
-	for (x = 0; x != KEYS; ++x)
+	for (x = 0; x != 256; ++x)
 		if (kmap->keys[x].k == 1)
 			rmkmap(kmap->keys[x].value.submap);
 	free(kmap);
@@ -121,9 +122,9 @@ static unsigned char *range(unsigned char *seq, int *vv, int *ww)
 	seq[x] = 0;		/* Zero terminate the string */
 	v = keyval(seq);	/* Get key */
 	w = v;
+	seq[x] = c;		/* Restore the space or NUL */
 	if (w < 0)
 		return NULL;
-	seq[x] = c;		/* Restore the space or 0 */
 	for (seq += x; *seq == ' '; ++seq) ;	/* Skip over spaces */
 
 	/* Check for 'TO ' */
@@ -133,9 +134,9 @@ static unsigned char *range(unsigned char *seq, int *vv, int *ww)
 		c = seq[x];
 		seq[x] = 0;	/* Zero terminate the string */
 		w = keyval(seq);	/* Get key */
+		seq[x] = c;	/* Restore the space or NUL */
 		if (w < 0)
 			return NULL;
-		seq[x] = c;	/* Restore the space or 0 */
 		for (seq += x; *seq == ' '; ++seq) ;	/* Skip over spaces */
 	}
 
@@ -221,7 +222,7 @@ void kcpy(KMAP *dest, KMAP *src)
 {
 	int x;
 
-	for (x = 0; x != KEYS; ++x)
+	for (x = 0; x != 256; ++x)
 		if (src->keys[x].k == 1) {
 			if (dest->keys[x].k != 1) {
 				dest->keys[x].k = 1;

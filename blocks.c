@@ -7,7 +7,7 @@
  */
 #include "config.h"
 
-__RCSID("$MirOS: contrib/code/jupp/blocks.c,v 1.6 2017/12/02 02:07:23 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/blocks.c,v 1.7 2017/12/20 21:30:33 tg Exp $");
 
 /* This module requires ALIGNED and SIZEOF_INT to be defined correctly */
 
@@ -19,8 +19,6 @@ __RCSID("$MirOS: contrib/code/jupp/blocks.c,v 1.6 2017/12/02 02:07:23 tg Exp $")
 #  define SHFT 3
 #elif SIZEOF_INT == 4
 #  define SHFT 2
-#elif SIZEOF_INT == 2
-#  define SHFT 1
 #endif
 
 /* Set 'sz' 'int's beginning at 'd' to the value 'c' */
@@ -150,19 +148,21 @@ unsigned char *mset(void *dest, unsigned char c, int sz)
 	} else {
 		unsigned z = SIZEOF_INT - ((unsigned long)d & (SIZEOF_INT - 1));
 
-		if (z != SIZEOF_INT) {
-			switch (z) {
-			case 7:		d[6] = c;	/* FALLTHROUGH */
-			case 6:		d[5] = c;	/* FALLTHROUGH */
-			case 5:		d[4] = c;	/* FALLTHROUGH */
-			case 4:		d[3] = c;	/* FALLTHROUGH */
-			case 3:		d[2] = c;	/* FALLTHROUGH */
-			case 2:		d[1] = c;	/* FALLTHROUGH */
-			case 1:		d[0] = c;	/* FALLTHROUGH */
-			case 0:		/* do nothing */;
-			}
+		switch (z) {
+		case SIZEOF_INT: break;
+#if SIZEOF_INT >= 8
+		case 7:		d[6] = c;	/* FALLTHROUGH */
+		case 6:		d[5] = c;	/* FALLTHROUGH */
+		case 5:		d[4] = c;	/* FALLTHROUGH */
+		case 4:		d[3] = c;	/* FALLTHROUGH */
+#endif
+		case 3:		d[2] = c;	/* FALLTHROUGH */
+		case 2:		d[1] = c;	/* FALLTHROUGH */
+		case 1:		d[0] = c;	/* FALLTHROUGH */
+		case 0:
 			d += z;
 			sz -= z;
+			break;
 		}
 		msetI(d,
 #if SIZEOF_INT >= 8
@@ -177,10 +177,12 @@ unsigned char *mset(void *dest, unsigned char c, int sz)
 		      c, sz >> SHFT);
 		d += sz & ~(SIZEOF_INT - 1);
 		switch (sz & (SIZEOF_INT - 1)) {
+#if SIZEOF_INT >= 8
 		case 7:		d[6] = c;	/* FALLTHROUGH */
 		case 6:		d[5] = c;	/* FALLTHROUGH */
 		case 5:		d[4] = c;	/* FALLTHROUGH */
 		case 4:		d[3] = c;	/* FALLTHROUGH */
+#endif
 		case 3:		d[2] = c;	/* FALLTHROUGH */
 		case 2:		d[1] = c;	/* FALLTHROUGH */
 		case 1:		d[0] = c;	/* FALLTHROUGH */
@@ -322,10 +324,12 @@ static unsigned char *mbkwd(register unsigned char *d, register const unsigned c
 		s -= z;
 		d -= z;
 		switch (z) {
+#if SIZEOF_INT >= 8
 		case 7:		d[6] = s[6];	/* FALLTHROUGH */
 		case 6:		d[5] = s[5];	/* FALLTHROUGH */
 		case 5:		d[4] = s[4];	/* FALLTHROUGH */
 		case 4:		d[3] = s[3];	/* FALLTHROUGH */
+#endif
 		case 3:		d[2] = s[2];	/* FALLTHROUGH */
 		case 2:		d[1] = s[1];	/* FALLTHROUGH */
 		case 1:		d[0] = s[0];	/* FALLTHROUGH */
@@ -336,10 +340,12 @@ static unsigned char *mbkwd(register unsigned char *d, register const unsigned c
 		d -= sz;
 		s -= sz;
 		switch (sz & (SIZEOF_INT - 1)) {
+#if SIZEOF_INT >= 8
 		case 7:		d[6] = s[6];	/* FALLTHROUGH */
 		case 6:		d[5] = s[5];	/* FALLTHROUGH */
 		case 5:		d[4] = s[4];	/* FALLTHROUGH */
 		case 4:		d[3] = s[3];	/* FALLTHROUGH */
+#endif
 		case 3:		d[2] = s[2];	/* FALLTHROUGH */
 		case 2:		d[1] = s[1];	/* FALLTHROUGH */
 		case 1:		d[0] = s[0];	/* FALLTHROUGH */
@@ -423,18 +429,11 @@ static unsigned char *mfwrd(register unsigned char *d, register const unsigned c
 			case 2:		d[6] = s[6];	/* FALLTHROUGH */
 			case 1:		d[7] = s[7];	/* FALLTHROUGH */
 			case 0:		/* do nothing */;
-#else
-#if SIZEOF_INT == 4
+#elif SIZEOF_INT == 4
 			case 3:		d[1] = s[1];	/* FALLTHROUGH */
 			case 2:		d[2] = s[2];	/* FALLTHROUGH */
 			case 1:		d[3] = s[3];	/* FALLTHROUGH */
 			case 0:		/* do nothing */;
-#else
-#if SIZEOF_INT == 2
-			case 1:		d[1] = s[1];	/* FALLTHROUGH */
-			case 0:		/* do nothing */;
-#endif
-#endif
 #endif
 			}
 			s += SIZEOF_INT;
@@ -454,18 +453,11 @@ static unsigned char *mfwrd(register unsigned char *d, register const unsigned c
 		case 2:		d[5] = s[5];	/* FALLTHROUGH */
 		case 1:		d[6] = s[6];	/* FALLTHROUGH */
 		case 0:		/* do nothing */;
-#else
-#if SIZEOF_INT == 4
+#elif SIZEOF_INT == 4
 		case 3:		d[0] = s[0];	/* FALLTHROUGH */
 		case 2:		d[1] = s[1];	/* FALLTHROUGH */
 		case 1:		d[2] = s[2];	/* FALLTHROUGH */
 		case 0:		/* do nothing */;
-#else
-#if SIZEOF_INT == 2
-		case 1:		d[0] = s[0];	/* FALLTHROUGH */
-		case 0:		/* do nothing */;
-#endif
-#endif
 #endif
 		}
 	} else {

@@ -12,7 +12,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.27 2017/12/07 01:00:31 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.29 2017/12/20 23:33:55 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -1155,7 +1155,7 @@ process_builtin(const struct builtin_charmap *builtin)
 	extra_b7 = builtin->extra_b7;
 	extra_2192 = builtin->extra_2192;
 	map = malloc(sizeof(struct charmap));
-	map->name = (unsigned char *)strdup((const char *)builtin->name);
+	map->name = builtin->name;
 	map->type = 0;
 	map->is_punct = byte_ispunct;
 	map->is_print = byte_isprint;
@@ -1346,7 +1346,7 @@ map_name_cmp(const unsigned char *a, const unsigned char *b)
  into_the_loop:
 	while ((ca = *a) == '-' || ca == '_')
 		++a;
-	while ((cb = *b) == '-' || ca == '_')
+	while ((cb = *b) == '-' || cb == '_')
 		++b;
 	goto loop_beg;
  loop_end:
@@ -1400,8 +1400,11 @@ find_charmap(const unsigned char *name)
 	}
 
 	/* Parse and install character map from file */
-	if (f && (b = parse_charmap(name, f)))
-		return (process_builtin(b));
+	if (f && (b = parse_charmap(name, f))) {
+		m = process_builtin(b);
+		free(b);
+		return (m);
+	}
 
 	/* Check builtin sets */
 	for (y = 0; y != NELEM(builtin_charmaps); ++y)

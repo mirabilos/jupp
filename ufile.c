@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.25 2017/12/08 03:24:16 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.28 2017/12/20 23:40:35 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -144,7 +144,7 @@ int ushell(BW *bw)
 /* Copy a file */
 
 static int
-cp(unsigned char *from, int g, unsigned char *tmpfn, unsigned char *to)
+cp(const unsigned char *from, int g, const unsigned char *tmpfn, const unsigned char *to)
 {
 	int f, amnt;
 	struct stat sbuf;
@@ -157,11 +157,12 @@ cp(unsigned char *from, int g, unsigned char *tmpfn, unsigned char *to)
 #endif
 #endif
 
-	f = open((char *)from, O_RDONLY);
+	f = open((const char *)from, O_RDONLY);
 	if (f < 0) {
 		return -1;
 	}
 	if (fstat(f, &sbuf) < 0) {
+		close(f);
 		return -1;
 	}
 	if (fchmod(g, sbuf.st_mode & 0777)) {
@@ -216,6 +217,7 @@ backup(BW *bw)
 	unsigned char name[1024];
 	unsigned char *simple_backup_suffix;
 	int fd;
+	int rv;
 
 	if (bw->b->backup || nobackups || !(bw->b->name) || !(bw->b->name[0]))
 		return (0);
@@ -253,11 +255,14 @@ backup(BW *bw)
 	if (cp(bw->b->name, fd, simple_backup_suffix, name)) {
 		close(fd);
 		unlink((char *)simple_backup_suffix);
-		return (1);
+		rv = 1;
+	} else {
+		bw->b->backup = 1;
+		rv = 0;
 	}
 
-	bw->b->backup = 1;
-	return (0);
+	vsrm(simple_backup_suffix);
+	return (rv);
 }
 
 /* Write file */
@@ -968,10 +973,12 @@ static int doquerysave(BW *bw,int c,struct savereq *req,int *notify)
 		}
 		bw = w->object.bw;
 		if (bw->b==req->first) {
+			int cached_not_saved = req->not_saved;
+
 			if (notify)
 				*notify = 1;
 			rmsavereq(req);
-			genexmsgmulti(bw,1,req->not_saved);
+			genexmsgmulti(bw,1,cached_not_saved);
 			return 0;
 		}
 		if (!bw->b->changed || bw->b->scratch)

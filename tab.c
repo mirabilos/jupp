@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tab.c,v 1.12 2017/12/08 02:00:41 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tab.c,v 1.13 2017/12/20 23:49:06 tg Exp $");
 
 #include <sys/stat.h>
 #include <stdlib.h>
@@ -68,10 +68,6 @@ static int get_entries(TAB *tab, int prv)
 		return -1;
 	files = rexpnd(tab->pattern);
 	if (!files) {
-		chpwd(oldpwd);
-		return -1;
-	}
-	if (!aLEN(files)) {
 		chpwd(oldpwd);
 		return -1;
 	}
