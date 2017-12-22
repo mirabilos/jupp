@@ -219,7 +219,7 @@ void setopt(B *b, const unsigned char *parsed_name)
 #define X(type,name,seti,addr,yes,no,menu,low,high) \
 	{ UC name, { seti }, US addr, UC yes, UC no, UC menu, 0, type, low, high }
 #define L(x) &x, NULL
-struct glopts {
+static struct glopts {
 	const unsigned char *name;	/* Option name */
 	union {
 		int *i;
