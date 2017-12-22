@@ -517,7 +517,7 @@ void *mmove(void *d, const void *s, int sz)
 
 /* Utility to count number of lines within a segment */
 
-int mcnt(register unsigned char *blk, register unsigned char c, int size)
+int mcnt(register const unsigned char *blk, register unsigned char c, int size)
 {
 	register int nlines = 0;
 

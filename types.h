@@ -113,9 +113,9 @@ struct options {
 	int	tab;
 	int	indentc;
 	int	istep;
-	unsigned char	*context;
-	unsigned char	*lmsg;
-	unsigned char	*rmsg;
+	unsigned char *context;
+	const unsigned char *lmsg;
+	const unsigned char *rmsg;
 	char	*hmsg;
 	int	linums;
 	int	readonly;
@@ -237,7 +237,7 @@ struct kbd {
 
 
 struct watom {
-	unsigned char *context;		/* Context name */
+	const unsigned char *context;	/* Context name */
 	void (*disp)(jobject, int);	/* Display window */
 	void (*follow)(jobject);	/* Display window */
 	int (*abort)(jobject);		/* Common user functions */

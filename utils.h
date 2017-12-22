@@ -41,14 +41,14 @@ typedef RETSIGTYPE (*sighandler_t)(int);
 /* wrapper to hide signal interface differrencies */
 int joe_set_signal(int signum, sighandler_t handler);
 
-int parse_ws(unsigned char **p,int cmt);
-int parse_ident(unsigned char **p,unsigned char *buf,int len);
-int parse_kw(unsigned char **p,unsigned char *kw);
-int parse_tows(unsigned char **p,unsigned char *buf);
-int parse_field(unsigned char **p,unsigned char *field);
-int parse_char(unsigned char  **p,unsigned char c);
-int parse_string(unsigned char **p,unsigned char *buf,int len);
-int parse_range(unsigned char **p,int *first,int *second);
+int parse_ws(unsigned char **p, int cmt);
+int parse_ident(unsigned char **p, unsigned char *buf, int len);
+int parse_tows(unsigned char **p, unsigned char *buf);
+int parse_kw(unsigned char **p, const unsigned char *kw);
+int parse_field(unsigned char **p, const unsigned char *field);
+int parse_char(unsigned char **p, unsigned char c);
+int parse_string(unsigned char **p, unsigned char *buf, int len);
+int parse_range(unsigned char **p, int *first, int *second);
 
 void tty_xonoffbaudrst(void);
 

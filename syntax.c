@@ -355,7 +355,7 @@ struct high_syntax *load_dfa(const unsigned char *name)
 			} else if (c=='"' || c=='*') {
 				if (state) {
 					struct high_cmd *cmd;
-					if(!parse_field(&p, US "*")) {
+					if (!parse_field(&p, UC "*")) {
 						int z;
 						for(z=0;z!=256;++z)
 							clist[z] = 1;
@@ -410,7 +410,7 @@ struct high_syntax *load_dfa(const unsigned char *name)
 									p = buf;
 									parse_ws(&p,'#');
 									if (*p) {
-										if(!parse_field(&p,US "done"))
+										if (!parse_field(&p, UC "done"))
 											break;
 										if(!parse_string(&p,bf,255)) {
 											parse_ws(&p,'#');

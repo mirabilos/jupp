@@ -146,30 +146,32 @@ get_context(BW *bw)
 	return buf1;
 }
 
-static unsigned char *stagen(unsigned char *stalin, BW *bw, unsigned char *s, int fill)
+static unsigned char *
+stagen(unsigned char *stalin, BW *bw, const unsigned char *s, int fill)
 {
-	unsigned char *cp, *cp2, uc;
+	const unsigned char *ccp;
+	unsigned char *cp, uc;
 	unsigned char buf[80];
 	int x;
 	W *w = bw->parent;
 	time_t tt;
 	int special_aA = 0;
 
-	cp = s;
-	while ((cp2 = strstr(cp, "%a")) != NULL) {
-		cp2 += /* %a */ 2;
-		if (cp2[1] == '%')
-			++cp2;
-		if (cp2[0] == '%' && cp2[1] == 'A') {
+	ccp = s;
+	while ((cp = strstr(ccp, "%a")) != NULL) {
+		cp += /* %a */ 2;
+		if (cp[1] == '%')
+			++cp;
+		if (cp[0] == '%' && cp[1] == 'A') {
 			special_aA = 1;
 			break;
 		}
 	}
-	if (!special_aA) while ((cp2 = strstr(cp, "%A")) != NULL) {
-		cp2 += /* %A */ 2;
-		if (cp2[1] == '%')
-			++cp2;
-		if (cp2[0] == '%' && cp2[1] == 'a') {
+	if (!special_aA) while ((cp = strstr(ccp, "%A")) != NULL) {
+		cp += /* %A */ 2;
+		if (cp[1] == '%')
+			++cp;
+		if (cp[0] == '%' && cp[1] == 'a') {
 			special_aA = 1;
 			break;
 		}
@@ -182,8 +184,8 @@ static unsigned char *stagen(unsigned char *stalin, BW *bw, unsigned char *s, in
 			case 'x':
 				/* Context (but only if autoindent is enabled) */
 				if (bw->o.autoindent) {
-					cp = get_context(bw);
-					stalin = vsncpy(sv(stalin), sz(cp));
+					ccp = get_context(bw);
+					stalin = vsncpy(sv(stalin), sz(ccp));
 				}
 				break;
 
@@ -195,21 +197,21 @@ static unsigned char *stagen(unsigned char *stalin, BW *bw, unsigned char *s, in
 				break;
 			case 't':
 				tt = time(NULL);
-				cp = (unsigned char *)ctime(&tt);
+				ccp = (unsigned char *)ctime(&tt);
 
-				x = (cp[11] - '0') * 10 + cp[12] - '0';
+				x = (ccp[11] - '0') * 10 + ccp[12] - '0';
 				if (x > 12)
 					x -= 12;
 				joe_snprintf_1((char *)buf, sizeof(buf), "%2.2d", x);
 				if (buf[0] == '0')
 					buf[0] = fill;
 				stalin = vsncpy(sv(stalin), buf, 2);
-				stalin = vsncpy(sv(stalin), cp + 13, 3);
+				stalin = vsncpy(sv(stalin), ccp + 13, 3);
 				break;
 			case 'u':
 				tt = time(NULL);
-				cp = (unsigned char *)ctime(&tt);
-				stalin = vsncpy(sv(stalin), cp + 11, 5);
+				ccp = (unsigned char *)ctime(&tt);
+				stalin = vsncpy(sv(stalin), ccp + 11, 5);
 				break;
 			case 'T':
 				if (bw->o.overtype)
@@ -240,9 +242,9 @@ static unsigned char *stagen(unsigned char *stalin, BW *bw, unsigned char *s, in
 					stalin = vsncpy(sv(stalin), sc("Unnamed"));
 					break;
 				}
-				cp = bw->b->name;
+				ccp = bw->b->name;
  escape_loop:
-				switch ((uc = *cp++)) {
+				switch ((uc = *ccp++)) {
 				case '\\':
 					stalin = vsadd(stalin, uc);
 					/* FALLTHROUGH */
@@ -531,7 +533,7 @@ static void deltw(BW *bw, B *b, long int l, long int n, int flg)
 }
 
 WATOM watomtw = {
-	US "main",
+	UC "main",
 	disptw,
 	bwfllw,
 	NULL,

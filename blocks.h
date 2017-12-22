@@ -40,5 +40,5 @@ void **msetP(void **dest, void *c, int sz);
  *
  * Count the number of occurances a character appears in a block
  */
-int mcnt(unsigned char *blk, unsigned char c, int size);
+int mcnt(const unsigned char *blk, unsigned char c, int size);
 #endif

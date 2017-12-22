@@ -58,12 +58,12 @@ int exask = 0;
 /**** message which is shown after closing joe (CTRL+x; CTRL+k) *****/
 void genexmsg(BW *bw, int saved, unsigned char *name)
 {
-	unsigned char *s;
+	const unsigned char *s;
 
 	if (bw->b->name && bw->b->name[0]) {
 		s = bw->b->name;
 	} else {
-		s = US "(Unnamed)";
+		s = UC "(Unnamed)";
 	}
 
 	if (name) {
@@ -215,7 +215,8 @@ backup(BW *bw)
 {
 	unsigned char tmp[1024 + 12];
 	unsigned char name[1024];
-	unsigned char *simple_backup_suffix;
+	const unsigned char *simple_backup_suffix;
+	unsigned char *tmpfn;
 	int fd;
 	int rv;
 
@@ -226,7 +227,7 @@ backup(BW *bw)
 	simple_backup_suffix = (unsigned char *)getenv("SIMPLE_BACKUP_SUFFIX");
 
 	if (simple_backup_suffix == NULL) {
-		simple_backup_suffix = US "~";
+		simple_backup_suffix = UC "~";
 	}
 	if (backpath) {
 		joe_snprintf_3((char *)name, sizeof(name), "%s/%s%s", backpath, namepart(tmp, bw->b->name), simple_backup_suffix);
@@ -245,23 +246,23 @@ backup(BW *bw)
 	if (strlcat((char *)tmp, (char *)name, sizeof(tmp)) >= sizeof(tmp))
 		return (1);
 	*(dirprt_ptr(tmp)) = '\0';
-	if ((simple_backup_suffix = mktmp(tmp, &fd)) == NULL)
+	if ((tmpfn = mktmp(tmp, &fd)) == NULL)
 		return (1);
 
 	/* Attempt to delete backup file first */
 	unlink((char *)name);
 
 	/* Copy original file to backup file securely */
-	if (cp(bw->b->name, fd, simple_backup_suffix, name)) {
+	if (cp(bw->b->name, fd, tmpfn, name)) {
 		close(fd);
-		unlink((char *)simple_backup_suffix);
+		unlink((char *)tmpfn);
 		rv = 1;
 	} else {
 		bw->b->backup = 1;
 		rv = 0;
 	}
 
-	vsrm(simple_backup_suffix);
+	vsrm(tmpfn);
 	return (rv);
 }
 
@@ -877,7 +878,7 @@ static int dolose(BW *bw, int c, void *object, int *notify)
 					BW *bw2 = w->object.bw;
 					object = bw2->object;
 					bwrm(bw2);
-					w->object.bw = bw2 = bwmk(w, bfind(US ""), 0);
+					w->object.bw = bw2 = bwmk(w, bfind(UC ""), 0);
 					wredraw(w);
 					bw2->object = object;
 					if (bw2->o.mnew)
@@ -987,7 +988,7 @@ static int doquerysave(BW *bw,int c,struct savereq *req,int *notify)
 		return doquerysave(bw,0,req,notify);
 	} else {
 		unsigned char buf[1024];
-		joe_snprintf_1(buf,1024,"File %s has been modified.  Save it (y,n,^C)? ",bw->b->name ? bw->b->name : US "(Unnamed)" );
+		joe_snprintf_1(buf,1024,"File %s has been modified.  Save it (y,n,^C)? ",bw->b->name ? bw->b->name : UC "(Unnamed)" );
 		if (mkqw(bw->parent, sz(buf), doquerysave, NULL, req, notify)) {
 			return 0;
 		} else {

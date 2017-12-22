@@ -335,7 +335,7 @@ int isreg(unsigned char *s)
 	return 0;
 }
 /********************************************************************/
-unsigned char **rexpnd(unsigned char *word)
+unsigned char **rexpnd(const unsigned char *word)
 {
 	void *dir;
 	unsigned char **lst = NULL;

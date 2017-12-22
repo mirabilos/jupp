@@ -57,13 +57,13 @@ int force = 0;
 VFILE *vmem;
 
 const unsigned char *msgs[] = {
-	US "No error",
-	US "New File",
-	US "Error reading file",
-	US "Error seeking file",
-	US "Error opening file",
-	US "Error writing file",
-	US "File on disk is newer"
+	UC "No error",
+	UC "New File",
+	UC "Error reading file",
+	UC "Error seeking file",
+	UC "Error opening file",
+	UC "Error writing file",
+	UC "File on disk is newer"
 };
 
 /* Get size of gap (amount of free space) */
@@ -91,7 +91,7 @@ static void gstgap(H *hdr, unsigned char *ptr, int ofst)
 }
 
 /* Insert a block */
-static void ginsm(H *hdr, unsigned char *ptr, int ofst, unsigned char *blk, int size)
+static void ginsm(H *hdr, unsigned char *ptr, int ofst, const unsigned char *blk, int size)
 {
 	if (ofst != hdr->hole)
 		gstgap(hdr, ptr, ofst);
@@ -1782,7 +1782,7 @@ static void bsplit(P *p)
 }
 
 /* Make a chain out of a block of memory (the block must not be empty) */
-static H *bldchn(unsigned char *blk, int size, long *nlines)
+static H *bldchn(const unsigned char *blk, int size, long *nlines)
 {
 	H anchor, *l;
 
@@ -1901,7 +1901,7 @@ P *binsb(P *p, B *b)
 }
 
 /* insert memory block 'blk' at 'p' */
-P *binsm(P *p, unsigned char *blk, int amnt)
+P *binsm(P *p, const unsigned char *blk, int amnt)
 {
 	long nlines;
 	H *h = NULL;
@@ -1935,7 +1935,7 @@ P *binsm(P *p, unsigned char *blk, int amnt)
 P *binsbyte(P *p, unsigned char c)
 {
 	if (p->b->o.crlf && c == '\n')
-		return binsm(p, US "\r\n", 2);
+		return binsm(p, UC "\r\n", 2);
 	else
 		return binsm(p, &c, 1);
 }
@@ -1950,7 +1950,7 @@ P *binsc(P *p, int c)
 	} else {
 		unsigned char ch = c;
 		if (p->b->o.crlf && c == '\n')
-			return binsm(p, US "\r\n", 2);
+			return binsm(p, UC "\r\n", 2);
 		else
 			return binsm(p, &ch, 1);
 	}
@@ -2019,7 +2019,8 @@ B *bread(int fi, long int max)
  *
  * Returns new variable length string.
  */
-unsigned char *parsens(unsigned char *s, long int *skip, long int *amnt)
+unsigned char *
+parsens(const unsigned char *s, long int *skip, long int *amnt)
 {
 	unsigned char *n = vsncpy(NULL, 0, sz(s));
 	size_t x;
@@ -2082,7 +2083,8 @@ unsigned char *parsens(unsigned char *s, long int *skip, long int *amnt)
  * -3 for seek error
  * -4 for open error
  */
-B *bload(unsigned char *s)
+B *
+bload(const unsigned char *s)
 {
 	unsigned char buffer[SEGSIZ];
 	FILE *fi;
@@ -2253,7 +2255,8 @@ B *bload(unsigned char *s)
 }
 
 /* Find already loaded buffer or load file into new buffer */
-B *bfind(unsigned char *s)
+B *
+bfind(const unsigned char *s)
 {
 	B *b;
 
@@ -2282,7 +2285,8 @@ B *bfind(unsigned char *s)
 }
 
 /* Find already loaded buffer or load file into new buffer */
-B *bfind_scratch(unsigned char *s)
+B *
+bfind_scratch(const unsigned char *s)
 {
 	B *b;
 
@@ -2316,7 +2320,8 @@ B *bfind_scratch(unsigned char *s)
 	return b;
 }
 
-B *bfind_reload(unsigned char *s)
+B *
+bfind_reload(const unsigned char *s)
 {
 	B *b;
 	b = bload(s);
@@ -2324,7 +2329,8 @@ B *bfind_reload(unsigned char *s)
 	return b;
 }
 
-B *bcheck_loaded(unsigned char *s)
+B *
+bcheck_loaded(const unsigned char *s)
 {
 	B *b;
 

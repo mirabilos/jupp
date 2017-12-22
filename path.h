@@ -125,7 +125,7 @@ int isreg(unsigned char *s);
  * Generate array (see va.h) of file names from directory in 'path'
  * which match the pattern 'pattern'
  */
-unsigned char **rexpnd(unsigned char *word);
+unsigned char **rexpnd(const unsigned char *word);
 
 int chJpwd(const unsigned char *path);
 int chpwd(const unsigned char *path);
