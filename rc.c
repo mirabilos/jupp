@@ -751,7 +751,7 @@ static int doopt(MENU *m, int x, void *object, int flg)
 		if (glopts[x].ofst == (unsigned char *)&fdefault.hex - (unsigned char *)&fdefault &&
 		    bw->o.hex) {
 			if (bw->b->o.charmap->type) {
-				doencoding(bw, vsncpy(NULL, 0, sc("C")),
+				doencoding(bw, vsncpy(NULL, 0, sc("c")),
 				    NULL, NULL);
 			}
 			bw->o.crlf = 0;
