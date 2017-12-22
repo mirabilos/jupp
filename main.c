@@ -397,7 +397,7 @@ main_init(int argc, char **argv, char **envp, SCRN **np)
 		dofollows();
 		mid = omid;
 	} else {
-		BW *bw = wmktw(maint, bfind(US ""));
+		BW *bw = wmktw(maint, bfind(UC ""));
 
 		if (bw->o.mnew)
 			exemac(bw->o.mnew);

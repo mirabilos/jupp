@@ -200,7 +200,7 @@ static int abortpw(jobject jO)
 }
 
 WATOM watompw = {
-	US "prompt",
+	UC "prompt",
 	disppw,
 	bwfllw,
 	abortpw,

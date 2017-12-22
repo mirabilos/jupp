@@ -101,7 +101,8 @@ int joe_set_signal(int signum, sighandler_t handler)
 
 /* Skip whitespace and return first non-whitespace character */
 
-int parse_ws(unsigned char **pp,int cmt)
+int
+parse_ws(unsigned char **pp, int cmt)
 {
 	unsigned char *p = *pp;
 	while (*p==' ' || *p=='\t')
@@ -114,7 +115,8 @@ int parse_ws(unsigned char **pp,int cmt)
 
 /* Parse an identifier into a buffer.  Identifier is truncated to a maximum of len chars. */
 
-int parse_ident(unsigned char **pp, unsigned char *buf, int len)
+int
+parse_ident(unsigned char **pp, unsigned char *buf, int len)
 {
 	unsigned char *p = *pp;
 	if (joe_isalphx(locale_map,*p)) {
@@ -131,7 +133,8 @@ int parse_ident(unsigned char **pp, unsigned char *buf, int len)
 
 /* Parse to next whitespace */
 
-int parse_tows(unsigned char **pp, unsigned char *buf)
+int
+parse_tows(unsigned char **pp, unsigned char *buf)
 {
 	unsigned char *p = *pp;
 	while (*p && *p!=' ' && *p!='\t' && *p!='\n' && *p!='\r' && *p!='#')
@@ -144,7 +147,8 @@ int parse_tows(unsigned char **pp, unsigned char *buf)
 
 /* Parse a keyword */
 
-int parse_kw(unsigned char **pp, unsigned char *kw)
+int
+parse_kw(unsigned char **pp, const unsigned char *kw)
 {
 	unsigned char *p = *pp;
 	while(*kw && *kw==*p)
@@ -158,7 +162,8 @@ int parse_kw(unsigned char **pp, unsigned char *kw)
 
 /* Parse a field */
 
-int parse_field(unsigned char **pp, unsigned char *kw)
+int
+parse_field(unsigned char **pp, const unsigned char *kw)
 {
 	unsigned char *p = *pp;
 	while(*kw && *kw==*p)
@@ -172,7 +177,8 @@ int parse_field(unsigned char **pp, unsigned char *kw)
 
 /* Parse a character */
 
-int parse_char(unsigned char **pp, unsigned char c)
+int
+parse_char(unsigned char **pp, unsigned char c)
 {
 	unsigned char *p = *pp;
 	if (*p == c) {
@@ -182,12 +188,14 @@ int parse_char(unsigned char **pp, unsigned char c)
 		return -1;
 }
 
-/* Parse a string into a buffer.  Returns 0 for success.
-   Leaves escape sequences in string. */
-
-int parse_string(unsigned char **pp, unsigned char *buf, int len)
+/*
+ * Parse a string into a buffer.  Returns 0 for success.
+ * Leaves escape sequences in string.
+ */
+int
+parse_string(unsigned char **pp, unsigned char *buf, int len)
 {
-	unsigned char *p= *pp;
+	unsigned char *p = *pp;
 	if(*p=='\"') {
 		++p;
 		while(len && *p && *p!='\"')
@@ -214,10 +222,10 @@ int parse_string(unsigned char **pp, unsigned char *buf, int len)
 }
 
 /* Parse a character range: a-z */
-
-int parse_range(unsigned char **pp, int *first, int *second)
+int
+parse_range(unsigned char **pp, int *first, int *second)
 {
-	unsigned char *p= *pp;
+	unsigned char *p = *pp;
 	int a, b;
 	if(!*p)
 		return -1;

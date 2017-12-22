@@ -52,7 +52,7 @@ static struct context {
  * one with an empty kmap is created.
  */
 KMAP *
-kmap_getcontext(unsigned char *name, int docreate)
+kmap_getcontext(const unsigned char *name, int docreate)
 {
 	struct context *c;
 
@@ -133,9 +133,9 @@ OPTIONS fdefault = {
 	8,		/* tab */
 	' ',		/* indent char */
 	1,		/* indent step */
-	US main_context,	/* *context */
-	US "\\i%n %m %M",	/* *lmsg */
-	US " %S Ctrl-K H for help",	/* *rmsg */
+	US main_context,		/* *context */
+	UC "\\i%n %m %M",		/* *lmsg */
+	UC " %S Ctrl-K H for help",	/* *rmsg */
 	NULL,		/* *hmsg */
 	0,		/* line numbers */
 	0,		/* read only */
@@ -621,9 +621,9 @@ syntaxcmplt(BW *bw)
 		unsigned char *p;
 		int x, y;
 
-		if (chJpwd(US ("syntax")))
+		if (chJpwd(UC "syntax"))
 			return -1;
-		t = rexpnd(US "*.jsf");
+		t = rexpnd(UC "*.jsf");
 		if (!t) {
 			chpwd(oldpwd);
 			return -1;
@@ -644,7 +644,7 @@ syntaxcmplt(BW *bw)
 		if (p) {
 			unsigned char buf[1024];
 			joe_snprintf_1((char *)buf,sizeof(buf),"%s/.jupp/syntax",p);
-			if (!chpwd(buf) && (t = rexpnd(US "*.jsf"))) {
+			if (!chpwd(buf) && (t = rexpnd(UC "*.jsf"))) {
 				for (x = 0; x != aLEN(t); ++x)
 					*strrchr((char *)t[x],'.') = 0;
 				for (x = 0; x != aLEN(t); ++x) {
@@ -823,7 +823,7 @@ doopt(MENU *m, int x, void *object, int flg)
 
 	case 13:
 		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes,
-		    bw->b->o.charmap ? bw->b->o.charmap->name : US "(unset)");
+		    bw->b->o.charmap ? bw->b->o.charmap->name : UC "(unset)");
 		m->parent->notify = 0;
 		wabort(m->parent);
 		if (wmkpw(bw->parent, buf, NULL, doencoding, NULL, NULL, encodingcmplt, NULL, notify, locale_map))
@@ -904,12 +904,12 @@ umode(BW *bw)
 		case 9:
 			/* XXX aligns differently so it doesn't get too large */
 			joe_snprintf_2(s[x] + 12, OPT_BUF_SIZE - 12, "%*s", (int)n - 9,
-			    bw->b->o.syntax ? bw->b->o.syntax->name : US "(unset)");
+			    bw->b->o.syntax ? bw->b->o.syntax->name : UC "(unset)");
 			break;
 		case 13:
 			/* XXX aligns differently so it doesn't get too large */
 			joe_snprintf_2(s[x] + 12, OPT_BUF_SIZE - 12, "%*s", (int)n - 9,
-			    bw->b->o.charmap ? bw->b->o.charmap->name : US "(unset)");
+			    bw->b->o.charmap ? bw->b->o.charmap->name : UC "(unset)");
 			break;
 		default:
 			s[x][n] = '\0';

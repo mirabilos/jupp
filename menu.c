@@ -390,7 +390,7 @@ static int menuabort(jobject jO)
 }
 
 WATOM watommenu = {
-	US "menu",
+	UC "menu",
 	menudisp,
 	menufllw,
 	menuabort,

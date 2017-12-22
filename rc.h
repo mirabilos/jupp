@@ -20,7 +20,7 @@ void setopt(B *b, const unsigned char *name);
  * Find and return the KMAP for a given context name.  If none is found, an
  * empty kmap is created, bound to the context name, and returned.
  */
-KMAP *kmap_getcontext(unsigned char *name, int docreate);
+KMAP *kmap_getcontext(const unsigned char *name, int docreate);
 
 /* int procrc(CAP *cap, char *name);  Process an rc file
    Returns 0 for success
