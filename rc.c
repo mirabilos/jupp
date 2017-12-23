@@ -937,7 +937,7 @@ procrc(CAP *cap, unsigned char *name)
 	JFILE *fd;		/* rc file */
 	int line = 0;		/* Line number */
 	int err = 0;		/* Set to 1 if there was a syntax error */
-	int x = 0, c, y, sta;
+	int x, c, y, sta;
 	unsigned char *opt, *arg;
 	MACRO *m;
 
@@ -964,6 +964,7 @@ procrc(CAP *cap, unsigned char *name)
 			/* Select file types for file-type dependant options */
 			o = malloc(sizeof(OPTIONS));
 			*o = fdefault;
+			x = 0;
 			while (buf[x] && buf[x] != '\n' && buf[x] != ' ' && buf[x] != '\t')
 				++x;
 			buf[x] = 0;
@@ -973,6 +974,7 @@ procrc(CAP *cap, unsigned char *name)
 			break;
 		case '+':
 			/* Set file contents match regex */
+			x = 0;
 			while (buf[x] && buf[x] != '\n' && buf[x] != '\r')
 				++x;
 			buf[x] = 0;
@@ -983,7 +985,7 @@ procrc(CAP *cap, unsigned char *name)
 			/* Set an option */
 			opt = buf + 1;
 			arg = NULL;
-
+			x = 0;
 			while (buf[x] && buf[x] != '\n' && buf[x] != ' ' && buf[x] != '\t')
 				++x;
 			if (buf[x] && buf[x] != '\n') {
