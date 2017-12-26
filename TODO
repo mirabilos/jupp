@@ -596,7 +596,11 @@ Other requests:
 • do charset conversion and support more charsets, both SBCS and
   Unicode (UTF-{16,32}{BE,LE} for example) sponsored by ⮡ tarent
 • plug memory leaks (Valgrind reports a few)
+• fix Coverity-pointed-out issues
+• rewrite allocation stuff, use lalloc struct tricks from mksh
+• Debian now demands #!/usr/bin/perl shebang for Perl scripts
+  (also fixup some joe4.4 jupprc ftypes)
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.45 2017/12/17 03:12:28 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.46 2017/12/26 22:50:44 tg Exp $
