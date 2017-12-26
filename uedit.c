@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.31 2017/12/16 22:10:55 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.32 2017/12/26 23:26:57 tg Exp $");
 
 #include <string.h>
 
@@ -328,7 +328,7 @@ utomatch_i(BW *bw, int dir)
 	P *p;
 	int cnt = 0;		/* delimiter depth */
 
-	switch (c = brch(bw->cursor)) {
+	switch (f = c = brch(bw->cursor)) {
 	case '(':
 		f = ')';
 		dir = 1;
@@ -361,13 +361,6 @@ utomatch_i(BW *bw, int dir)
 		f = '<';
 		dir = -1;
 		break;
-	case '"':
-	case '\'':
-	case '`':
-		f = c;
-		break;
-	default:
-		return -1;
 	}
 
 	p = pdup(bw->cursor);
