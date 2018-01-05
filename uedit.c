@@ -1197,10 +1197,23 @@ static int dounicode(BW *bw, unsigned char *s, void *object, int *notify)
 	return 0;
 }
 
+static void
+doquote0(BW *bw, int c, int meta)
+{
+	if (c == '?')
+		c = 127;
+	else if ((c >= 0x40 && c <= 0x5F) || (c >= 'a' && c <= 'z'))
+		c &= 0x1F;
+	c |= meta;
+	utypebw_raw(bw, c, 1);
+	bw->cursor->xcol = piscol(bw->cursor);
+}
+
 int quotestate;
 int quoteval;
 
-static int doquote(BW *bw, int c, void *object, int *notify)
+static int
+doquote(BW *bw, int c, void *object, int *notify)
 {
 	unsigned char buf[40];
 
@@ -1249,12 +1262,7 @@ static int doquote(BW *bw, int c, void *object, int *notify)
 				return 0;
 		} else {
  unopoo:
-			if ((c & ~0x20) >= 0x40 && (c & ~0x20) <= 0x5F)
-				c &= 0x1F;
-			if (c == '?')
-				c = 127;
-			utypebw_raw(bw, c, 1);
-			bw->cursor->xcol = piscol(bw->cursor);
+			doquote0(bw, c, 0);
 		}
 		break;
 	case 1:
@@ -1360,13 +1368,7 @@ static int doquote9(BW *bw, int c, void *object, int *notify)
 {
 	if (notify)
 		*notify = 1;
-	if ((c & ~0x20) >= 0x40 && (c & ~0x20) <= 0x5F)
-		c &= 0x1F;
-	if (c == '?')
-		c = 127;
-	c |= 128;
-	utypebw_raw(bw, c, 1);
-	bw->cursor->xcol = piscol(bw->cursor);
+	doquote0(bw, c, 128);
 	return 0;
 }
 
