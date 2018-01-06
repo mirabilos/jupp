@@ -64,6 +64,21 @@
 -highlight
 -syntax diff
 
+*
++Only in[ ]
+-highlight
+-syntax diff
+
+*
++Nur in[ ]
+-highlight
+-syntax diff
+
+*
++\[1-9]\+\[0-9]\[cda]
+-highlight
+-syntax diff
+
 *.sh*
 -syntax sh
 
