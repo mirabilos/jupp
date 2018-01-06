@@ -27,7 +27,7 @@
 -pg 2
 -lmsg \i%k%T%*\b%n\b%R
 -rmsg  R%r<%l C%c\u%o|%O\i\b%a|%A\b\i\u %u
--hmsg ^J = Help
+-hmsg \i\f\b^J = Help\b\f
  --crlf
 -guess_crlf
 -french
