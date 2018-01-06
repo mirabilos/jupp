@@ -598,9 +598,8 @@ Other requests:
 • plug memory leaks (Valgrind reports a few)
 • fix Coverity-pointed-out issues
 • rewrite allocation stuff, use lalloc struct tricks from mksh
-• Debian now demands #!/usr/bin/perl shebang for Perl scripts
-  (also fixup some joe4.4 jupprc ftypes)
+• fixup some joe4.4 jupprc ftypes
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.46 2017/12/26 22:50:44 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.47 2018/01/06 00:49:07 tg Exp $
