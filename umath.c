@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.25 2017/12/16 22:10:55 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.26 2018/01/06 00:28:34 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -38,13 +38,14 @@ static RETSIGTYPE fperr(int unused)
 }
 
 struct var {
-	unsigned char *name;
-	int set;
-	double val;
 	struct var *next;
+	unsigned char *name;
+	double val;
+	int set;
 } *vars = NULL;
 
-static struct var *get(unsigned char *str)
+static struct var *
+get(const unsigned char *str)
 {
 	struct var *v;
 
@@ -104,7 +105,7 @@ static double expr(int prec, struct var **rtv)
 			++ptr;
 		else if (!merrf) {
 			merrf = 1;
-			merrt = US "Missing )";
+			merrt = UC "Missing )";
 		}
 	} else if (*ptr == '-') {
 		++ptr;
@@ -137,7 +138,7 @@ static double expr(int prec, struct var **rtv)
 			v->set = 1;
 		} else if (!merrf) {
 			merrf = 1;
-			merrt = US "Left side of = is not an l-value";
+			merrt = UC "Left side of = is not an l-value";
 		}
 		goto loop;
 	}
@@ -165,25 +166,25 @@ calc(BW *bw, unsigned char *s)
 	}
 	math_exp = strdup((void *)s);
 
-	v = get(US "top");
+	v = get(UC "top");
 	v->val = tbw->top->line + 1;
 	v->set = 1;
-	v = get(US "lines");
+	v = get(UC "lines");
 	v->val = tbw->b->eof->line + 1;
 	v->set = 1;
-	v = get(US "line");
+	v = get(UC "line");
 	v->val = tbw->cursor->line + 1;
 	v->set = 1;
-	v = get(US "col");
+	v = get(UC "col");
 	v->val = tbw->cursor->col + 1;
 	v->set = 1;
-	v = get(US "byte");
+	v = get(UC "byte");
 	v->val = tbw->cursor->byte + 1;
 	v->set = 1;
-	v = get(US "height");
+	v = get(UC "height");
 	v->val = tbw->h;
 	v->set = 1;
-	v = get(US "width");
+	v = get(UC "width");
 	v->val = tbw->w;
 	v->set = 1;
 	ptr = s;
@@ -204,13 +205,13 @@ calc(BW *bw, unsigned char *s)
 			}
 		} else if (*ptr && !merrf) {
 			merrf = 1;
-			merrt = US "Extra junk after end of expr";
+			merrt = UC "Extra junk after end of expr";
 		}
 	}
 
 	if (merrf) {
 		if (merrf == 2)
-			merrt = US "Float point exception";
+			merrt = UC "Float point exception";
 		joe_snprintf_1(math_res, JOE_MSGBUFSIZE,
 		    "math_error{%s}", merrt);
 	} else {
@@ -298,7 +299,7 @@ calcl(BW *bw, unsigned char *s)
 	rv = ustol(s, &cp, USTOL_TRIM | USTOL_EOS);
 	if (!cp) {
 		rv = 0;
-		merrt = US "Invalid or out-of-range number";
+		merrt = UC "Invalid or out-of-range number";
 		merrf = 1;
 	}
 	return (rv);

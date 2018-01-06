@@ -9,7 +9,7 @@
 #define _JOE_PATH_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_path_h, "$MirOS: contrib/code/jupp/path.h,v 1.15 2017/12/20 23:19:15 tg Exp $");
+__IDSTRING(rcsid_path_h, "$MirOS: contrib/code/jupp/path.h,v 1.16 2018/01/06 00:28:32 tg Exp $");
 #endif
 
 #if defined(__MSDOS__) || defined(__DJGPP__) || defined(__EMX__) || \
@@ -125,7 +125,7 @@ int isreg(unsigned char *s);
  * Generate array (see va.h) of file names from directory in 'path'
  * which match the pattern 'pattern'
  */
-unsigned char **rexpnd(unsigned char *word);
+unsigned char **rexpnd(const unsigned char *word);
 
 int chJpwd(const unsigned char *path);
 int chpwd(const unsigned char *path);

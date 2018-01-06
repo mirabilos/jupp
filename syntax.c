@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/syntax.c,v 1.21 2017/12/08 02:00:41 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/syntax.c,v 1.22 2018/01/06 00:28:32 tg Exp $");
 
 #include <limits.h>
 #include <stdlib.h>
@@ -355,7 +355,7 @@ struct high_syntax *load_dfa(const unsigned char *name)
 			} else if (c=='"' || c=='*') {
 				if (state) {
 					struct high_cmd *cmd;
-					if(!parse_field(&p, US "*")) {
+					if (!parse_field(&p, UC "*")) {
 						int z;
 						for(z=0;z!=256;++z)
 							clist[z] = 1;
@@ -410,7 +410,7 @@ struct high_syntax *load_dfa(const unsigned char *name)
 									p = buf;
 									parse_ws(&p,'#');
 									if (*p) {
-										if(!parse_field(&p,US "done"))
+										if (!parse_field(&p, UC "done"))
 											break;
 										if(!parse_string(&p,bf,255)) {
 											parse_ws(&p,'#');

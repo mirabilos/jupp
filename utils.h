@@ -11,7 +11,7 @@
 #define _JOE_UTILS_H 1
 
 #ifdef EXTERN_B_C
-__IDSTRING(rcsid_utils_h, "$MirOS: contrib/code/jupp/utils.h,v 1.11 2017/12/08 02:00:43 tg Exp $");
+__IDSTRING(rcsid_utils_h, "$MirOS: contrib/code/jupp/utils.h,v 1.12 2018/01/06 00:28:35 tg Exp $");
 #endif
 
 #include <signal.h>
@@ -41,14 +41,14 @@ typedef RETSIGTYPE (*sighandler_t)(int);
 /* wrapper to hide signal interface differrencies */
 int joe_set_signal(int signum, sighandler_t handler);
 
-int parse_ws(unsigned char **p,int cmt);
-int parse_ident(unsigned char **p,unsigned char *buf,int len);
-int parse_kw(unsigned char **p,unsigned char *kw);
-int parse_tows(unsigned char **p,unsigned char *buf);
-int parse_field(unsigned char **p,unsigned char *field);
-int parse_char(unsigned char  **p,unsigned char c);
-int parse_string(unsigned char **p,unsigned char *buf,int len);
-int parse_range(unsigned char **p,int *first,int *second);
+int parse_ws(unsigned char **p, int cmt);
+int parse_ident(unsigned char **p, unsigned char *buf, int len);
+int parse_tows(unsigned char **p, unsigned char *buf);
+int parse_kw(unsigned char **p, const unsigned char *kw);
+int parse_field(unsigned char **p, const unsigned char *field);
+int parse_char(unsigned char **p, unsigned char c);
+int parse_string(unsigned char **p, unsigned char *buf, int len);
+int parse_range(unsigned char **p, int *first, int *second);
 
 void tty_xonoffbaudrst(void);
 

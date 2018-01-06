@@ -1,4 +1,4 @@
-#define JUPP_IS_COPYRIGHT_C_BY "2017 mirabilos"
+#define JUPP_IS_COPYRIGHT_C_BY "2018 mirabilos"
 
 /*-
  * Copyright (c) 2004ff. Thorsten Glaser
@@ -32,7 +32,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.40 2017/12/08 03:24:15 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.41 2018/01/06 00:28:31 tg Exp $");
 
 #include <fcntl.h>
 #include <string.h>
@@ -397,7 +397,7 @@ main_init(int argc, char **argv, char **envp, SCRN **np)
 		dofollows();
 		mid = omid;
 	} else {
-		BW *bw = wmktw(maint, bfind(US ""));
+		BW *bw = wmktw(maint, bfind(UC ""));
 
 		if (bw->o.mnew)
 			exemac(bw->o.mnew);

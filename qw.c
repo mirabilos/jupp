@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/qw.c,v 1.11 2017/12/08 02:17:22 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/qw.c,v 1.12 2018/01/06 00:28:32 tg Exp $");
 
 #include <stdlib.h>
 
@@ -132,7 +132,7 @@ static int abortqw(jobject jO)
 }
 
 static WATOM watomqw = {
-	US "query",
+	UC "query",
 	dispqw,
 	NULL,
 	abortqw,
@@ -146,7 +146,7 @@ static WATOM watomqw = {
 };
 
 static WATOM watqwn = {
-	US "querya",
+	UC "querya",
 	dispqwn,
 	NULL,
 	abortqw,
@@ -160,7 +160,7 @@ static WATOM watqwn = {
 };
 
 static WATOM watqwsr = {
-	US "querysr",
+	UC "querysr",
 	dispqwn,
 	NULL,
 	abortqw,
@@ -175,7 +175,9 @@ static WATOM watqwsr = {
 
 /* Create a query window */
 
-QW *mkqw(W *w, unsigned char *prompt, int len, jpoly_int *func, jpoly_int *abrt, void *object, int *notify)
+QW *
+mkqw(W *w, const unsigned char *prompt, int len,
+    jpoly_int *func, jpoly_int *abrt, void *object, int *notify)
 {
 	W *new;
 	QW *qw;
@@ -202,7 +204,9 @@ QW *mkqw(W *w, unsigned char *prompt, int len, jpoly_int *func, jpoly_int *abrt,
 /* Same as above, but cursor is left in original window */
 /* For Ctrl-Meta thing */
 
-QW *mkqwna(W *w, unsigned char *prompt, int len, jpoly_int *func, jpoly_int *abrt, void *object, int *notify)
+QW *
+mkqwna(W *w, const unsigned char *prompt, int len,
+    jpoly_int *func, jpoly_int *abrt, void *object, int *notify)
 {
 	W *new;
 	QW *qw;
@@ -229,7 +233,9 @@ QW *mkqwna(W *w, unsigned char *prompt, int len, jpoly_int *func, jpoly_int *abr
 /* Same as above, but cursor is left in original window */
 /* For search and replace thing */
 
-QW *mkqwnsr(W *w, unsigned char *prompt, int len, jpoly_int *func, jpoly_int *abrt, void *object, int *notify)
+QW *
+mkqwnsr(W *w, const unsigned char *prompt, int len,
+    jpoly_int *func, jpoly_int *abrt, void *object, int *notify)
 {
 	W *new;
 	QW *qw;

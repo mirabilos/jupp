@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tty.c,v 1.35 2017/12/08 02:28:06 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tty.c,v 1.36 2018/01/06 00:28:33 tg Exp $");
 
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
@@ -937,18 +937,20 @@ static unsigned char *getpty(int *ptyfd)
 	int x, fd;
 	unsigned char *orgpwd = pwd();
 	static unsigned char **ptys = NULL;
-	static unsigned char *ttydir;
-	static unsigned char *ptydir;
+	static const unsigned char *ttydir;
+	static const unsigned char *ptydir;
 	static unsigned char ttyname[32];
 
 	if (!ptys) {
-		ttydir = US "/dev/pty/";
-		ptydir = US "/dev/ptym/";	/* HPUX systems */
-		if (chpwd(ptydir) || !(ptys = rexpnd(US "pty*")))
+		/* HPUX systems */
+		ttydir = UC "/dev/pty/";
+		ptydir = UC "/dev/ptym/";
+		if (chpwd(ptydir) || !(ptys = rexpnd(UC "pty*")))
 			if (!ptys) {
-				ttydir = ptydir = US "/dev/";	/* Everyone else */
+				/* Everyone else */
+				ttydir = ptydir = UC "/dev/";
 				if (!chpwd(ptydir))
-					ptys = rexpnd(US "pty*");
+					ptys = rexpnd(UC "pty*");
 			}
 	}
 	chpwd(orgpwd);
@@ -1005,7 +1007,8 @@ static RETSIGTYPE death(int unused)
 
 extern unsigned char **mainenv;
 
-static unsigned char **newenv(unsigned char **old, unsigned char *s)
+static unsigned char **
+newenv(unsigned char **old, const unsigned char *s)
 {
 	unsigned char **new;
 	int x, y, z;
@@ -1020,12 +1023,12 @@ static unsigned char **newenv(unsigned char **old, unsigned char *s)
 				break;
 		if (s[z] == '=') {
 			if (s[z + 1])
-				new[y++] = s;
+				new[y++] = (void *)strdup((const char *)s);
 		} else
 			new[y++] = old[x];
 	}
 	if (x == y)
-		new[y++] = s;
+		new[y++] = (void *)strdup((const char *)s);
 	new[y] = 0;
 	return new;
 }
@@ -1150,7 +1153,7 @@ mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args,
 
 			/* Open the TTY */
 			if ((x = open((char *)name, O_RDWR)) != -1) {	/* Standard input */
-				unsigned char **env = newenv(mainenv, US "TERM=");
+				unsigned char **env = newenv(mainenv, UC "TERM=");
 
 #ifdef HAVE_LOGIN_TTY
 				login_tty(x);

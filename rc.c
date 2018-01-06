@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.41 2017/12/20 23:53:29 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.42 2018/01/06 00:28:32 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -40,17 +40,19 @@ __RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.41 2017/12/20 23:53:29 tg Exp $");
 
 #define OPT_BUF_SIZE	60
 
+/* List of named contexts */
 static struct context {
 	struct context *next;
 	unsigned char *name;
 	KMAP *kmap;
-} *contexts = NULL;		/* List of named contexts */
+} *contexts = NULL;
 
-/* Find a context of a given name- if not found, one with an empty kmap
- * is created.
+/*
+ * Find a context of a given name; if not found,
+ * one with an empty kmap is created.
  */
-
-KMAP *kmap_getcontext(unsigned char *name, int docreate)
+KMAP *
+kmap_getcontext(const unsigned char *name, int docreate)
 {
 	struct context *c;
 
@@ -78,7 +80,6 @@ extern int notite, pastetite, usetabs, assume_color, guesscrlf, guessindent, men
 extern unsigned char *backpath;
 
 /* Default options for prompt windows */
-
 OPTIONS pdefault = {
 	NULL,		/* *next */
 	NULL,		/* *name_regex */
@@ -119,7 +120,6 @@ OPTIONS pdefault = {
 };
 
 /* Default options for file windows */
-
 char main_context[] = "main";
 OPTIONS fdefault = {
 	NULL,		/* *next */
@@ -133,9 +133,9 @@ OPTIONS fdefault = {
 	8,		/* tab */
 	' ',		/* indent char */
 	1,		/* indent step */
-	US main_context,	/* *context */
-	US "\\i%n %m %M",	/* *lmsg */
-	US " %S Ctrl-K H for help",	/* *rmsg */
+	US main_context,		/* *context */
+	UC "\\i%n %m %M",		/* *lmsg */
+	UC " %S Ctrl-K H for help",	/* *rmsg */
 	NULL,		/* *hmsg */
 	0,		/* line numbers */
 	0,		/* read only */
@@ -158,8 +158,8 @@ OPTIONS fdefault = {
 };
 
 /* Update options */
-
-void lazy_opts(OPTIONS *o)
+void
+lazy_opts(OPTIONS *o)
 {
 	o->syntax = load_dfa(o->syntax_name);
 	o->charmap = find_charmap(o->map_name);
@@ -172,54 +172,53 @@ void lazy_opts(OPTIONS *o)
 }
 
 /* Set local options depending on file name and contents */
-
-void setopt(B *b, const unsigned char *parsed_name)
+void
+setopt(B *b, const unsigned char *parsed_name)
 {
 	OPTIONS *o;
 	int x;
 	unsigned char *pieces[26];
-	for (x = 0; x!=26; ++x)
+	P *p;
+
+	for (x = 0; x != 26; ++x)
 		pieces[x] = NULL;
 
 	for (o = options; o; o = o->next)
 		if (rmatch(o->name_regex, parsed_name)) {
-			if(o->contents_regex) {
-				P *p = pdup(b->bof);
-				if (pmatch(pieces,o->contents_regex,strlen((char *)o->contents_regex),p,0,0)) {
-					prm(p);
-					b->o = *o;
-					lazy_opts(&b->o);
-					goto done;
-				} else {
-					prm(p);
-				}
-			} else {
-				b->o = *o;
-				lazy_opts(&b->o);
+			if (!o->contents_regex)
 				goto done;
-			}
+			p = pdup(b->bof);
+			x = pmatch(pieces, o->contents_regex,
+			    strlen((char *)o->contents_regex), p, 0, 0);
+			prm(p);
+			if (x)
+				goto done;
 		}
 
 	b->o = fdefault;
+	if (0) {
+ done:
+		b->o = *o;
+	}
 	lazy_opts(&b->o);
 
- done:
-	for (x = 0; x!=26; ++x)
+	for (x = 0; x != 26; ++x)
 		vsrm(pieces[x]);
 }
 
 /* Table of options and how to set them */
 
-/* local means it's in an OPTION structure, global means it's in a global
- * variable */
-
+/*
+ * local means it's in an OPTION structure,
+ * global means it's in a global variable
+ */
 #define F(x) NULL, &fdefault.x
 #define G(type,name,setiaddr,yes,no,menu,low,high) \
 	X(type,name,setiaddr,yes,no,menu,low,high)
 #define X(type,name,seti,addr,yes,no,menu,low,high) \
 	{ UC name, { seti }, US addr, UC yes, UC no, UC menu, 0, type, low, high }
 #define L(x) &x, NULL
-struct glopts {
+static struct glopts {
 	const unsigned char *name;	/* Option name */
 	union {
 		int *i;
@@ -331,7 +330,8 @@ static void izopts(void)
 	isiz = 1;
 }
 
-/* Set a global or local option:
+/*-
+ * Set a global or local option:
  * 's' is option name
  * 'arg' is a possible argument string (taken only if option has an arg)
  * 'options' points to options structure to modify (can be NULL).
@@ -350,8 +350,8 @@ static void izopts(void)
  * glopt(name,arg,&fdefault,1): set default file options
  * glopt(name,arg,options,1): set file local option
  */
-
-int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options_, int set)
+int
+glopt(unsigned char *s, unsigned char *arg, OPTIONS *opts, int set)
 {
 	int val;
 	int ret = 0;
@@ -372,57 +372,58 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options_, int set)
 	for (x = 0; glopts[x].name; ++x)
 		if (!strcmp(glopts[x].name, s)) {
 			switch (glopts[x].type) {
-			case 0: /* Global variable flag option */
+			case 0:
+				/* Global variable flag option */
 				if (set)
 					*glopts[x].set.i = st;
 				break;
-			case 1: /* Global variable integer option */
+			case 1:
+				/* Global variable integer option */
 				if (set && arg) {
 					val = ustolb(arg, &vp, glopts[x].low, glopts[x].high, USTOL_TRIM | USTOL_EOS);
 					if (vp)
 						*glopts[x].set.i = val;
 				}
 				break;
-			case 2: /* Global variable string option */
-				if (set) {
-					if (arg)
-						*glopts[x].set.us = (unsigned char *)strdup((char *)arg);
-					else
-						*glopts[x].set.us = NULL;
-				}
+			case 2:
+				/* Global variable string option */
+				if (set)
+					*glopts[x].set.us = arg ? (unsigned char *)strdup((char *)arg) : NULL;
 				break;
-			case 4: /* Local option flag */
-				if (options_)
-					*(int *) ((unsigned char *) options_ + glopts[x].ofst) = st;
+			case 4:
+				/* Local option flag */
+				if (opts)
+					*(int *) ((unsigned char *) opts + glopts[x].ofst) = st;
 				break;
-			case 5: /* Local option integer */
-				if (arg && options_) {
+			case 5:
+				/* Local option integer */
+				if (arg && opts) {
 					val = ustolb(arg, &vp, glopts[x].low, glopts[x].high, USTOL_TRIM | USTOL_EOS);
 					if (vp)
 						*(int *) ((unsigned char *)
-							  options_ + glopts[x].ofst) = val;
+							  opts + glopts[x].ofst) = val;
 				}
 				break;
-			case 7: /* Local option numeric + 1, with range checking */
+			case 7:
+				/* Local option numeric + 1, with range checking */
 				if (arg) {
 					val = ustolb(arg, &vp, glopts[x].low, glopts[x].high, USTOL_TRIM | USTOL_EOS);
-					if (vp && options_)
+					if (vp && opts)
 						*(int *) ((unsigned char *)
-							  options_ + glopts[x].ofst) = val - 1;
+							  opts + glopts[x].ofst) = val - 1;
 				}
 				break;
 
-			case 9: /* Set syntax */
-				if (arg && options_)
-					options_->syntax_name = (unsigned char *)strdup((char *)arg);
-				/* this was causing all syntax files to be loaded...
-				if (arg && options_)
-					options_->syntax = load_dfa(arg); */
+			case 9:
+				/* Set syntax */
+				if (arg && opts)
+					opts->syntax_name = (unsigned char *)strdup((char *)arg);
 				break;
 
-			case 13: /* Set byte mode encoding */
-				if (arg && options_)
-					options_->map_name = (unsigned char *)strdup((char *)arg);
+			case 13:
+				/* Set byte mode encoding */
+				if (arg && opts)
+					opts->map_name = (unsigned char *)strdup((char *)arg);
 				break;
 			}
 			/* This is a stupid hack... */
@@ -436,29 +437,29 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options_, int set)
 	/* These options do not show up in ^T */
 	if (!strcmp(s, "lmsg")) {
 		if (arg) {
-			if (options_)
-				options_->lmsg = (unsigned char *)strdup((char *)arg);
+			if (opts)
+				opts->lmsg = (unsigned char *)strdup((char *)arg);
 			ret = 2;
 		} else
 			ret = 1;
 	} else if (!strcmp(s, "rmsg")) {
 		if (arg) {
-			if (options_)
-				options_->rmsg = (unsigned char *)strdup((char *)arg);
+			if (opts)
+				opts->rmsg = (unsigned char *)strdup((char *)arg);
 			ret = 2;
 		} else
 			ret = 1;
 	} else if (!strcmp(s, "hmsg")) {
 		if (arg) {
-			if (options_)
-				options_->hmsg = strdup((char *)arg);
+			if (opts)
+				opts->hmsg = strdup((char *)arg);
 			ret = 2;
 		} else
 			ret = 1;
 	} else if (!strcmp(s, "keymap")) {
 		if (arg) {
-			if (options_)
-				options_->context = (unsigned char *)strdup((char *)arg);
+			if (opts)
+				opts->context = (unsigned char *)strdup((char *)arg);
 			ret = 2;
 		} else
 			ret = 1;
@@ -466,8 +467,8 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options_, int set)
 		if (arg) {
 			int sta;
 
-			if (options_)
-				options_->mnew = mparse(NULL, arg, &sta);
+			if (opts)
+				opts->mnew = mparse(NULL, arg, &sta);
 			ret = 2;
 		} else
 			ret = 1;
@@ -475,8 +476,8 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options_, int set)
 		if (arg) {
 			int sta;
 
-			if (options_)
-				options_->mold = mparse(NULL, arg, &sta);
+			if (opts)
+				opts->mold = mparse(NULL, arg, &sta);
 			ret = 2;
 		} else
 			ret = 1;
@@ -484,8 +485,8 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options_, int set)
 		if (arg) {
 			int sta;
 
-			if (options_)
-				options_->msnew = mparse(NULL, arg, &sta);
+			if (opts)
+				opts->msnew = mparse(NULL, arg, &sta);
 			ret = 2;
 		} else
 			ret = 1;
@@ -493,8 +494,8 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options_, int set)
 		if (arg) {
 			int sta;
 
-			if (options_)
-				options_->msold = mparse(NULL, arg, &sta);
+			if (opts)
+				opts->msold = mparse(NULL, arg, &sta);
 			ret = 2;
 		} else
 			ret = 1;
@@ -505,15 +506,18 @@ int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options_, int set)
 
 /* Option setting user interface (^T command) */
 
-static int optx = 0; /* Menu cursor position: remember it for next time */
+/* Menu cursor position: remember it for next time */
+static int optx = 0;
 
-static int doabrt1(BW *bw, int *xx)
+static int
+doabrt1(BW *bw, int *xx)
 {
 	free(xx);
 	return -1;
 }
 
-static int doopt1(BW *bw, unsigned char *s, int *xx, int *notify)
+static int
+doopt1(BW *bw, unsigned char *s, int *xx, int *notify)
 {
 	int ret = 0;
 	int x = *xx;
@@ -583,7 +587,8 @@ static int doopt1(BW *bw, unsigned char *s, int *xx, int *notify)
 	return ret;
 }
 
-static int dosyntax(BW *bw, unsigned char *s, int *xx, int *notify)
+static int
+dosyntax(BW *bw, unsigned char *s, int *xx, int *notify)
 {
 	int ret = 0;
 	struct high_syntax *syn;
@@ -604,9 +609,11 @@ static int dosyntax(BW *bw, unsigned char *s, int *xx, int *notify)
 	return ret;
 }
 
-unsigned char **syntaxes = NULL; /* Array of available syntaxes */
+/* Array of available syntacēs */
+unsigned char **syntaxes = NULL;
 
-static int syntaxcmplt(BW *bw)
+static int
+syntaxcmplt(BW *bw)
 {
 	if (!syntaxes) {
 		unsigned char *oldpwd = pwd();
@@ -614,9 +621,9 @@ static int syntaxcmplt(BW *bw)
 		unsigned char *p;
 		int x, y;
 
-		if (chJpwd(US ("syntax")))
+		if (chJpwd(UC "syntax"))
 			return -1;
-		t = rexpnd(US "*.jsf");
+		t = rexpnd(UC "*.jsf");
 		if (!t) {
 			chpwd(oldpwd);
 			return -1;
@@ -637,7 +644,7 @@ static int syntaxcmplt(BW *bw)
 		if (p) {
 			unsigned char buf[1024];
 			joe_snprintf_1((char *)buf,sizeof(buf),"%s/.jupp/syntax",p);
-			if (!chpwd(buf) && (t = rexpnd(US "*.jsf"))) {
+			if (!chpwd(buf) && (t = rexpnd(UC "*.jsf"))) {
 				for (x = 0; x != aLEN(t); ++x)
 					*strrchr((char *)t[x],'.') = 0;
 				for (x = 0; x != aLEN(t); ++x) {
@@ -672,7 +679,8 @@ check_for_hex(BW *bw)
 	return 0;
 }
 
-static int doencoding(BW *bw, unsigned char *s, int *xx, int *notify)
+static int
+doencoding(BW *bw, unsigned char *s, int *xx, int *notify)
 {
 	int ret = 0;
 	struct charmap *map;
@@ -705,9 +713,11 @@ static int doencoding(BW *bw, unsigned char *s, int *xx, int *notify)
 	return ret;
 }
 
-unsigned char **encodings = NULL; /* Array of available encodinges */
+/* Array of available encodinges */
+unsigned char **encodings = NULL;
 
-static int encodingcmplt(BW *bw)
+static int
+encodingcmplt(BW *bw)
 {
 	if (!encodings) {
 		encodings = get_encodings();
@@ -716,7 +726,8 @@ static int encodingcmplt(BW *bw)
 	return simple_cmplt(bw,encodings);
 }
 
-static int doopt(MENU *m, int x, void *object, int flg)
+static int
+doopt(MENU *m, int x, void *object, int flg)
 {
 	BW *bw = m->parent->win->object.bw;
 	int *xx;
@@ -751,7 +762,7 @@ static int doopt(MENU *m, int x, void *object, int flg)
 		if (glopts[x].ofst == (unsigned char *)&fdefault.hex - (unsigned char *)&fdefault &&
 		    bw->o.hex) {
 			if (bw->b->o.charmap->type) {
-				doencoding(bw, vsncpy(NULL, 0, sc("C")),
+				doencoding(bw, vsncpy(NULL, 0, sc("c")),
 				    NULL, NULL);
 			}
 			bw->o.crlf = 0;
@@ -812,7 +823,7 @@ static int doopt(MENU *m, int x, void *object, int flg)
 
 	case 13:
 		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes,
-		    bw->b->o.charmap ? bw->b->o.charmap->name : US "(unset)");
+		    bw->b->o.charmap ? bw->b->o.charmap->name : UC "(unset)");
 		m->parent->notify = 0;
 		wabort(m->parent);
 		if (wmkpw(bw->parent, buf, NULL, doencoding, NULL, NULL, encodingcmplt, NULL, notify, locale_map))
@@ -828,7 +839,8 @@ static int doopt(MENU *m, int x, void *object, int flg)
 	return 0;
 }
 
-static int doabrt(MENU *m, int x, unsigned char **s)
+static int
+doabrt(MENU *m, int x, unsigned char **s)
 {
 	optx = x;
 	for (x = 0; s[x]; ++x)
@@ -837,13 +849,15 @@ static int doabrt(MENU *m, int x, unsigned char **s)
 	return -1;
 }
 
-int umode(BW *bw)
+int
+umode(BW *bw)
 {
-	size_t size, x, len;
+	size_t size = 0, x, len;
 	unsigned char **s;
 
 	bw->b->o.readonly = bw->o.readonly = bw->b->rdonly;
-	for (size = 0; glopts[size].menu; ++size) ;
+	while (glopts[size].menu)
+		++size;
 	s = calloc(size + 1, sizeof(unsigned char *));
 	len = 0;
 	for (x = 0; x < size; ++x) {
@@ -890,12 +904,12 @@ int umode(BW *bw)
 		case 9:
 			/* XXX aligns differently so it doesn't get too large */
 			joe_snprintf_2(s[x] + 12, OPT_BUF_SIZE - 12, "%*s", (int)n - 9,
-			    bw->b->o.syntax ? bw->b->o.syntax->name : US "(unset)");
+			    bw->b->o.syntax ? bw->b->o.syntax->name : UC "(unset)");
 			break;
 		case 13:
 			/* XXX aligns differently so it doesn't get too large */
 			joe_snprintf_2(s[x] + 12, OPT_BUF_SIZE - 12, "%*s", (int)n - 9,
-			    bw->b->o.charmap ? bw->b->o.charmap->name : US "(unset)");
+			    bw->b->o.charmap ? bw->b->o.charmap->name : UC "(unset)");
 			break;
 		default:
 			s[x][n] = '\0';
@@ -908,20 +922,24 @@ int umode(BW *bw)
 		return -1;
 }
 
-/* Process rc file
+/*-
+ * Process rc file
  * Returns 0 if the rc file was succefully processed
  *        -1 if the rc file couldn't be opened
  *         1 if there was a syntax error in the file
  */
-
-int procrc(CAP *cap, unsigned char *name)
+int
+procrc(CAP *cap, unsigned char *name)
 {
 	OPTIONS *o = &fdefault;	/* Current options */
 	KMAP *context = NULL;	/* Current context */
-	unsigned char buf[1024];	/* Input buffer */
+	unsigned char buf[1024];/* Input buffer */
 	JFILE *fd;		/* rc file */
 	int line = 0;		/* Line number */
 	int err = 0;		/* Set to 1 if there was a syntax error */
+	int x, c, y, sta;
+	unsigned char *opt, *arg;
+	MACRO *m;
 
 	strlcpy((char *)buf, (char *)name, 1024);
 	fd = jfopen((char *)buf, "r");
@@ -940,188 +958,172 @@ int procrc(CAP *cap, unsigned char *name)
 		case '\n':
 		case '\f':
 		case 0:
-			break;	/* Skip comment lines */
-		case '*':	/* Select file types for file-type dependant options */
-			{
-				int x;
-
-				o = malloc(sizeof(OPTIONS));
-				*o = fdefault;
-				for (x = 0; buf[x] && buf[x] != '\n' && buf[x] != ' ' && buf[x] != '\t'; ++x) ;
+			/* skip comment lines */
+			break;
+		case '*':
+			/* Select file types for file-type dependant options */
+			o = malloc(sizeof(OPTIONS));
+			*o = fdefault;
+			x = 0;
+			while (buf[x] && buf[x] != '\n' && buf[x] != ' ' && buf[x] != '\t')
+				++x;
+			buf[x] = 0;
+			o->next = options;
+			options = o;
+			o->name_regex = (unsigned char *)strdup((char *)buf);
+			break;
+		case '+':
+			/* Set file contents match regex */
+			x = 0;
+			while (buf[x] && buf[x] != '\n' && buf[x] != '\r')
+				++x;
+			buf[x] = 0;
+			if (o)
+				o->contents_regex = (unsigned char *)strdup((char *)(buf+1));
+			break;
+		case '-':
+			/* Set an option */
+			opt = buf + 1;
+			arg = NULL;
+			x = 0;
+			while (buf[x] && buf[x] != '\n' && buf[x] != ' ' && buf[x] != '\t')
+				++x;
+			if (buf[x] && buf[x] != '\n') {
 				buf[x] = 0;
-				o->next = options;
-				options = o;
-				o->name_regex = (unsigned char *)strdup((char *)buf);
+				arg = buf + ++x;
+				while (buf[x] && buf[x] != '\n')
+					++x;
+			}
+			buf[x] = 0;
+			if (!glopt(opt, arg, o, 2)) {
+				err = 1;
+				fprintf(stderr, "\n%s:%d: Unknown option '%s'", name, line, opt);
 			}
 			break;
-		case '+':	/* Set file contents match regex */
-			{
-				int x;
-
-				for (x = 0; buf[x] && buf[x] != '\n' && buf[x] != '\r'; ++x) ;
-				buf[x] = 0;
-				if (o)
-					o->contents_regex = (unsigned char *)strdup((char *)(buf+1));
+		case '{':
+			/* Ignore help text */
+			while ((jfgets((char *)buf, 256, fd)) && (buf[0] != /*{*/ '}'))
+				/* do nothing */;
+			if (buf[0] != '}') {
+				err = 1;
+				fprintf(stderr, "\n%s:%d: End of joerc file occurred before end of help text\n", name, line);
+				break;
 			}
 			break;
-		case '-':	/* Set an option */
-			{
-				unsigned char *opt = buf + 1;
-				int x;
-				unsigned char *arg = NULL;
-
-				for (x = 0; buf[x] && buf[x] != '\n' && buf[x] != ' ' && buf[x] != '\t'; ++x) ;
-				if (buf[x] && buf[x] != '\n') {
-					buf[x] = 0;
-					for (arg = buf + ++x; buf[x] && buf[x] != '\n'; ++x) ;
-				}
-				buf[x] = 0;
-				if (!glopt(opt, arg, o, 2)) {
-					err = 1;
-					fprintf(stderr, "\n%s:%d: Unknown option '%s'", name, line, opt);
-				}
-			}
-			break;
-		case '{':	/* Ignore help text */
-			{
-				while ((jfgets((char *)buf, 256, fd)) && (buf[0] != /*{*/ '}'))
-					/* do nothing */;
-				if (buf[0] != '}') {
-					err = 1;
-					fprintf(stderr, "\n%s:%d: End of joerc file occurred before end of help text\n", name, line);
-					break;
-				}
-			}
-			break;
-		case ':':	/* Select context */
-			{
-				int x, c;
-
-				for (x = 1; !joe_isspace_eof(locale_map,buf[x]); ++x) ;
-				c = buf[x];
-				buf[x] = 0;
-				if (x != 1)
-					if (!strcmp(buf + 1, "def")) {
-						int y;
-
-						for (buf[x] = c; joe_isblank(locale_map,buf[x]); ++x) ;
-						for (y = x; !joe_isspace_eof(locale_map,buf[y]); ++y) ;
-						c = buf[y];
-						buf[y] = 0;
-						if (y != x) {
-							int sta;
-							MACRO *m;
-
-							if (joe_isblank(locale_map,c)
-							    && (m = mparse(NULL, buf + y + 1, &sta)))
-								addcmd(buf + x, m);
-							else {
-								err = 1;
-								fprintf(stderr, "\n%s:%d: macro missing from :def", name, line);
-							}
-						} else {
-							err = 1;
-							fprintf(stderr, "\n%s:%d: command name missing from :def", name, line);
-						}
-					} else if (!strcmp(buf + 1, "inherit"))
-						if (context) {
-							for (buf[x] = c; joe_isblank(locale_map,buf[x]); ++x) ;
-							for (c = x; !joe_isspace_eof(locale_map,buf[c]); ++c) ;
-							buf[c] = 0;
-							if (c != x)
-								kcpy(context, kmap_getcontext(buf + x, 1));
-							else {
-								err = 1;
-								fprintf(stderr, "\n%s:%d: context name missing from :inherit", name, line);
-							}
-						} else {
-							err = 1;
-							fprintf(stderr, "\n%s:%d: No context selected for :inherit", name, line);
-					} else if (!strcmp(buf + 1, "include")) {
+		case ':':
+			/* Select context */
+			x = 1;
+			while (!joe_isspace_eof(locale_map,buf[x]))
+				++x;
+			c = buf[x];
+			buf[x] = 0;
+			if (x != 1)
+				if (!strcmp(buf + 1, "def")) {
+					for (buf[x] = c; joe_isblank(locale_map,buf[x]); ++x) ;
+					for (y = x; !joe_isspace_eof(locale_map,buf[y]); ++y) ;
+					c = buf[y];
+					buf[y] = 0;
+					if (y == x) {
+						err = 1;
+						fprintf(stderr, "\n%s:%d: command name missing from :def", name, line);
+					} else if (joe_isblank(locale_map, c) &&
+					    (m = mparse(NULL, buf + y + 1, &sta)))
+						addcmd(buf + x, m);
+					else {
+						err = 1;
+						fprintf(stderr, "\n%s:%d: macro missing from :def", name, line);
+					}
+				} else if (!strcmp(buf + 1, "inherit"))
+					if (context) {
 						for (buf[x] = c; joe_isblank(locale_map,buf[x]); ++x) ;
 						for (c = x; !joe_isspace_eof(locale_map,buf[c]); ++c) ;
 						buf[c] = 0;
-						if (c != x) {
-							switch (procrc(cap, buf + x)) {
-							case 1:
-								err = 1;
-								break;
-							case -1:
-								fprintf(stderr, "\n%s:%d: Couldn't open %s", name, line, buf + x);
-								err = 1;
-								break;
-							}
-							context = 0;
-							o = &fdefault;
-						} else {
+						if (c != x)
+							kcpy(context, kmap_getcontext(buf + x, 1));
+						else {
 							err = 1;
-							fprintf(stderr, "\n%s:%d: :include missing file name", name, line);
+							fprintf(stderr, "\n%s:%d: context name missing from :inherit", name, line);
 						}
-					} else if (!strcmp(buf + 1, "delete"))
-						if (context) {
-							int y;
-
-							for (buf[x] = c; joe_isblank(locale_map,buf[x]); ++x) ;
-							for (y = x; buf[y] != 0 && buf[y] != '\t' && buf[y] != '\n' && (buf[y] != ' ' || buf[y + 1]
-															!= ' '); ++y) ;
-							buf[y] = 0;
-							kdel(context, buf + x);
-						} else {
+					} else {
+						err = 1;
+						fprintf(stderr, "\n%s:%d: No context selected for :inherit", name, line);
+				} else if (!strcmp(buf + 1, "include")) {
+					for (buf[x] = c; joe_isblank(locale_map,buf[x]); ++x) ;
+					for (c = x; !joe_isspace_eof(locale_map,buf[c]); ++c) ;
+					buf[c] = 0;
+					if (c != x) {
+						switch (procrc(cap, buf + x)) {
+						case 1:
 							err = 1;
-							fprintf(stderr, "\n%s:%d: No context selected for :delete", name, line);
-					} else
-						context = kmap_getcontext(buf + 1, 1);
-				else {
-					err = 1;
-					fprintf(stderr, "\n%s:%d: Invalid context name", name, line);
-				}
+							break;
+						case -1:
+							fprintf(stderr, "\n%s:%d: Couldn't open %s", name, line, buf + x);
+							err = 1;
+							break;
+						}
+						context = 0;
+						o = &fdefault;
+					} else {
+						err = 1;
+						fprintf(stderr, "\n%s:%d: :include missing file name", name, line);
+					}
+				} else if (!strcmp(buf + 1, "delete"))
+					if (context) {
+						for (buf[x] = c; joe_isblank(locale_map,buf[x]); ++x) ;
+						for (y = x; buf[y] != 0 && buf[y] != '\t' && buf[y] != '\n' && (buf[y] != ' ' || buf[y + 1]
+														!= ' '); ++y) ;
+						buf[y] = 0;
+						kdel(context, buf + x);
+					} else {
+						err = 1;
+						fprintf(stderr, "\n%s:%d: No context selected for :delete", name, line);
+				} else
+					context = kmap_getcontext(buf + 1, 1);
+			else {
+				err = 1;
+				fprintf(stderr, "\n%s:%d: Invalid context name", name, line);
 			}
 			break;
-		default:	/* Get key-sequence to macro binding */
-			{
-				int x, y;
-				MACRO *m;
+		default:
+			/* Get key-sequence to macro binding */
+			if (!context) {
+				err = 1;
+				fprintf(stderr, "\n%s:%d: No context selected for macro to key-sequence binding", name, line);
+				break;
+			}
 
-				if (!context) {
-					err = 1;
-					fprintf(stderr, "\n%s:%d: No context selected for macro to key-sequence binding", name, line);
-					break;
-				}
-
-				m = 0;
+			m = NULL;
  macroloop:
-				m = mparse(m, buf, &x);
-				if (x == -1) {
-					err = 1;
-					fprintf(stderr, "\n%s:%d: Unknown command in macro", name, line);
-					break;
-				} else if (x == -2) {
-					jfgets((char *)buf, 1024, fd);
-					goto macroloop;
-				}
-				if (!m)
-					break;
+			m = mparse(m, buf, &x);
+			if (x == -1) {
+				err = 1;
+				fprintf(stderr, "\n%s:%d: Unknown command in macro", name, line);
+				break;
+			} else if (x == -2) {
+				jfgets((char *)buf, 1024, fd);
+				goto macroloop;
+			}
+			if (!m)
+				break;
 
-				/* Skip to end of key sequence */
-				for (y = x; buf[y] != 0 && buf[y] != '\t' && buf[y] != '\n' && (buf[y] != ' ' || buf[y + 1] != ' '); ++y) ;
-				buf[y] = 0;
+			/* Skip to end of key sequence */
+			for (y = x; buf[y] != 0 && buf[y] != '\t' && buf[y] != '\n' && (buf[y] != ' ' || buf[y + 1] != ' '); ++y) ;
+			buf[y] = 0;
 
-				/* Add binding to context */
-				if (kadd(cap, context, buf + x, m) == -1) {
-					fprintf(stderr, "\n%s:%d: Bad key sequence '%s'", name, line, buf + x);
-					err = 1;
-				}
+			/* Add binding to context */
+			if (kadd(cap, context, buf + x, m) == -1) {
+				fprintf(stderr, "\n%s:%d: Bad key sequence '%s'", name, line, buf + x);
+				err = 1;
 			}
 			break;
 		}
 	}
-	jfclose(fd);		/* Close rc file */
+	/* close rc file */
+	jfclose(fd);
 
 	/* Print proper ending string */
-	if (err)
-		fprintf(stderr, "\ndone\n");
-	else
-		fprintf(stderr, "done\n");
+	fprintf(stderr, "%cdone\n", err ? '\n' : ' ');
 
-	return err;		/* 0 for success, 1 for syntax error */
+	/* 0 for success, 1 for syntax error */
+	return (err);
 }

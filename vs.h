@@ -9,7 +9,7 @@
 #define _JOE_VS_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_vs_h, "$MirOS: contrib/code/jupp/vs.h,v 1.9 2017/12/06 21:17:05 tg Exp $");
+__IDSTRING(rcsid_vs_h, "$MirOS: contrib/code/jupp/vs.h,v 1.10 2018/01/06 00:28:35 tg Exp $");
 #endif
 
 #include <string.h>
@@ -292,7 +292,7 @@ sELEMENT *_vsset(sELEMENT *vary, int pos, sELEMENT el);
 /* { sELEMENT *, int } sc(sELEMENT *array);
  * Return array, size pair.  Uses 'sizeof' to get size.
  */
-#define sc(a) (unsigned char *)(a), (sizeof(a) / sizeof(sELEMENT) - 1)
+#define sc(a) (const unsigned char *)(a), (sizeof(a) / sizeof(sELEMENT) - 1)
 
 /* { sELEMENT *, int } srest(sELEMENT *vary, int pos);
  * Return array, size pair of rest of array beginning at pos.  If
@@ -355,5 +355,5 @@ int vsscan(const sELEMENT *a, int alen, const sELEMENT *b, int blen);
  * Find offset of first matching element in 'a' which does not match any
  * of the elements passed in 'b'.  Array 'b' must be sorted.
  */
-int vsspan(sELEMENT *a, int alen, sELEMENT *b, int blen);
+int vsspan(const sELEMENT *a, int alen, const sELEMENT *b, int blen);
 #endif

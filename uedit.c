@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.32 2017/12/26 23:26:57 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.33 2018/01/06 00:28:34 tg Exp $");
 
 #include <string.h>
 
@@ -1190,10 +1190,23 @@ static int dounicode(BW *bw, unsigned char *s, void *object, int *notify)
 	return 0;
 }
 
+static void
+doquote0(BW *bw, int c, int meta)
+{
+	if (c == '?')
+		c = 127;
+	else if ((c >= 0x40 && c <= 0x5F) || (c >= 'a' && c <= 'z'))
+		c &= 0x1F;
+	c |= meta;
+	utypebw_raw(bw, c, 1);
+	bw->cursor->xcol = piscol(bw->cursor);
+}
+
 int quotestate;
 int quoteval;
 
-static int doquote(BW *bw, int c, void *object, int *notify)
+static int
+doquote(BW *bw, int c, void *object, int *notify)
 {
 	unsigned char buf[40];
 
@@ -1242,12 +1255,7 @@ static int doquote(BW *bw, int c, void *object, int *notify)
 				return 0;
 		} else {
  unopoo:
-			if ((c & ~0x20) >= 0x40 && (c & ~0x20) <= 0x5F)
-				c &= 0x1F;
-			if (c == '?')
-				c = 127;
-			utypebw_raw(bw, c, 1);
-			bw->cursor->xcol = piscol(bw->cursor);
+			doquote0(bw, c, 0);
 		}
 		break;
 	case 1:
@@ -1334,32 +1342,24 @@ static int doquote(BW *bw, int c, void *object, int *notify)
 	return 0;
 }
 
-int uquote(BW *bw)
+static const char uquote_txt_uni[] =
+    "Ctrl- (or 0-9 for dec. r for hex, o for octal ASCII, x for hex UTF-8)";
+static const char uquote_txt_oct[] =
+    "Ctrl- (or 0-9 for dec. x for hex, o for octal ASCII, u for hex UTF-8)";
+int
+uquote(BW *bw)
 {
-	const char *qs;
-
-	if (bw->b->o.charmap->type)
-		qs = "Ctrl- (or 0-9 for dec. r for hex, o for octal ASCII, x for hex UTF-8)";
-	else
-		qs = "Ctrl- (or 0-9 for dec. x for hex, o for octal ASCII, u for hex UTF-8)";
 	quotestate = 0;
-	if (mkqwna(bw->parent, US qs, strlen(qs), doquote, NULL, NULL, NULL))
-		return 0;
-	else
-		return -1;
+	return (mkqwna(bw->parent,
+	    sc(bw->b->o.charmap->type ? uquote_txt_uni : uquote_txt_oct),
+	    doquote, NULL, NULL, NULL) ? 0 : -1);
 }
 
 static int doquote9(BW *bw, int c, void *object, int *notify)
 {
 	if (notify)
 		*notify = 1;
-	if ((c & ~0x20) >= 0x40 && (c & ~0x20) <= 0x5F)
-		c &= 0x1F;
-	if (c == '?')
-		c = 127;
-	c |= 128;
-	utypebw_raw(bw, c, 1);
-	bw->cursor->xcol = piscol(bw->cursor);
+	doquote0(bw, c, 128);
 	return 0;
 }
 

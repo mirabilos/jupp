@@ -9,7 +9,7 @@
 #define _JOE_BLOCKS_H 1
 
 #ifdef EXTERN_B_C
-__IDSTRING(rcsid_blocks_h, "$MirOS: contrib/code/jupp/blocks.h,v 1.7 2017/12/06 21:16:54 tg Exp $");
+__IDSTRING(rcsid_blocks_h, "$MirOS: contrib/code/jupp/blocks.h,v 1.8 2018/01/06 00:28:30 tg Exp $");
 #endif
 
 /* char *mmove(char *d,char *s,int sz); Copy 'sz' bytes from 's' to 'd'.
@@ -40,5 +40,5 @@ void **msetP(void **dest, void *c, int sz);
  *
  * Count the number of occurances a character appears in a block
  */
-int mcnt(unsigned char *blk, unsigned char c, int size);
+int mcnt(const unsigned char *blk, unsigned char c, int size);
 #endif

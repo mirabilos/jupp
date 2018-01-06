@@ -7,7 +7,7 @@
  */
 #include "config.h"
 
-__RCSID("$MirOS: contrib/code/jupp/blocks.c,v 1.7 2017/12/20 21:30:33 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/blocks.c,v 1.8 2018/01/06 00:28:30 tg Exp $");
 
 /* This module requires ALIGNED and SIZEOF_INT to be defined correctly */
 
@@ -517,7 +517,7 @@ void *mmove(void *d, const void *s, int sz)
 
 /* Utility to count number of lines within a segment */
 
-int mcnt(register unsigned char *blk, register unsigned char c, int size)
+int mcnt(register const unsigned char *blk, register unsigned char c, int size)
 {
 	register int nlines = 0;
 

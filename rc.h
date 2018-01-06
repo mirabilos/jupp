@@ -9,7 +9,7 @@
 #define _JOE_RC_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_rc_h, "$MirOS: contrib/code/jupp/rc.h,v 1.10 2017/12/20 23:19:15 tg Exp $");
+__IDSTRING(rcsid_rc_h, "$MirOS: contrib/code/jupp/rc.h,v 1.11 2018/01/06 00:28:32 tg Exp $");
 #endif
 
 extern OPTIONS pdefault;
@@ -20,7 +20,7 @@ void setopt(B *b, const unsigned char *name);
  * Find and return the KMAP for a given context name.  If none is found, an
  * empty kmap is created, bound to the context name, and returned.
  */
-KMAP *kmap_getcontext(unsigned char *name, int docreate);
+KMAP *kmap_getcontext(const unsigned char *name, int docreate);
 
 /* int procrc(CAP *cap, char *name);  Process an rc file
    Returns 0 for success

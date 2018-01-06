@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.21 2017/12/20 23:43:54 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.22 2018/01/06 00:28:32 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -335,7 +335,7 @@ int isreg(unsigned char *s)
 	return 0;
 }
 /********************************************************************/
-unsigned char **rexpnd(unsigned char *word)
+unsigned char **rexpnd(const unsigned char *word)
 {
 	void *dir;
 	unsigned char **lst = NULL;

@@ -9,7 +9,7 @@
 #define _JOE_B_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_b_h, "$MirOS: contrib/code/jupp/b.h,v 1.9 2017/12/07 00:35:13 tg Exp $");
+__IDSTRING(rcsid_b_h, "$MirOS: contrib/code/jupp/b.h,v 1.10 2018/01/06 00:28:30 tg Exp $");
 #endif
 
 extern unsigned char stdbuf[stdsiz];
@@ -24,10 +24,10 @@ extern const unsigned char *msgs[];
 B *bmk(B *prop);
 void brm(B *b);
 
-B *bfind(unsigned char *s);
-B *bfind_scratch(unsigned char *s);
-B *bcheck_loaded(unsigned char *s);
-B *bfind_reload(unsigned char *s);
+B *bfind(const unsigned char *s);
+B *bfind_scratch(const unsigned char *s);
+B *bcheck_loaded(const unsigned char *s);
+B *bfind_reload(const unsigned char *s);
 
 P *pdup(P *p);
 P *pdupown(P *p, P **o);
@@ -102,7 +102,7 @@ void bdel(P *from, P *to);
 /* insert buffer 'b' into another at 'p' */
 P *binsb(P *p, B *b);
 /* insert a block 'blk' of size 'amnt' into buffer at 'p' */
-P *binsm(P *p, unsigned char *blk, int amnt);
+P *binsm(P *p, const unsigned char *blk, int amnt);
 
 /* insert character 'c' into buffer at 'p' */
 P *binsc(P *p, int c);
@@ -122,7 +122,7 @@ P *binss(P *p, unsigned char *s);
  * -3 for seek error
  * -4 for open error
  */
-B *bload(unsigned char *s);
+B *bload(const unsigned char *s);
 B *bread(int fi, long int max);
 B *borphan(void);
 
@@ -130,7 +130,7 @@ B *borphan(void);
 int bsave(P *p, unsigned char *s, long int size,int flag);
 int bsavefd(P *p, int fd, long int size);
 
-unsigned char *parsens(unsigned char *s, long int *skip, long int *amnt);
+unsigned char *parsens(const unsigned char *s, long int *skip, long int *amnt);
 
 /* Get byte at pointer or return NO_MORE_DATA if pointer is at end of buffer */
 int brc(P *p);

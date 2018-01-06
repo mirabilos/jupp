@@ -2,7 +2,7 @@
 #define _JOE_TYPES_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.29 2017/12/20 21:55:17 tg Exp $");
+__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.30 2018/01/06 00:28:33 tg Exp $");
 #endif
 
 /* Prefix to make string constants unsigned */
@@ -113,9 +113,9 @@ struct options {
 	int	tab;
 	int	indentc;
 	int	istep;
-	unsigned char	*context;
-	unsigned char	*lmsg;
-	unsigned char	*rmsg;
+	unsigned char *context;
+	const unsigned char *lmsg;
+	const unsigned char *rmsg;
 	char	*hmsg;
 	int	linums;
 	int	readonly;
@@ -237,7 +237,7 @@ struct kbd {
 
 
 struct watom {
-	unsigned char *context;		/* Context name */
+	const unsigned char *context;	/* Context name */
 	void (*disp)(jobject, int);	/* Display window */
 	void (*follow)(jobject);	/* Display window */
 	int (*abort)(jobject);		/* Common user functions */
