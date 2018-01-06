@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.28 2017/12/20 23:40:35 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.29 2018/01/06 00:28:34 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>

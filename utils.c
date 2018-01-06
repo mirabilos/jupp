@@ -8,7 +8,7 @@
  */
 #include "config.h"
 
-__RCSID("$MirOS: contrib/code/jupp/utils.c,v 1.9 2017/12/06 21:17:04 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/utils.c,v 1.10 2018/01/06 00:28:34 tg Exp $");
 
 #include <errno.h>
 #include <stdlib.h>

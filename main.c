@@ -32,7 +32,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.40 2017/12/08 03:24:15 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.41 2018/01/06 00:28:31 tg Exp $");
 
 #include <fcntl.h>
 #include <string.h>

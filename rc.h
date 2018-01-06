@@ -9,7 +9,7 @@
 #define _JOE_RC_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_rc_h, "$MirOS: contrib/code/jupp/rc.h,v 1.10 2017/12/20 23:19:15 tg Exp $");
+__IDSTRING(rcsid_rc_h, "$MirOS: contrib/code/jupp/rc.h,v 1.11 2018/01/06 00:28:32 tg Exp $");
 #endif
 
 extern OPTIONS pdefault;

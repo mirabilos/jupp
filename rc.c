@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.41 2017/12/20 23:53:29 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.42 2018/01/06 00:28:32 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>

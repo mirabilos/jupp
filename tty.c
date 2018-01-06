@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tty.c,v 1.35 2017/12/08 02:28:06 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tty.c,v 1.36 2018/01/06 00:28:33 tg Exp $");
 
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>

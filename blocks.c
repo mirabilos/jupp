@@ -7,7 +7,7 @@
  */
 #include "config.h"
 
-__RCSID("$MirOS: contrib/code/jupp/blocks.c,v 1.7 2017/12/20 21:30:33 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/blocks.c,v 1.8 2018/01/06 00:28:30 tg Exp $");
 
 /* This module requires ALIGNED and SIZEOF_INT to be defined correctly */
 
