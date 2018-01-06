@@ -4,6 +4,19 @@ $MirOS: contrib/code/jupp/NEWS,v 1.112 2017/12/16 22:18:51 tg Exp $
 jupp-current
 
 - …
+- Fix several issues pointed out by Coverity Scan
+  * dead code
+  * use-after-free (minor)
+  * uninitialised variables (no relevance)
+  * TOCTOU in DEADJOE writing (major)
+  * nil pointer deref (no to minor relevance)
+  * infinite loop (indeed, but no practical relevance)
+  * failure to restore non-local value (minor, unpractical)
+  * memory leaks (minor)
+  * fd leaks (minor)
+  * some Coverity boilerplate
+- Constify and clean up code further
+- Allow *any* char for {to,rv}match (goto next same in given direction)
 
 JOE 3.1jupp32
 
