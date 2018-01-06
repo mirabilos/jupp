@@ -17,6 +17,7 @@ jupp-current
   * some Coverity boilerplate
 - Constify and clean up code further
 - Allow *any* char for {to,rv}match (goto next same in given direction)
+- Fix regression: `` did no longer insert a sole ` (etc.)
 
 JOE 3.1jupp32
 
