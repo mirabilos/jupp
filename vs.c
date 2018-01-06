@@ -216,7 +216,8 @@ int vsscan(const sELEMENT *a, int alen, const sELEMENT *b, int blen)
 	return ~0;
 }
 
-int vsspan(sELEMENT *a, int alen, sELEMENT *b, int blen)
+int
+vsspan(const sELEMENT *a, int alen, const sELEMENT *b, int blen)
 {
 	int x;
 

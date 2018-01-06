@@ -1,4 +1,4 @@
-#define JUPP_IS_COPYRIGHT_C_BY "2017 mirabilos"
+#define JUPP_IS_COPYRIGHT_C_BY "2018 mirabilos"
 
 /*-
  * Copyright (c) 2004ff. Thorsten Glaser
