@@ -232,6 +232,6 @@ aELEMENT *vasort(aELEMENT *ary, int len);
  * Generate list of strings out of words in 's' seperated with the characters
  * in 'sep'.  The characters in 'sep' must be sorted.
  */
-aELEMENT *vawords(aELEMENT *a, unsigned char *s, int len, unsigned char *sep, int seplen);
+aELEMENT *vawords(aELEMENT *a, unsigned char *s, int len, const unsigned char *sep, int seplen);
 
 #endif

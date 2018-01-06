@@ -1349,19 +1349,17 @@ doquote(BW *bw, int c, void *object, int *notify)
 	return 0;
 }
 
-int uquote(BW *bw)
+static const char uquote_txt_uni[] =
+    "Ctrl- (or 0-9 for dec. r for hex, o for octal ASCII, x for hex UTF-8)";
+static const char uquote_txt_oct[] =
+    "Ctrl- (or 0-9 for dec. x for hex, o for octal ASCII, u for hex UTF-8)";
+int
+uquote(BW *bw)
 {
-	const char *qs;
-
-	if (bw->b->o.charmap->type)
-		qs = "Ctrl- (or 0-9 for dec. r for hex, o for octal ASCII, x for hex UTF-8)";
-	else
-		qs = "Ctrl- (or 0-9 for dec. x for hex, o for octal ASCII, u for hex UTF-8)";
 	quotestate = 0;
-	if (mkqwna(bw->parent, US qs, strlen(qs), doquote, NULL, NULL, NULL))
-		return 0;
-	else
-		return -1;
+	return (mkqwna(bw->parent,
+	    sc(bw->b->o.charmap->type ? uquote_txt_uni : uquote_txt_oct),
+	    doquote, NULL, NULL, NULL) ? 0 : -1);
 }
 
 static int doquote9(BW *bw, int c, void *object, int *notify)

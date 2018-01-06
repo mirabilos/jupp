@@ -16,8 +16,8 @@ __IDSTRING(rcsid_qw_h, "$MirOS: contrib/code/jupp/qw.h,v 1.6 2017/12/06 23:02:04
  * Create a query window for the given window
  */
 /* FIXME: ??? ----> */
-QW *mkqw(W *w, unsigned char *prompt, int len, jpoly_int *func, jpoly_int *abrt, void *object, int *notify);
-QW *mkqwna(W *w, unsigned char *prompt, int len, jpoly_int *func, jpoly_int *abrt, void *object, int *notify);
-QW *mkqwnsr(W *w, unsigned char *prompt, int len, jpoly_int *func, jpoly_int *abrt, void *object, int *notify);
+QW *mkqw(W *w, const unsigned char *prompt, int len, jpoly_int *func, jpoly_int *abrt, void *object, int *notify);
+QW *mkqwna(W *w, const unsigned char *prompt, int len, jpoly_int *func, jpoly_int *abrt, void *object, int *notify);
+QW *mkqwnsr(W *w, const unsigned char *prompt, int len, jpoly_int *func, jpoly_int *abrt, void *object, int *notify);
 
 #endif
