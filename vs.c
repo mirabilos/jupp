@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/vs.c,v 1.13 2018/01/07 20:32:48 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/vs.c,v 1.14 2018/01/07 20:39:33 tg Exp $");
 
 #include <stdlib.h>
 
@@ -34,13 +34,13 @@ vsrm(sELEMENT *vary)
 
 int slen(const sELEMENT *ary)
 {
-	if (ary) {
-		const sELEMENT *beg = ary;
-		while (scmp(*ary, sterm))
-			++ary;
-		return ary - beg;
-	} else
-		return 0;
+	const sELEMENT *beg = ary;
+
+	if (!ary)
+		return (0);
+	while (scmp(*ary, sterm))
+		++ary;
+	return (ary - beg);
 }
 
 sELEMENT *

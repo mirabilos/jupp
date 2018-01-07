@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/va.c,v 1.9 2018/01/07 20:32:47 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/va.c,v 1.10 2018/01/07 20:39:33 tg Exp $");
 
 #include <stdlib.h>
 
@@ -36,13 +36,14 @@ varm(aELEMENT *vary)
 
 int alen(aELEMENT *ary)
 {
-	if (ary) {
-		aELEMENT *beg = ary;
-		while (acmp(*ary, aterm))
-			++ary;
-		return ary - beg;
-	} else
-		return 0;
+	aELEMENT *beg = ary;
+
+	if (!ary)
+		return (0);
+
+	while (acmp(*ary, aterm))
+		++ary;
+	return (ary - beg);
 }
 
 aELEMENT *
@@ -156,9 +157,9 @@ static int _acmp(aELEMENT *a, aELEMENT *b)
 
 aELEMENT *vasort(aELEMENT *ary, int len)
 {
-	if (!ary || !len)
-		return ary;
-	qsort(ary, len, sizeof(aELEMENT), (int (*)(const void *, const void *))_acmp);
+	if (ary && len)
+		qsort(ary, len, sizeof(aELEMENT),
+		    (int (*)(const void *, const void *))_acmp);
 	return ary;
 }
 
