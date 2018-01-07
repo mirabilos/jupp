@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jmacsrc.in,v 1.24 2017/12/06 23:17:33 tg Exp $
+ $MirOS: contrib/code/jupp/jmacsrc.in,v 1.25 2018/01/06 14:06:55 tg Exp $
 
                          Initialization file for JOE
                                 GNU-Emacs Joe
@@ -76,8 +76,8 @@
  and -rmsg defines the right-justified string. The first character of -rmsg
  is the background fill character.  -hmsg (3.1jupp15) defines the help hint
  (only about a dozen chars) displayed next to the copyright notice in the
- initial status line.  The following escape sequences can be used in these
- strings:
+ initial status line (inverted by default, unless it begins with exactly \i).
+ The following escape sequences can be used in these strings:
 
   %t  12 hour time
   %u  24 hour time
@@ -112,7 +112,7 @@
 
 -lmsg \i%k%T%W%I%X %* [%n] %y %M
 -rmsg  %S Row %r Col %c %u
--hmsg Help: ^Xh
+-hmsg \i\f\bHelp: ^Xh\b\f
 
  SECOND SECTION: File name dependant local option settings:
 
