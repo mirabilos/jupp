@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.39 2017/12/20 23:40:35 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.40 2018/01/07 23:51:34 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -685,7 +685,7 @@ SCRN *nopen(CAP *cap)
 		texec(t->cap, t->cl, 1, 0, 0, 0, 0);
 
 	/* Initialise variable screen size-dependent vars */
-	t->htab = calloc(256, sizeof(struct s_hentry));
+	t->htab = ralloc(256, sizeof(struct s_hentry));
 
 	nresize(t, t->co, t->li);
 
@@ -702,6 +702,9 @@ void nresize(SCRN *t, int w, int h)
 		w = 8;
 	t->li = h;
 	t->co = w;
+	if (notoktomul((size_t)t->li, (size_t)t->co))
+		/* who has THAT large screens? */
+		ttabrt(0, "screen too large");
 	if (t->sary)
 		free(t->sary);
 	if (t->updtab)
@@ -718,14 +721,18 @@ void nresize(SCRN *t, int w, int h)
 		free(t->ofst);
 	if (t->ary)
 		free(t->ary);
-	t->scrn = calloc(t->li * t->co, sizeof(int));
-	t->attr = calloc(t->li * t->co, sizeof(int));
+	t->scrn = ralloc((size_t)t->li * (size_t)t->co, sizeof(int));
+	t->attr = ralloc((size_t)t->li * (size_t)t->co, sizeof(int));
 	t->sary = calloc(t->li, sizeof(int));
-	t->updtab = calloc(t->li, sizeof(int));
-	t->syntab = calloc(t->li, sizeof(int));
-	t->compose = calloc(t->co, sizeof(int));
-	t->ofst = calloc(t->co, sizeof(int));
-	t->ary = calloc(t->co, sizeof(struct s_hentry));
+	t->updtab = ralloc((size_t)t->li, sizeof(int));
+	t->syntab = ralloc((size_t)t->li, sizeof(int));
+	t->compose = ralloc((size_t)t->co, sizeof(int));
+	t->ofst = ralloc((size_t)t->co, sizeof(int));
+	t->ary = ralloc((size_t)t->co, sizeof(struct s_hentry));
+
+	if (!t->htab || !t->scrn || !t->attr || !t->sary || !t->updtab ||
+	    !t->syntab || !t->compose || !t->ofst || !t->ary)
+		ttabrt(0, "screen allocation failed");
 
 	nredraw(t);
 }

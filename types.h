@@ -2,7 +2,7 @@
 #define _JOE_TYPES_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.32 2018/01/07 20:32:47 tg Exp $");
+__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.33 2018/01/07 23:51:35 tg Exp $");
 #endif
 
 /* Prefix to make string constants unsigned */
@@ -92,6 +92,9 @@ struct jalloc_item {
 void jalloc_init(void);
 void *jalloc(void *, size_t, size_t);
 void jfree(void *);
+
+#define ralloc(nmemb, size)	(notoktomul(nmemb, size) ? NULL : \
+				    malloc(nmemb * size))
 
 typedef struct header H;
 typedef struct buffer B;

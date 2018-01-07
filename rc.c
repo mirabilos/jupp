@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.43 2018/01/07 17:45:28 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.44 2018/01/07 23:51:34 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -860,7 +860,7 @@ umode(BW *bw)
 	bw->b->o.readonly = bw->o.readonly = bw->b->rdonly;
 	while (glopts[size].menu)
 		++size;
-	s = calloc(size + 1, sizeof(unsigned char *));
+	s = ralloc(size + 1, sizeof(unsigned char *));
 	len = 0;
 	for (x = 0; x < size; ++x) {
 		s[x] = malloc(OPT_BUF_SIZE);
