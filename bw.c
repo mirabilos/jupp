@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.34 2017/12/20 22:50:32 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.35 2018/01/07 17:30:52 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -74,8 +74,11 @@ int mid = 0;
 
 /* For hex */
 
-static void bwfllwh(BW *w)
+static void
+bwfllwh(BW *w)
 {
+	long dofs = 0;
+
 	/* Top must be a muliple of 16 bytes */
 	if (w->top->byte%16) {
 		pbkwd(w->top,w->top->byte%16);
@@ -114,11 +117,10 @@ static void bwfllwh(BW *w)
 	}
 
 	/* Adjust scroll offset */
-	if (w->cursor->byte%16+60 < w->offset) {
-		w->offset = w->cursor->byte%16+60;
-		msetI(w->t->t->updtab + w->y, 1, w->h);
-	} else if (w->cursor->byte%16+60 >= w->offset + w->w) {
-		w->offset = w->cursor->byte%16+60 - (w->w - 1);
+	if (w->cursor->byte % 16 + 60 >= w->w)
+		dofs = w->cursor->byte % 16 + 60 - (w->w - 1);
+	if (w->offset != dofs) {
+		w->offset = dofs;
 		msetI(w->t->t->updtab + w->y, 1, w->h);
 	}
 }
@@ -160,7 +162,7 @@ static void bwfllwt(BW *w)
 		prm(newtop);
 	}
 
-/* Adjust column */
+	/* Adjust column */
 	if (w->cursor->xcol < w->offset) {
 		w->offset = w->cursor->xcol;
 		msetI(w->t->t->updtab + w->y, 1, w->h);
