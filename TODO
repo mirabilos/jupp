@@ -597,9 +597,8 @@ Other requests:
   Unicode (UTF-{16,32}{BE,LE} for example) sponsored by ⮡ tarent
 • plug memory leaks (Valgrind reports a few)
 • fix Coverity-pointed-out issues
-• rewrite allocation stuff, use lalloc struct tricks from mksh
 • fixup some joe4.4 jupprc ftypes
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.47 2018/01/06 00:49:07 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.48 2018/01/07 20:32:45 tg Exp $

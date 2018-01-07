@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.22 2018/01/06 00:28:32 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.23 2018/01/07 20:32:46 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -17,7 +17,6 @@ __RCSID("$MirOS: contrib/code/jupp/path.c,v 1.22 2018/01/06 00:28:32 tg Exp $");
 #ifdef HAVE_PATHS_H
 #  include <paths.h>	/* for _PATH_TMP */
 #endif
-#include <limits.h>
 #include <stdlib.h>
 
 #ifdef HAVE_BSD_STRING_H

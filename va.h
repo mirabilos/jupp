@@ -9,7 +9,7 @@
 #define _JOE_VA_H 1
 
 #ifdef EXTERN_B_C
-__IDSTRING(rcsid_va_h, "$MirOS: contrib/code/jupp/va.h,v 1.7 2018/01/06 00:28:35 tg Exp $");
+__IDSTRING(rcsid_va_h, "$MirOS: contrib/code/jupp/va.h,v 1.8 2018/01/07 20:32:47 tg Exp $");
 #endif
 
 #include "vs.h"
@@ -59,8 +59,8 @@ void varm(aELEMENT *vary);
  * aSIZ returns 0 if you pass it 0.  aSiz does not do this checking,
  * but can be used as an lvalue.
  */
-#define aSIZ(a) ((a) ? *((int *)(a) - 2) : 0)
-#define aSiz(a) (*((int *)(a) - 2))
+#define aSiz(a) jalloc_siz(a)
+#define aSIZ(a) ((a) ? aSiz(a) : 0)
 
 /* int aLEN(aELEMENT *vary);
  * int aLen(aELEMENT *vary);
@@ -74,8 +74,8 @@ void varm(aELEMENT *vary);
  * aLEN return a length of zero if 'vary' is 0.
  * aLen doesn't do this checking, but can be used as an lvalue
  */
-#define aLEN(a) ((a) ? *((int *)(a) - 1) : 0)
-#define aLen(a) (*((int *)(a) - 1))
+#define aLen(a) jalloc_len(a)
+#define aLEN(a) ((a) ? aLen(a) : 0)
 
 /* int alen(aELEMENT *ary);
  * Compute length of char or variable length array by searching for termination

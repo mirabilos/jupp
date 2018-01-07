@@ -9,12 +9,11 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.32 2018/01/06 00:28:29 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.33 2018/01/07 20:32:45 tg Exp $");
 
 #include <unistd.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <limits.h>
 #include <pwd.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -2574,11 +2573,23 @@ unsigned char *brzs(P *p, unsigned char *buf, int size)
 RETSIGTYPE
 ttsig(int sig)
 {
+	ttabrt(sig, NULL);
+	_exit(1);
+}
+
+void
+ttabrt(int sig, const char *msg)
+{
 	time_t tim = time(NULL);
 	B *b;
 	FILE *f;
 	int tmpfd;
 	struct stat sbuf;
+
+	if (msg) {
+		fprintf(stderr, "\r\n*** Aborting JOE because: %s ***\r\n", msg);
+		fflush(stderr);
+	}
 
 	if ((tmpfd = open("DEADJOE", O_RDWR | O_EXCL | O_CREAT, 0600)) < 0) {
 		struct stat cbuf;
@@ -2600,7 +2611,9 @@ ttsig(int sig)
 		_exit(-1);
 
 	fprintf(f, "\n*** Modified files in JOE when it aborted on %s", ctime(&tim));
-	if (sig)
+	if (msg)
+		fprintf(f, "*** JOE was aborted: %s\n", msg);
+	else if (sig)
 		fprintf(f, "*** JOE was aborted by signal %d\n", sig);
 	else
 		fprintf(f, "*** JOE was aborted because the terminal closed\n");
@@ -2616,5 +2629,4 @@ ttsig(int sig)
 		}
 	if (sig)
 		ttclsn();
-	_exit(1);
 }

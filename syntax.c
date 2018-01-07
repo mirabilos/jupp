@@ -9,9 +9,8 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/syntax.c,v 1.22 2018/01/06 00:28:32 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/syntax.c,v 1.23 2018/01/07 20:32:46 tg Exp $");
 
-#include <limits.h>
 #include <stdlib.h>
 #include <string.h>
 #include "b.h"

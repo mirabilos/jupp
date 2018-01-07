@@ -8,11 +8,10 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.35 2018/01/07 17:30:52 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.36 2018/01/07 20:32:46 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
-#include <limits.h>
 
 #ifdef HAVE_BSD_STRING_H
 #include <bsd/string.h>

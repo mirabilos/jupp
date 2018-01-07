@@ -2,7 +2,7 @@
 #define _JOE_TYPES_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.31 2018/01/07 17:24:49 tg Exp $");
+__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.32 2018/01/07 20:32:47 tg Exp $");
 #endif
 
 /* Prefix to make string constants unsigned */
@@ -35,6 +35,63 @@ typedef void jpoly_void();
 /* same content as above, but system header */
 #include <jupp.tmp.h>
 #endif
+
+struct jalloc_common {
+	/*XXX these must be size_t not int */
+	/*
+	 * size part: number of elements that can be fit,
+	 * not counting the terminator or space needed for the header
+	 */
+	int esiz;
+	/*
+	 * length part: number of elements currently in the array,
+	 * not counting the terminator
+	 */
+	int elen;
+};
+
+#ifdef MKSH_ALLOC_CATCH_UNDERRUNS
+struct jalloc_item {
+	struct jalloc_common enfo;
+	size_t len;
+	char dummy[8192 - sizeof(struct jalloc_common) - sizeof(size_t)];
+};
+#define ALLOC_INFO(f)	enfo.f
+#define ALLOC_ITEM	struct jalloc_item
+#else
+#define ALLOC_INFO(f)	f
+#define ALLOC_ITEM	struct jalloc_common
+#endif
+
+#define jalloc_krnl(i)	((ALLOC_ITEM *)((char *)(i) - sizeof(ALLOC_ITEM)))
+#define jalloc_user(i)	((void *)((char *)(i) + sizeof(ALLOC_ITEM)))
+#define jalloc_siz(i)	(jalloc_krnl(i)->ALLOC_INFO(esiz))
+#define jalloc_len(i)	(jalloc_krnl(i)->ALLOC_INFO(elen))
+
+#ifdef HAVE_LIMITS_H
+#include <limits.h>
+#endif
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif
+
+#ifndef SIZE_MAX
+#ifdef SIZE_T_MAX
+#define SIZE_MAX	SIZE_T_MAX
+#else
+#define SIZE_MAX	((size_t)-1)
+#endif
+#endif
+
+#define notok2mul(max, val, c)	(((val) != 0) && ((c) != 0) && \
+				    (((max) / (c)) < (val)))
+#define notok2add(max, val, c)	((val) > ((max) - (c)))
+#define notoktomul(val, cnst)	notok2mul(SIZE_MAX, (val), (cnst))
+#define notoktoadd(val, cnst)	notok2add(SIZE_MAX, (val), (cnst))
+
+void jalloc_init(void);
+void *jalloc(void *, size_t, size_t);
+void jfree(void *);
 
 typedef struct header H;
 typedef struct buffer B;

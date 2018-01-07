@@ -8,11 +8,10 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/vfile.c,v 1.15 2017/12/08 02:28:08 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/vfile.c,v 1.16 2018/01/07 20:32:48 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <limits.h>
 #include <stdlib.h>
 #include <unistd.h>
 

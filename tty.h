@@ -9,7 +9,7 @@
 #define _JOE_TTY_H 1
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_tty_h, "$MirOS: contrib/code/jupp/tty.h,v 1.14 2017/12/08 02:04:01 tg Exp $");
+__IDSTRING(rcsid_tty_h, "$MirOS: contrib/code/jupp/tty.h,v 1.15 2018/01/07 20:32:47 tg Exp $");
 #endif
 
 /* void ttopen(void);  Open the tty (attached to stdin) for use inside of JOE
@@ -140,6 +140,7 @@ extern int leave;
  * input closed.
  */
 RETSIGTYPE ttsig(int sig) __attribute__((__noreturn__));
+void ttabrt(int, const char *);
 
 /* void ttgtsz(int *x,int *y);  Get size of screen from ttsize/winsize
  * structure */

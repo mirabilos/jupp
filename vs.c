@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/vs.c,v 1.12 2018/01/06 00:28:35 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/vs.c,v 1.13 2018/01/07 20:32:48 tg Exp $");
 
 #include <stdlib.h>
 
@@ -16,20 +16,20 @@ __RCSID("$MirOS: contrib/code/jupp/vs.c,v 1.12 2018/01/06 00:28:35 tg Exp $");
 #include "utils.h"
 #include "vs.h"
 
-sELEMENT *vsmk(int len)
+sELEMENT *
+vsmk(int len)
 {
-	int *new = malloc((1 + len) * sizeof(sELEMENT) + 2 * sizeof(int));
+	sELEMENT *rv;
 
-	new[0] = len;
-	new[1] = 0;
-	((sELEMENT *)(new + 2))[0] = sdup(sterm);
-	return (sELEMENT *)(new + 2);
+	rv = jalloc(NULL, len, sizeof(sELEMENT));
+	rv[0] = sterm;
+	return (rv);
 }
 
-void vsrm(sELEMENT *vary)
+void
+vsrm(sELEMENT *vary)
 {
-	if (vary)
-		free((int *)vary - 2);
+	jfree(vary);
 }
 
 int slen(const sELEMENT *ary)
@@ -43,17 +43,17 @@ int slen(const sELEMENT *ary)
 		return 0;
 }
 
-sELEMENT *vsensure(sELEMENT *vary, int len)
+sELEMENT *
+vsensure(sELEMENT *vary, int len)
 {
-	if (!vary)
-		vary = vsmk(len);
-	else if (len > sSiz(vary)) {
-		len += (len >> 2);
-		vary = (sELEMENT *)(2 + (int *)realloc((int *)vary - 2, (len + 1) * sizeof(sELEMENT) + 2 * sizeof(int)));
+	sELEMENT *rv;
 
-		sSiz(vary) = len;
-	}
-	return vary;
+	if (vary && len > sSiz(vary))
+		len += (len >> 2);
+	rv = jalloc(vary, len, sizeof(sELEMENT));
+	if (!vary)
+		rv[0] = sterm;
+	return (rv);
 }
 
 sELEMENT *vstrunc(sELEMENT *vary, int len)
