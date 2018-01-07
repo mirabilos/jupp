@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.42 2018/01/06 00:28:32 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.43 2018/01/07 17:45:28 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -329,6 +329,7 @@ static void izopts(void)
 		}
 	isiz = 1;
 }
+#define RELOPT(lopts, opt) (*((int *)(((unsigned char *)(lopts)) + glopts[opt].ofst)))
 
 /*-
  * Set a global or local option:
@@ -393,15 +394,14 @@ glopt(unsigned char *s, unsigned char *arg, OPTIONS *opts, int set)
 			case 4:
 				/* Local option flag */
 				if (opts)
-					*(int *) ((unsigned char *) opts + glopts[x].ofst) = st;
+					RELOPT(opts, x) = st;
 				break;
 			case 5:
 				/* Local option integer */
 				if (arg && opts) {
 					val = ustolb(arg, &vp, glopts[x].low, glopts[x].high, USTOL_TRIM | USTOL_EOS);
 					if (vp)
-						*(int *) ((unsigned char *)
-							  opts + glopts[x].ofst) = val;
+						RELOPT(opts, x) = val;
 				}
 				break;
 			case 7:
@@ -409,8 +409,7 @@ glopt(unsigned char *s, unsigned char *arg, OPTIONS *opts, int set)
 				if (arg) {
 					val = ustolb(arg, &vp, glopts[x].low, glopts[x].high, USTOL_TRIM | USTOL_EOS);
 					if (vp && opts)
-						*(int *) ((unsigned char *)
-							  opts + glopts[x].ofst) = val - 1;
+						RELOPT(opts, x) = val - 1;
 				}
 				break;
 
@@ -555,7 +554,7 @@ doopt1(BW *bw, unsigned char *s, int *xx, int *notify)
 			msgnw(bw->parent, merrt);
 			ret = -1;
 		} else if (v >= glopts[x].low && v <= glopts[x].high)
-			*(int *) ((unsigned char *) &bw->o + glopts[x].ofst) = v;
+			RELOPT(&bw->o, x) = v;
 		else {
 			msgnw(bw->parent, UC "Value out of range");
 			ret = -1;
@@ -571,7 +570,7 @@ doopt1(BW *bw, unsigned char *s, int *xx, int *notify)
 			msgnw(bw->parent, merrt);
 			ret = -1;
 		} else if (v >= glopts[x].low && v <= glopts[x].high)
-			*(int *) ((unsigned char *) &bw->o + glopts[x].ofst) = v;
+			RELOPT(&bw->o, x) = v;
 		else {
 			msgnw(bw->parent, UC "Value out of range");
 			ret = -1;
@@ -749,13 +748,14 @@ doopt(MENU *m, int x, void *object, int flg)
 		break;
 	case 4:
 		if (!flg)
-			*(int *) ((unsigned char *) &bw->o + glopts[x].ofst) = !*(int *) ((unsigned char *) &bw->o + glopts[x].ofst);
+			RELOPT(&bw->o, x) = !RELOPT(&bw->o, x);
 		else if (flg == 1)
-			*(int *) ((unsigned char *) &bw->o + glopts[x].ofst) = 1;
+			RELOPT(&bw->o, x) = 1;
 		else
-			*(int *) ((unsigned char *) &bw->o + glopts[x].ofst) = 0;
+			RELOPT(&bw->o, x) = 0;
 		wabort(m->parent);
-		msgnw(bw->parent, *(int *) ((unsigned char *) &bw->o + glopts[x].ofst) ? glopts[x].yes : glopts[x].no);
+		msgnw(bw->parent, RELOPT(&bw->o, x) ? glopts[x].yes : glopts[x].no);
+		/*XXX use offsetof, also in izopts or better statically */
 		if (glopts[x].ofst == (unsigned char *) &fdefault.readonly - (unsigned char *) &fdefault)
 			bw->b->rdonly = bw->o.readonly;
 		/* Kill UTF-8 and CR-LF mode if we switch to hex display */
@@ -796,10 +796,12 @@ doopt(MENU *m, int x, void *object, int flg)
 		else
 			return -1;
 	case 5:
-		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, *(int *) ((unsigned char *) &bw->o + glopts[x].ofst));
+		joe_snprintf_1((char *)buf, OPT_BUF_SIZE,
+		    (const char *)glopts[x].yes, RELOPT(&bw->o, x));
 		goto in;
 	case 7:
-		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, *(int *) ((unsigned char *) &bw->o + glopts[x].ofst) + 1);
+		joe_snprintf_1((char *)buf, OPT_BUF_SIZE,
+		    (const char *)glopts[x].yes, RELOPT(&bw->o, x) + 1);
  in:
 		xx = malloc(sizeof(int));
 
@@ -891,15 +893,15 @@ umode(BW *bw)
 			break;
 		case 4:
 			joe_snprintf_1(s[x] + n, OPT_BUF_SIZE - n,
-			    "%s", *(int *) ((unsigned char *) &bw->o + glopts[x].ofst) ? "ON" : "OFF");
+			    "%s", RELOPT(&bw->o, x) ? "ON" : "OFF");
 			break;
 		case 5:
 			joe_snprintf_1(s[x] + n, OPT_BUF_SIZE - n,
-			    "%d", *(int *) ((unsigned char *) &bw->o + glopts[x].ofst));
+			    "%d", RELOPT(&bw->o, x));
 			break;
 		case 7:
 			joe_snprintf_1(s[x] + n, OPT_BUF_SIZE - n,
-			    "%d", *(int *) ((unsigned char *) &bw->o + glopts[x].ofst) + 1);
+			    "%d", RELOPT(&bw->o, x) + 1);
 			break;
 		case 9:
 			/* XXX aligns differently so it doesn't get too large */
