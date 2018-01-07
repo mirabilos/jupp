@@ -2,7 +2,7 @@
 #define _JOE_TYPES_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.30 2018/01/06 00:28:33 tg Exp $");
+__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.31 2018/01/07 17:24:49 tg Exp $");
 #endif
 
 /* Prefix to make string constants unsigned */
@@ -163,7 +163,7 @@ struct cmd {
 	const unsigned char *negarg;	/* Command to use if arg was negative */
 	jpoly_int *func;	/* Function bound to name */
 	MACRO	*m;		/* Macro bound to name */
-	int	flag;		/* Execution flags */
+	unsigned int flag;	/* Execution flags */
 	int	arg;		/* 0= arg is meaningless, 1= ok */
 };
 

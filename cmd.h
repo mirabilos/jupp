@@ -9,7 +9,7 @@
 #define _JOE_CMD_H 1
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_cmd_h, "$MirOS: contrib/code/jupp/cmd.h,v 1.8 2017/12/06 21:41:02 tg Exp $");
+__IDSTRING(rcsid_cmd_h, "$MirOS: contrib/code/jupp/cmd.h,v 1.9 2018/01/07 17:24:48 tg Exp $");
 #endif
 
 extern CMD cmds[];		/* Built-in commands */
@@ -27,6 +27,7 @@ extern int dobeep;
 #define EMOD		128	/* Not allowed on readonly files */
 /* These use same bits as TYPE* in types.h */
 #define EBLOCK		0x4000	/* Finish block selection */
+#define ECHK0COL	0x8000	/* Reposition screen from leftmost */
 
 /* CMD *findcmd(char *s);
  * Return command address for given name

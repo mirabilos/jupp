@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uformat.c,v 1.13 2018/01/07 16:58:13 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uformat.c,v 1.14 2018/01/07 17:24:49 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -510,45 +510,46 @@ uformat(BW *bw)
 int
 ufmtblk(BW *bw)
 {
-	/* within a selection? */
-	if (markv(1) && bw->cursor->byte >= markb->byte && bw->cursor->byte <= markk->byte) {
-		P *p;
-		long blkend;
-		char hasp = 0;
+	P *p;
+	long blkend;
+	char hasp;
 
-		/* save current cursor position */
-		p = pdup(bw->cursor);
-		/* reformat from bottom to top */
-		markk->end = 1;
-		utomarkk(bw);
-		within = 1;
-		do {
-			/* span current paragraph between bw->cursor->byte and blkend */
-			blkend = bw->cursor->byte;
-			ubop(bw);
-			/* original cursor in betwixt those? */
-			if (p->byte > bw->cursor->byte && p->byte < blkend) {
-				/* reformat while cursor is in original place */
-				pset(bw->cursor, p);
-				uformat(bw);
-				/* save, to return to it later */
-				pset(p, bw->cursor);
-				hasp = 1;
-				/* but jump back to beginning of paragraph */
-				ubop(bw);
-			} else
-				uformat(bw);
-		} while (bw->cursor->byte > markb->byte);
-		within = 0;
-		markk->end = 0;
-		if (lightoff)
-			unmark(bw);
-		/* restore saved cursor position */
-		if (hasp)
+	/* within a selection? */
+	if (!(markv(1) && bw->cursor->byte >= markb->byte && bw->cursor->byte <= markk->byte))
+		/* no */
+		return (uformat(bw));
+
+	/* save current cursor position */
+	p = pdup(bw->cursor);
+	hasp = 0;
+	/* reformat from bottom to top */
+	markk->end = 1;
+	utomarkk(bw);
+	within = 1;
+	do {
+		/* span current paragraph between bw->cursor->byte and blkend */
+		blkend = bw->cursor->byte;
+		ubop(bw);
+		/* original cursor in betwixt those? */
+		if (p->byte > bw->cursor->byte && p->byte < blkend) {
+			/* reformat while cursor is in original place */
 			pset(bw->cursor, p);
-		prm(p);
-	} else
-		/* not within a selection */
-		uformat(bw);
+			uformat(bw);
+			/* save, to return to it later */
+			pset(p, bw->cursor);
+			hasp = 1;
+			/* but jump back to beginning of paragraph */
+			ubop(bw);
+		} else
+			uformat(bw);
+	} while (bw->cursor->byte > markb->byte);
+	within = 0;
+	markk->end = 0;
+	if (lightoff)
+		unmark(bw);
+	/* restore saved cursor position */
+	if (hasp)
+		pset(bw->cursor, p);
+	prm(p);
 	return (0);
 }
