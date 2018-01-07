@@ -2627,6 +2627,7 @@ ttabrt(int sig, const char *msg)
 			fflush(f);
 			bsavefd(b->bof, fileno(f), b->eof->byte);
 		}
+	fclose(f);
 	if (sig)
 		ttclsn();
 }
