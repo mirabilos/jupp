@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/cmd.c,v 1.27 2018/01/06 17:07:05 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/cmd.c,v 1.28 2018/01/07 16:58:13 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -343,7 +343,7 @@ int execmd(CMD *cmd, int k)
 
  skip:
 
-	/* Make dislayed cursor column equal the actual cursor column
+	/* Make displayed cursor column equal the actual cursor column
 	 * for commands which aren't simple vertical movements */
 	if (cmd->flag & EFIXXCOL)
 		bw->cursor->xcol = piscol(bw->cursor);
