@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uformat.c,v 1.12 2018/01/06 17:07:06 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uformat.c,v 1.14 2018/01/07 17:24:49 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -21,7 +21,8 @@ __RCSID("$MirOS: contrib/code/jupp/uformat.c,v 1.12 2018/01/06 17:07:06 tg Exp $
 
 /* Center line cursor is on and move cursor to beginning of next line */
 
-int ucenter(BW *bw)
+int
+ucenter(BW *bw)
 {
 	P *p = bw->cursor, *q;
 	long endcol, begcol, x;
@@ -88,12 +89,13 @@ cpara(int c)
 }
 
 /* Return true if line is definitly not a paragraph line.
- * Lines which arn't paragraph lines:
+ * Lines which aren't paragraph lines:
  *  1) Blank lines
  *  2) Lines which begin with '.'
  */
 
-static int pisnpara(P *p)
+static int
+pisnpara(P *p)
 {
 	P *q;
 	int c;
@@ -111,7 +113,8 @@ static int pisnpara(P *p)
 
 /* Determine amount of indentation on current line */
 
-static long nindent(P *p)
+static long
+nindent(P *p)
 {
 	P *q = pdup(p);
 	long col;
@@ -126,7 +129,8 @@ static long nindent(P *p)
 
 /* Get indentation prefix column */
 
-static long prefix(P *p)
+static long
+prefix(P *p)
 {
 	long len;
 	P *q = pdup(p);
@@ -157,7 +161,8 @@ static long prefix(P *p)
 
 static char within = 0;
 
-P *pbop(P *p)
+P *
+pbop(P *p)
 {
 	long indent;
 	long prelen;
@@ -207,7 +212,8 @@ P *pbop(P *p)
  *  3) A line with prefix column different from first line
  */
 
-P *peop(P *p)
+P *
+peop(P *p)
 {
 	long indent;
 	long prelen;
@@ -228,7 +234,8 @@ P *peop(P *p)
 
 /* Motion commands */
 
-int ubop(BW *bw)
+int
+ubop(BW *bw)
 {
 	P *q = pdup(bw->cursor);
 
@@ -249,7 +256,8 @@ int ubop(BW *bw)
 	}
 }
 
-int ueop(BW *bw)
+int
+ueop(BW *bw)
 {
 	P *q = pdup(bw->cursor);
 
@@ -275,7 +283,8 @@ int ueop(BW *bw)
  * after . ? or !
  */
 
-void wrapword(P *p, long int indent, int french, unsigned char *indents)
+void
+wrapword(P *p, long int indent, int french, unsigned char *indents)
 {
 	P *q;
 	int c;
@@ -329,7 +338,8 @@ void wrapword(P *p, long int indent, int french, unsigned char *indents)
 
 /* Reformat paragraph */
 
-int uformat(BW *bw)
+int
+uformat(BW *bw)
 {
 	long indent;
 	unsigned char *indents;
@@ -497,21 +507,49 @@ int uformat(BW *bw)
 
 /* Format entire block */
 
-int ufmtblk(BW *bw)
+int
+ufmtblk(BW *bw)
 {
-	if (markv(1) && bw->cursor->byte >= markb->byte && bw->cursor->byte <= markk->byte) {
-		markk->end = 1;
-		utomarkk(bw);
-		within = 1;
-		do {
-			ubop(bw);
+	P *p;
+	long blkend;
+	char hasp;
+
+	/* within a selection? */
+	if (!(markv(1) && bw->cursor->byte >= markb->byte && bw->cursor->byte <= markk->byte))
+		/* no */
+		return (uformat(bw));
+
+	/* save current cursor position */
+	p = pdup(bw->cursor);
+	hasp = 0;
+	/* reformat from bottom to top */
+	markk->end = 1;
+	utomarkk(bw);
+	within = 1;
+	do {
+		/* span current paragraph between bw->cursor->byte and blkend */
+		blkend = bw->cursor->byte;
+		ubop(bw);
+		/* original cursor in betwixt those? */
+		if (p->byte > bw->cursor->byte && p->byte < blkend) {
+			/* reformat while cursor is in original place */
+			pset(bw->cursor, p);
 			uformat(bw);
-		} while (bw->cursor->byte > markb->byte);
-		within = 0;
-		markk->end = 0;
-		if (lightoff)
-			unmark(bw);
-		return 0;
-	} else
-		return uformat(bw);
+			/* save, to return to it later */
+			pset(p, bw->cursor);
+			hasp = 1;
+			/* but jump back to beginning of paragraph */
+			ubop(bw);
+		} else
+			uformat(bw);
+	} while (bw->cursor->byte > markb->byte);
+	within = 0;
+	markk->end = 0;
+	if (lightoff)
+		unmark(bw);
+	/* restore saved cursor position */
+	if (hasp)
+		pset(bw->cursor, p);
+	prm(p);
+	return (0);
 }

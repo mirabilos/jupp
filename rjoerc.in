@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/rjoerc.in,v 1.25 2018/01/06 14:06:56 tg Exp $
+ $MirOS: contrib/code/jupp/rjoerc.in,v 1.26 2018/01/07 18:04:18 tg Exp $
 
                          Initialization file for JOE
                             Restricted access Joe
@@ -241,6 +241,21 @@
 -highlight
 -syntax diff
 
+*
++Only in[ ]
+-highlight
+-syntax diff
+
+*
++Nur in[ ]
+-highlight
+-syntax diff
+
+*
++\[1-9]\+\[0-9]\[cda]
+-highlight
+-syntax diff
+
 *.sh*
 -syntax sh
 
@@ -333,11 +348,11 @@
 -syntax csh
 
 *
-+#!\+\[	 ]\+\[a-z/]/\+tcsh\>
++#!\+\[	 ]\+\[/a-z0-9._-]/\+tcsh\>
 -syntax csh
 
 *
-+#!\+\[	 ]\+\[a-z/]/env\+\[	 ]\+tcsh\>
++#!\+\[	 ]\+\[/a-z0-9._-]/env\[	 ]\+\[	 ]\+tcsh\>
 -syntax csh
 
  === Diff
@@ -447,10 +462,6 @@
 *.jsf
 -syntax conf
 
- === flex
-*.l
--syntax lex
-
  === LISP
 *.lisp
 -syntax lisp
@@ -460,10 +471,6 @@
 
 *.el
 -syntax lisp
-
- === M4
-*.m4
--syntax m4
 
  === Make
 *akefile
@@ -491,11 +498,11 @@
 -syntax perl
 
 *
-+#!\+\[	 ]\+\[a-z/]/perl
++#!\+\[	 ]\+\[/a-z0-9._-]/perl
 -syntax perl
 
 *
-+#!\+\[	 ]\+\[a-z/]/env\+\[	 ]perl
++#!\+\[	 ]\+\[/a-z0-9._-]/env\[	 ]\+\[	 ]perl
 -syntax perl
 
  === PHP
@@ -512,7 +519,7 @@
 -spaces
 
 *
-+#!\+\[	 ]\+\[a-z/]/python
++#!\+\[	 ]\+\[/a-z0-9._-]/python
 -encoding utf8
 -syntax python
 -tab 4
@@ -521,7 +528,7 @@
 -spaces
 
 *
-+#!\+\[	 ]\+\[a-z/]/env\+\[	 ]python
++#!\+\[	 ]\+\[/a-z0-9._-]/env\[	 ]\+\[	 ]python
 -encoding utf8
 -syntax python
 -tab 4
@@ -538,19 +545,19 @@
 -syntax sh
 
 *
-+#!\+\[	 ]\+\[a-z/]/\+\[bd]\+ash\>
++#!\+\[	 ]\+\[/a-z0-9._-]/\+\[bda]sh\>
 -syntax sh
 
 *
-+#!\+\[	 ]\+\[a-z/]/env\+\[	 ]\+\[bd]\+ash\>
++#!\+\[	 ]\+\[/a-z0-9._-]/env\[	 ]\+\[	 ]\+\[bda]sh\>
 -syntax sh
 
 *
-+#!\+\[	 ]\+\[a-z/]/\+\[a-z]ksh\+\[0-9._-]\>
++#!\+\[	 ]\+\[/a-z0-9._-]/\+\[a-z]ksh\+\[0-9._-]\>
 -syntax sh
 
 *
-+#!\+\[	 ]\+\[a-z/]/env\+\[	 ]\+\[a-z]ksh\+\[0-9._-]\>
++#!\+\[	 ]\+\[/a-z0-9._-]/env\[	 ]\+\[	 ]\+\[a-z]ksh\+\[0-9._-]\>
 -syntax sh
 
  === TCL
@@ -585,10 +592,6 @@
 *.xml
 -encoding utf8
 -syntax xml
-
- === yacc
-*.y
--syntax yacc
 
  === Text (except in jupp)
 *.asc

@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/cmd.c,v 1.27 2018/01/06 17:07:05 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/cmd.c,v 1.29 2018/01/07 17:24:48 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -164,9 +164,9 @@ C("exsave", TYPETW + TYPEPW, uexsve, NULL, 0, NULL),
 C("ffirst", TYPETW + TYPEPW, pffirst, NULL, 0, NULL),
 C("filt", TYPETW + TYPEPW + EMOD + EBLOCK, ufilt, NULL, 0, NULL),
 C("finish", TYPETW + TYPEPW + EMOD, ufinish, NULL, 1, NULL),
-C("fmtblk", TYPETW + EMOD + EFIXXCOL + EBLOCK, ufmtblk, NULL, 1, NULL),
+C("fmtblk", TYPETW + EMOD + EFIXXCOL + EBLOCK + ECHK0COL, ufmtblk, NULL, 1, NULL),
 C("fnext", TYPETW + TYPEPW, pfnext, NULL, 1, NULL),
-C("format", TYPETW + TYPEPW + EFIXXCOL + EMOD, uformat, NULL, 1, NULL),
+C("format", TYPETW + TYPEPW + EFIXXCOL + EMOD + ECHK0COL, uformat, NULL, 1, NULL),
 C("fwrdc", TYPETW + TYPEPW, ufwrdc, NULL, 1, "bkwdc"),
 C("gomark", TYPETW + TYPEPW + EMOVE, ugomark, NULL, 0, NULL),
 C("groww", TYPETW, ugroww, NULL, 1, "shrinkw"),
@@ -228,7 +228,7 @@ C("quote", TYPETW + TYPEPW + EMOD, uquote, NULL, 0, NULL),
 C("quote8", TYPETW + TYPEPW + EMOD, uquote8, NULL, 0, NULL),
 C("record", TYPETW + TYPEPW + TYPEMENU + TYPEQW, urecord, NULL, 0, NULL),
 C("redo", TYPETW + TYPEPW + EFIXXCOL, uredo, NULL, 1, "undo"),
-C("retype", TYPETW + TYPEPW + TYPEMENU + TYPEQW, uretyp, NULL, 0, NULL),
+C("retype", TYPETW + TYPEPW + TYPEMENU + TYPEQW + ECHK0COL, uretyp, NULL, 0, NULL),
 C("rfirst", TYPETW + TYPEPW, prfirst, NULL, 0, NULL),
 C("rindent", TYPETW + TYPEPW + EFIXXCOL + EMOD + EBLOCK, urindent, NULL, 1, "lindent"),
 C("rsrch", TYPETW + TYPEPW, ursrch, NULL, 0, NULL),
@@ -343,8 +343,16 @@ int execmd(CMD *cmd, int k)
 
  skip:
 
-	/* Make dislayed cursor column equal the actual cursor column
-	 * for commands which aren't simple vertical movements */
+	/* scroll screen to the left */
+	if ((cmd->flag & ECHK0COL) && bw->offset != 0) {
+		bw->offset = 0;
+		updall();
+	}
+
+	/*
+	 * Make displayed cursor column equal the actual cursor column
+	 * for commands which aren't simple vertical movements
+	 */
 	if (cmd->flag & EFIXXCOL)
 		bw->cursor->xcol = piscol(bw->cursor);
 

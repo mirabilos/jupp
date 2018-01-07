@@ -1,5 +1,6 @@
 /*-
- * Copyright © 2004, 2005, 2006, 2007, 2011, 2012, 2017
+ * Copyright © 2004, 2005, 2006, 2007, 2009, 2010, 2011, 2012,
+ *	       2013, 2014, 2016, 2017, 2018
  *	mirabilos <m@mirbsd.org>
  *
  * Provided that these terms and disclaimer and all copyright notices
@@ -19,6 +20,7 @@
  *-
  * Compatibility and fully new utility functions for jupp.
  *
+ * - jalloc: based on lalloc.c,v 1.26 from mksh
  * – ctime: based on mirtime from MirBSD libc; not leap second capable
  *   src/kern/include/mirtime.h,v 1.2 2011/11/20 23:40:11 tg Exp
  *   src/kern/c/mirtime.c,v 1.3 2011/11/20 23:40:10 tg Exp
@@ -30,11 +32,160 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/compat.c,v 1.9 2017/12/02 17:00:53 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/compat.c,v 1.10 2018/01/07 20:32:46 tg Exp $");
 
-#include <limits.h>
+#include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#ifdef MKSH_ALLOC_CATCH_UNDERRUNS
+#include <sys/mman.h>
+#include <err.h>
+#endif
+#include "tty.h"
 #include "utils.h"
+
+/* jalloc */
+
+#define malloc_osi(sz)		malloc(sz)
+#define realloc_osi(p,sz)	realloc((p), (sz))
+#define free_osimalloc(p)	free(p)
+
+#ifndef DEBUG
+#define Sabrt void
+#else
+#define Sabrt const char *emsg
+#endif
+static void abrt(Sabrt) __attribute__((__noreturn__));
+
+static void
+abrt(Sabrt)
+{
+#ifdef DEBUG
+	fputs(emsg, stderr);
+#endif
+	ttabrt(0, "memory allocation error");
+	/* try to get a coredump */
+	abort();
+}
+#ifndef DEBUG
+#define abrt(x) (abrt)()
+#endif
+
+/* build with CPPFLAGS+= -DUSE_REALLOC_MALLOC=0 on ancient systems */
+#if defined(USE_REALLOC_MALLOC) && (USE_REALLOC_MALLOC == 0)
+#define remalloc(p,n)	((p) == NULL ? malloc_osi(n) : realloc_osi((p), (n)))
+#else
+#define remalloc(p,n)	realloc_osi((p), (n))
+#endif
+
+#ifndef MKSH_ALLOC_CATCH_UNDERRUNS
+#define ALLOC_ISUNALIGNED(p) (((size_t)(p)) % sizeof(struct jalloc_common))
+#else
+#define ALLOC_ISUNALIGNED(p) (((size_t)(p)) & 4095)
+#undef remalloc
+#undef free_osimalloc
+
+static void
+free_osimalloc(void *ptr)
+{
+	struct jalloc_item *lp = ptr;
+
+	if (munmap(lp, lp->len))
+		abrt("free_osimalloc");
+}
+
+static void *
+remalloc(void *ptr, size_t size)
+{
+	struct jalloc_item *lp, *lold = ptr;
+
+	size = (size + 4095) & ~(size_t)4095;
+
+	if (lold && lold->len >= size)
+		return (ptr);
+
+	if ((lp = mmap(NULL, size, PROT_READ | PROT_WRITE,
+	    MAP_ANON | MAP_PRIVATE, -1, (off_t)0)) == MAP_FAILED)
+		abrt("remalloc: mmap");
+	if (ALLOC_ISUNALIGNED(lp))
+		abrt("remalloc: unaligned");
+	if (mprotect(((char *)lp) + 4096, 4096, PROT_NONE))
+		abrt("remalloc: mprotect");
+	lp->len = size;
+
+	if (lold) {
+		memcpy(((char *)lp) + 8192, ((char *)lold) + 8192,
+		    lold->len - 8192);
+		if (munmap(lold, lold->len))
+			abrt("remalloc: munmap");
+	}
+
+	return (lp);
+}
+#endif
+
+void
+jalloc_init(void)
+{
+#ifdef MKSH_ALLOC_CATCH_UNDERRUNS
+	long pgsz;
+	if ((pgsz = sysconf(_SC_PAGESIZE)) != 4096)
+		errx(1, "fatal: pagesize %lu not 4096!", pgsz);
+#endif
+}
+
+void *
+jalloc(void *ptr, size_t nmemb, size_t siz)
+{
+	ALLOC_ITEM *lp;
+	size_t usiz;
+
+	if (notoktomul(nmemb, siz))
+		abrt("jalloc nmemb*siz");
+	usiz = nmemb * siz;
+	if (notoktoadd(usiz, siz))
+		abrt("jalloc usiz + terminator");
+	usiz += siz;
+	if (notoktoadd(usiz, sizeof(ALLOC_ITEM)))
+		abrt("jalloc usiz + header");
+
+	if (ptr) {
+#ifdef DEBUG
+		if (ALLOC_ISUNALIGNED(ptr))
+			abrt("jalloc realloc unaligned");
+#endif
+		lp = jalloc_krnl(ptr);
+	} else
+		lp = NULL;
+
+	if ((lp = remalloc(lp, usiz + sizeof(ALLOC_ITEM))) == NULL)
+		abrt("jalloc remalloc failed");
+#ifdef DEBUG
+	if (ALLOC_ISUNALIGNED(lp))
+		abrt("jalloc remalloc unaligned");
+#endif
+	if (!ptr)
+		lp->ALLOC_INFO(elen) = 0;
+	lp->ALLOC_INFO(esiz) = nmemb;
+	return (jalloc_user(lp));
+}
+
+void
+jfree(void *ptr)
+{
+	ALLOC_ITEM *lp;
+
+	if (ptr != NULL) {
+#ifdef DEBUG
+		if (ALLOC_ISUNALIGNED(ptr))
+			abrt("jalloc free unaligned");
+#endif
+		lp = jalloc_krnl(ptr);
+		free_osimalloc(lp);
+	}
+}
+
+/* strlcpy/strlcat */
 
 #undef L_strlcat
 #undef L_strlcpy
@@ -50,6 +201,8 @@ __RCSID("$MirOS: contrib/code/jupp/compat.c,v 1.9 2017/12/02 17:00:53 tg Exp $")
 #define OUTSIDE_OF_LIBKERN
 #include "strlfun.inc"
 #endif
+
+/* ctime */
 
 #ifndef HAVE_CTIME
 #ifdef TIME_WITH_SYS_TIME
@@ -202,11 +355,15 @@ joe_timet2tm(joe_tm *tm, const time_t *tp)
 }
 #endif /* ndef HAVE_CTIME */
 
+/* popen */
+
 #ifndef HAVE_POPEN
 #undef __RCSID
 #define __RCSID(x)		__IDSTRING(rcsid_popen_inc,x)
 #include "popen.inc"
 #endif
+
+/* utility stuff */
 
 size_t
 ustoc_hex(const void *us, int *dp, size_t lim)

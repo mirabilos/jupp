@@ -32,7 +32,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.42 2018/01/06 14:06:56 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.43 2018/01/07 20:32:46 tg Exp $");
 
 #include <fcntl.h>
 #include <string.h>
@@ -197,6 +197,7 @@ main_init(int argc, char **argv, char **envp, SCRN **np)
 	int backopt;
 	int c;
 
+	jalloc_init();
 	init_JOERC();
 	joe_locale();
 

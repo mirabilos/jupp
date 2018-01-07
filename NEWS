@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.115 2018/01/07 00:46:23 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.116 2018/01/07 17:30:52 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
@@ -20,7 +20,7 @@ jupp-current
 - Fix regression: `` did no longer insert a sole ` (etc.)
 - Improved shebang and diff recognition of syntax highlighting file types
 - Render instruction to show online help as BLINKING BOLD so it stands out
-- Let screen scroll back to the left on ^B (^KD missing currently)
+- Let screen scroll back to the left on ^QL, ^B, ^KD, while in hex mode
 
 JOE 3.1jupp32
 
