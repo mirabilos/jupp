@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/rjoerc.in,v 1.26 2018/01/07 18:04:18 tg Exp $
+ $MirOS: contrib/code/jupp/rjoerc.in,v 1.27 2018/01/08 00:53:51 tg Exp $
 
                          Initialization file for JOE
                             Restricted access Joe
@@ -135,7 +135,7 @@
 -rmsg  %S Row %r Col %c %t  Ctrl-K H for help
 -hmsg \i\f\bHelp: ^KH\b\f
 
- SECOND SECTION: File name dependant local option settings:
+ SECOND SECTION: filename-dependent local option settings:
 
  Each line with '*' in the first column indicates the modes which should be
  set for files whose name matches the regular expression.  If more than one

@@ -1,5 +1,5 @@
 /*
- *	Device independant TTY interface for JOE
+ *	device-independent TTY interface for JOE
  *	Copyright
  *		(C) 1992 Joseph H. Allen
  *
@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.40 2018/01/07 23:51:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.41 2018/01/08 00:53:51 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>

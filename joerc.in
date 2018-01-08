@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/joerc.in,v 1.27 2018/01/07 18:04:17 tg Exp $
+ $MirOS: contrib/code/jupp/joerc.in,v 1.28 2018/01/08 00:53:49 tg Exp $
 
                          Initialization file for JOE
                                 Standard Joe
@@ -137,7 +137,7 @@
 -rmsg  %S Row %r Col %c %t  Ctrl-K H for help
 -hmsg \i\f\bHelp: ^KH\b\f
 
- SECOND SECTION: File name dependant local option settings:
+ SECOND SECTION: filename-dependent local option settings:
 
  Each line with '*' in the first column indicates the modes which should be
  set for files whose name matches the regular expression.  If more than one

@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.45 2018/01/08 00:48:06 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.46 2018/01/08 00:53:50 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -961,7 +961,7 @@ procrc(CAP *cap, const unsigned char *name)
 			/* skip comment lines */
 			break;
 		case '*':
-			/* Select file types for file-type dependant options */
+			/* select file types for file type-dependent options */
 			o = malloc(sizeof(OPTIONS));
 			*o = fdefault;
 			x = 0;
