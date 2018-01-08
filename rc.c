@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.44 2018/01/07 23:51:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.45 2018/01/08 00:48:06 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -931,7 +931,7 @@ umode(BW *bw)
  *         1 if there was a syntax error in the file
  */
 int
-procrc(CAP *cap, unsigned char *name)
+procrc(CAP *cap, const unsigned char *name)
 {
 	OPTIONS *o = &fdefault;	/* Current options */
 	KMAP *context = NULL;	/* Current context */
@@ -943,16 +943,14 @@ procrc(CAP *cap, unsigned char *name)
 	unsigned char *opt, *arg;
 	MACRO *m;
 
-	strlcpy((char *)buf, (char *)name, 1024);
-	fd = jfopen((char *)buf, "r");
-
-	if (!fd)
-		return -1;	/* Return if we couldn't open the rc file */
+	if (!(fd = jfopen(name, "r")))
+		/* return if we couldn't open the rc file */
+		return (-1);
 
 	fprintf(stderr, "Processing '%s'...", name);
 	fflush(stderr);
 
-	while (jfgets((char *)buf, sizeof(buf), fd)) {
+	while (jfgets(buf, sizeof(buf), fd)) {
 		line++;
 		switch (buf[0]) {
 		case ' ':
@@ -1004,11 +1002,11 @@ procrc(CAP *cap, unsigned char *name)
 			break;
 		case '{':
 			/* Ignore help text */
-			while ((jfgets((char *)buf, 256, fd)) && (buf[0] != /*{*/ '}'))
+			while (jfgets(buf, sizeof(buf), fd) && buf[0] != /*{*/'}')
 				/* do nothing */;
 			if (buf[0] != '}') {
 				err = 1;
-				fprintf(stderr, "\n%s:%d: End of joerc file occurred before end of help text\n", name, line);
+				fprintf(stderr, "\n%s:%d: End of rc file occurred before end of help text\n", name, line);
 				break;
 			}
 			break;
@@ -1102,7 +1100,7 @@ procrc(CAP *cap, unsigned char *name)
 				fprintf(stderr, "\n%s:%d: Unknown command in macro", name, line);
 				break;
 			} else if (x == -2) {
-				jfgets((char *)buf, 1024, fd);
+				jfgets(buf, sizeof(buf), fd);
 				goto macroloop;
 			}
 			if (!m)
