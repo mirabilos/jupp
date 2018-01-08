@@ -9,7 +9,7 @@
 #define _JOE_SCRN_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_scrn_h, "$MirOS: contrib/code/jupp/scrn.h,v 1.11 2018/01/08 00:53:51 tg Exp $");
+__IDSTRING(rcsid_scrn_h, "$MirOS: contrib/code/jupp/scrn.h,v 1.12 2018/01/08 00:56:27 tg Exp $");
 #endif
 
 #include "tty.h"		/* ttputc() */
@@ -113,12 +113,6 @@ void utf8_putc(int c);
 
 void outatr(struct charmap *map,SCRN *t,int *scrn,int *attrf,int xx,int yy,int c,int a);
 void outatr_help(SCRN *, int *, int *, int, int, int, int);
-
-/*
- * translate character and its attribute into something printable
- */
-void xlat(int *attr, unsigned char *c);
-void xlat_utf_ctrl(int *attr, unsigned char *c);
 
 /* int eraeol(SCRN *t,int x,int y);
  *
