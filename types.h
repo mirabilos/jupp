@@ -2,7 +2,7 @@
 #define _JOE_TYPES_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.33 2018/01/07 23:51:35 tg Exp $");
+__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.34 2018/01/08 00:33:16 tg Exp $");
 #endif
 
 /* Prefix to make string constants unsigned */
@@ -266,11 +266,11 @@ struct hash {
 
 
 struct help {
-	unsigned char	*text;		/* help text with attributes */
-	unsigned int	lines;		/* number of lines */
 	struct help	*prev;		/* previous help screen */
 	struct help	*next;		/* nex help screen */
 	unsigned char	*name;		/* context name for context sensitive help */
+	unsigned char	*text;		/* help text with attributes */
+	unsigned int	lines;		/* number of lines */
 };
 
 /* A key binding */
