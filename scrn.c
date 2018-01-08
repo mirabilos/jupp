@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.42 2018/01/08 01:56:22 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.43 2018/01/08 02:01:20 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -127,7 +127,7 @@ outatr(struct charmap *map, SCRN *t, int *scrn, int *attrf, int xx, int yy, int 
 			switch ((wid = unictrl(c))) {
 			case 0:
 				/* not a control character */
-				wid = joe_wcwidth(1, c);
+				wid = joe_wcwidth(c);
 				break;
 			case 1:
 				c ^= 0x40;
@@ -1644,7 +1644,7 @@ void genfield(SCRN *t,int *scrn,int *attr,int x,int y,int ofst,unsigned char *s,
 			/* UTF-8 mode: decode character and determine its width */
 			c = utf8_decode(&sm,c);
 			if (c >= 0)
-				wid = joe_wcwidth(1,c);
+				wid = joe_wcwidth(c);
 		} else {
 			/* Byte mode: character is one column wide */
 			wid = 1;
@@ -1706,7 +1706,7 @@ int txtwidth(unsigned char *s,int len)
 		while(len--) {
 			int d = utf8_decode(&sm,*s++);
 			if (d >= 0)
-				col += joe_wcwidth(1,d);
+				col += joe_wcwidth(d);
 		}
 
 		return col;
@@ -1763,7 +1763,7 @@ void genfmt(SCRN *t, int x, int y, int ofst, const unsigned char *s, int flg)
 				/* UTF-8 mode: decode character and determine its width */
 				c = utf8_decode(&sm,c);
 				if (c >= 0) {
-					wid = joe_wcwidth(1, c);
+					wid = joe_wcwidth(c);
 				}
 			} else {
 				/* Byte mode: character is one column wide */
@@ -1833,7 +1833,7 @@ int fmtlen(const unsigned char *s)
 			if(locale_map->type) {
 				c = utf8_decode(&sm,c);
 				if (c>=0)
-					wid = joe_wcwidth(1,c);
+					wid = joe_wcwidth(c);
 			} else {
 				wid = 1;
 			}
@@ -1884,7 +1884,7 @@ int fmtpos(unsigned char *s, int goal)
 			if(locale_map->type) {
 				c = utf8_decode(&sm,c);
 				if (c>=0)
-					wid = joe_wcwidth(1,c);
+					wid = joe_wcwidth(c);
 			} else {
 				wid = 1;
 			}

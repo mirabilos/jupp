@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.36 2018/01/07 20:32:46 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.37 2018/01/08 02:01:19 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -441,7 +441,7 @@ lgen(SCRN *t, int y,
 					c = utf8_decode(&utf8_sm,bc);
 
 					if (c>=0) /* Normal decoded character */
-						wid = joe_wcwidth(1,c);
+						wid = joe_wcwidth(c);
 					else if(c== -1) /* Character taken */
 						wid = -1;
 					else if(c== -2) { /* Incomplete sequence */
@@ -566,7 +566,7 @@ lgen(SCRN *t, int y,
 
 					if (utf8_char >= 0) {
 						/* Normal decoded character */
-						wid = joe_wcwidth(1,utf8_char);
+						wid = joe_wcwidth(utf8_char);
 					} else if (utf8_char == -1) {
 						/* Character taken */
 						wid = -1;
@@ -967,9 +967,17 @@ int ustat_j(BW *bw)
 	int c = brch(bw->cursor);
 
 	if (c == NO_MORE_DATA)
-		joe_snprintf_4((char *)buf, sizeof(buf), "** Line %ld  Col %ld  Offset %ld(0x%lX) **", bw->cursor->line + 1, piscol(bw->cursor) + 1, bw->cursor->byte, bw->cursor->byte);
+		joe_snprintf_4((char *)buf, sizeof(buf),
+		    "** Line %ld  Col %ld  Offset %ld(0x%lX) **",
+		    bw->cursor->line + 1, piscol(bw->cursor) + 1,
+		    bw->cursor->byte, bw->cursor->byte);
 	else
-		joe_snprintf_9((char *)buf, sizeof(buf), "** Line %ld  Col %ld  Offset %ld(0x%lX)  %s %d(0%o/0x%X) Width %d **", bw->cursor->line + 1, piscol(bw->cursor) + 1, bw->cursor->byte, bw->cursor->byte, bw->b->o.charmap->name, c, c, c, joe_wcwidth(bw->o.charmap->type,c));
+		joe_snprintf_9((char *)buf, sizeof(buf),
+		    "** Line %ld  Col %ld  Offset %ld(0x%lX)  %s %d(0%o/0x%X) Width %d **",
+		    bw->cursor->line + 1, piscol(bw->cursor) + 1,
+		    bw->cursor->byte, bw->cursor->byte,
+		    bw->b->o.charmap->name, c, c, c,
+		    bw->o.charmap->type ? joe_wcwidth(c) : 1);
 	msgnw(bw->parent, buf);
 	return 0;
 }

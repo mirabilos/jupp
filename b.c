@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.34 2018/01/07 21:31:36 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.35 2018/01/08 02:01:18 tg Exp $");
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -616,7 +616,7 @@ int pgetc(P *p)
 				c = d == NO_MORE_DATA ? 0x1000FFFF : 0x1000FFFE;
 				wid = 1;
 			} else if (val)
-				wid = joe_wcwidth(1,c);
+				wid = joe_wcwidth(c);
 		} else {
 			wid = 1;
 		}
@@ -780,7 +780,7 @@ int prgetc(P *p)
 
 		if (val && c!='\t' && c!='\n') {
 			p->valcol = 1;
-			p->col -= joe_wcwidth(1,d);
+			p->col -= joe_wcwidth(d);
 		}
 
 		return d;
@@ -984,7 +984,7 @@ P *pcol(P *p, long goalcol)
 			if (c == '\t')
 				wid = p->b->o.tab - p->col % p->b->o.tab;
 			else
-				wid = joe_wcwidth(1,c);
+				wid = joe_wcwidth(c);
 
 			if (p->col + wid > goalcol)
 				break;
