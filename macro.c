@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/macro.c,v 1.19 2017/12/08 02:28:05 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/macro.c,v 1.20 2018/01/07 23:51:34 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -41,7 +41,7 @@ MACRO *mkmacro(int k, int arg, int n, CMD *cmd)
 		int x;
 
 		/* FIXME: why limit to 64? */
-		macro = calloc(64, sizeof(MACRO));
+		macro = ralloc(64, sizeof(MACRO));
 		for (x = 0; x != 64; ++x) {
 			macro[x].steps = (MACRO **) freemacros;
 			freemacros = macro + x;
@@ -83,7 +83,7 @@ void addmacro(MACRO *macro, MACRO *m)
 		if (macro->steps)
 			macro->steps = realloc(macro->steps, (macro->size += 8) * sizeof(MACRO *));
 		else
-			macro->steps = calloc((macro->size = 8), sizeof(MACRO *));
+			macro->steps = ralloc((size_t)(macro->size = 8), sizeof(MACRO *));
 	}
 	macro->steps[macro->n++] = m;
 }
@@ -97,7 +97,7 @@ MACRO *dupmacro(MACRO *mac)
 	if (mac->steps) {
 		int x;
 
-		m->steps = calloc((m->size = mac->n), sizeof(MACRO *));
+		m->steps = ralloc((size_t)(m->size = mac->n), sizeof(MACRO *));
 		for (x = 0; x != m->n; ++x)
 			m->steps[x] = dupmacro(mac->steps[x]);
 	}

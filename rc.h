@@ -9,7 +9,7 @@
 #define _JOE_RC_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_rc_h, "$MirOS: contrib/code/jupp/rc.h,v 1.11 2018/01/06 00:28:32 tg Exp $");
+__IDSTRING(rcsid_rc_h, "$MirOS: contrib/code/jupp/rc.h,v 1.12 2018/01/08 00:48:07 tg Exp $");
 #endif
 
 extern OPTIONS pdefault;
@@ -27,7 +27,7 @@ KMAP *kmap_getcontext(const unsigned char *name, int docreate);
 	  -1 for file not found
 	   1 for syntax error (errors written to stderr)
 */
-int procrc(CAP *cap, unsigned char *name);
+int procrc(CAP *cap, const unsigned char *name);
 
 int glopt(unsigned char *s, unsigned char *arg, OPTIONS *options, int set);
 

@@ -11,14 +11,14 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/builtins.c,v 1.27 2017/12/16 22:18:52 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/builtins.c,v 1.28 2018/01/08 00:08:18 tg Exp $");
 
 #ifndef JUPPRC_BUILTIN_NAME
 #define JUPPRC_BUILTIN_NAME "jupprc"
 #endif
 
 const unsigned char * const builtins[] = {
-	US JUPPRC_BUILTIN_NAME, US
+	UC JUPPRC_BUILTIN_NAME, UC
 		"-assume_color\n"
 		"-dopadding\n"
 		"--force\n"

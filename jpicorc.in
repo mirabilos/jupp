@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jpicorc.in,v 1.26 2018/01/07 18:04:17 tg Exp $
+ $MirOS: contrib/code/jupp/jpicorc.in,v 1.27 2018/01/08 00:53:50 tg Exp $
 
                          Initialization file for JOE
                                  Super Pico
@@ -132,7 +132,7 @@
 -rmsg  %S Row %r Col %c %t  Ctrl-G for help
 -hmsg \i\f\bHelp: ^G\b\f
 
- SECOND SECTION: File name dependant local option settings:
+ SECOND SECTION: filename-dependent local option settings:
 
  Each line with '*' in the first column indicates the modes which should be
  set for files which match the regular expression.  If more than one regular

@@ -2,7 +2,7 @@
 #define _Ii18n 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_i18n_h, "$MirOS: contrib/code/jupp/i18n.h,v 1.11 2017/12/06 21:16:57 tg Exp $");
+__IDSTRING(rcsid_i18n_h, "$MirOS: contrib/code/jupp/i18n.h,v 1.12 2018/01/08 02:01:20 tg Exp $");
 #endif
 
 #ifdef TEST_I18N
@@ -29,7 +29,7 @@ int joe_iswxdigit(struct charmap *,int c);
 int joe_iswblank(struct charmap *,int c);
 #endif
 
-int joe_wcwidth(int wide, unsigned int c);
+int joe_wcwidth(unsigned int c);
 /* Looking for wswidth? Take a look at scrn.c/txtwidth() */
 
 int joe_towupper(struct charmap *,int c);

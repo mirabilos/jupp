@@ -1,5 +1,5 @@
 /*
- *	Device independant TTY interface for JOE
+ *	device-independent TTY interface for JOE
  *	Copyright
  *		(C) 1992 Joseph H. Allen
  *
@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.39 2017/12/20 23:40:35 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.43 2018/01/08 02:01:20 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -28,104 +28,24 @@ int pastetite = 0;
 int usetabs = 0;
 int assume_color = 0;
 
-/* How to display characters (especially the control ones) */
-/* here are characters ... */
-static const unsigned char xlatc[256] = {
-	 64,  65,  66,  67,  68,  69,  70,  71,			/*   8 */
-	 72,  73,  74,  75,  76,  77,  78,  79,			/*  16 */
-	 80,  81,  82,  83,  84,  85,  86,  87,			/*  24 */
-	 88,  89,  90,  91,  92,  93,  94,  95,			/*  32 */
-	 32,  33,  34,  35,  36,  37,  38,  39,			/*  40 */
-	 40,  41,  42,  43,  44,  45,  46,  47,			/*  48 */
-	 48,  49,  50,  51,  52,  53,  54,  55,			/*  56 */
-	 56,  57,  58,  59,  60,  61,  62,  63,			/*  64 */
+static int
+xlat(int chkasis, int c, int *ap, struct charmap *map)
+{
+	if (joe_isprint(map, c))
+		return (c);
+	if (chkasis && dspasis && c >= 128)
+		return (c);
 
-	 64,  65,  66,  67,  68,  69,  70,  71,			/*  72 */
-	 72,  73,  74,  75,  76,  77,  78,  79,			/*  80 */
-	 80,  81,  82,  83,  84,  85,  86,  87,			/*  88 */
-	 88,  89,  90,  91,  92,  93,  94,  95,			/*  96 */
-	 96,  97,  98,  99, 100, 101, 102, 103,			/* 104 */
-	104, 105, 106, 107, 108, 109, 110, 111,			/* 112 */
-	112, 113, 114, 115, 116, 117, 118, 119,			/* 120 */
-	120, 121, 122, 123, 124, 125, 126,  63,			/* 128 */
-
-	 64,  65,  66,  67,  68,  69,  70,  71,			/* 136 */
-	 72,  73,  74,  75,  76,  77,  78,  79,			/* 144 */
-	 80,  81,  82,  83,  84,  85,  86,  87,			/* 152 */
-	 88,  89,  90,  91,  92,  93,  94,  95,			/* 160 */
-	 32,  33,  34,  35,  36,  37,  38,  39,			/* 168 */
-	 40,  41,  42,  43,  44,  45,  46,  47,			/* 176 */
-	 48,  49,  50,  51,  52,  53,  54,  55,			/* 184 */
-	 56,  57,  58,  59,  60,  61,  62,  63,			/* 192 */
-
-	 64,  65,  66,  67,  68,  69,  70,  71,			/* 200 */
-	 72,  73,  74,  75,  76,  77,  78,  79,			/* 208 */
-	 80,  81,  82,  83,  84,  85,  86,  87,			/* 216 */
-	 88,  89,  90,  91,  92,  93,  94,  95,			/* 224 */
-	 96,  97,  98,  99, 100, 101, 102, 103,			/* 232 */
-	104, 105, 106, 107, 108, 109, 110, 111,			/* 240 */
-	112, 113, 114, 115, 116, 117, 118, 119,			/* 248 */
-	120, 121, 122, 123, 124, 125, 126,  63			/* 256 */
-};
-/* ... and here their attributes */
-static const unsigned short xlata[256] = {
-	UNDERLINE, UNDERLINE, UNDERLINE, UNDERLINE,		/*   4 */
-	UNDERLINE, UNDERLINE, UNDERLINE, UNDERLINE,		/*   8 */
-	UNDERLINE, UNDERLINE, UNDERLINE, UNDERLINE,		/*  12 */
-	UNDERLINE, UNDERLINE, UNDERLINE, UNDERLINE,		/*  16 */
-	UNDERLINE, UNDERLINE, UNDERLINE, UNDERLINE,		/*  20 */
-	UNDERLINE, UNDERLINE, UNDERLINE, UNDERLINE,		/*  24 */
-	UNDERLINE, UNDERLINE, UNDERLINE, UNDERLINE,		/*  28 */
-	UNDERLINE, UNDERLINE, UNDERLINE, UNDERLINE,		/*  32 */
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,		/*  48 */
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,		/*  64 */
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,		/*  80 */
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,		/*  96 */
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,		/* 112 */
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, UNDERLINE,	/* 128 */
-
-	INVERSE + UNDERLINE, INVERSE + UNDERLINE,		/* 130 */
-	INVERSE + UNDERLINE, INVERSE + UNDERLINE,		/* 132 */
-	INVERSE + UNDERLINE, INVERSE + UNDERLINE,		/* 134 */
-	INVERSE + UNDERLINE, INVERSE + UNDERLINE,		/* 136 */
-	INVERSE + UNDERLINE, INVERSE + UNDERLINE,		/* 138 */
-	INVERSE + UNDERLINE, INVERSE + UNDERLINE,		/* 140 */
-	INVERSE + UNDERLINE, INVERSE + UNDERLINE,		/* 142 */
-	INVERSE + UNDERLINE, INVERSE + UNDERLINE,		/* 144 */
-	INVERSE + UNDERLINE, INVERSE + UNDERLINE,		/* 146 */
-	INVERSE + UNDERLINE, INVERSE + UNDERLINE,		/* 148 */
-	INVERSE + UNDERLINE, INVERSE + UNDERLINE,		/* 150 */
-	INVERSE + UNDERLINE, INVERSE + UNDERLINE,		/* 152 */
-	INVERSE + UNDERLINE, INVERSE + UNDERLINE,		/* 154 */
-	INVERSE + UNDERLINE, INVERSE + UNDERLINE,		/* 156 */
-	INVERSE + UNDERLINE, INVERSE + UNDERLINE,		/* 158 */
-	INVERSE + UNDERLINE, INVERSE + UNDERLINE,		/* 160 */
-
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 164 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 168 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 172 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 176 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 180 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 184 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 188 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 192 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 196 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 200 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 204 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 208 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 212 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 216 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 220 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 224 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 228 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 232 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 236 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 240 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 244 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 248 */
-	INVERSE, INVERSE, INVERSE, INVERSE,			/* 252 */
-	INVERSE, INVERSE, INVERSE, INVERSE + UNDERLINE		/* 256 */
-};
+	if (c & 0x80) {
+		c &= 0x7F;
+		*ap ^= INVERSE;
+	}
+	if (c < 0x20 || c == 0x7F) {
+		c ^= 0x40;
+		*ap ^= UNDERLINE;
+	}
+	return (c);
+}
 
 /* Set attributes */
 
@@ -186,27 +106,28 @@ int set_attr(SCRN *t, int c)
 
 /* Output character with attributes */
 
-void outatr_help(SCRN *t,int *scrn,int *attrf,int xx,int yy,int c,int a)
+void
+outatr_help(SCRN *t, int *scrn, int *attrf, int xx, int yy, int c, int a)
 {
 	/* kludge for help_display() only */
-	if (locale_map->type && !joe_isprint(locale_map,c)) {
-		a ^= xlata[c];
-		c = xlatc[c];
-	}
+	if (locale_map->type)
+		c = xlat(0, c, &a, locale_map);
 	outatr(locale_map, t, scrn, attrf, xx, yy, c, a);
 }
 
-void outatr(struct charmap *map,SCRN *t,int *scrn,int *attrf,int xx,int yy,int c,int a)
+void
+outatr(struct charmap *map, SCRN *t, int *scrn, int *attrf, int xx, int yy, int c, int a)
 {
-	if(map->type)
-		if(locale_map->type) {
-			/* UTF-8 char to UTF-8 terminal */
-			int wid;
+	int wid = 1;
 
+	if (locale_map->type) {
+		/* to UTF-8 terminal */
+		if (map->type) {
+			/* from UTF-8 file */
 			switch ((wid = unictrl(c))) {
 			case 0:
 				/* not a control character */
-				wid = joe_wcwidth(1, c);
+				wid = joe_wcwidth(c);
 				break;
 			case 1:
 				c ^= 0x40;
@@ -215,128 +136,62 @@ void outatr(struct charmap *map,SCRN *t,int *scrn,int *attrf,int xx,int yy,int c
 				a ^= UNDERLINE;
 				break;
 			}
-
-			if(*scrn==c && *attrf==a)
-				return;
-
-			*scrn = c;
-			*attrf = a;
-			if(t->ins)
-				clrins(t);
-			if(t->x != xx || t->y != yy)
-				cpos(t, xx, yy);
-			if(t->attrib != a)
-				set_attr(t, a);
-			if (*unictrlbuf) {
-				ttputs(unictrlbuf);
-			} else {
-				unsigned char buf[7];
-
-				utf8_encode(buf,c);
-				ttputs(buf);
-				if (wid == 0 && xx > 0)
-					attrf[-1] |= HAS_COMBINING;
-			}
-			t->x+=wid;
-			while (wid>1) {
-				*++scrn= -1;
-				*++attrf= 0;
-				--wid;
-			}
 		} else {
-			/* UTF-8 char to non-UTF-8 terminal */
-			/* Don't convert control chars below 256 */
-			if ((c>=32 && c<=126) || c>=160) {
-				if (unictrl(c))
-					a ^= UNDERLINE;
-				c = from_uni(locale_map,c);
-				if (c==-1)
-					c = '?';
-			}
-
-			/* Deal with control characters */
-			if (!joe_isprint(locale_map,c) && !(dspasis && c>=128)) {
-				a ^= xlata[c];
-				c = xlatc[c];
-			}
-
-			if(*scrn==c && *attrf==a)
-				return;
-
-			*scrn = c;
-			*attrf = a;
-			if(t->ins)
-				clrins(t);
-			if(t->x != xx || t->y != yy)
-				cpos(t,xx,yy);
-			if(t->attrib != a)
-				set_attr(t,a);
-			ttputc(c);
-			t->x++;
-		}
-	else
-		if (!locale_map->type) {
-			/* Non UTF-8 char to non UTF-8 terminal */
-			/* Byte-byte Translate? */
-
-			/* Deal with control characters */
-			if (!joe_isprint(locale_map,c) && !(dspasis && c>=128)) {
-				a ^= xlata[c];
-				c = xlatc[c];
-			}
-
-			if (*scrn==c && *attrf==a)
-				return;
-
-			*scrn = c;
-			*attrf = a;
-
-			if(t->ins)
-				clrins(t);
-			if(t->x != xx || t->y != yy)
-				cpos(t,xx,yy);
-			if(t->attrib != a)
-				set_attr(t,a);
-			ttputc(c);
-			t->x++;
-		} else {
-			/* Non UTF-8 char to UTF-8 terminal */
-			unsigned char buf[7];
-			int wid;
-
-			/* Deal with control characters */
-			if (!(dspasis && c>=128) && !joe_isprint(map,c)) {
-				a ^= xlata[c];
-				c = xlatc[c];
-			}
-
-			c = to_uni(map,c);
+			/* from SBCS file */
+			c = to_uni(map, xlat(1, c, &a, map));
 			if (c < 32 || (c >= 0x7F && c < 0xA0)) {
 				c = 0x1000FFFE;
 				a = (a | UNDERLINE) ^ INVERSE;
 			}
-			utf8_encode(buf,c);
+		}
+	} else {
+		/* to SBCS terminal */
+		if (map->type) {
+			/* from UTF-8 file */
 
-			if (*scrn == c && *attrf == a)
-				return;
-
-			wid = joe_wcwidth(0,c);
-			*scrn = c;
-			*attrf = a;
-			if(t->ins)
-				clrins(t);
-			if(t->x != xx || t->y != yy)
-				cpos(t, xx, yy);
-			if(t->attrib != a)
-				set_attr(t, a);
-			ttputs(buf);
-			t->x+=wid;
-			while(wid>1) {
-				*++scrn= -1;
-				*++attrf= 0;
-				--wid;
+			/* don't convert control chars below 256 */
+			if ((c >= 0x20 && c < 0x7F) || c >= 0xA0) {
+				if (unictrl(c))
+					a ^= UNDERLINE;
+				if ((c = from_uni(locale_map, c)) == -1) {
+					c = '!';
+					a |= UNDERLINE;
+				}
 			}
 		}
+		c = xlat(1, c, &a, locale_map);
+	}
+
+	if (*scrn == c && *attrf == a)
+		return;
+
+	*scrn = c;
+	*attrf = a;
+	if (t->ins)
+		clrins(t);
+	if (t->x != xx || t->y != yy)
+		cpos(t, xx, yy);
+	if (t->attrib != a)
+		set_attr(t, a);
+	if (!locale_map->type) {
+		/* SBCS terminal */
+		ttputc(c);
+	} else if (map->type && *unictrlbuf) {
+		/* UTF-8 control char, masked */
+		ttputs(unictrlbuf);
+	} else {
+		unsigned char buf[7];
+
+		utf8_encode(buf, c);
+		ttputs(buf);
+		if (wid == 0 && xx > 0)
+			attrf[-1] |= HAS_COMBINING;
+	}
+	t->x += wid;
+	while (wid-- > 1) {
+		*++scrn = -1;
+		*++attrf = 0;
+	}
 }
 
 /* Set scrolling region */
@@ -685,7 +540,7 @@ SCRN *nopen(CAP *cap)
 		texec(t->cap, t->cl, 1, 0, 0, 0, 0);
 
 	/* Initialise variable screen size-dependent vars */
-	t->htab = calloc(256, sizeof(struct s_hentry));
+	t->htab = ralloc(256, sizeof(struct s_hentry));
 
 	nresize(t, t->co, t->li);
 
@@ -702,6 +557,9 @@ void nresize(SCRN *t, int w, int h)
 		w = 8;
 	t->li = h;
 	t->co = w;
+	if (notoktomul((size_t)t->li, (size_t)t->co))
+		/* who has THAT large screens? */
+		ttabrt(0, "screen too large");
 	if (t->sary)
 		free(t->sary);
 	if (t->updtab)
@@ -718,14 +576,18 @@ void nresize(SCRN *t, int w, int h)
 		free(t->ofst);
 	if (t->ary)
 		free(t->ary);
-	t->scrn = calloc(t->li * t->co, sizeof(int));
-	t->attr = calloc(t->li * t->co, sizeof(int));
+	t->scrn = ralloc((size_t)t->li * (size_t)t->co, sizeof(int));
+	t->attr = ralloc((size_t)t->li * (size_t)t->co, sizeof(int));
 	t->sary = calloc(t->li, sizeof(int));
-	t->updtab = calloc(t->li, sizeof(int));
-	t->syntab = calloc(t->li, sizeof(int));
-	t->compose = calloc(t->co, sizeof(int));
-	t->ofst = calloc(t->co, sizeof(int));
-	t->ary = calloc(t->co, sizeof(struct s_hentry));
+	t->updtab = ralloc((size_t)t->li, sizeof(int));
+	t->syntab = ralloc((size_t)t->li, sizeof(int));
+	t->compose = ralloc((size_t)t->co, sizeof(int));
+	t->ofst = ralloc((size_t)t->co, sizeof(int));
+	t->ary = ralloc((size_t)t->co, sizeof(struct s_hentry));
+
+	if (!t->htab || !t->scrn || !t->attr || !t->sary || !t->updtab ||
+	    !t->syntab || !t->compose || !t->ofst || !t->ary)
+		ttabrt(0, "screen allocation failed");
 
 	nredraw(t);
 }
@@ -1782,7 +1644,7 @@ void genfield(SCRN *t,int *scrn,int *attr,int x,int y,int ofst,unsigned char *s,
 			/* UTF-8 mode: decode character and determine its width */
 			c = utf8_decode(&sm,c);
 			if (c >= 0)
-				wid = joe_wcwidth(1,c);
+				wid = joe_wcwidth(c);
 		} else {
 			/* Byte mode: character is one column wide */
 			wid = 1;
@@ -1844,7 +1706,7 @@ int txtwidth(unsigned char *s,int len)
 		while(len--) {
 			int d = utf8_decode(&sm,*s++);
 			if (d >= 0)
-				col += joe_wcwidth(1,d);
+				col += joe_wcwidth(d);
 		}
 
 		return col;
@@ -1901,7 +1763,7 @@ void genfmt(SCRN *t, int x, int y, int ofst, const unsigned char *s, int flg)
 				/* UTF-8 mode: decode character and determine its width */
 				c = utf8_decode(&sm,c);
 				if (c >= 0) {
-					wid = joe_wcwidth(1, c);
+					wid = joe_wcwidth(c);
 				}
 			} else {
 				/* Byte mode: character is one column wide */
@@ -1971,7 +1833,7 @@ int fmtlen(const unsigned char *s)
 			if(locale_map->type) {
 				c = utf8_decode(&sm,c);
 				if (c>=0)
-					wid = joe_wcwidth(1,c);
+					wid = joe_wcwidth(c);
 			} else {
 				wid = 1;
 			}
@@ -2022,7 +1884,7 @@ int fmtpos(unsigned char *s, int goal)
 			if(locale_map->type) {
 				c = utf8_decode(&sm,c);
 				if (c>=0)
-					wid = joe_wcwidth(1,c);
+					wid = joe_wcwidth(c);
 			} else {
 				wid = 1;
 			}
