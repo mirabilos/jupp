@@ -10,7 +10,7 @@
 #define _JOE_HELP_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_help_h, "$MirOS: contrib/code/jupp/help.h,v 1.8 2017/12/06 23:02:02 tg Exp $");
+__IDSTRING(rcsid_help_h, "$MirOS: contrib/code/jupp/help.h,v 1.9 2018/01/08 00:40:44 tg Exp $");
 #endif
 
 extern struct help *help_actual;
@@ -18,7 +18,7 @@ extern struct help *help_actual;
 void help_display(SCREEN *t);		/* display text in help window */
 void help_off(SCREEN *t);		/* turn help off */
 int help_on(SCREEN *t);			/* turn help on */
-int help_init(const unsigned char *filename);	/* load help file */
+void help_init(const unsigned char *filename);	/* load help file */
 struct help *find_context_help(const unsigned char *name);
 
 int u_help(BASE *base);			/* toggle help on/off */

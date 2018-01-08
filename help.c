@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/help.c,v 1.17 2017/12/21 00:00:11 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/help.c,v 1.18 2018/01/08 00:40:44 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -27,113 +27,70 @@ __RCSID("$MirOS: contrib/code/jupp/help.c,v 1.17 2017/12/21 00:00:11 tg Exp $");
 #include "utf8.h"
 #include "w.h"
 
-#define NOT_ENOUGH_MEMORY -11
-
 struct help *help_actual = NULL;			/* actual help screen */
 
 /*
  * Process help file
- * Returns 0 if the help file was succefully processed
- *        -1 if the help file couldn't be opened
- *        NOT_ENOUGH_MEMORY if there is not enough memory
  */
-int
+void
 help_init(const unsigned char *filename)
 {
 	JFILE *fd;					/* help file */
 	unsigned char buf[1024];			/* input buffer */
-
 	struct help *tmp;
-	unsigned int bfl;				/* buffer length */
-	unsigned int hlpsiz, hlpbsz;			/* number of used/allocated bytes for tmp->text */
-	unsigned char *tempbuf;
+	char *cp;
 
-	if (!(fd = jfopen((const char *)filename, "r")))/* open the help file */
-		return (-1);				/* return if we couldn't open the file */
+	/* open the help file */
+	if (!(fd = jfopen(filename, "r")))
+		return;
 
 	fprintf(stderr, "Processing '%s'...", filename);
 	fflush(stderr);
 
-	while (jfgets((char *)buf, sizeof(buf), fd)) {
-		if (buf[0] == '{'/*}*/) {		/* start of help screen */
-			if (!(tmp = malloc(sizeof(struct help)))) {
- out:
-				jfclose(fd);
-				return (NOT_ENOUGH_MEMORY);
-			}
-
-			tmp->text = NULL;
-			tmp->lines = 0;
-			hlpsiz = 0;
-			hlpbsz = 0;
-			tmp->name = vsncpy(NULL, 0, sz(buf + 1) - 1);
-
-			while ((jfgets((char *)buf, sizeof(buf), fd)) &&
-			    (buf[0] != /*{*/'}')) {
-				bfl = strlen((char *)buf);
-				if (hlpsiz + bfl > hlpbsz) {
-					if (tmp->text) {
-						tempbuf = realloc(tmp->text, hlpbsz + bfl + 1024);
-						if (!tempbuf) {
-							free(tmp->text);
-							free(tmp);
-							goto out;
-						} else {
-							tmp->text = tempbuf;
-						}
-					} else {
-						tmp->text = malloc(bfl + 1024);
-						if (!tmp->text) {
-							free(tmp);
-							goto out;
-						} else {
-							tmp->text[0] = 0;
-						}
-					}
-					hlpbsz += bfl + 1024;
-				}
-				strlcpy((char *)(tmp->text + hlpsiz), (char *)buf, 1024);
-				hlpsiz += bfl;
+	while (jfgets(buf, sizeof(buf), fd)) {
+		if (buf[0] == '{'/*}*/) {
+			/* start of help screen */
+			tmp = calloc(1, sizeof(struct help));
+			/* drop newline */
+			buf[strlen(buf) - 1] = '\0';
+			tmp->name = (unsigned char *)strdup((char *)buf + 1);
+			/* read text */
+			while (jfgets(buf, sizeof(buf), fd) && buf[0] != /*{*/'}') {
+				tmp->text = vsncpy(sv(tmp->text), sz(buf));
 				++tmp->lines;
 			}
-			if (buf[0] == /*{*/'}') {	/* set new help screen as actual one */
-				tmp->prev = help_actual;
-				tmp->next = NULL;
-				if (help_actual) {
-					help_actual->next = tmp;
-				}
-				help_actual = tmp;
-			} else {
-				fprintf(stderr, /*{*/ "\nHelp file '%s' is not properly ended with } on new line.\n", filename);
-				fprintf(stderr, "Do you want to accept incomplete help screen (y/n)?");
+			/* end of help screen */
+			if (buf[0] != /*{*/'}') {
+				fprintf(stderr, /*{*/ "\nHelp file '%s' is not properly ended with } on new line.\nDo you want to accept incomplete help screen (y/n)?", filename);
 				fflush(stderr);
-				if (fgets((char *)buf, 8, stdin) == NULL ||
+				if (!fgets((char *)buf, sizeof(buf), stdin) ||
 				    (buf[0] | 0x20) != 'y') {
-					free(tmp->text);
+					vsrm(tmp->text);
+					free(tmp->name);
 					free(tmp);
-					goto succ;
-				} else {
-					tmp->prev = help_actual;
-					tmp->next = NULL;
-					if (help_actual) {
-						help_actual->next = tmp;
-					}
-					help_actual = tmp;
+					goto out;
 				}
 			}
+			/* intern string to save memory */
+			if ((cp = strdup((char *)tmp->text))) {
+				vsrm(tmp->text);
+				tmp->text = (unsigned char *)cp;
+			}
+			/* set new help screen as actual one */
+			tmp->prev = help_actual;
+			if (help_actual)
+				help_actual->next = tmp;
+			help_actual = tmp;
 		}
 	}
 	fprintf(stderr, "done\n");
-succ:
+ out:
 	/* close help file */
 	jfclose(fd);
 
 	/* move to first help screen */
-	while (help_actual && help_actual->prev) {
+	while (help_actual && help_actual->prev)
 		help_actual = help_actual->prev;
-	}
-
-	return (0);
 }
 
 /*
