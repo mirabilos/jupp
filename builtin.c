@@ -8,7 +8,7 @@
 
 #include "config.h"
 
-__RCSID("$MirOS: contrib/code/jupp/builtin.c,v 1.8 2017/12/08 02:00:38 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/builtin.c,v 1.9 2018/01/08 00:08:18 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -66,7 +66,9 @@ int jfclose(JFILE *f)
 	return rtn;
 }
 
-unsigned char *jfgets(unsigned char *buf,int len,JFILE *f)
+/*XXX fails to honour len (256 or 1024, in practice) for builtins */
+unsigned char *
+jfgets(unsigned char *buf, int len, JFILE *f)
 {
 	if (f->f)
 		return (unsigned char *)fgets((char *)buf, len, f->f);
