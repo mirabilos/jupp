@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.43 2018/01/08 02:01:20 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.44 2018/01/08 04:07:56 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -557,9 +557,11 @@ void nresize(SCRN *t, int w, int h)
 		w = 8;
 	t->li = h;
 	t->co = w;
-	if (notoktomul((size_t)t->li, (size_t)t->co))
+	if (notoktomul((size_t)t->li, (size_t)t->co)) {
 		/* who has THAT large screens? */
 		ttabrt(0, "screen too large");
+		exit(255);
+	}
 	if (t->sary)
 		free(t->sary);
 	if (t->updtab)
@@ -586,8 +588,10 @@ void nresize(SCRN *t, int w, int h)
 	t->ary = ralloc((size_t)t->co, sizeof(struct s_hentry));
 
 	if (!t->htab || !t->scrn || !t->attr || !t->sary || !t->updtab ||
-	    !t->syntab || !t->compose || !t->ofst || !t->ary)
+	    !t->syntab || !t->compose || !t->ofst || !t->ary) {
 		ttabrt(0, "screen allocation failed");
+		exit(255);
+	}
 
 	nredraw(t);
 }
