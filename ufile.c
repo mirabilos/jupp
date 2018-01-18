@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.30 2018/01/18 21:59:12 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.31 2018/01/18 22:00:31 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -388,13 +388,10 @@ static int saver(BW *bw, int c, struct savereq *req, int *notify)
 	}
 }
 
-static int dosave(BW *bw, struct savereq *req, int *notify)
+static int
+dosave(BW *bw, struct savereq *req, int *notify)
 {
-	if (backup(bw)) {
-		return saver(bw, 0, req, notify);
-	} else {
-		return saver(bw, 'y', req, notify);
-	}
+	return (saver(bw, backup(bw) ? 0 : 'y', req, notify));
 }
 
 static int dosave2(BW *bw, int c, struct savereq *req, int *notify)
