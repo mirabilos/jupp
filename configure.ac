@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.66 2017/12/16 22:38:03 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.67 2018/01/18 21:59:12 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -220,9 +220,10 @@ AC_CHECK_FUNCS([isblank])
 if test x"$ac_cv_func_isblank" = xyes; then
 	joe_ISBLANK
 fi
-AC_CHECK_FUNCS([alarm mkdir mkstemp putenv setlocale strchr strdup utime setpgid])
-AC_CHECK_FUNCS([setitimer sigaction sigvec siginterrupt sigprocmask isatty])
-AC_CHECK_FUNCS([strlcpy strlcat nl_langinfo get_current_dir_name ctime popen])
+AC_CHECK_FUNCS([alarm ctime fsync get_current_dir_name isatty mkdir mkstemp])
+AC_CHECK_FUNCS([nl_langinfo popen putenv setitimer setlocale setpgid])
+AC_CHECK_FUNCS([sigaction siginterrupt sigprocmask sigvec strchr strdup])
+AC_CHECK_FUNCS([strlcat strlcpy sync utime])
 
 AC_ARG_ENABLE([fork],
 [  --disable-fork          disable use of fork],

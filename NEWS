@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.116 2018/01/07 17:30:52 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.117 2018/01/18 21:59:11 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
@@ -21,6 +21,8 @@ jupp-current
 - Improved shebang and diff recognition of syntax highlighting file types
 - Render instruction to show online help as BLINKING BOLD so it stands out
 - Let screen scroll back to the left on ^QL, ^B, ^KD, while in hex mode
+- Slightly safer saving of backup files, using fsync(2) if existent
+- Add new command “sync”
 
 JOE 3.1jupp32
 
