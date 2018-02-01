@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/LIST,v 1.12 2018/01/18 21:59:11 tg Exp $
+$MirOS: contrib/code/jupp/LIST,v 1.13 2018/02/01 02:23:01 tg Exp $
 ------------------------------------------------------------------
 
 Joe commands grouped by function
@@ -27,7 +27,7 @@ begin_marking	If we're on an edge of a block: set markb to other edge and
 		turn on marking mode.  Otherwise set markb to cursor and
 		turn on marking mode.
 
-select          Set markb.  If it was already set, do nothing.
+select		Set markb.  If it was already set, do nothing.
 filt		Filter block or file through a unix command
 markb		Set beginning of block mark
 markk		Set end of block mark
