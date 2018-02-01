@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.67 2018/01/18 21:59:12 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.68 2018/02/01 02:36:51 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -215,10 +215,6 @@ if test x"$ac_cv_func_getcwd" != xyes; then
 	if test x"$ac_cv_func_getwd" != xyes; then
 		AC_MSG_ERROR([don't know how to get current working directory])
 	fi
-fi
-AC_CHECK_FUNCS([isblank])
-if test x"$ac_cv_func_isblank" = xyes; then
-	joe_ISBLANK
 fi
 AC_CHECK_FUNCS([alarm ctime fsync get_current_dir_name isatty mkdir mkstemp])
 AC_CHECK_FUNCS([nl_langinfo popen putenv setitimer setlocale setpgid])
