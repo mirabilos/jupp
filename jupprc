@@ -446,9 +446,9 @@
 \i   Help Screen    turn off with ^J     prev. screen ^[,    next screen ^[.     \i
 \i \i\u\bMACROS\b\u       \u\bMISC\b\u         \u\bSCROLL\b\u      \u\bSHELL\b\u       \u\bGOTO\b\u        \u\bI-SEARCH\b\u       \i \i
 \i \i^[( record   ^Q? status   ^Q. right   ^K' window  ^QB to ^KB  ^[R backwards  \i \i
-\i \i^[) stop     ^QQ repeat   ^Q, left    ^[! command ^QK to ^KK  ^[S forwards   \i \i
-\i \i^[? query    ^QM math     \u\bCharSEARCH\b\u  \u\bQUOTE\b\u       \u\bDELETE\b\u      \u\bBOOKMARKS\b\u      \i \i
-\i \i^[D dump     ^[H message  ^QH forwrd   ` Ctrl-    ^[Y yank    ^K 0-9 define  \i \i
+\i \i^[) stop     ^QQ repeat   ^Q, left    ^[' command ^QK to ^KK  ^[S forwards   \i \i
+\i \i^[/ query    ^QM math     \u\bCharSEARCH\b\u  \u\bQUOTE\b\u       \u\bDELETE\b\u      \u\bBOOKMARKS\b\u      \i \i
+\i \i^[? lst def  ^[H message  ^QH forwrd   ` Ctrl-    ^[Y yank    ^K 0-9 define  \i \i
 \i \i^[ 0-9 play  ^N  play #0  ^QG backwd  ^P Meta-    ^[O word<   ^Q 0-9 goto    \i \i
 \i \i \u\bIn math mode,\b\u use 0xCAFE for hex. All ops are floating point internally.    \i \i
 \i \i \u\bPredefined variables:\b\u byte col height line lines top width                  \i \i
@@ -456,7 +456,7 @@
 
 {Programs
 \i   Help Screen    turn off with ^J     prev. screen ^[,    next screen ^[.     \i
-\i \i\u\bGOTO\b\u                               \u\bCOMPILING\b\u                    \u\bSLIDING\b\u      \i \i
+\i \i\u\bGOTO\b\u   ^QV start of last search    \u\bCOMPILING\b\u                    \u\bSLIDING\b\u      \i \i
 \i \i^Q= next merge conflict marker     ^[C compile & parse errors   ^W up        \i \i
 \i \i^Q] next matching brace            ^[E parse errors             ^Z down      \i \i
 \i \i^Q[ previous   "   "  \u\bINDENT\b\u       ^KF save, compile & upload to NXT brick   \i \i
@@ -498,7 +498,7 @@
 \i \i go to \uhttp://sf.net/projects/joe-editor/\u for upstream bug reports. JUPP 2.8 \i \i
 \i \i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\d(R)\d \i \i
 \i \i at \uhttp://mirbsd.de/jupp\u and by \bThorsten "\dmirabilos\d" Glaser <\utg@mirbsd.org\u>\b \i \i
-\i \i @(#) jupprc 2018-01-07; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
+\i \i @(#) jupprc 2018-02-01; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
 }
 
  #HOOK#3 additional help screens
@@ -532,14 +532,14 @@ arg		^Q Q
 arg		^Q ^Q
 arg		^Q q
 arg		^[ q q
+explode		.k6
 explode		^K I
 explode		^K ^I
 explode		^K i
 explode		^[ [ 1 7 ~
-explode		.k6
+help		.k1
 help		^J
 help		^[ [ 1 1 ~
-help		.k1
 hnext		^[ .
 hprev		^[ ,
 math		^Q M
@@ -550,18 +550,18 @@ mathins		^[ #
 mathres		^[ =
 msg		^[ H
 msg		^[ h
+nextw		.k8
 nextw		^K N
 nextw		^K ^N
 nextw		^K n
 nextw		^[ [ 1 9 ~
-nextw		.k8
 play		^[ 0 TO 9
+prevw		.k7
 prevw		^K P
 prevw		^K ^P
 prevw		^K p
 prevw		^[ [ 1 8 ~
-prevw		.k7
-query		^[ ?
+query		^[ /
 quote		`
 quote8		^P
 record		^[ (
@@ -599,11 +599,17 @@ keymap,"prompt",rtn			^D
 
 :main
 :inherit windows
+:def dosrch setmark,":",ffirst
+:def dorepl setmark,":",qrepl
 :def pastemain helpcard,"Paste",rtn,keymap,"Paste",rtn
-:def conflictmarker ffirst,"\\^\\[<>=]\\[<>=]\\[<>=]\\[<>=]\\[<>=]\\[<>=]\\[<>=]\\[ \\n]",rtn,rtn,ltarw
+:def conflictmarker dosrch,"\\^\\[<>=]\\[<>=]\\[<>=]\\[<>=]\\[<>=]\\[<>=]\\[<>=]\\[ \\n]",rtn,rtn,ltarw
 :def fixwhitespace eof," ",bof,"a",qrepl,"\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\+\\[",quote,"i",quote,"k",quote,"l",quote,"m ]\\$",rtn,rtn,rtn,"r",eof,rtn,ffirst,"\\^\\[^\\n]",rtn,"b",rtn,eol,markb,bof,delch,eof,markk,blkdel,ffirst,"\\?",rtn,"b",rtn,eol,rtn
 :def freedroidz splitw,prevw,scratch,"nbc-Output",rtn,nextw,save,markk,bol,markb,prevw,prevw,blkcpy,nextw,nextw,rtn,prevw,eol,"'",bol,qrepl,"'",rtn,rtn,"'\\\\''",rtn,"r",backs,backs,backs,bol,"LC_ALL=C; export LC_ALL; fn='",eol,"; p=--posix; sed $p -e q </dev/null >/dev/null 2>&1 || p=; r=$(sed $p -e 's[^^][&]g; s\\^\\\\^g' <<EOF",rtn,"$fn",rtn,"EOF",rtn,"); (case $fn in *.nxc) ;; *) echo '==> Error: filename not *.nxc'; exit ;; esac; echo \"Compiling $fn\"; nbc -sm- -d \"$fn\" 2>&1; x=$?; if test $x = 0; then echo '==> OK'; else echo '==> Error code:' $x; fi) | tr '\\n' '' | sed $p -e 's!# *\\([^]*\\)File \"[^\"]*/\\('\"$r\"'\\)\" ; line \\([0-9]*\\)!\\2:\\3: \\1!g' -e 's!#\\([^]*\\)File \"\\([^\"]*\\)\" ; line \\([0-9]*\\)!\\2:\\3: \\1!g' | tr '' '\\n'",rtn,nmark,filt,"sh",rtn,rtn,"Press ^KQ to close this window!",rtn,parserr
 :def docompile edit,rtn,filt,query,parserr
+:def filtall nmark,filt,uparw
+:def pvsrch prevpos,gomark,":"
+:def inscurdate insf,"!date '+%Y-%m-%d'",rtn,eol,delch
+:def inscurtime insf,"!date '+%H:%M:%S'",rtn,eol,delch
  #HOOK#5 main keybindings
 begin_marking,uparw,toggle_marking	^[ [ 1 ; 2 A
 begin_marking,dnarw,toggle_marking	^[ [ 1 ; 2 B
@@ -617,8 +623,6 @@ pastemain	^[ P
 pastemain	^[ p
 pastemain	^[ [ 2 0 0 ~
 nop		^[ [ 2 0 1 ~
-fixwhitespace	^K ]
-conflictmarker	^Q =
 backs		^?
 backs		^H
 backw		^[ o
@@ -644,14 +648,14 @@ bof		^Q ^R
 bof		^Q r
 bof		^[ [ 1 ; 5 H
 bof		^[ q r
-bol		.kh
-bol		^Q S
-bol		^Q ^S
-bol		^Q s
-bol		^[ [ 1 ~
-bol		^[ [ 7 ~
-bol		^[ [ H
-bol		^[ q s
+home		.kh
+home		^Q S
+home		^Q ^S
+home		^Q s
+home		^[ [ 1 ~
+home		^[ [ 7 ~
+home		^[ [ H
+home		^[ q s
 bos		^Q X
 bos		^Q ^X
 bos		^Q x
@@ -664,6 +668,9 @@ center		^K A
 center		^K ^A
 center		^K a
 col		^Q -
+col		^[ q -
+conflictmarker	^Q =
+conflictmarker	^[ q =
 crawll		^Q ,
 crawll		^[ q ,
 crawlr		^Q .
@@ -707,19 +714,24 @@ execmd		^[ -
 exsave		^K X
 exsave		^K ^X
 exsave		^K x
-ffirst		^Q F
-ffirst		^Q ^F
-ffirst		^Q f
-ffirst		^[ q f
+dosrch		^Q F
+dosrch		^Q ^F
+dosrch		^Q f
+dosrch		^[ q f
 filt		^K /
-nmark,filt,uparw	^[ [ 2 0 ~
+filtall		.k9
+filtall		^[ [ 2 0 ~
+fixwhitespace	^K ]
 fmtblk		^K D
 fmtblk		^K ^D
 fmtblk		^K d
+format		^B
 fnext		.k3
 fnext		^L
 fnext		^[ [ 1 3 ~
-format		^B
+freedroidz	^K F
+freedroidz	^K ^F
+freedroidz	^K f
 fwrdc		^Q H ^@ TO ÿ
 fwrdc		^Q ^H ^@ TO ÿ
 fwrdc		^Q h ^@ TO ÿ
@@ -729,6 +741,8 @@ gomark		^[ q 0 TO 9
 groww		^K G
 groww		^K ^G
 groww		^K g
+inscurdate	^[ @
+inscurtime	^[ !
 insf		^K R
 insf		^K ^R
 insf		^K r
@@ -744,8 +758,7 @@ ltarw		^S
 ltarw		^[ O D
 ltarw		^[ [ D
 ltarw		^[ s
-macros		^[ D
-macros		^[ d
+macros		^[ ?
 markb		^K B
 markb		^K ^B
 markb		^K b
@@ -758,6 +771,8 @@ markl		^K l
 mode		^O
 mode,"T"	.kI
 mode,"T"	^V
+mode,"T"	^[ [ 2 ~
+mode,"T"	^[ [ L
 nextpos		^K =
 nextword	^F
 nextword	^[ [ 1 ; 5 C
@@ -771,15 +786,14 @@ docompile	^[ C
 docompile	^[ c
 parserr		^[ E
 parserr		^[ e
-freedroidz	^K F
-freedroidz	^K ^F
-freedroidz	^K f
 pgdn		.kN
 pgdn		^C
 pgdn		^[ [ 6 ~
+pgdn		^[ [ G
 pgup		.kP
 pgup		^R
 pgup		^[ [ 5 ~
+pgup		^[ [ I
 play,"0"	^N
 prevpos		^Q P
 prevpos		^Q ^P
@@ -789,10 +803,14 @@ prevword	^A
 prevword	^[ [ 1 ; 5 D
 prverr		^[ N
 prverr		^[ n
-qrepl		^Q A
-qrepl		^Q ^A
-qrepl		^Q a
-qrepl		^[ q a
+pvsrch		^Q V
+pvsrch		^Q ^V
+pvsrch		^Q v
+pvsrch		^[ q v
+dorepl		^Q A
+dorepl		^Q ^A
+dorepl		^Q a
+dorepl		^[ q a
 redo		^^
 rindent		^K .
 rsrch		^[ R
@@ -801,7 +819,7 @@ rtarw		.kr
 rtarw		^D
 rtarw		^[ O C
 rtarw		^[ [ C
-run		^[ !
+run		^[ '
 save		^K S
 save		^K ^S
 save		^K s
@@ -848,6 +866,7 @@ yankpop		^[ y
 :inherit main
 :def pasteprompt keymap,"Pasteprompt",rtn,msg,"Entered bracketed paste mode",rtn
 abort		^C
+abort		^U
 complete	^I
 nop		^L
 pasteprompt	^[ P
@@ -856,6 +875,7 @@ pasteprompt	^[ [ 2 0 0 ~
 
 :menu
 :inherit windows
+abort		^U
 abort		^[ ^[
 backsmenu	^?
 backsmenu	^H
@@ -876,10 +896,10 @@ dnarwmenu	.kd
 dnarwmenu	^X
 dnarwmenu	^[ O B
 dnarwmenu	^[ [ B
-eof		^[ [ 1 ; 5 F
 eofmenu		^Q C
 eofmenu		^Q ^C
 eofmenu		^Q c
+eofmenu		^[ [ 1 ; 5 F
 eofmenu		^[ q c
 eolmenu		.@7
 eolmenu		.kH
@@ -895,13 +915,21 @@ ltarwmenu	^S
 ltarwmenu	^[ O D
 ltarwmenu	^[ [ D
 ltarwmenu	^[ s
+pgdnmenu	.kN
+pgdnmenu	^C
+pgdnmenu	^[ [ 6 ~
+pgdnmenu	^[ [ G
+pgupmenu	.kP
+pgupmenu	^R
+pgupmenu	^[ [ 5 ~
+pgupmenu	^[ [ I
 rtarwmenu	.kr
 rtarwmenu	^D
 rtarwmenu	^[ O C
 rtarwmenu	^[ [ C
 rtn		SP
-rtn		^I
 rtn		^J
+tabmenu		^I
 uparwmenu	.ku
 uparwmenu	^E
 uparwmenu	^[ O A

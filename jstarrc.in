@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jstarrc.in,v 1.30 2018/01/31 22:38:17 tg Exp $
+ $MirOS: contrib/code/jupp/jstarrc.in,v 1.31 2018/02/01 02:33:46 tg Exp $
 
                          Initialisation file for JOE
                            WordStar / Turbo-C Joe
@@ -128,78 +128,55 @@
 
  Here is a list of modes which can be set:
 
-	-encoding utf8		File is UTF-8 encoded
+ -keymap name		Keymap to use if not 'main'
+ -square		Rectangular block mode
+ -overwrite		Overtype mode
+ -picture		Picture mode (cursor right can go past end of line)
+ -linums		Show line numbers in front of each line
+ -rdonly		File is read-only
+ -crlf			File uses CR-LF at end of lines
+ -encoding utf8		File is UTF-8 encoded
+ -syntax name		Specify syntax (syntax file called
+			'name.jsf' will be loaded)
+ -highlight		Enable syntax highlighting
 
-	-syntax name		Specify syntax (syntax file called
-				'name.jsf' will be loaded)
+ -french		One space after '.', '?' and '!' for wordwrap and
+			paragraph reformat instead of two. JOE does not
+			change the spacing you give, but sometimes it must
+			put spacing in itself. This selects how much is
+			inserted in those cases.
+ -purify		Fixup indentation if necessary for rindent, lindent
+			and backs (for example if indentation uses a mix of
+			tabs and spaces, and indentc is space, indentation
+			will be converted to all spaces)
 
-	-highlight		Enable highlighting
+ -lmargin nnn		Left margin
+ -rmargin nnn		Right margin
+ -tab nnn		Tab width
+ -indentc nnn		Indentation character (32 = space, 9 = tab)
+ -istep nnn		Amount of 'indentc's per indentation level
+ -spaces		Tab key inserts spaces instead of tabs
+ -wordwrap		Wordwrap
+ -autoindent		Auto indent
+ -smartbacks		Backspace key deletes 'istep' number of 'indentc's
+			if cursor is at first non-space character
+ -smarthome		Home key first moves cursor to beginning of line,
+			then if hit again, to first non-blank character
+ -indentfirst		Smart home goes to first non-blank character first,
+			instead of to the beginning of the line first
 
-	-smarthome		Home key first moves cursor to beginning of
-				line, then if hit again, to first non-blank
-				character
+ -lmsg			Status line definition strings;
+ -rmsg			see previous section for more info
 
-	-indentfirst		Smart home goes to first non-blank character
-				first, instead of the beginning of the line
+ -mnew macro		Macro to execute when new files are loaded
+ -mold macro		Macro to execute when existing files are loaded
+ -msnew macro		Macro to execute when new files are saved
+ -msold macro		Macro to execute when existing files are saved
 
-	-smartbacks		Backspace key deletes 'istep' number of
-				'indentc's if cursor is at first non-space
-				character
+ Macros for the above options are in the same format as in the key
+ binding section below but without the key name strings.
 
-	-tab nnn		Tab width
-
-	-indentc nnn		Indentation character (32 = space, 9 = tab)
-
-	-istep nnn		Amount of 'indentc's per indentation level
-
-	-spaces			Tab key inserts spaces instead of tabs
-
-	-purify			Fixup indentation if necessary for rindent,
-				lindent and backs (for example if indentation
-				uses a mix of tabs and spaces, and indentc is
-				space, indentation will be converted to all
-				spaces)
-
-	-square			Rectangular block mode
-
-	-crlf			File uses CR-LF at end of lines
-
-	-wordwrap		Wordwrap
-
-	-autoindent		Auto indent
-
-	-overwrite		Overtype mode
-
-	-picture		Picture mode (rtarw can go past end of line)
-
-	-lmargin nnn		Left margin
-
-	-rmargin nnn		Right margin
-
-	-french			One space after '.', '?' and '!' for wordwrap
-				and paragraph reformat instead of two. JOE
-				does not change the spacing you give, but
-				sometimes it must put spacing in itself. This
-				selects how much is inserted in those cases.
-
-	-linums			Show line numbers in front of each line
-
-	-rdonly			File is read-only
-
-	-keymap name		Keymap to use if not 'main'
-
-	-lmsg			Status line definition strings;
-	-rmsg			see previous section for more info
-
-	-mnew macro		Macro to execute when new files are loaded
-	-mold macro		Macro to execute when existing files are loaded
-	-msnew macro		Macro to execute when new files are saved
-	-msold macro		Macro to execute when existing files are saved
-
-	Macros for the above options are in the same format as in the key
-	binding section below but without the key name strings.
-
- Default local options
+ Default local options:
 -highlight
 -french
 -indentc 9
@@ -760,7 +737,9 @@ arg		^Q q
 explode		^K I
 explode		^K ^I
 explode		^K i
+help		.k1
 help		^J
+help		^[ [ 1 1 ~
 nmark		^K H
 nmark		^K ^H
 nmark		^K h
@@ -777,8 +756,10 @@ nextw		^K ^N
 nextw		^K n
 pgdn		.kN		Screen down
 pgdn		^[ [ 6 ~
+pgdn		^[ [ G		SCO
 pgup		.kP		Screen up
 pgup		^[ [ 5 ~
+pgup		^[ [ I		SCO
 play		^[ 0 TO 9
 prevw		^K P
 prevw		^K ^P
@@ -848,29 +829,6 @@ begin_marking,eol,toggle_marking	^[ [ 1 ; 2 F	xterm shift-end
 begin_marking,bof,toggle_marking	^[ [ 1 ; 6 H	xterm shift-ctrl-home
 begin_marking,eof,toggle_marking	^[ [ 1 ; 6 F	xterm shift-ctrl-end
 
- Here we guess some common key sequences which either do not have termcap
- sequences or which are frequently wrong. Note that if the termcap entry is
- correct, it will override these later on.
-
-insc			^[ [ 2 ~
-insc			^[ [ L			SCO
-
-delch			^[ [ 3 ~
-
-pgup			^[ [ I		SCO
-
-pgdn			^[ [ G		SCO
-
-home			^[ [ 1 ~		Putty, Linux, Cygwin
-home			^[ [ H			Xterm, Konsole, SCO
-home			^[ O H			gnome-terminal
-home			^[ [ 7 ~		RxVT
-
-eol			^[ [ 4 ~		Putty, Linux, Cygwin, ssh
-eol			^[ [ F			Xterm, Konsole, SCO
-eol			^[ O F			gnome-terminal
-eol			^[ [ 8 ~		RxVT
-
 rtarw,prevword,markb,nextword,markk	^K T
 rtarw,prevword,markb,nextword,markk	^K ^T
 rtarw,prevword,markb,nextword,markk	^K t
@@ -930,13 +888,15 @@ bof		^Q R		Goto beginning of file
 bof		^Q ^R
 bof		^Q r
 bof		^Q .kP
-home		.kh		Goto beginning of line
-home		^[ [ H
-home		^[ [ 1 ~
-home		^Q S
+bof		^[ [ 1 ; 5 H
+home		^Q S		Goto beginning of line
 home		^Q ^S
 home		^Q s
 home		^Q .kl
+home		.kh
+home		^[ [ 1 ~
+home		^[ [ 7 ~
+home		^[ [ H
 crawll		^Q ,
 crawlr		^Q .
 tos		^Q E
@@ -951,6 +911,7 @@ delbol		^Q ^?
 delbol		^Q .kD
 delch		.kD		Delete character
 delch		^G
+delch		^[ [ 3 ~
 deleol		^Q Y		Delete to end of line
 deleol		^Q ^Y
 deleol		^Q y
@@ -968,14 +929,16 @@ eof		^Q C		Go to end of file
 eof		^Q ^C
 eof		^Q c
 eof		^Q .kN
-eol		.kH		Go to end of line
+eof		^[ [ 1 ; 5 F
 eol		.@7
-eol		^[ [ F
-eol		^[ [ 4 ~
+eol		.kH		Go to end of line
 eol		^Q D
 eol		^Q ^D
 eol		^Q d
 eol		^Q .kr
+eol		^[ [ 4 ~
+eol		^[ [ 8 ~
+eol		^[ [ F
 bos		^Q X
 bos		^Q ^X
 bos		^Q x
@@ -994,6 +957,8 @@ qrepl		^Q ^A
 qrepl		^Q a
 filt		^K /		Filter block
 fnext		^L		Find next
+fnext		.k3
+fnext		^[ [ 1 3 ~
 format		^B		Format paragraph
 fwrdc		^Q G ^@ TO ÿ
 fwrdc		^Q ^G ^@ TO ÿ
@@ -1008,8 +973,10 @@ insf		^K ^R
 insf		^K r
 macros		^[ d		Dump macros
 macros		^[ ^D
-mode,"T"	^V		Insert/Overtype
 mode,"T"	.kI
+mode,"T"	^V		Insert/Overtype
+mode,"T"	^[ [ 2 ~
+mode,"T"	^[ [ L		SCO
 lindent		^K ,		Indent to left
 line		^Q I		Goto line no.
 line		^Q ^I
@@ -1030,6 +997,7 @@ markl		^K l
 mode		^O
 nextpos		^K =		Goto next position in position history
 nextword	^F		Goto next word
+nextword	^[ [ 1 ; 5 C
 open		^N		Split line
 pgdn		^C
 pgup		^R
@@ -1037,6 +1005,7 @@ prevpos		^Q P
 prevpos		^Q ^P
 prevpos		^Q p
 prevword	^A		Previous word
+prevword	^[ [ 1 ; 5 D
 redo		^^		Redo changes
 rindent		^K .		Indent to right
 rtarw		.kr		Go right
@@ -1087,30 +1056,20 @@ keymap,"Pasteprompt",rtn,msg,"Entered bracketed paste mode",rtn	^[ [ 2 0 0 ~
 
 :menu			Selection menus
 :inherit windows
-pgupmenu	^[ [ I
-
-pgdnmenu	^[ [ G
-
-bolmenu		^[ [ 1 ~		Putty, Linux, Cygwin
-bolmenu		^[ [ H			Xterm, Konsole
-bolmenu		^[ O H			gnome-terminal
-bolmenu		^[ [ 7 ~		RxVT
-
-eolmenu		^[ [ 4 ~		Putty, Linux, Cygwin, ssh
-eolmenu		^[ [ F			Xterm, Konsole
-eolmenu		^[ O F			gnome-terminal
-eolmenu		^[ [ 8 ~		RxVT
-
 abort		^[ ^[
 backsmenu	^?
 backsmenu	^H
 bofmenu		^Q R
 bofmenu		^Q ^R
-bofmenu		^K r
-bolmenu		.kh
+bofmenu		^Q r
+bofmenu		^[ [ 1 ; 5 H
 bolmenu		^Q S
 bolmenu		^Q ^S
 bolmenu		^Q s
+bolmenu		.kh
+bolmenu		^[ [ 1 ~
+bolmenu		^[ [ 7 ~
+bolmenu		^[ [ H
 dnarwmenu	.kd
 dnarwmenu	^X
 dnarwmenu	^[ [ B
@@ -1118,29 +1077,33 @@ dnarwmenu	^[ O B
 eofmenu		^Q C
 eofmenu		^Q ^C
 eofmenu		^Q c
+eofmenu		^[ [ 1 ; 5 F
+eolmenu		.@7
 eolmenu		.kH
 eolmenu		^Q D
 eolmenu		^Q ^D
 eolmenu		^Q d
+eolmenu		^Q .kr
+eolmenu		^[ [ 4 ~
+eolmenu		^[ [ 8 ~
+eolmenu		^[ [ F
 ltarwmenu	.kl
 ltarwmenu	^S
 ltarwmenu	^[ [ D
 ltarwmenu	^[ O D
-pgdnmenu	.kN		Screen down
+pgdnmenu	.kN
 pgdnmenu	^C
 pgdnmenu	^[ [ 6 ~
-pgupmenu	.kP		Screen up
+pgdnmenu	^[ [ G
+pgupmenu	.kP
 pgupmenu	^R
 pgupmenu	^[ [ 5 ~
+pgupmenu	^[ [ I
 rtarwmenu	.kr
 rtarwmenu	^D
 rtarwmenu	^[ [ C
 rtarwmenu	^[ O C
 rtn		SP
-rtn		^I
-rtn		^K H
-rtn		^K h
-rtn		^K ^H
 rtn		^J
 tabmenu		^I
 uparwmenu	.ku
@@ -1160,10 +1123,11 @@ type		^@ TO ÿ
 :cua			Undo/Cut/Copy/Paste, CUA style
 :inherit main
  #HOOK#6 extra keybindings in CUA mode
+:def pastecua helpcard,"Paste",rtn,keymap,"Pastecua",rtn
 undo		^Z
 blkdel,nmark	^X
 copy		^C
 yank		^V
-helpcard,"Paste",rtn,keymap,"Pastecua",rtn	^[ P
-helpcard,"Paste",rtn,keymap,"Pastecua",rtn	^[ p
-helpcard,"Paste",rtn,keymap,"Pastecua",rtn	^[ [ 2 0 0 ~
+pastecua	^[ P
+pastecua	^[ p
+pastecua	^[ [ 2 0 0 ~

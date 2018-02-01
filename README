@@ -57,8 +57,8 @@ system).
    The SHELL environment variable is not set or exported (Cygwin has this
 problem).  Put:
 
-	export SHELL=/bin/bash
-    or  setenv SHELL /bin/bash
+	export SHELL=/bin/mksh
+    or  setenv SHELL /bin/csh
 
    In you .profile or .cshrc file and send mail to the Cygwin mailing list
 so that they fix this problem.
@@ -226,7 +226,8 @@ USAGE:	joe filename [filename ...]
 
 	These options can also be set in the joerc file.  The NOXON, LINES,
 COLUMNS, DOPADDING and BAUD options can also be set with environment
-variables.
+variables. The rc files shipped except jupprc also contain documentation
+and examples for the options.
 
 	The JOETERM environment variable can be set to override the TERM
 environment variable.
@@ -283,7 +284,7 @@ run.
 	Termcap is better than terminfo because it is a more open standard.
 Programs can directly access the termcap database and future versions of
 terminfo may require programs to use curses.  The only argument in
-terminfo's favor is that it is faster than termcap.  To fix this problem,
+terminfo's favour is that it is faster than termcap.  To fix this problem,
 JOE will use a termcap index file if it exists and if it is up to date.
 
 	This is the procedure to make the termcap index file:
@@ -379,7 +380,7 @@ If you use csh or tcsh, place this in your .cshrc file:
 
 	setenv JOETERM fansi
 
-If you use sh, ksh or bash, place this in your .profile file:
+If you use mksh, ksh, sh or GNU bash, place this in your .profile file:
 
 	JOETERM=fansi; export JOETERM
 
@@ -407,7 +408,7 @@ doing this:
 
 		TERMINFO=$HOME/.info; export TERMINFO
 
-		if you use bash, sh or ksh)
+		if you use mksh, ksh, sh or GNU bash)
 
 	4)	tic joe/terminfo
 
@@ -430,4 +431,4 @@ joe's stdin/stdout to /dev/tty:
 	joe filename  </dev/tty >/dev/tty
 
 ___________________________________________________________________
-$MirOS: contrib/code/jupp/README,v 1.6 2017/01/11 22:04:31 tg Exp $
+$MirOS: contrib/code/jupp/README,v 1.7 2018/02/01 02:33:44 tg Exp $
