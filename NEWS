@@ -1,9 +1,12 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.118 2018/02/01 02:33:43 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.119 2018/02/13 20:04:11 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
 
 - …
+
+JOE 3.1jupp33
+
 - Fix several issues pointed out by Coverity Scan
   * dead code
   * use-after-free (minor)
@@ -29,6 +32,7 @@ jupp-current
   switch ^[? to show macros (matches WS), query moves to ^[/ (which was
   unused); ^U can abort menu and prompt (matches WS)
 - Sync improvements across rc files
+- Remove obsolete GNU autoconf check
 
 JOE 3.1jupp32
 
