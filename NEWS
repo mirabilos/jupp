@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.119 2018/02/13 20:04:11 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.120 2018/02/13 21:12:54 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
@@ -27,7 +27,7 @@ JOE 3.1jupp33
 - Slightly safer saving of backup files, using fsync(2) if existent
 - Add new command “sync”
 - (crb3) Add ^QV to jupprc; add WordStar documentation references;
-  (tg) Rename ^[! to ^[! to match ^K'; (crb3) Add ^[@ and ^[!
+  (tg) Rename ^[! to ^[' to match ^K'; (crb3) Add ^[@ and ^[!
 - jupprc: Fix eolmenu; replace bol with home for smarthome users;
   switch ^[? to show macros (matches WS), query moves to ^[/ (which was
   unused); ^U can abort menu and prompt (matches WS)
