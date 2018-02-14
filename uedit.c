@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.33 2018/01/06 00:28:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.34 2018/02/14 22:28:12 tg Exp $");
 
 #include <string.h>
 
@@ -1342,16 +1342,20 @@ doquote(BW *bw, int c, void *object, int *notify)
 	return 0;
 }
 
-static const char uquote_txt_uni[] =
-    "Ctrl- (or 0-9 for dec. r for hex, o for octal ASCII, x for hex UTF-8)";
-static const char uquote_txt_oct[] =
+static char uquote_txt[] =
     "Ctrl- (or 0-9 for dec. x for hex, o for octal ASCII, u for hex UTF-8)";
 int
 uquote(BW *bw)
 {
 	quotestate = 0;
-	return (mkqwna(bw->parent,
-	    sc(bw->b->o.charmap->type ? uquote_txt_uni : uquote_txt_oct),
+	if (bw->b->o.charmap->type) {
+		uquote_txt[23] = 'r';
+		uquote_txt[53] = 'x';
+	} else {
+		uquote_txt[23] = 'x';
+		uquote_txt[53] = 'u';
+	}
+	return (mkqwna(bw->parent, sc(uquote_txt),
 	    doquote, NULL, NULL, NULL) ? 0 : -1);
 }
 

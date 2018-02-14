@@ -1,17 +1,18 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.122 2018/02/14 22:16:15 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.123 2018/02/14 22:28:12 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
 
 - …
 
-JOE 3.1jupp34
+JOE 3.1jupp35
 
 - rearrange the jupprc help cards, adding missing items
 - move isrch from ^[S to ^[T
 - add/prefer ^QT for delbol
 - move open from ^[b to ^]
 - fix massive allocation miscalculation typo
+- correct sizeof(a?b:c) where b=char[] misread as sizeof(pointer)
 
 JOE 3.1jupp33
 
