@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.46 2018/01/08 00:53:50 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.47 2018/02/14 17:45:30 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -917,7 +917,7 @@ umode(BW *bw)
 			s[x][n] = '\0';
 		}
 	}
-	s[x] = 0;
+	s[x] = NULL;
 	if (mkmenu(bw->parent, s, doopt, doabrt, NULL, optx, s, NULL))
 		return 0;
 	else
