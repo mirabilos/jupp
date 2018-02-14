@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.120 2018/02/13 21:12:54 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.121 2018/02/14 21:57:20 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
@@ -6,6 +6,14 @@ jupp-current
 - …
 
 JOE 3.1jupp33
+
+- rearrange the jupprc help cards, adding missing items
+- move isrch from ^[S to ^[T
+- add/prefer ^QT for delbol
+- move open from ^[b to ^]
+- fix massive allocation miscalculation typo
+
+JOE 3.1jupp34
 
 - Fix several issues pointed out by Coverity Scan
   * dead code
