@@ -418,78 +418,90 @@
 
  #HOOK#2 filename matching
 
-{Basic
+{General
 \i   Help Screen    turn off with ^J     more help with Esc+. (^[.)              \i
-\i \i\u\bCURSOR\b\u           \u\bGOTO\b\u             \u\bBLOCK\b\u    \u\bDELETE\b\u    \u\bMISC\b\u         \u\bEXIT\b\u       \i \i
-\i \i^S left ^D right ^R  prev. screen ^KV move ^G  char  ^B  reformat ^KX save   \i \i
-\i \i^E up   ^X down  ^C  next screen  ^KC copy ^Y  line  ^V  overtype ^KQ abort  \i \i
-\i \i^A previous word ^QS beg. of line ^KY kill ^T  >word ^QL refresh  ^KZ shell  \i \i
-\i \i^F next word     ^QD end of line  ^K/ pipe ^QY >line ^O  options  \u\bFILE\b\u       \i \i
-\i \i\u\bSEARCH\b\u           ^QR top of file  ^KB begin          \u\bBUFFER\b\u       ^KE new    \i \i
-\i \i^QF find first   ^QC end of file  ^KK end            ^U undo      ^KR import \i \i
-\i \i^L  find next    ^QP prev. place  ^KD reformat       ^^ redo      ^KW export \i \i
+\i \i \u\bEXIT\b\u       \u\bBLOCK DEF\b\u  \u\bBLOCK OP\b\u  \u\bSEARCH\b\u         \u\bDELETE:\b\u \b^H\b  <char  \b^Y\b  line  \i \i
+\i \i \b^KX\b save   \b^KB\b begin  \b^KV\b move  \b^QF\b find first         \b^G\b  >char  \b^QT\b <line \i \i
+\i \i \b^KQ\b abort  \b^KK\b end    \b^KC\b copy  \b^L\b  find next          \b^[o\b <word  \b^QY\b >line \i \i
+\i \i \u\bMISC\b\u       \b^KL\b line   \b^KY\b kill  \b^QA\b find and replace   \b^T\b  >word  \b^[Y\b yank  \i \i
+\i \i \b^QM\b math   \b^KH\b hide   \b^K/\b pipe  \b^QG\b char backwards  \u\bSHELL\b\u        \u\bFILE\b\u       \i \i
+\i \i \b^O\b  options   \u\bQUOTE\b\u    \u\bBUFFER\b\u   \b^QF\b char forwards   \b^KZ\b suspend  \b^KS\b save\das\d \i \i
+\i \i \b^[P\b pastemode  \b`\b Ctrl  \b^U\b undo  \b^[R\b incremental b.  \b^K'\b window   \b^KR\b import \i \i
+\i \i \b^[-\b cmdprompt \b^P\b Meta  \b^^\b redo  \b^[T\b incr. forwards  \b^['\b command  \b^KW\b export \i \i
+}
+
+{Movement
+\i   Help Screen    turn off with ^J     prev. screen ^[,    next screen ^[.     \i
+\i \i \u\bMovement in jupp:\b\u                   screen(top)                             \i \i
+\i \i                        upslide         \b^QE\b      page(top)   file(beginning) \i \i
+\i \i                             \b^W\b    (char)up        \b^R\b               \b^QR\b      \i \i
+\i \i  (beginning)line   (prev)word      left \b^E\b  right    (next)word   line(end) \i \i
+\i \i              \b^QS\b           \b^A\b      \b^S\b   \d<+>\d    \b^D\b            \b^F\b    \b^QD\b      \i \i
+\i \i                      downslide   (char)down     page(bottom)      file(end) \i \i
+\i \i                             \b^Z\b          \b^X\b        \b^C\b               \b^QC\b      \i \i
+\i \uWordStar diamond\u \i                       \b^QX\b \d<-\d screen(bottom)                \i \i
 }
 
 {Windows
 \i   Help Screen    turn off with ^J     prev. screen ^[,    next screen ^[.     \i
-\i \i^KO split the window in half          ^KE load file into new window          \i \i
-\i \i^KG make current window bigger        ^KT make current window smaller        \i \i
-\i \i^KN go to the window below            ^KP go to the window above             \i \i
-\i \i^KQ eliminate the current window      ^KI show all windows / show one window \i \i
-\i \i^K; run a ctags search                ^K- edit scratch buffer in new window  \i \i
-\i \i Note: some commands (^KE ^K; ^K-) hide the current window; use ^KI/^KN then \i \i
-\i \i  \u\bSpecial help for XON/XOFF aware terminals:\b\u                                 \i \i
-\i \i You can use \b^[q\b and \b^[s\b instead of \b^Q\b and \b^S\b to initiate a command.         \i \i
+\i \i \b^KG\b make current window bigger     \b^KI\b show all windows / show one window   \i \i
+\i \i \b^KT\b make current window smaller    \b^KO\b split the current window in half     \i \i
+\i \i \b^KP\b go to the window above         \b^K-\b edit scratch buffer in new window    \i \i
+\i \i \b^KN\b go to the window below         \b^KQ\b eliminate the current window         \i \i
+\i \i \b^KE\b load file into new window      \b^K;\b run a ctags search                   \i \i
+\i \i Note: some commands (\b^KE\b \b^K;\b \b^K-\b) hide the current window; use \b^KI\b/\b^KN\b then \i \i
+\i \i   \u\bSpecial help for XON/XOFF aware terminals:\b\u                                \i \i
+\i \i You can type \b^[q\b instead of \b^Q\b and \b^[s\b instead of \b^S\b for all commands.      \i \i
+}
+
+{Orientation
+\i   Help Screen    turn off with ^J     prev. screen ^[,    next screen ^[.     \i
+\i \i \u\bGOTO\b\u                        \u\bMISC\b\u                     \u\bINSERT MATH OR CURRENT\b\u \i \i
+\i \i \b^Q=\b merge conflict marker   \b^K\b \u0-9\u define bookmark   \b^[#\b equation  \b^[@\b date \i \i
+\i \i \b^QV\b start of last search    \b^V\b overtype mode         \b^[=\b result    \b^[!\b time \i \i
+\i \i \b^Q]\b next matching brace  \u\bGOTO\b\u                 \u\bREFORMAT\b\u        \u\bINDENT LINE\b\u   \i \i
+\i \i \b^Q[\b previous   "    "    \b^Q-\b column number    \b^B\b  line        \b^K.\b more      \i \i
+\i \i \b^QP\b previous place       \b^QI\b line number      \b^KD\b block       \b^K,\b less      \i \i
+\i \i \b^K=\b next place           \b^QO\b byte offset      \b^]\b  split line  \b^KA\b centre    \i \i
+\i \i \b^QB\b to ^KB  \b^QK\b to ^KK  \b^Q\b \u0-9\u bookmark #0-9  \b^K]\b fix whitespace at EOL/EOF \i \i
 }
 
 {Advanced
 \i   Help Screen    turn off with ^J     prev. screen ^[,    next screen ^[.     \i
-\i \i\u\bMACROS\b\u       \u\bMISC\b\u         \u\bSCROLL\b\u      \u\bSHELL\b\u       \u\bGOTO\b\u        \u\bI-SEARCH\b\u       \i \i
-\i \i^[( record   ^Q? status   ^Q. right   ^K' window  ^QB to ^KB  ^[R backwards  \i \i
-\i \i^[) stop     ^QQ repeat   ^Q, left    ^[' command ^QK to ^KK  ^[S forwards   \i \i
-\i \i^[/ query    ^QM math     \u\bCharSEARCH\b\u  \u\bQUOTE\b\u       \u\bDELETE\b\u      \u\bBOOKMARKS\b\u      \i \i
-\i \i^[? lst def  ^[H message  ^QH forwrd   ` Ctrl-    ^[Y yank    ^K 0-9 define  \i \i
-\i \i^[ 0-9 play  ^N  play #0  ^QG backwd  ^P Meta-    ^[O word<   ^Q 0-9 goto    \i \i
-\i \i \u\bIn math mode,\b\u use 0xCAFE for hex. All ops are floating point internally.    \i \i
-\i \i \u\bPredefined variables:\b\u byte col height line lines top width                  \i \i
-}
-
-{Programs
-\i   Help Screen    turn off with ^J     prev. screen ^[,    next screen ^[.     \i
-\i \i\u\bGOTO\b\u   ^QV start of last search    \u\bCOMPILING\b\u                    \u\bSLIDING\b\u      \i \i
-\i \i^Q= next merge conflict marker     ^[C compile & parse errors   ^W up        \i \i
-\i \i^Q] next matching brace            ^[E parse errors             ^Z down      \i \i
-\i \i^Q[ previous   "   "  \u\bINDENT\b\u       ^KF save, compile & upload to NXT brick   \i \i
-\i \i^Q- to column number  ^K. more     \u\bGOTO AFTER COMPILING\b\u         \u\bINSERT MATH\b\u  \i \i
-\i \i^QI to line number    ^K, less     ^[N previous error           ^[# equation \i \i
-\i \i^QO to byte offset    ^KA centre   ^[M next error      \u\bSPECIAL\b\u  ^[= result   \i \i
-\i \i^K= next place        ^K] kill whitespace at EOL/EOF   ^[- jupp command line \i \i
+\i \i \u\bCOMPILING\b\u                                \u\bMISC\b\u                               \i \i
+\i \i \b^[C\b compile \uand\u  \b^[E\b parse errors        \b^Q.\b scroll right                   \i \i
+\i \i \b^[M\b goto next... \b^[N\b previous error      \b^Q,\b scroll left                    \i \i
+\i \i \b^KF\b save, compile & upload to NXT brick  \b^QL\b refresh                        \i \i
+\i \i \u\bMACROS\b\u                                   \b^QQ\b repeat                         \i \i
+\i \i \b^[(\b record  \b^[/\b query  \b^[?\b list defined  \b^Q?\b status                         \i \i
+\i \i \b^[)\b stop   \b^N\b play #0  \b^[\b \u0-9\u play #0-9  \b^[H\b message                        \i \i
+\i \i \u\bMATH\b\u (hex or double float) variables: \ubyte\u \ucol\u \uheight\u \uline\u \ulines\u \utop\u \uwidth\u  \i \i
 }
 
 {Search
 \i   Help Screen    turn off with ^J     prev. screen ^[,    next screen ^[.     \i
 \i \i \u\bSpecial search sequences:\b\u                                                   \i \i
-\i \i  \\^  \\$  matches beg./end of line         \\?     match any single char      \i \i
-\i \i  \\<  \\>  matches beg./end of word         \\*     match 0 or more chars      \i \i
-\i \i  \\c      matches balanced C expression    \\\\     matches a backslash (\\)    \i \i
-\i \i  \\[a-z]  matches one of a set, ^ inverts  \\n     matches a newline          \i \i
-\i \i  \\+      matches 0 or more of the character which follows the \\+            \i \i
+\i \i  \b\\^\b  \b\\$\b  matches beg./end of line         \b\\?\b     match any single char      \i \i
+\i \i  \b\\<\b  \b\\>\b  matches beg./end of word         \b\\*\b     match 0 or more chars      \i \i
+\i \i  \b\\c\b      matches balanced C expression    \b\\\\\b     matches a backslash (\\)    \i \i
+\i \i  \b\\[a-z]\b  matches one of a set, ^ inverts  \b\\n\b     matches a newline          \i \i
+\i \i  \b\\+\b      matches 0 or more of the character which follows the \\+            \i \i
 \i \i \u\bSpecial replace sequences:\b\u                                                  \i \i
-\i \i  \\\\      replaced with a backslash (\\)    \\n     replaced with a newline    \i \i
-\i \i  \\&      replaced with the text which matched the search string             \i \i
-\i \i  \\0 - 9  replaced with text which matched \bN+1\bth \\?, \\*, \\c, \\[a-z] or \\+    \i \i
+\i \i  \b\\\\\b      replaced with a backslash (\\)    \b\\n\b     replaced with a newline    \i \i
+\i \i  \b\\&\b      replaced with the text which matched the search string             \i \i
+\i \i  \b\\\b\u0\u - \u9\u  replaced with text which matched \uN+1\uth \\?, \\*, \\c, \\[a-z] or \\+    \i \i
 }
 
 {Names
 \i   Help Screen    turn off with ^J     prev. screen ^[,    next screen ^[.     \i
 \i \i At file name prompts use the cursor up/down keys to access a history of     \i \i
-\i \i recently used files or the tab key to complete them.  \bSpecial file names:\b   \i \i
-\i \i      !command                 Pipe in/out of a shell command                \i \i
-\i \i      >>filename               Append to a file                              \i \i
-\i \i      -                        Read/Write to/from standard I/O               \i \i
-\i \i      filename,START,SIZE      Read/Write a part of a file/device            \i \i
+\i \i recently used files or the tab key to complete them.  \u\bSpecial file names:\b\u   \i \i
+\i \i      \b!\b\ucommand\u                 Pipe in/out of a shell command                \i \i
+\i \i      \b>>\b\ufilename\u               Append to a file                              \i \i
+\i \i      \b-\b                        Read/Write to/from standard I/O               \i \i
+\i \i      \ufilename\u\b,\b\uSTART\u\b,\b\uSIZE\u      Read/Write a part of a file/device            \i \i
 \i \i          Give START/SIZE in decimal (255), octal (0377) or hex (0xFF)       \i \i
-\i \i \u\bPresentation mode:\b\u F6=fullscreen; F7=previous, F8=next win; F9=filter/again \i \i
+\i \i \u\bPresentation mode:\b\u \bF6\b=fullscreen; \bF7\b=previous, \bF8\b=next win; \bF9\b=filter/again \i \i
 }
 
 {Joe
@@ -498,7 +510,7 @@
 \i \i go to \uhttp://sf.net/projects/joe-editor/\u for upstream bug reports. JUPP 2.8 \i \i
 \i \i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\d(R)\d \i \i
 \i \i at \uhttp://mirbsd.de/jupp\u and by \bThorsten "\dmirabilos\d" Glaser <\utg@mirbsd.org\u>\b \i \i
-\i \i @(#) jupprc 2018-02-01; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
+\i \i @(#) jupprc 2018-02-14; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
 }
 
  #HOOK#3 additional help screens
@@ -675,10 +687,12 @@ crawll		^Q ,
 crawll		^[ q ,
 crawlr		^Q .
 crawlr		^[ q .
+delbol		^Q T
 delbol		^Q ^?
-delbol		^Q ^H
+delbol		^Q ^T
+delbol		^Q t
 delbol		^[ q ^?
-delbol		^[ q ^H
+delbol		^[ q t
 delch		.kD
 delch		^G
 delch		^[ [ 3 ~
@@ -746,8 +760,8 @@ inscurtime	^[ !
 insf		^K R
 insf		^K ^R
 insf		^K r
-isrch		^[ S
-isrch		^[ s
+isrch		^[ T
+isrch		^[ t
 lindent		^K ,
 line		^Q I
 line		^Q ^I
@@ -781,7 +795,7 @@ nmark		^K ^H
 nmark		^K h
 nxterr		^[ M
 nxterr		^[ m
-open		^[ b
+open		^]
 docompile	^[ C
 docompile	^[ c
 parserr		^[ E
