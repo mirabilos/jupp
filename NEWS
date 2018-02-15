@@ -1,9 +1,21 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.116 2018/01/07 17:30:52 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.123 2018/02/14 22:28:12 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
 
 - …
+
+JOE 3.1jupp35
+
+- rearrange the jupprc help cards, adding missing items
+- move isrch from ^[S to ^[T
+- add/prefer ^QT for delbol
+- move open from ^[b to ^]
+- fix massive allocation miscalculation typo
+- correct sizeof(a?b:c) where b=char[] misread as sizeof(pointer)
+
+JOE 3.1jupp33
+
 - Fix several issues pointed out by Coverity Scan
   * dead code
   * use-after-free (minor)
@@ -21,6 +33,15 @@ jupp-current
 - Improved shebang and diff recognition of syntax highlighting file types
 - Render instruction to show online help as BLINKING BOLD so it stands out
 - Let screen scroll back to the left on ^QL, ^B, ^KD, while in hex mode
+- Slightly safer saving of backup files, using fsync(2) if existent
+- Add new command “sync”
+- (crb3) Add ^QV to jupprc; add WordStar documentation references;
+  (tg) Rename ^[! to ^[' to match ^K'; (crb3) Add ^[@ and ^[!
+- jupprc: Fix eolmenu; replace bol with home for smarthome users;
+  switch ^[? to show macros (matches WS), query moves to ^[/ (which was
+  unused); ^U can abort menu and prompt (matches WS)
+- Sync improvements across rc files
+- Remove obsolete GNU autoconf check
 
 JOE 3.1jupp32
 

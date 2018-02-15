@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/cmd.c,v 1.29 2018/01/07 17:24:48 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/cmd.c,v 1.30 2018/01/18 21:59:11 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -246,6 +246,7 @@ C("shrinkw", TYPETW, ushrnk, NULL, 1, "groww"),
 C("splitw", TYPETW, usplitw, NULL, 0, NULL),
 C("stat", TYPETW + TYPEPW, ustat_j, NULL, 0, NULL),
 C("stop", TYPETW + TYPEPW + TYPEMENU + TYPEQW, ustop, NULL, 0, NULL),
+C("sync", TYPETW + TYPEPW + TYPEMENU + TYPEQW, usync, NULL, 0, NULL),
 C("swap", TYPETW + TYPEPW + EFIXXCOL, uswap, NULL, 0, NULL),
 C("switch", TYPETW + TYPEPW, uswitch, NULL, 0, NULL),
 C("tabmenu", TYPEMENU, umtab, NULL, 1, "ltarwmenu"),

@@ -283,8 +283,8 @@ Wed May  5 2004  Joe Allen <jhallen@world.std.com>
 	Now parses charmap files.
 
 Wed May  5 2004  Joe Allen <jhallen@world.std.com>
- 	* bw.c charmap.c main.c qw.c qw.h regex.c regex.h
- 	syntax.c types.h uisrch.c usearch.c utf8.c utf8.h:
+	* bw.c charmap.c main.c qw.c qw.h regex.c regex.h
+	syntax.c types.h uisrch.c usearch.c utf8.c utf8.h:
 
 	Regex search now works properly with UTF-8 chars.
 	Incremental search now works with UTF-8.
@@ -313,10 +313,10 @@ Tue May  4 2004  Joe Allen <jhallen@world.std.com>
 
 Tue May  4 2004  Joe Allen <jhallen@world.std.com>
 	* ChangeLog TODO b.c bw.c charmap.c charmap.h cmd.c help.c
- 	i18n.c i18n.h joerc.in jpicorc.in jstarrc.in macro.c main.c
- 	menu.c pw.c pw.h rc.c regex.c rjoerc.in scrn.c scrn.h syntax.c
- 	types.h ublock.c uedit.c uerror.c ufile.c uformat.c umath.c
- 	usearch.c ushell.c utag.c utf8.c utils.c utils.h w.c:
+	i18n.c i18n.h joerc.in jpicorc.in jstarrc.in macro.c main.c
+	menu.c pw.c pw.h rc.c regex.c rjoerc.in scrn.c scrn.h syntax.c
+	types.h ublock.c uedit.c uerror.c ufile.c uformat.c umath.c
+	usearch.c ushell.c utag.c utf8.c utils.c utils.h w.c:
 
 	Everything about character set is now contained in struct charmap.
 
@@ -556,9 +556,9 @@ Sat Apr 17 2004  Joe Allen <jhallen@world.std.com>
 	Oops: fixed status line.
 
 Fri Apr 16 2004  Joe Allen <jhallen@world.std.com>
- 	* ChangeLog TODO cmd.c macro.c pw.c pw.h rc.c regex.c ublock.c
- 	uedit.c ufile.c umath.c usearch.c ushell.c utag.c utf8.c w.c
- 	w.h:
+	* ChangeLog TODO cmd.c macro.c pw.c pw.h rc.c regex.c ublock.c
+	uedit.c ufile.c umath.c usearch.c ushell.c utag.c utf8.c w.c
+	w.h:
 
 	UTF-8 now supported in file names and prompts.
 
@@ -664,8 +664,8 @@ Mon Apr 12 2004  Joe Allen <jhallen@world.std.com>
 	position update (which was the default before).  Now we don't
 	use tabs by default.
 
-        Completed change to 'unsigned char *' and elimination of
-        MAXINT.  What a mess.  No warnings with gcc -pedantic.
+	Completed change to 'unsigned char *' and elimination of
+	MAXINT.  What a mess.  No warnings with gcc -pedantic.
 
 	Fix UTF-8 bugs where cursor was not correct on scrolled screen.
 
@@ -1453,4 +1453,4 @@ Wed Jul 02 2001  Marek 'Marx' Grac <xgrac@fi.muni.cz>
 	able to find patch :(
 
 ______________________________________________________________________
-$MirOS: contrib/code/jupp/ChangeLog,v 1.10 2017/12/06 23:17:32 tg Exp $
+$MirOS: contrib/code/jupp/ChangeLog,v 1.11 2018/02/01 02:17:54 tg Exp $

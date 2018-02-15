@@ -9,7 +9,7 @@
 #define _JOE_UFILE_H 1
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_ufile_h, "$MirOS: contrib/code/jupp/ufile.h,v 1.7 2017/12/06 21:17:02 tg Exp $");
+__IDSTRING(rcsid_ufile_h, "$MirOS: contrib/code/jupp/ufile.h,v 1.8 2018/01/18 21:59:12 tg Exp $");
 #endif
 
 extern int exask;
@@ -34,5 +34,6 @@ int doswitch(BW *bw, unsigned char *s, void *obj, int *notify);
 int uquerysave(BW *bw);
 int ukilljoe(BW *bw);
 int uabendjoe(BW *bw);
+int usync(BW *bw);
 
 #endif

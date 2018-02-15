@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.66 2017/12/16 22:38:03 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.71 2018/02/14 22:28:12 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -6,7 +6,7 @@
 AC_PREREQ(2.54)
 
 #### Here's the only place where to change version number ####
-AC_INIT(joe, 3.1jupp32)
+AC_INIT(joe, 3.1jupp35)
 #### But see main.c for the Copyright (c) owner and year! ####
 AC_CONFIG_SRCDIR([b.c])
 
@@ -216,13 +216,10 @@ if test x"$ac_cv_func_getcwd" != xyes; then
 		AC_MSG_ERROR([don't know how to get current working directory])
 	fi
 fi
-AC_CHECK_FUNCS([isblank])
-if test x"$ac_cv_func_isblank" = xyes; then
-	joe_ISBLANK
-fi
-AC_CHECK_FUNCS([alarm mkdir mkstemp putenv setlocale strchr strdup utime setpgid])
-AC_CHECK_FUNCS([setitimer sigaction sigvec siginterrupt sigprocmask isatty])
-AC_CHECK_FUNCS([strlcpy strlcat nl_langinfo get_current_dir_name ctime popen])
+AC_CHECK_FUNCS([alarm ctime fsync get_current_dir_name isatty mkdir mkstemp])
+AC_CHECK_FUNCS([nl_langinfo popen putenv setitimer setlocale setpgid])
+AC_CHECK_FUNCS([sigaction siginterrupt sigprocmask sigvec strchr strdup])
+AC_CHECK_FUNCS([strlcat strlcpy sync utime])
 
 AC_ARG_ENABLE([fork],
 [  --disable-fork          disable use of fork],

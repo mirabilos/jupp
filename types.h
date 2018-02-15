@@ -2,8 +2,29 @@
 #define _JOE_TYPES_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.34 2018/01/08 00:33:16 tg Exp $");
+__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.35 2018/02/14 17:51:49 tg Exp $");
 #endif
+
+/*-
+ * Copyright © 2004, 2005, 2006, 2007, 2008, 2011, 2012, 2013,
+ *	       2014, 2016, 2017, 2018
+ *	Thorsten “mirabilos” Glaser <tg@mirbsd.org>
+ *
+ * Provided that these terms and disclaimer and all copyright notices
+ * are retained or reproduced in an accompanying document, permission
+ * is granted to deal in this work without restriction, including un‐
+ * limited rights to use, publicly perform, distribute, sell, modify,
+ * merge, give away, or sublicence.
+ *
+ * This work is provided “AS IS” and WITHOUT WARRANTY of any kind, to
+ * the utmost extent permitted by applicable law, neither express nor
+ * implied; without malicious intent or gross negligence. In no event
+ * may a licensor, author or contributor be held liable for indirect,
+ * direct, other damage, loss, or other issues arising in any way out
+ * of dealing in the work, even if advised of the possibility of such
+ * damage or existence of a defect, except proven that it results out
+ * of said person’s immediate fault when using the work as intended.
+ */
 
 /* Prefix to make string constants unsigned */
 #define UC (const unsigned char *)
@@ -94,7 +115,7 @@ void *jalloc(void *, size_t, size_t);
 void jfree(void *);
 
 #define ralloc(nmemb, size)	(notoktomul(nmemb, size) ? NULL : \
-				    malloc(nmemb * size))
+				    malloc((nmemb) * (size)))
 
 typedef struct header H;
 typedef struct buffer B;

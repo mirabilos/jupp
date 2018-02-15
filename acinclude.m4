@@ -1,27 +1,4 @@
-dnl $MirOS: contrib/code/jupp/acinclude.m4,v 1.3 2008/05/13 13:08:20 tg Exp $
-dnl
-dnl ------------------
-dnl Check for properly working isblank()
-dnl ------------------
-AC_DEFUN([joe_ISBLANK],
-	[AC_CACHE_CHECK([whether isblank() works correctly with side effect expressions],
-		[joe_cv_isblank],
-		[AC_TRY_RUN([
-#include <ctype.h>
-int main() {
-  int a = 0;
-  isblank(a++);
-  exit(a != 1);
-}
-			],
-			[joe_cv_isblank=yes],
-			[joe_cv_isblank=no],
-			[joe_cv_isblank=no])
-		])
-	if test "$joe_cv_isblank" = yes; then
-		AC_DEFINE([HAVE_WORKING_ISBLANK], 1, [Define if isblank() works with expressions with side effects])
-	fi
-])
+dnl $MirOS: contrib/code/jupp/acinclude.m4,v 1.4 2018/02/01 02:36:51 tg Exp $
 
 dnl ------------------
 dnl Check if setpgrp must have two arguments

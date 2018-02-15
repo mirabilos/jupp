@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.29 2018/01/06 00:28:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.31 2018/01/18 22:00:31 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -49,7 +49,7 @@ __RCSID("$MirOS: contrib/code/jupp/ufile.c,v 1.29 2018/01/06 00:28:34 tg Exp $")
 #include "w.h"
 
 extern int orphan;
-unsigned char *backpath = NULL;		/* Place to store backup files */
+unsigned char *backpath = NULL;	/* Place to store backup files */
 static B *filehist = NULL;	/* History of file names */
 int nobackups = 0;
 int exask = 0;
@@ -179,6 +179,14 @@ cp(const unsigned char *from, int g, const unsigned char *tmpfn, const unsigned 
 		return -1;
 	}
 
+#ifdef HAVE_FSYNC
+	if (fsync(g))
+		return (-1);
+#endif
+
+	if (close(g))
+		return (-1);
+
 	if (tmpfn && rename(tmpfn, to)) {
 		return (-1);
 	}
@@ -187,7 +195,6 @@ cp(const unsigned char *from, int g, const unsigned char *tmpfn, const unsigned 
 	 * Below are only operations that run when the copy
 	 * process finished successfully.
 	 */
-	close(g);
 
 #ifdef HAVEUTIME
 #ifdef NeXT
@@ -381,13 +388,10 @@ static int saver(BW *bw, int c, struct savereq *req, int *notify)
 	}
 }
 
-static int dosave(BW *bw, struct savereq *req, int *notify)
+static int
+dosave(BW *bw, struct savereq *req, int *notify)
 {
-	if (backup(bw)) {
-		return saver(bw, 0, req, notify);
-	} else {
-		return saver(bw, 'y', req, notify);
-	}
+	return (saver(bw, backup(bw) ? 0 : 'y', req, notify));
 }
 
 static int dosave2(BW *bw, int c, struct savereq *req, int *notify)
@@ -1042,4 +1046,22 @@ uabendjoe(BW *bw)
 {
 	main_rv = 1;
 	return (ukilljoe(bw));
+}
+
+int
+usync(BW *bw)
+{
+#ifdef HAVE_SYNC
+	msgnwt(bw->parent, UC "\\i>\\i \\fSynchronising, please wait...\\f \\i<\\i");
+	msgout(bw->parent);
+	edupd(1);
+	sync();
+	sleep(1);
+	sync();
+	msgnwt(bw->parent, UC "\\i>\\i \\bSynchronised buffers to disc.\\b \\i<\\i");
+	return (0);
+#else
+	msgnw(bw->parent, UC "Sorry, compiled without sync(2)");
+	return (-1);
+#endif
 }

@@ -1,6 +1,6 @@
- $MirOS: contrib/code/jupp/joerc.in,v 1.28 2018/01/08 00:53:49 tg Exp $
+ $MirOS: contrib/code/jupp/joerc.in,v 1.31 2018/02/01 02:33:45 tg Exp $
 
-                         Initialization file for JOE
+                         Initialisation file for JOE
                                 Standard Joe
 
  This file must be written in the 8-bit encoding, not UTF-8.
@@ -10,12 +10,12 @@
 	2 - @jrcbefore@joerc@jrcafter@
 
  This file can include other files by placing the following include command
- in the first column:
+ in the first column (comment lines start with space or tab):
 
  :include filename
 
  FIRST SECTION: Default global options (these options can also be specified
- on the command line.  Also the NOXON, LINES, COLUMNS, DOPADDING and BAUD
+ on the command line. Also, the NOXON, LINES, COLUMNS, DOPADDING and BAUD
  options can be specified in environment variables):
 
  Put each option you want set in the first column:
@@ -23,115 +23,93 @@
  -option	Sets the option
  --option	Clears the option
 
- -mid		Cursor is recentered when scrolling is necessary
-
- -marking	Text between ^KB and cursor is highlighted (use with -lightoff)
-
- -asis		Characters 128 - 255 shown as-is
-
- -force		Force final newline when files are saved
-
--nobackups	If you don't want backup files to be created
-
+ -mid		Cursor is recentred when scrolling is necessary
+ -marking	Text between ^KB and cursor is highlighted; use with:
  -lightoff	Turn off highlighting after block copy or move
-
+ -autoswap	Swap markb with markk when necessary
+ -asis		Characters 128 - 255 shown as-is
+ -hex		Hex editing mode
+-nobackups	If you don't want backup files to be created
+ -backpath path
+		Where to store backup files (do not quote, no comment after)
+ -force		Force final newline when files are saved
  -exask		^KX always confirms file name
-
  -beep		Beep on errors and when cursor goes past extremes
-
  -nosta		Disable top-most status line
-
  -keepup	%k and %c status line escape sequences updated frequently
-
  -pg nnn	No. lines to keep for PgUp/PgDn
-
  -csmode	^KF after a pervious search does a ^L instead
-
- -backpath path Directory to store backup files
-		(do not use quotes, and remove the comment after path)
-
  -nonotice	Disable copyright notice
-
  -noxon		Attempt to turn off ^S/^Q processing
-
  -orphan	Put extra files given on command line in orphaned buffers
 		instead of in windows
-
  -dopadding	Output pad characters (for when there is no tty handshaking)
-
  -lines nnn	Set no. screen lines
-
- -baud nnn	Set baud rate for terminal optimizations
-
+ -baud nnn	Set baud rate for terminal optimisations
  -columns nnn	Set no. screen columns
-
  -help		Start with help on
-
  -skiptop nnn	Don't use top nnn lines of the screen
 
--notite         Don't send terminal initialization and termination strings: prevents
-                restoration of screen on exit.
+-notite		Don't send terminal initialisation and termination strings:
+		prevents restoration of screen on exit
 
 -pastetite	Enter bracketed paste mode automatically for TERM=xterm-xfree86
 
- -usetabs       Use tabs to help optimize screen update.
+ -usetabs	Use tabs to help optimise screen update
 
--assume_color	Assume terminal has ANSI color support even if termcap/terminfo entry
-		says that it doesn't.  This only applies if the terminal otherwise
-		looks like an ANSI terminal (support bold and capability starts with
-		ESC [).
+-assume_color	Assume terminal has ANSI colour support even if its termcap
+		or terminfo entry says that it doesn't. This only applies if
+		the terminal otherwise looks like an ANSI terminal (supports
+		bold and capability starts with ESC [).
 
--guess_crlf     Automatically detect MS-DOS files and set -crlf appropriately
+-guess_crlf	Automatically detect MS-DOS files and set -crlf appropriately
 
--guess_indent	Guess indent character (tab or space).
+-guess_indent	Guess indent character (tab or space)
 
--menu_explorer Stay in menu system when a directory is selected (otherwise
-                directory is added to path and menu is closed).
+-menu_explorer	Stay in menu system when a directory is selected (otherwise
+		directory is added to path and menu is closed)
 
- -icase         Search is case insensitive by default.
+ -icase		Search is case-insensitive by default
+ -wrap		Search wraps
 
- -wrap          Search wraps
-
- -autoswap	Swap markb with markk when necessary
-
- Status line definition strings.  -lmsg defines the left-justified string,
+ Status line definition strings. -lmsg defines the left-justified string,
  and -rmsg defines the right-justified string. The first character of -rmsg
- is the background fill character.  -hmsg (3.1jupp15) defines the help hint
+ is the background fill character. -hmsg (3.1jupp15) defines the help hint
  (only about a dozen chars) displayed next to the copyright notice in the
- initial status line (inverted by default, unless it begins with exactly \i).
+ initial status line (inverted by default, unless starting with exactly \i).
  The following escape sequences can be used in these strings:
 
-  %t  12 hour time
-  %u  24 hour time
-  %T  O for overtype mode, I for insert mode
-  %W  W if wordwrap is enabled
-  %I  A if autoindent is enabled
-  %X  Rectangle mode indicator
-  %n  File name
-  %m  '(Modified)' if file has been changed
-  %*  '*' if file has been changed
-  %R  Read-only indicator
-  %r  Row (line) number
-  %c  Column number
-  %o  Byte offset into file
-  %O  Byte offset into file in hex
-  %a  Ascii value of character under cursor
-  %A  Ascii value of character under cursor in hex
-  %p  Percent of file cursor is at
-  %l  No. lines in file
-  %k  Entered prefix keys
-  %S  '*SHELL*' if there is a shell running in window
-  %M  Macro recording message
-  %y  Syntax
-  %x  Context (first non-indented line going backwards)
+	%t	12-hour time
+	%u	24-hour time
+	%T	O for overtype mode, I for insert mode
+	%W	W if wordwrap is enabled
+	%I	A if autoindent is enabled
+	%X	rectangle mode indicator
+	%n	file name
+	%m	'(Modified)' if file has been changed
+	%*	'*' if file has been changed
+	%R	read-only indicator
+	%r	row (line) number
+	%c	column number
+	%o	byte offset into file (decimal)
+	%O	byte offset into file in hex
+	%a	ASCII value of character under cursor (decimal)
+	%A	ASCII value of character under cursor in hex
+	%p	percent of file cursor is at
+	%l	number of lines in file
+	%k	entered prefix keys
+	%S	'*SHELL*' if there is a shell running in window
+	%M	macro recording message
+	%y	syntax
+	%x	context (first non-indented line going backwards)
 
  These formatting escape sequences may also be given:
 
-  \i  Inverse
-  \u  Underline
-  \b  Bold
-  \d  Dim
-  \f  Blink
+	\i	Inverse
+	\u	Underline
+	\b	Bold
+	\d	Dim
+	\f	Blink
 
 -lmsg \i%k%T%W%I%X %n %m%y%R %M %x
 -rmsg  %S Row %r Col %c %t  Ctrl-K H for help
@@ -140,87 +118,65 @@
  SECOND SECTION: filename-dependent local option settings:
 
  Each line with '*' in the first column indicates the modes which should be
- set for files whose name matches the regular expression.  If more than one
+ set for files whose name matches the regular expression. If more than one
  regular expression matches the file name, then the last matching one is
  chosen.
 
  A file contents regular expression may also be specified on a separate line
- with '+regex'.  If this regular expresssion is given, then both the file name
+ with '+regex'. If this regular expresssion is given, then both the file name
  regex and the file contents regex must match for the options to apply.
 
- Here are the modes which can be set:
+ Here is a list of modes which can be set:
 
-	-utf8			File is UTF-8 coded
+ -keymap name		Keymap to use if not 'main'
+ -square		Rectangular block mode
+ -overwrite		Overtype mode
+ -picture		Picture mode (cursor right can go past end of line)
+ -linums		Show line numbers in front of each line
+ -rdonly		File is read-only
+ -crlf			File uses CR-LF at end of lines
+ -encoding utf8		File is UTF-8 encoded
+ -syntax name		Specify syntax (syntax file called
+			'name.jsf' will be loaded)
+ -highlight		Enable syntax highlighting
 
-	-syntax name		Specify syntax (syntax file called
-				'name.jsf' will be loaded)
+ -french		One space after '.', '?' and '!' for wordwrap and
+			paragraph reformat instead of two. JOE does not
+			change the spacing you give, but sometimes it must
+			put spacing in itself. This selects how much is
+			inserted in those cases.
+ -purify		Fixup indentation if necessary for rindent, lindent
+			and backs (for example if indentation uses a mix of
+			tabs and spaces, and indentc is space, indentation
+			will be converted to all spaces)
 
-	-highlight		Enable highlighting
+ -lmargin nnn		Left margin
+ -rmargin nnn		Right margin
+ -tab nnn		Tab width
+ -indentc nnn		Indentation character (32 = space, 9 = tab)
+ -istep nnn		Amount of 'indentc's per indentation level
+ -spaces		Tab key inserts spaces instead of tabs
+ -wordwrap		Wordwrap
+ -autoindent		Auto indent
+ -smartbacks		Backspace key deletes 'istep' number of 'indentc's
+			if cursor is at first non-space character
+ -smarthome		Home key first moves cursor to beginning of line,
+			then if hit again, to first non-blank character
+ -indentfirst		Smart home goes to first non-blank character first,
+			instead of to the beginning of the line first
 
-	-smarthome		Home key first moves cursor to beginning of line,
-				then if hit again, to first non-blank character.
+ -lmsg			Status line definition strings;
+ -rmsg			see previous section for more info
 
-	-indentfirst		Smart home goes to first non-blank character first,
-				instead of going the beginning of line first.
+ -mnew macro		Macro to execute when new files are loaded
+ -mold macro		Macro to execute when existing files are loaded
+ -msnew macro		Macro to execute when new files are saved
+ -msold macro		Macro to execute when existing files are saved
 
-	-smartbacks		Backspace key deletes 'istep' number of
-				'indentc's if cursor is at first non-space
-				character.
+ Macros for the above options are in the same format as in the key
+ binding section below but without the key name strings.
 
-	-tab nnn		Tab width
-
-	-indentc nnn		Indentation character (32 for space, 9 for tab)
-
-	-istep nnn		Number of indentation columns
-
-	-spaces			TAB inserts spaces instead of tabs.
-
-	-purify			Fix indentation if necessary for rindent, lindent and backs
-				(for example if indentation uses a mix of tabs and spaces,
-				and indentc is space, indentation will be converted to all
-				spaces).
-
-	-crlf			File uses CR-LF at ends of lines
-
-	-wordwrap		Wordwrap
-
-	-autoindent		Auto indent
-
-	-overwrite		Overtype mode
-
-        -picture                Picture mode (right arrow can go past end of lines)
-
-	-lmargin nnn		Left margin
-
-	-rmargin nnn		Right margin
-
-
-	-french			One space after '.', '?' and '!' for wordwrap
-				and paragraph reformat instead of two.  Joe
-				does not change the spacing you give, but
-				sometimes it must put spacing in itself.  This
-				selects how much is inserted.
-
-	-linums			Enable line numbers on each line
-
-	-rdonly			File is read-only
-
-	-keymap name		Keymap to use if not 'main'
-
-	-lmsg			Status line definition strings-
-	-rmsg			see previous section for more info.
-
-	-mnew macro		Macro to execute when new files are loaded
-	-mold macro		Macro to execute when existing files are loaded
-	-msnew macro		Macro to execute when new files are saved
-	-msold macro		Macro to execute when existing files are saved
-
-	-square			Rectangular block mode
-
-	Macros for the above options are in the same format as in the key
-	binding section below- but without the key name strings.
-
- Default local options
+ Default local options:
 -highlight
 -french
 -indentc 9
@@ -464,7 +420,7 @@
 -encoding utf8
 -syntax java
 
- === Joe Syntax File
+ === JOE Syntax File
 *.jsf
 -syntax conf
 
@@ -613,16 +569,10 @@
 
  THIRD SECTION: Named help screens:
 
- Use \i to turn on/off inverse video
- Use \u to turn on/off underline
- Use \b to turn on/off bold
- Use \d to turn on/off dim
- Use \f to turn on/off flash
-
  Use \| to insert a spring: all springs in a given line are set to the same
- width such that the entire line exactly fits in the width of the screen (if
- it's not an exact multiple so that there are N spaces remaining, the
- rightmost N springs each get one extra space).  Hint: if you want vertical
+ width such that the entire line exactly fits in the width of the screen
+ (if it's not an exact multiple so that there are N spaces remaining, the
+ rightmost N springs each get one extra space). Hint: if you want vertical
  alignment, each line should have the same number of springs.
 
 {Basic
@@ -720,13 +670,13 @@
 
  Section names you must provide:
 
-	:main		For editing window
-	:prompt		For prompt lines
-	:query		For single-character query lines
-	:querya		Singe-character query for quote
-	:querysr	Search & Replace single-character query
+	:main		editing window
+	:prompt		prompt lines
+	:query		single-character query lines
+	:querya		singe-character query for quote
+	:querysr	search-and-replace single-character query
 
- Other sections may be given as well for organization purposes or for
+ Other sections may be given as well for organisation purposes or for
  use with the '-keymap' option.
 
  Use:
@@ -735,11 +685,11 @@
 
  Keys:
 
- Use ^@ through ^_ and ^? for Ctrl chars
+ Use ^@ through ^_ and ^? for C0 control characters and DEL
  Use SP for space
  Use a TO b to generate a range of characters
 
- You can also use termcap string capability names.  For example:
+ You can also use termcap string capability names. For example:
 
 	.ku		Up
 	.kd		Down
@@ -757,27 +707,26 @@
 
  Macros:
 
- Simple macros can be made by comma seperating 2 or more command names.  For
- example:
+ Simple macros can be made by comma seperating two or more command names.
+ For example:
 
  eof,bol	^T Z		Goto beginning of last line
 
- Also quoted matter is typed in literally:
+ Also quoted matter is typed in literally (backslashes escape):
 
  bol,">",dnarw	.k1		Quote news article line
 
- Macros may cross lines if they end with ,
-
- Commands or named macros may be created with :def.  For example, you can
- use:
+ Macros may cross lines if they end with a comma.
+ Commands or named macros may be created with :def.
+ For example, you can use...
 
  :def foo eof,bol
 
- To define a command foo which will goto the beginning of the last line.
+ ... to define a command foo which will go to the beginning of the last line.
 
 :windows		Bindings common to all windows
  #HOOK#4 common keybindings
-type		^@ TO ÿ		Type a character
+type		^@ TO ÿ
 abort		^C		Abort window
 abort		^K Q
 abort		^K ^Q
@@ -786,9 +735,11 @@ arg		^K \		Repeat next command
 explode		^K I		Show all windows or show only one window
 explode		^K ^I
 explode		^K i
+help		.k1
 help		^K H		Help menu
 help		^K ^H
 help		^K h
+help		^[ [ 1 1 ~
 hnext		^[ .		Next help window
 hprev		^[ ,		Previous help window
 math		^[ m		Calculator
@@ -803,9 +754,11 @@ nextw		^K n
 pgdn		.kN		Screen down
 pgdn		^V
 pgdn		^[ [ 6 ~
+pgdn		^[ [ G		SCO
 pgup		.kP		Screen up
 pgup		^U
 pgup		^[ [ 5 ~
+pgup		^[ [ I		SCO
 play		^K 0 TO 9	Execute macro
 prevw		^K P		Goto previous window
 prevw		^K ^P
@@ -844,79 +797,23 @@ keymap,"prompt",rtn			^D
 :main			Text editing window
 :inherit windows
 
-helpcard,"Paste",rtn,keymap,"Paste",rtn	^[ [ 2 0 0 ~
-nop					^[ [ 2 0 1 ~
+ compile
+ :def compile switch,"*Build-Log*",rtn,markb,eof," ",markk,blkdel,filt,query,parserr
+:def compile querysave,query,scratch,"* Build Log *",rtn,bof,markb,eof," ",markk,blkdel,build
 
- #HOOK#5 main keybindings
-
- Spell-check macros
-
- Ispell
+ spell check
+:def aspellfile filt,"SPLTMP=ispell.tmp;cat >$SPLTMP;aspell -x -c $SPLTMP </dev/tty >/dev/tty;cat $SPLTMP;/bin/rm $SPLTMP",rtn,retype
+:def aspellword psh,nextword,markk,prevword,markb,filt,"SPLTMP=ispell.tmp;cat >$SPLTMP;aspell -x -c $SPLTMP </dev/tty >/dev/tty;tr -d <$SPLTMP '\\012';/bin/rm $SPLTMP",rtn,retype,nextword
 :def ispellfile filt,"cat >ispell.tmp;ispell ispell.tmp </dev/tty >/dev/tty;cat ispell.tmp;/bin/rm ispell.tmp",rtn,retype
 :def ispellword psh,nextword,markk,prevword,markb,filt,"cat >ispell.tmp;ispell ispell.tmp </dev/tty >/dev/tty;tr -d <ispell.tmp '\\012';/bin/rm ispell.tmp",rtn,retype,nextword
 
- Aspell
-:def aspellfile filt,"SPLTMP=ispell.tmp;cat >$SPLTMP;aspell -x -c $SPLTMP </dev/tty >/dev/tty;cat $SPLTMP;/bin/rm $SPLTMP",rtn,retype
-:def aspellword psh,nextword,markk,prevword,markb,filt,"SPLTMP=ispell.tmp;cat >$SPLTMP;aspell -x -c $SPLTMP </dev/tty >/dev/tty;tr -d <$SPLTMP '\\012';/bin/rm $SPLTMP",rtn,retype,nextword
+ #HOOK#5 main keybindings
 
 @SPELL@file	^[ l
 @SPELL@word	^[ n
 
- Compile
-
- :def compile switch,"*Build-Log*",rtn,markb,eof," ",markk,blkdel,filt,query,parserr
-
-:def compile querysave,query,scratch,"* Build Log *",rtn,bof,markb,eof," ",markk,blkdel,build
-
- Here we guess some common key sequences which either do not have termcap
- sequences or which are frequently wrong.  Note that if the termcap entry is
- correct, it will override these later on.
-
-insc			^[ [ 2 ~
-insc			^[ [ L			SCO
-
-delch			^[ [ 3 ~
-
-pgup			^[ [ I		SCO
-
-pgdn			^[ [ G		SCO
-
-home			^[ [ 1 ~		Putty, Linux, Cygwin
-home			^[ [ H			Xterm, Konsole, SCO
-home			^[ O H			gnome-terminal
-home			^[ [ 7 ~		RxVT
-
-eol			^[ [ 4 ~		Putty, Linux, Cygwin, ssh
-eol			^[ [ F			Xterm, Konsole, SCO
-eol			^[ O F			gnome-terminal
-eol			^[ [ 8 ~		RxVT
-
-begin_marking,rtarw,toggle_marking	^[ [ 1 ; 5 C    Mark right Xterm
-begin_marking,rtarw,toggle_marking	^[ [ 5 C        Mark right Gnome-terminal
- (Almost all termcap entries have ^[ O C as an arrow key).
- begin_marking,rtarw,toggle_marking	^[ O C		Mark right Putty Ctrl-rtarw
-begin_marking,rtarw,toggle_marking	^[ O c		Mark right RxVT Ctrl-rtarw
-
-begin_marking,ltarw,toggle_marking	^[ [ 1 ; 5 D    Mark left
-begin_marking,ltarw,toggle_marking	^[ [ 5 D        Mark left
- begin_marking,ltarw,toggle_marking	^[ O D		Mark left Putty Ctrl-ltarw
-begin_marking,ltarw,toggle_marking	^[ O d		Mark left RxVT Ctrl-ltarw
-
-begin_marking,uparw,toggle_marking	^[ [ 1 ; 5 A    Mark up
-begin_marking,uparw,toggle_marking	^[ [ 5 A        Mark up
- begin_marking,uparw,toggle_marking	^[ O A		Mark up Putty Ctrl-uparw
-begin_marking,uparw,toggle_marking	^[ O a		Mark up RxVT Ctrl-uparw
-
-begin_marking,dnarw,toggle_marking	^[ [ 1 ; 5 B    Mark down
-begin_marking,dnarw,toggle_marking	^[ [ 5 B        Mark down
- begin_marking,dnarw,toggle_marking	^[ O B		Mark down Putty Ctrl-dnarw
-begin_marking,dnarw,toggle_marking	^[ O b		Mark down RxVT Ctrl-dnarw
-
-blkdel,nmark   ^[ [ 3 ; 5 -	Gnome-terminal Ctrl-Del
-blkdel,nmark   ^[ [ 3 ; 5 ~	Xterm Ctrl-Del
-
-yank		^[ [ 2 ; 5 -	Gnome-terminal Ctrl-Ins
-yank		^[ [ 2 ; 5 ~    Xterm Ctrl-Ins
+helpcard,"Paste",rtn,keymap,"Paste",rtn	^[ [ 2 0 0 ~
+nop					^[ [ 2 0 1 ~
 
 begin_marking,uparw,toggle_marking	^[ [ 1 ; 2 A	xterm shift-up mark
 begin_marking,dnarw,toggle_marking	^[ [ 1 ; 2 B	xterm shift-down mark
@@ -927,7 +824,17 @@ begin_marking,eol,toggle_marking	^[ [ 1 ; 2 F	xterm shift-end
 begin_marking,bof,toggle_marking	^[ [ 1 ; 6 H	xterm shift-ctrl-home
 begin_marking,eof,toggle_marking	^[ [ 1 ; 6 F	xterm shift-ctrl-end
 
- Extra functions not really part of JOE user interface:
+ Here we guess some common key sequences which either do not have termcap
+ sequences or which are frequently wrong. Note that if the termcap entry is
+ correct, it will override these later on.
+
+blkdel,nmark	^[ [ 3 ; 5 -	Gnome-terminal Ctrl-Del
+blkdel,nmark	^[ [ 3 ; 5 ~	Xterm Ctrl-Del
+
+yank		^[ [ 2 ; 5 -	Gnome-terminal Ctrl-Ins
+yank		^[ [ 2 ; 5 ~	Xterm Ctrl-Ins
+
+ Extra functions not really part of Joe user interface:
 
 delbol		^[ o		Delete to beginning of line
 delbol		^[ ^O		Delete to beginning of line
@@ -1002,7 +909,7 @@ pbuf		^[ ^U		Prev buffer
  yank		^[ ^Y		Undelete previous text
  yapp		^[ w		Append next delete to previous yank
 
- Standard JOE user interface
+ Standard Joe user interface
 
 quote8		^\		Enter Meta chars
 quote		`		Enter Ctrl chars
@@ -1026,10 +933,12 @@ blksave		^K w
 bof		^K U		Goto beginning of file
 bof		^K ^U
 bof		^K u
- bol		.kh		Goto beginning of line
- bol		^A
+bof		^[ [ 1 ; 5 H
+home		^A		Goto beginning of line
 home		.kh
-home		^A
+home		^[ [ 1 ~
+home		^[ [ 7 ~
+home		^[ [ H
 center		^K A		Center line
 center		^K ^A
 center		^K a
@@ -1037,6 +946,7 @@ crawll		^K <		Pan left
 crawlr		^K >		Pan right
 delch		.kD		Delete character
 delch		^D
+delch		^[ [ 3 ~
 deleol		^J		Delete to end of line
 dellin		^Y		Delete entire line
 delw		^W		Delete word to right
@@ -1050,9 +960,13 @@ edit		^K e
 eof		^K V		Go to end of file
 eof		^K ^V
 eof		^K v
-eol		.kH		Go to end of line
+eof		^[ [ 1 ; 5 F
 eol		.@7
+eol		.kH		Go to end of line
 eol		^E
+eol		^[ [ 4 ~
+eol		^[ [ 8 ~
+eol		^[ [ F
 exsave		^K X		Save and exit
 exsave		^K ^X
 exsave		^K x
@@ -1062,6 +976,8 @@ ffirst		^K f
 filt		^K /		Filter block
  finish		^K ^M		Complete text under cursor
 fnext		^L		Find next
+fnext		.k3
+fnext		^[ [ 1 3 ~
 fmtblk		^K J		Format paragraphs in block
 fmtblk		^K ^J
 fmtblk		^K j
@@ -1070,12 +986,13 @@ groww		^K G		Grow window
 groww		^K ^G
 groww		^K g
 insc		.kI		Insert a space
- insc		^@
+insc		^[ [ 2 ~
+insc		^[ [ L		SCO
 insf		^K R		Insert a file
 insf		^K ^R
 insf		^K r
 lindent		^K ,		Indent to left
-line		^K L		Goto line no.
+line		^K L		Goto line number
 line		^K ^L
 line		^K l
 ltarw		.kl		Go left
@@ -1093,9 +1010,11 @@ markk		^K k
 mode		^T		Options menu
 nextpos		^K =		Goto next position in position history
 nextword	^X		Goto next word
+nextword	^[ [ 1 ; 5 C
 open		^]		Split line
 prevpos		^K -		Previous position in history
 prevword	^Z		Previous word
+prevword	^[ [ 1 ; 5 D
 redo		^^		Redo changes
 rindent		^K .		Indent to right
 rtarw		.kr		Go right
@@ -1135,29 +1054,18 @@ keymap,"Pasteprompt",rtn,msg,"Entered bracketed paste mode",rtn	^[ [ 2 0 0 ~
 
 :menu			Selection menus
 :inherit windows
-
-pgupmenu			^[ [ I
-
-pgdnmenu			^[ [ G
-
-bolmenu			^[ [ 1 ~		Putty, Linux, Cygwin
-bolmenu			^[ [ H			Xterm, Konsole
-bolmenu			^[ O H			gnome-terminal
-bolmenu			^[ [ 7 ~		RxVT
-
-eolmenu			^[ [ 4 ~		Putty, Linux, Cygwin, ssh
-eolmenu			^[ [ F			Xterm, Konsole
-eolmenu			^[ O F			gnome-terminal
-eolmenu			^[ [ 8 ~		RxVT
-
 abort		^[ ^[
 backsmenu	^?
 backsmenu	^H
 bofmenu		^K U
 bofmenu		^K ^U
 bofmenu		^K u
-bolmenu		.kh
+bofmenu		^[ [ 1 ; 5 H
 bolmenu		^A
+bolmenu		.kh
+bolmenu		^[ [ 1 ~
+bolmenu		^[ [ 7 ~
+bolmenu		^[ [ H
 dnarwmenu	.kd
 dnarwmenu	^N
 dnarwmenu	^[ [ B
@@ -1165,18 +1073,25 @@ dnarwmenu	^[ O B
 eofmenu		^K V
 eofmenu		^K ^V
 eofmenu		^K v
+eofmenu		^[ [ 1 ; 5 F
+eolmenu		.@7
 eolmenu		.kH
 eolmenu		^E
+eolmenu		^[ [ 4 ~
+eolmenu		^[ [ 8 ~
+eolmenu		^[ [ F
 ltarwmenu	.kl
 ltarwmenu	^B
 ltarwmenu	^[ [ D
 ltarwmenu	^[ O D
-pgdnmenu	.kN		Screen down
+pgdnmenu	.kN
 pgdnmenu	^V
 pgdnmenu	^[ [ 6 ~
-pgupmenu	.kP		Screen up
+pgdnmenu	^[ [ G
+pgupmenu	.kP
 pgupmenu	^U
 pgupmenu	^[ [ 5 ~
+pgupmenu	^[ [ I
 rtarwmenu	.kr
 rtarwmenu	^F
 rtarwmenu	^[ [ C
@@ -1204,10 +1119,11 @@ type		^@ TO ÿ
 :cua			Undo/Cut/Copy/Paste, CUA style
 :inherit main
  #HOOK#6 extra keybindings in CUA mode
+:def pastecua helpcard,"Paste",rtn,keymap,"Pastecua",rtn
 undo		^Z
 blkdel,nmark	^X
 copy		^C
 yank		^V
-helpcard,"Paste",rtn,keymap,"Pastecua",rtn	^[ P
-helpcard,"Paste",rtn,keymap,"Pastecua",rtn	^[ p
-helpcard,"Paste",rtn,keymap,"Pastecua",rtn	^[ [ 2 0 0 ~
+pastecua	^[ P
+pastecua	^[ p
+pastecua	^[ [ 2 0 0 ~

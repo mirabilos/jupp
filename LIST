@@ -1,5 +1,5 @@
-$MirOS: contrib/code/jupp/LIST,v 1.11 2017/08/08 21:39:27 tg Exp $
------------------------------------------------------------------
+$MirOS: contrib/code/jupp/LIST,v 1.14 2018/02/01 02:33:43 tg Exp $
+------------------------------------------------------------------
 
 Joe commands grouped by function
 
@@ -27,7 +27,7 @@ begin_marking	If we're on an edge of a block: set markb to other edge and
 		turn on marking mode.  Otherwise set markb to cursor and
 		turn on marking mode.
 
-select          Set markb.  If it was already set, do nothing.
+select		Set markb.  If it was already set, do nothing.
 filt		Filter block or file through a unix command
 markb		Set beginning of block mark
 markk		Set end of block mark
@@ -70,7 +70,7 @@ eol		Move cursor to end of line
 eop		Move cursor to end of paragraph
 fwrdc		Search forward for matching character
 gomark		Move cursor to a bookmark
-home		Move cursor to beginning of line
+home		Move cursor to beginning of line ("smart")
 line		Move cursor to specified line
 ltarw		Move cursor left
 nedge		Move cursor to next edge
@@ -192,6 +192,7 @@ notmod		Clear the modified flag
 retype		Refresh screen
 shell		Suspend process or execute a sub-shell
 stat		Display cursor position
+sync		Call sync(2)
 tag		Tags file search
 txt		Insert text
 
