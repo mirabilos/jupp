@@ -14,8 +14,8 @@
 
 @SET_MAKE@
 
-# $MirOS: contrib/code/jupp/Makefile.in,v 1.18 2018/03/15 22:55:28 tg Exp $
-# $miros: contrib/code/jupp/Makefile.am,v 1.20 2018/03/15 22:51:30 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.in,v 1.19 2018/03/15 23:15:40 tg Exp $
+# $miros: contrib/code/jupp/Makefile.am,v 1.21 2018/03/15 23:07:46 tg Exp $
 
 
 
@@ -307,6 +307,7 @@ termidx_SOURCES = termidx.c
 man_joeinitfile = @joeinitfile@
 man_joeresides = @joeresides@
 man_joeinitcopy = @joeinitcopy@
+CLEANFILES = $(JOE_RCFILES) joe.1
 all: autoconf.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -801,6 +802,7 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
