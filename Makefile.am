@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/Makefile.am,v 1.20 2018/03/15 22:51:30 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.am,v 1.21 2018/03/15 23:07:46 tg Exp $
 
 AUTOMAKE_OPTIONS = foreign
 
@@ -107,6 +107,8 @@ uninstall-local:
 	for i in $(JOE_ALIASES); do \
 		rm -f $(DESTDIR)$(bindir)/$$i $(DESTDIR)$(man1dir)/$$i.1; \
 	done
+
+CLEANFILES = $(JOE_RCFILES) joe.1
 
 distclean-local:
 	rm -f *~
