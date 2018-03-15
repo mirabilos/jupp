@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/Makefile.am,v 1.19 2018/03/15 22:47:59 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.am,v 1.20 2018/03/15 22:51:30 tg Exp $
 
 AUTOMAKE_OPTIONS = foreign
 
@@ -20,21 +20,22 @@ JOE_RC_EDIT = sed \
 		-e 's@''jrcbefore''@$(jrcbefore)g' \
 		-e 's@''jrcafter''@$(jrcafter)g' \
 		-e 's@''SPELL''@$(SPELL)g' \
+		<'$?' >$@~ && mv -f $@~ $@
 
 jmacsrc: jmacsrc.in
-	$(JOE_RC_EDIT) <'$?' >$@~ && mv -f $@~ $@
+	$(JOE_RC_EDIT)
 
 joerc: joerc.in
-	$(JOE_RC_EDIT) <'$?' >$@~ && mv -f $@~ $@
+	$(JOE_RC_EDIT)
 
 jpicorc: jpicorc.in
-	$(JOE_RC_EDIT) <'$?' >$@~ && mv -f $@~ $@
+	$(JOE_RC_EDIT)
 
 jstarrc: jstarrc.in
-	$(JOE_RC_EDIT) <'$?' >$@~ && mv -f $@~ $@
+	$(JOE_RC_EDIT)
 
 rjoerc: rjoerc.in
-	$(JOE_RC_EDIT) <'$?' >$@~ && mv -f $@~ $@
+	$(JOE_RC_EDIT)
 
 INCLUDES = -DJOERC="\"$(sysconf_joedir)/\""
 
