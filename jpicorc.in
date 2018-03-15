@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jpicorc.in,v 1.31 2018/02/01 02:33:46 tg Exp $
+ $MirOS: contrib/code/jupp/jpicorc.in,v 1.32 2018/03/15 23:28:57 tg Exp $
 
                          Initialisation file for JOE
                                  Super Pico
@@ -290,7 +290,6 @@
 -syntax c
 
 *.nxc
---highlight
 -syntax c
 
  === C Shell

@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/rjoerc.in,v 1.31 2018/02/01 02:33:47 tg Exp $
+ $MirOS: contrib/code/jupp/rjoerc.in,v 1.32 2018/03/15 23:28:57 tg Exp $
 
                          Initialisation file for JOE
                             restricted access Joe
@@ -290,7 +290,6 @@
 -syntax c
 
 *.nxc
---highlight
 -syntax c
 
  === C Shell
