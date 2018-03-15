@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/Makefile.am,v 1.18 2017/12/03 01:11:48 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.am,v 1.19 2018/03/15 22:47:59 tg Exp $
 
 AUTOMAKE_OPTIONS = foreign
 
@@ -15,10 +15,32 @@ EXTRA_DIST = \
 	syntax/verilog.jsf.in syntax/vhdl.jsf.in syntax/xml.jsf.in
 
 JOE_ALIASES = jmacs jpico jstar jupp rjoe
+JOE_RCFILES = jmacsrc joerc jpicorc jstarrc jupprc rjoerc
+JOE_RC_EDIT = sed \
+		-e 's@''jrcbefore''@$(jrcbefore)g' \
+		-e 's@''jrcafter''@$(jrcafter)g' \
+		-e 's@''SPELL''@$(SPELL)g' \
+
+jmacsrc: jmacsrc.in
+	$(JOE_RC_EDIT) <'$?' >$@~ && mv -f $@~ $@
+
+joerc: joerc.in
+	$(JOE_RC_EDIT) <'$?' >$@~ && mv -f $@~ $@
+
+jpicorc: jpicorc.in
+	$(JOE_RC_EDIT) <'$?' >$@~ && mv -f $@~ $@
+
+jstarrc: jstarrc.in
+	$(JOE_RC_EDIT) <'$?' >$@~ && mv -f $@~ $@
+
+rjoerc: rjoerc.in
+	$(JOE_RC_EDIT) <'$?' >$@~ && mv -f $@~ $@
+
+INCLUDES = -DJOERC="\"$(sysconf_joedir)/\""
 
 sysconfjoesubdir = @sysconfjoesubdir@
 sysconf_joedir = $(sysconfdir)$(sysconfjoesubdir)
-sysconf_joe_DATA = jmacsrc joerc jpicorc jstarrc jupprc rjoerc
+sysconf_joe_DATA = $(JOE_RCFILES)
 
 sysconf_syntaxdir = $(sysconf_joedir)/syntax
 sysconf_syntax_DATA = \
@@ -64,7 +86,7 @@ joe.1: joe.1.in
 	    -e 's!@''joeinitfile''@!$(man_joeinitfile)!g' \
 	    -e 's!@''joeresides''@!$(man_joeresides)!g' \
 	    -e 's!@''joeinitcopy''@!$(man_joeinitcopy)!g' \
-	    <$? >$@~
+	    <'$?' >$@~
 	mv -f $@~ $@
 
 install-exec-hook:

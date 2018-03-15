@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.71 2018/02/14 22:28:12 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.72 2018/03/15 22:48:00 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -6,7 +6,7 @@
 AC_PREREQ(2.54)
 
 #### Here's the only place where to change version number ####
-AC_INIT(joe, 3.1jupp35)
+AC_INIT(joe, 3.1jupp36)
 #### But see main.c for the Copyright (c) owner and year! ####
 AC_CONFIG_SRCDIR([b.c])
 
@@ -124,7 +124,6 @@ if test x"$win32reloc" = x"yes"; then
 	JUPP_WIN32RELOC=1
 else
 	JUPP_WIN32RELOC=0
-	AC_DEFINE_UNQUOTED([JOERC], ["$sysconfdir$sysconfjoesubdir/"], [Unix absolute paths base])
 fi
 AC_DEFINE_UNQUOTED([JUPP_WIN32RELOC], [$JUPP_WIN32RELOC], [Use Win32 argv0-relative paths?])
 if test x"$win32reloc" = x"yes"; then
@@ -280,7 +279,11 @@ joe_REINSTALL_SIGHANDLERS
 # Check for programs..
 AC_CHECK_PROG(SPELL,aspell,aspell,ispell)
 
-AC_CONFIG_FILES([Makefile joerc jmacsrc jstarrc rjoerc jpicorc
+# strictly speaking, the .jsf files should have no substitutions,
+# as they don’t do what you think they expand, currently it’s more
+# expensive however to rename them in CVS, so we keep that until
+# jupp has converted to mirtoconf
+AC_CONFIG_FILES([Makefile
 syntax/c.jsf syntax/perl.jsf syntax/verilog.jsf syntax/sh.jsf syntax/python.jsf
 syntax/conf.jsf syntax/php.jsf syntax/mail.jsf syntax/pascal.jsf syntax/html.jsf
 syntax/vhdl.jsf syntax/fortran.jsf syntax/java.jsf syntax/xml.jsf syntax/tcl.jsf
