@@ -32,7 +32,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/compat.c,v 1.10 2018/01/07 20:32:46 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/compat.c,v 1.11 2018/06/26 20:49:33 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -63,7 +63,11 @@ abrt(Sabrt)
 #ifdef DEBUG
 	fputs(emsg, stderr);
 #endif
+#ifdef TEST
+	write(2, "memory allocation error\n", 24);
+#else
 	ttabrt(0, "memory allocation error");
+#endif
 	/* try to get a coredump */
 	abort();
 }
