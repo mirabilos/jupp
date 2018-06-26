@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/syntax/java.jsf.in,v 1.4 2017/12/02 05:38:05 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/java.jsf.in,v 1.5 2018/06/26 19:49:59 tg Exp $
 #-
 # JOE syntax highlight file for JAVA
 
@@ -134,8 +134,9 @@
 
 :string_control Escape
 	*		string_control
-	"\n"		reset
-	"diouxXeEfFgGaAcspn%SC"	string
+	"\""		reset
+	"diouxXeEfFgGaAcspn%SC\n"	string
+	"\\"		string_escape	recolor=-1
 
 :char Constant
 	*		char
