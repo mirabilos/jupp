@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tw.c,v 1.21 2018/01/06 00:28:33 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tw.c,v 1.22 2018/06/26 20:23:35 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -291,7 +291,7 @@ stagen(unsigned char *stalin, BW *bw, const unsigned char *s, int fill)
 				stalin = vsncpy(sv(stalin), sz(buf));
 				break;
 			case 'a':
-				if (bw->b->o.charmap->type && !(special_aA && brch(bw->cursor) == 0x1000FFFE)) {
+				if (bw->b->o.charmap->type && !(special_aA && (brch(bw->cursor) & 0x80000000))) {
 					/* UTF-8: don't display decimal value */
 					buf[0] = 'u';
 					buf[1] = 0;
@@ -311,10 +311,8 @@ stagen(unsigned char *stalin, BW *bw, const unsigned char *s, int fill)
 					/* UTF-8, display UCS-2 value */
 					if (!piseof(bw->cursor)) {
 						int uch = brch(bw->cursor);
-						if (uch == 0x1000FFFE)
-							joe_snprintf_1((char *)buf, sizeof(buf), special_aA ? "%02X" : "  %02X", 255 & brc(bw->cursor));
-						else if (uch == 0x1000FFFF)
-							joe_snprintf_0((char *)buf, sizeof(buf), "<-2>");
+						if (uch & 0x80000000)
+							joe_snprintf_1((char *)buf, sizeof(buf), special_aA ? "%02X" : "  %02X", uch & 0xFF);
 						else
 							joe_snprintf_1((char *)buf, sizeof(buf), "%04X", uch);
 					} else

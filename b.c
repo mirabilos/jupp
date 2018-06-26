@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.35 2018/01/08 02:01:18 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.36 2018/06/26 20:23:34 tg Exp $");
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -564,17 +564,19 @@ int pgetb(P *p)
 int pgetc(P *p)
 {
 	if (p->b->o.charmap->type) {
-		int val, c, n, wid;
-		/* int m, oc; */
+		int c, n, oc, wid, val;
 
 		val = p->valcol;	/* Remember if column number was valid */
 		c = pgetb(p);		/* Get first byte */
-		/* oc = c; */
 
 		if (c==NO_MORE_DATA)
 			return c;
 
-		if ((c&0xE0)==0xC0) { /* Two bytes */
+		oc = c;			/* Save in case of invalid sequences */
+
+		if ((c&0x80)==0x00) {        /* One byte */
+			n = 0;
+		} else if ((c&0xE0)==0xC0) { /* Two bytes */
 			n = 1;
 			c &= 0x1F;
 		} else if ((c&0xF0)==0xE0) { /* Three bytes */
@@ -589,18 +591,14 @@ int pgetc(P *p)
 		} else if ((c&0xFE)==0xFC) { /* Six bytes */
 			n = 5;
 			c &= 0x01;
-		} else if ((c&0x80)==0x00) { /* One byte */
-			n = 0;
 		} else { /* 128-191, 254, 255: Not a valid UTF-8 start character */
+ eilseq:
 			n = 0;
-			c = 0x1000FFFE;
-			/* c -= 384; */
+			c = 0x80000000 | (oc & 0xFF);
 		}
 
-		/* m = n; */
-
 		if (n) {
-			int d;
+			int d, m = n;	/* Save in case of invalid sequences */
 
 			do {
 				d = brc(p);
@@ -609,12 +607,9 @@ int pgetc(P *p)
 				pgetb(p);
 				c = ((c<<6)|(d&0x3F));
 			} while (--n);
-			if (n) { /* FIXME: there was a bad UTF-8 sequence */
-				/* How to represent this? */
-				/* pbkwd(p,m-n);
-				c = oc - 384; */
-				c = d == NO_MORE_DATA ? 0x1000FFFF : 0x1000FFFE;
-				wid = 1;
+			if (n) { /* There was a bad UTF-8 sequence */
+				pbkwd(p, m - n);
+				goto eilseq;
 			} else if (val)
 				wid = joe_wcwidth(c);
 		} else {
