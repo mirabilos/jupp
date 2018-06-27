@@ -7,7 +7,7 @@
  */
 
 #ifdef LGEN_Q
-__IDSTRING(rcsid_bw_lgen_inc, "$MirOS: contrib/code/jupp/bw-lgen.inc,v 1.1 2018/06/27 22:39:02 tg Exp $");
+__IDSTRING(rcsid_bw_lgen_inc, "$MirOS: contrib/code/jupp/bw-lgen.inc,v 1.2 2018/06/27 22:46:53 tg Exp $");
 #define XCOL col
 #else
 #define XCOL (scr + x - ox)
@@ -15,189 +15,192 @@ __IDSTRING(rcsid_bw_lgen_inc, "$MirOS: contrib/code/jupp/bw-lgen.inc,v 1.1 2018/
 
  LGEN_LABEL(loop):
 	/* Display next character */
-	if (amnt)
-		do {
-			if (ungetit == -1)
-				bc = *bp++;
-			else {
-				bc = ungetit;
-				ungetit = -1;
-			}
-			if (st != -1)
-				atr = syn[idx++];
-			if (p->b->o.crlf && bc == '\r') {
-				++byte;
-				if (!--amnt) {
+	if (!amnt)
+		goto LGEN_LABEL(noamnt);
+	do {
+		if (ungetit == -1)
+			bc = *bp++;
+		else {
+			bc = ungetit;
+			ungetit = -1;
+		}
+		if (st != -1)
+			atr = syn[idx++];
+		if (p->b->o.crlf && bc == '\r') {
+			++byte;
+			if (!--amnt) {
  LGEN_LABEL(pl):
-					if (bp == p->ptr + SEGSIZ) {
-						if (pnext(p)) {
-							bp = p->ptr;
-							amnt = p->hdr->hole;
-						} else
-							goto LGEN_LABEL(nl);
-					} else {
-						bp = p->ptr + p->hdr->ehole;
-						amnt = SEGSIZ - p->hdr->ehole;
-						if (!amnt)
-							goto LGEN_LABEL(pl);
-					}
+				if (bp == p->ptr + SEGSIZ) {
+					if (pnext(p)) {
+						bp = p->ptr;
+						amnt = p->hdr->hole;
+					} else
+						goto LGEN_LABEL(nl);
+				} else {
+					bp = p->ptr + p->hdr->ehole;
+					amnt = SEGSIZ - p->hdr->ehole;
+					if (!amnt)
+						goto LGEN_LABEL(pl);
 				}
-				if (*bp == '\n') {
-					++bp;
-					++byte;
-					++amnt;
-					goto eobl;
-				}
- LGEN_LABEL(nl):
-				--byte;
-				++amnt;
 			}
-			if (square)
-				if (bc == '\t') {
-					long tcol = XCOL + p->b->o.tab -
-					    (XCOL % p->b->o.tab);
+			if (*bp == '\n') {
+				++bp;
+				++byte;
+				++amnt;
+				goto eobl;
+			}
+ LGEN_LABEL(nl):
+			--byte;
+			++amnt;
+		}
+		if (square)
+			if (bc == '\t') {
+				long tcol = XCOL + p->b->o.tab -
+				    (XCOL % p->b->o.tab);
 
-					if (tcol > from && tcol <= to)
-						c1 = INVERSE;
-					else
-						c1 = 0;
-				} else if (XCOL >= from && XCOL < to)
+				if (tcol > from && tcol <= to)
 					c1 = INVERSE;
 				else
 					c1 = 0;
-			else if (byte >= from && byte < to)
+			} else if (XCOL >= from && XCOL < to)
 				c1 = INVERSE;
 			else
 				c1 = 0;
-			++byte;
-			if (bc == '\t') {
+		else if (byte >= from && byte < to)
+			c1 = INVERSE;
+		else
+			c1 = 0;
+		++byte;
+		if (bc == '\t') {
 #ifndef LGEN_Q /*XXX*/
-				if (utf8_sm.state)
-					goto LGEN_LABEL(ilseq);
+			if (utf8_sm.state)
+				goto LGEN_LABEL(ilseq);
 #endif
-				ta = p->b->o.tab - (XCOL % p->b->o.tab);
+			ta = p->b->o.tab - (XCOL % p->b->o.tab);
 #ifdef LGEN_Q
-				if (ta + col > scr) {
-					ta -= scr - col;
-					goto dota_tab;
-				}
-				if ((col += ta) == scr) {
-					--amnt;
-					goto v_loop;
-				}
+			if (ta + col > scr) {
+				ta -= scr - col;
+				goto dota_tab;
+			}
+			if ((col += ta) == scr) {
+				--amnt;
+				goto v_loop;
+			}
 #else
  dota_tab:
-				tach1 = tach = ' ';
-				if (bw->o.vispace)
-					tach = 0x2192;
-				goto dota_gen;
+			tach1 = tach = ' ';
+			if (bw->o.vispace)
+				tach = 0x2192;
+			goto dota_gen;
  dota_loop:
-				tach = tach1;
+			tach = tach1;
  dota_gen:
-				outatr(utf8_map, t, screen + x, attr + x,
-				    x, y, tach, c1 | atr);
-				if (have)
-					goto bye;
-				if (++x == w)
-					goto eosl;
-				if (--ta)
-					goto dota_loop;
+			outatr(utf8_map, t, screen + x, attr + x,
+			    x, y, tach, c1 | atr);
+			if (have)
+				goto bye;
+			if (++x == w)
+				goto eosl;
+			if (--ta)
+				goto dota_loop;
 #endif
-			} else if (bc == '\n') {
+		} else if (bc == '\n') {
 #ifndef LGEN_Q /*XXX*/
-				if (utf8_sm.state)
-					goto LGEN_LABEL(ilseq);
+			if (utf8_sm.state)
+				goto LGEN_LABEL(ilseq);
 #endif
-				goto eobl;
-			} else {
-				int wid = -1;
+			goto eobl;
+		} else {
+			int wid = -1;
 
-				/*
-				 * should be p->b->o.charmap->type logically
-				 * but they are identical here, and it helps
-				 * static analysers like Coverity
-				 */
-				if (bw->b->o.charmap->type) {
-					/* UTF-8 */
-					c = utf8_decode(&utf8_sm,bc);
+			/*
+			 * should be p->b->o.charmap->type logically
+			 * but they are identical here, and it helps
+			 * static analysers like Coverity
+			 */
+			if (bw->b->o.charmap->type) {
+				/* UTF-8 */
+				c = utf8_decode(&utf8_sm,bc);
 
-					if (c >= 0) {
-						/* Normal decoded character */
-						wid = joe_wcwidth(c);
-					} else if (c == -1) {
-						/* Character taken */
-						wid = -1;
-					} else if (c == -2) {
-						/* Incomplete sequence */
+				if (c >= 0) {
+					/* Normal decoded character */
+					wid = joe_wcwidth(c);
+				} else if (c == -1) {
+					/* Character taken */
+					wid = -1;
+				} else if (c == -2) {
+					/* Incomplete sequence */
 #ifndef LGEN_Q /*XXX*/
  LGEN_LABEL(ilseq):
 #endif
-						ungetit = bc;
-						++amnt;
-						--byte;
-						c = 0x1000FFFE;
-						wid = utf8_sm.ptr;
-						utf8_init(&utf8_sm);
-					} else if (c == -3) {
-						/* Invalid byte */
-						c = 0x1000FFFE;
-						wid = 1;
-					}
-				} else {
-					/* 8-bit charmap */
-					c = bc;
+					ungetit = bc;
+					++amnt;
+					--byte;
+					c = 0x1000FFFE;
+					wid = utf8_sm.ptr;
+					utf8_init(&utf8_sm);
+				} else if (c == -3) {
+					/* Invalid byte */
+					c = 0x1000FFFE;
 					wid = 1;
 				}
-
-				if (wid >= 0) {
-#ifdef LGEN_Q
-					col += wid;
-					if (col == scr) {
-						--amnt;
-						goto v_loop;
-					} else if (col > scr) {
-						ta = col - scr;
-						tach1 = tach = '<';
-						goto dota_gen;
-					}
-#else
-					if (x + wid > w) {
-						/* If character hits right most column, don't display it */
-						while (x < w) {
-							outatr(bw->b->o.charmap,
-							    t, screen + x, attr + x,
-							    x, y, '>', c1 | atr);
-							x++;
-						}
-					} else if (c == 0x1000FFFE) while (wid--) {
-						outatr(bw->b->o.charmap, t,
-						    screen + x, attr + x,
-						    x, y, 0xFFFD,
-						    (c1 | atr | UNDERLINE) ^ INVERSE);
-						x++;
-					} else if (c == 0x20 && bw->o.vispace) {
-						outatr(utf8_map, t,
-						    screen + x, attr + x,
-						    x, y, 0xB7, c1 | atr);
-						x += wid;
-					} else {
-						outatr(bw->b->o.charmap, t,
-						    screen + x, attr + x,
-						    x, y, c, c1 | atr);
-						x += wid;
-					}
-#endif
-				} else
-					/* Get highlighting character again */
-					--idx;
-#ifndef LGEN_Q
-				if (have)
-					goto bye;
-				if (x >= w)
-					goto eosl;
-#endif
+			} else {
+				/* 8-bit charmap */
+				c = bc;
+				wid = 1;
 			}
-		} while (--amnt);
+
+			if (wid >= 0) {
+#ifdef LGEN_Q
+				col += wid;
+				if (col == scr) {
+					--amnt;
+					goto v_loop;
+				} else if (col > scr) {
+					ta = col - scr;
+					tach1 = tach = '<';
+					goto dota_gen;
+				}
+#else
+				if (x + wid > w) {
+					/* Character hits rightmost column */
+					while (x < w) {
+						/* Display offscreen marker */
+						outatr(bw->b->o.charmap,
+						    t, screen + x, attr + x,
+						    x, y, '>', c1 | atr);
+						x++;
+					}
+				} else if (c == 0x1000FFFE) while (wid--) {
+					outatr(bw->b->o.charmap, t,
+					    screen + x, attr + x,
+					    x, y, 0xFFFD,
+					    (c1 | atr | UNDERLINE) ^ INVERSE);
+					x++;
+				} else if (c == 0x20 && bw->o.vispace) {
+					outatr(utf8_map, t,
+					    screen + x, attr + x,
+					    x, y, 0xB7, c1 | atr);
+					x += wid;
+				} else {
+					outatr(bw->b->o.charmap, t,
+					    screen + x, attr + x,
+					    x, y, c, c1 | atr);
+					x += wid;
+				}
+#endif
+			} else
+				/* Get highlighting character again */
+				--idx;
+#ifndef LGEN_Q
+			if (have)
+				goto bye;
+			if (x >= w)
+				goto eosl;
+#endif
+		}
+	} while (--amnt);
+ LGEN_LABEL(noamnt):
 	if (bp == p->ptr + SEGSIZ) {
 		if (pnext(p)) {
 			bp = p->ptr;
