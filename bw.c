@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.37 2018/01/08 02:01:19 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.38 2018/06/27 22:39:02 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -354,7 +354,7 @@ lgen(SCRN *t, int y,
 		prm(tmp);
 	}
 
-/* Initialize bp and amnt from p */
+	/* Initialise bp and amnt from p */
 	if (p->ofst >= p->hdr->hole) {
 		bp = p->ptr + p->hdr->ehole + p->ofst - p->hdr->hole;
 		amnt = SEGSIZ - p->hdr->ehole - (p->ofst - p->hdr->hole);
@@ -364,296 +364,37 @@ lgen(SCRN *t, int y,
 	}
 
 	if (col == scr)
-		goto loop;
- lp:
-	/* Display next character */
-	if (amnt)
-		do {
-			if (ungetit== -1)
-				bc = *bp++;
-			else {
-				bc = ungetit;
-				ungetit = -1;
-			}
-			if(st!=-1)
-				atr = syn[idx++];
-			if (p->b->o.crlf && bc == '\r') {
-				++byte;
-				if (!--amnt) {
- pppl:
-					if (bp == p->ptr + SEGSIZ) {
-						if (pnext(p)) {
-							bp = p->ptr;
-							amnt = p->hdr->hole;
-						} else
-							goto nnnl;
-					} else {
-						bp = p->ptr + p->hdr->ehole;
-						amnt = SEGSIZ - p->hdr->ehole;
-						if (!amnt)
-							goto pppl;
-					}
-				}
-				if (*bp == '\n') {
-					++bp;
-					++byte;
-					++amnt;
-					goto eobl;
-				}
- nnnl:
-				--byte;
-				++amnt;
-			}
-			if (square)
-				if (bc == '\t') {
-					long tcol = col + p->b->o.tab - col % p->b->o.tab;
+		goto v_loop;
 
-					if (tcol > from && tcol <= to)
-						c1 = INVERSE;
-					else
-						c1 = 0;
-				} else if (col >= from && col < to)
-					c1 = INVERSE;
-				else
-					c1 = 0;
-			else if (byte >= from && byte < to)
-				c1 = INVERSE;
-			else
-				c1 = 0;
-			++byte;
-			if (bc == '\t') {
-				ta = p->b->o.tab - col % p->b->o.tab;
-				if (ta + col > scr) {
-					ta -= scr - col;
-					goto dota_tab;
-				}
-				if ((col += ta) == scr) {
-					--amnt;
-					goto loop;
-				}
-			} else if (bc == '\n')
-				goto eobl;
-			else {
-				int wid = 1;
+#define LGEN_Q
+#define LGEN_LABEL(x) q_ ## x
+#include "bw-lgen.inc"
+#undef LGEN_LABEL
 
-				/* should be p->b->o.charmap->type but for Coverity; they are identical here */
-				if (bw->b->o.charmap->type) {
-					c = utf8_decode(&utf8_sm,bc);
+#undef LGEN_Q
+#define LGEN_LABEL(x) v_ ## x
+#include "bw-lgen.inc"
+#undef LGEN_LABEL
 
-					if (c>=0) /* Normal decoded character */
-						wid = joe_wcwidth(c);
-					else if(c== -1) /* Character taken */
-						wid = -1;
-					else if(c== -2) { /* Incomplete sequence */
-						wid = 1;
-						ungetit = c;
-						++amnt;
-						--byte;
-					}
-					else if(c== -3) /* Control character 128-191, 254, 255 */
-						wid = 1;
-				}
-
-				if (wid >= 0) {
-					col += wid;
-					if (col == scr) {
-						--amnt;
-						goto loop;
-					} else if (col > scr) {
-						ta = col - scr;
-						tach1 = tach = '<';
-						goto dota_gen;
-					}
-				} else
-					--idx;	/* Get highlighting character again.. */
-			}
-		} while (--amnt);
-	if (bp == p->ptr + SEGSIZ) {
-		if (pnext(p)) {
-			bp = p->ptr;
-			amnt = p->hdr->hole;
-			goto lp;
-		}
-	} else {
-		bp = p->ptr + p->hdr->ehole;
-		amnt = SEGSIZ - p->hdr->ehole;
-		goto lp;
-	}
-	goto eof;
- loop:
-	/* Display next character */
-	if (amnt)
-		do {
-			if (ungetit== -1)
-				bc = *bp++;
-			else {
-				bc = ungetit;
-				ungetit = -1;
-			}
-			if(st!=-1)
-				atr=syn[idx++];
-			if (p->b->o.crlf && bc == '\r') {
-				++byte;
-				if (!--amnt) {
- ppl:
-					if (bp == p->ptr + SEGSIZ) {
-						if (pnext(p)) {
-							bp = p->ptr;
-							amnt = p->hdr->hole;
-						} else
-							goto nnl;
-					} else {
-						bp = p->ptr + p->hdr->ehole;
-						amnt = SEGSIZ - p->hdr->ehole;
-						if (!amnt)
-							goto ppl;
-					}
-				}
-				if (*bp == '\n') {
-					++bp;
-					++byte;
-					++amnt;
-					goto eobl;
-				}
- nnl:
-				--byte;
-				++amnt;
-			}
-			if (square)
-				if (bc == '\t') {
-					long tcol = scr + x - ox + p->b->o.tab - (scr + x - ox) % p->b->o.tab;
-
-					if (tcol > from && tcol <= to)
-						c1 = INVERSE;
-					else
-						c1 = 0;
-				} else if (scr + x - ox >= from && scr + x - ox < to)
-					c1 = INVERSE;
-				else
-					c1 = 0;
-			else if (byte >= from && byte < to)
-				c1 = INVERSE;
-			else
-				c1 = 0;
-			++byte;
-			if (bc == '\t') {
-				ta = p->b->o.tab - ((x - ox + scr) % p->b->o.tab);
- dota_tab:
-				tach1 = tach = ' ';
-				if (bw->o.vispace)
-					tach = 0x2192;
- dota_gen:
-				do {
-					outatr(utf8_map, t, screen + x, attr + x, x, y, tach, c1|atr);
-					tach = tach1;
-					if (have)
-						goto bye;
-					if (++x == w)
-						goto eosl;
-				} while (--ta);
-			} else if (bc == '\n') {
-				if (utf8_sm.state)
-					goto unget_cch;
-				goto eobl;
-			} else {
-				int wid = -1;
-				int utf8_char;
-
-				/* should be p->b->o.charmap but it’s identical */
-				if (bw->b->o.charmap->type) {
-					/* UTF-8 */
-					utf8_char = utf8_decode(&utf8_sm,bc);
-
-					if (utf8_char >= 0) {
-						/* Normal decoded character */
-						wid = joe_wcwidth(utf8_char);
-					} else if (utf8_char == -1) {
-						/* Character taken */
-						wid = -1;
-					} else if (utf8_char == -2) {
-						/* Incomplete sequence (FIXME: do something better here) */
- unget_cch:
-						ungetit = bc;
-						++amnt;
-						--byte;
-						utf8_char = 0x1000FFFE;
-						wid = utf8_sm.ptr;
-						utf8_init(&utf8_sm);
-					} else if (utf8_char == -3) {
-						/* Invalid UTF-8 start character 128-191, 254, 255 */
-						/* Show as control character */
-						wid = 1;
-						utf8_char = 0x1000FFFE;
-					}
-				} else { /* Regular */
-					utf8_char = bc;
-					wid = 1;
-				}
-
-				if(wid>=0) {
-					if (x+wid > w) {
-						/* If character hits right most column, don't display it */
-						while (x < w) {
-							outatr(bw->b->o.charmap, t, screen + x, attr + x, x, y, '>', c1|atr);
-							x++;
-						}
-					} else if (utf8_char == 0x1000FFFE) while (wid--) {
-						outatr(bw->b->o.charmap, t, screen + x, attr + x, x, y, 0xFFFD, (c1|atr|UNDERLINE)^INVERSE);
-						x++;
-					} else if (bw->o.vispace && (utf8_char == 0x20)) {
-						outatr(utf8_map, t, screen + x, attr + x, x, y, 0xB7, c1|atr);
-						x += wid;
-					} else {
-						outatr(bw->b->o.charmap, t, screen + x, attr + x, x, y, utf8_char, c1|atr);
-						x += wid;
-					}
-				} else
-					--idx;
-
-				if (have)
-					goto bye;
-				if (x >= w)
-					goto eosl;
-			}
-		} while (--amnt);
-	if (bp == p->ptr + SEGSIZ) {
-		if (pnext(p)) {
-			bp = p->ptr;
-			amnt = p->hdr->hole;
-			goto loop;
-		}
-	} else {
-		bp = p->ptr + p->hdr->ehole;
-		amnt = SEGSIZ - p->hdr->ehole;
-		goto loop;
-	}
-	goto eof;
  eobl:
 	/* End of buffer line found.  Erase to end of screen line */
 	++p->line;
  eof:
-	if (x != w)
-		done = eraeol(t, x, y);
-	else
-		done = 0;
-
-/* Set p to bp/amnt */
+	done = x == w ? 0 : eraeol(t, x, y);
  bye:
-	if (bp - p->ptr <= p->hdr->hole)
-		p->ofst = bp - p->ptr;
-	else
-		p->ofst = bp - p->ptr - (p->hdr->ehole - p->hdr->hole);
-	p->byte = byte;
-	return done;
-
+	c = 1;
+	if (0)
+		/* FALLTHROUGH */
  eosl:
-	if (bp - p->ptr <= p->hdr->hole)
-		p->ofst = bp - p->ptr;
-	else
-		p->ofst = bp - p->ptr - (p->hdr->ehole - p->hdr->hole);
+	  done = c = 0; /* End of screen line */
+
+	/* Set p to bp/amnt */
+	if ((p->ofst = bp - p->ptr) > p->hdr->hole)
+		p->ofst -= p->hdr->ehole - p->hdr->hole;
 	p->byte = byte;
-	pnextl(p);
-	return 0;
+	if (!c)
+		pnextl(p);
+	return (done);
 }
 
 static void gennum(BW *w, int *screen, int *attr, SCRN *t, int y, int *comp)
