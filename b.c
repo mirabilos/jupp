@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.36 2018/06/26 20:23:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.37 2018/06/27 23:49:11 tg Exp $");
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -717,73 +717,25 @@ int prgetb(P *p)
 }
 
 /* move p to the previous character (try to keep col updated) */
-int prgetc(P *p)
+int
+prgetc(P *p)
 {
-	if (p->b->o.charmap->type) {
+	P *q, *r;
 
-		if (pisbol(p))
-			return prgetb(p);
-		else {
-			P *q = pdup(p);
-			P *r;
-			p_goto_bol(q);
-			r = pdup(q);
-			while (q->byte<p->byte) {
-				pset(r, q);
-				pgetc(q);
-			}
-			pset(p,r);
-			prm(r);
-			prm(q);
-			return brch(p);
-		}
+	if (!p->b->o.charmap->type || pisbol(p))
+		return (prgetb(p));
 
-#if 0
-		int d = 0;
-		int c;
-		int n = 0;
-		int val = p->valcol;
-		for(;;) {
-			c = prgetb(p);
-			if (c == NO_MORE_DATA)
-				return NO_MORE_DATA;
-			else if ((c&0xC0)==0x80) {
-				d |= ((c&0x3F)<<n);
-				n += 6;
-			} else if ((c&0x80)==0x00) { /* One char */
-				d = c;
-				break;
-			} else if ((c&0xE0)==0xC0) { /* Two chars */
-				d |= ((c&0x1F)<<n);
-				break;
-			} else if ((c&0xF0)==0xE0) { /* Three chars */
-				d |= ((c&0x0F)<<n);
-				break;
-			} else if ((c&0xF8)==0xF0) { /* Four chars */
-				d |= ((c&0x07)<<n);
-				break;
-			} else if ((c&0xFC)==0xF8) { /* Five chars */
-				d |= ((c&0x03)<<n);
-				break;
-			} else if ((c&0xFE)==0xFC) { /* Six chars */
-				d |= ((c&0x01)<<n);
-				break;
-			} else { /* FIXME: Invalid (0xFE or 0xFF found) */
-				break;
-			}
-		}
-
-		if (val && c!='\t' && c!='\n') {
-			p->valcol = 1;
-			p->col -= joe_wcwidth(d);
-		}
-
-		return d;
-#endif
+	q = pdup(p);
+	p_goto_bol(q);
+	r = pdup(q);
+	while (q->byte < p->byte) {
+		pset(r, q);
+		pgetc(q);
 	}
-	else {
-		return prgetb(p);
-	}
+	pset(p, r);
+	prm(r);
+	prm(q);
+	return (brch(p));
 }
 
 /* move p n characters backwards */
