@@ -7,7 +7,7 @@
  */
 
 #ifdef LGEN_Q
-__IDSTRING(rcsid_bw_lgen_inc, "$MirOS: contrib/code/jupp/bw-lgen.inc,v 1.4 2018/06/28 01:51:47 tg Exp $");
+__IDSTRING(rcsid_bw_lgen_inc, "$MirOS: contrib/code/jupp/bw-lgen.inc,v 1.5 2018/06/28 03:11:18 tg Exp $");
 #define XCOL col
 #else
 #define XCOL (scr + x - ox)
@@ -173,7 +173,7 @@ __IDSTRING(rcsid_bw_lgen_inc, "$MirOS: contrib/code/jupp/bw-lgen.inc,v 1.4 2018/
 					outatr(utf8_map, t,
 					    screen + x, attr + x,
 					    x, y, 0xB7, c1 | atr);
-					x += wid;
+					x++;
 				} else {
 					outatr(bw->b->o.charmap, t,
 					    screen + x, attr + x,
