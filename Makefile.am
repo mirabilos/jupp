@@ -1,18 +1,12 @@
-# $MirOS: contrib/code/jupp/Makefile.am,v 1.21 2018/03/15 23:07:46 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.am,v 1.22 2018/06/28 02:03:45 tg Exp $
 
 AUTOMAKE_OPTIONS = foreign
 
 EXTRA_DIST = \
-	COPYING HINTS INFO LIST NEWS README README.cvs TODO \
-	charmaps/klingon.in dir.c docs/help-system.html jmacsrc.in \
-	joe.1.in joerc.in jpicorc.in jstarrc.in jupprc rjoerc.in \
-	syntax/asm.jsf.in syntax/c.jsf.in syntax/conf.jsf.in \
-	syntax/csh.jsf.in syntax/diff.jsf.in syntax/fortran.jsf.in \
-	syntax/html.jsf.in syntax/java.jsf.in syntax/lisp.jsf.in \
-	syntax/mail.jsf.in syntax/mason.jsf.in syntax/pascal.jsf.in \
-	syntax/perl.jsf.in syntax/php.jsf.in syntax/python.jsf.in \
-	syntax/sh.jsf.in syntax/tcl.jsf.in syntax/tex.jsf.in \
-	syntax/verilog.jsf.in syntax/vhdl.jsf.in syntax/xml.jsf.in
+	HINTS INFO LIST Make-w32.sh autogen.sh bw-lgen.inc dir.c \
+	docs/help-system.html jmacsrc.in joe.1.in joe.txt joerc.in \
+	jpicorc.in jstarrc.in jupprc popen.inc rjoerc.in setup.inf \
+	strlfun.inc
 
 JOE_ALIASES = jmacs jpico jstar jupp rjoe
 JOE_RCFILES = jmacsrc joerc jpicorc jstarrc jupprc rjoerc
