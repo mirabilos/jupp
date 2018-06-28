@@ -7,7 +7,7 @@
  */
 
 #ifdef LGEN_Q
-__IDSTRING(rcsid_bw_lgen_inc, "$MirOS: contrib/code/jupp/bw-lgen.inc,v 1.2 2018/06/27 22:46:53 tg Exp $");
+__IDSTRING(rcsid_bw_lgen_inc, "$MirOS: contrib/code/jupp/bw-lgen.inc,v 1.3 2018/06/28 01:31:02 tg Exp $");
 #define XCOL col
 #else
 #define XCOL (scr + x - ox)
@@ -26,6 +26,8 @@ __IDSTRING(rcsid_bw_lgen_inc, "$MirOS: contrib/code/jupp/bw-lgen.inc,v 1.2 2018/
 		}
 		if (st != -1)
 			atr = syn[idx++];
+		if (utf8_sm.state && !(bc & 0x80))
+			goto LGEN_LABEL(ilseq);
 		if (p->b->o.crlf && bc == '\r') {
 			++byte;
 			if (!--amnt) {
@@ -72,10 +74,6 @@ __IDSTRING(rcsid_bw_lgen_inc, "$MirOS: contrib/code/jupp/bw-lgen.inc,v 1.2 2018/
 			c1 = 0;
 		++byte;
 		if (bc == '\t') {
-#ifndef LGEN_Q /*XXX*/
-			if (utf8_sm.state)
-				goto LGEN_LABEL(ilseq);
-#endif
 			ta = p->b->o.tab - (XCOL % p->b->o.tab);
 #ifdef LGEN_Q
 			if (ta + col > scr) {
@@ -105,10 +103,6 @@ __IDSTRING(rcsid_bw_lgen_inc, "$MirOS: contrib/code/jupp/bw-lgen.inc,v 1.2 2018/
 				goto dota_loop;
 #endif
 		} else if (bc == '\n') {
-#ifndef LGEN_Q /*XXX*/
-			if (utf8_sm.state)
-				goto LGEN_LABEL(ilseq);
-#endif
 			goto eobl;
 		} else {
 			int wid = -1;
@@ -120,7 +114,7 @@ __IDSTRING(rcsid_bw_lgen_inc, "$MirOS: contrib/code/jupp/bw-lgen.inc,v 1.2 2018/
 			 */
 			if (bw->b->o.charmap->type) {
 				/* UTF-8 */
-				c = utf8_decode(&utf8_sm,bc);
+				c = utf8_decode(&utf8_sm, bc);
 
 				if (c >= 0) {
 					/* Normal decoded character */
@@ -130,12 +124,10 @@ __IDSTRING(rcsid_bw_lgen_inc, "$MirOS: contrib/code/jupp/bw-lgen.inc,v 1.2 2018/
 					wid = -1;
 				} else if (c == -2) {
 					/* Incomplete sequence */
-#ifndef LGEN_Q /*XXX*/
- LGEN_LABEL(ilseq):
-#endif
-					ungetit = bc;
 					++amnt;
 					--byte;
+ LGEN_LABEL(ilseq):
+					ungetit = bc;
 					c = 0x1000FFFE;
 					wid = utf8_sm.ptr;
 					utf8_init(&utf8_sm);
