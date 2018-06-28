@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.44 2018/01/08 04:07:56 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.45 2018/06/28 03:11:13 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -140,7 +140,7 @@ outatr(struct charmap *map, SCRN *t, int *scrn, int *attrf, int xx, int yy, int 
 			/* from SBCS file */
 			c = to_uni(map, xlat(1, c, &a, map));
 			if (c < 32 || (c >= 0x7F && c < 0xA0)) {
-				c = 0x1000FFFE;
+				c = 0xFFFD;
 				a = (a | UNDERLINE) ^ INVERSE;
 			}
 		}
