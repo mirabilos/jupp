@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.38 2018/06/27 23:53:24 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.39 2018/06/28 01:18:32 tg Exp $");
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -559,103 +559,75 @@ int pgetb(P *p)
 	} else {
 		p->valcol = 0;
 	}
-	return c;
+	return (int)((unsigned int)c);
 }
 
-/* return current character and move p to the next character.  column will be updated if it was valid. */
-int pgetc(P *p)
+/*
+ * return current character and move p to the next character.
+ * column will be updated if it was valid.
+ */
+int
+pgetc(P *p)
 {
+	int c, b, w, valcol;
+
+	/* remember whether column number was valid */
+	valcol = p->valcol;
+
+	/* get first byte */
+	if ((b = pgetb(p)) == NO_MORE_DATA)
+		return (b);
+
 	if (p->b->o.charmap->type) {
-		int c, n, oc, wid, val;
+		struct utf8_sm utf8_sm;
 
-		val = p->valcol;	/* Remember if column number was valid */
-		c = pgetb(p);		/* Get first byte */
-
-		if (c==NO_MORE_DATA)
-			return c;
-
-		oc = c;			/* Save in case of invalid sequences */
-
-		if ((c&0x80)==0x00) {        /* One byte */
-			n = 0;
-		} else if ((c&0xE0)==0xC0) { /* Two bytes */
-			n = 1;
-			c &= 0x1F;
-		} else if ((c&0xF0)==0xE0) { /* Three bytes */
-			n = 2;
-			c &= 0x0F;
-		} else if ((c&0xF8)==0xF0) { /* Four bytes */
-			n = 3;
-			c &= 0x07;
-		} else if ((c&0xFC)==0xF8) { /* Five bytes */
-			n = 4;
-			c &= 0x03;
-		} else if ((c&0xFE)==0xFC) { /* Six bytes */
-			n = 5;
-			c &= 0x01;
-		} else { /* 128-191, 254, 255: Not a valid UTF-8 start character */
- eilseq:
-			n = 0;
-			c = 0x80000000 | (oc & 0xFF);
-		}
-
-		if (n) {
-			int d, m = n;	/* Save in case of invalid sequences */
-
-			do {
-				d = brc(p);
-				if (d == NO_MORE_DATA || (d&0xC0)!=0x80)
-					break;
+		utf8_init(&utf8_sm);
+ decode:
+		switch ((c = utf8_decode(&utf8_sm, b))) {
+		case -1:
+			if ((b = brc(p)) != NO_MORE_DATA &&
+			    /* due to pgetb() interpreting control chars */
+			    (b & 0x80)) {
 				pgetb(p);
-				c = ((c<<6)|(d&0x3F));
-			} while (--n);
-			if (n) { /* There was a bad UTF-8 sequence */
-				pbkwd(p, m - n);
-				goto eilseq;
-			} else if (val)
-				wid = joe_wcwidth(c);
-		} else {
-			wid = 1;
+				goto decode;
+			}
+			--utf8_sm.ptr;
+			/* FALLTHROUGH */
+		case -2:
+			pbkwd(p, utf8_sm.ptr);
+			c = 0x80000000 | (int)((unsigned int)utf8_sm.buf[0]);
+			w = 1;
+			break;
+		case -3:
+			c = 0x80000000 | b;
+			w = 1;
+			break;
+		default:
+			w = joe_wcwidth(c);
+			break;
 		}
-
-		if (val) { /* Update column no. if it was valid to start with */
-			p->valcol = 1;
-			if (c=='\t')
-				p->col += (p->b->o.tab) - (p->col) % (p->b->o.tab);
-			else if (c=='\n')
-				p->col = 0;
-			else
-				p->col += wid;
-		}
-
-		return c;
 	} else {
-		unsigned char c;
-
-		if (p->ofst == GSIZE(p->hdr))
-			return NO_MORE_DATA;
-		c = GCHAR(p);
-		if (++p->ofst == GSIZE(p->hdr))
-			pnext(p);
-		++p->byte;
-
-		if (c == '\n') {
-			++(p->line);
-			p->col = 0;
-			p->valcol = 1;
-		} else if (p->b->o.crlf && c == '\r') {
-			if (brc(p) == '\n')
-				return pgetc(p);
-			else
-				++p->col;
-		} else {
-			if (c == '\t')
-				p->col += (p->b->o.tab) - (p->col) % (p->b->o.tab);
-			else
-				++(p->col);
-		}
-		return c;
+		c = b;
+		w = 1;
 	}
+
+	/* update column number if it was valid to start with */
+	if (valcol) {
+		p->valcol = 1;
+		switch (c) {
+		case '\t':
+			p->col += p->b->o.tab - p->col % p->b->o.tab;
+			break;
+		case '\n':
+			p->col = 0;
+			break;
+		default:
+			p->col += w;
+			break;
+		}
+	}
+
+	return (c);
 }
 
 /* move p n characters forward */
@@ -2452,7 +2424,7 @@ int brc(P *p)
 {
 	if (p->ofst == GSIZE(p->hdr))
 		return NO_MORE_DATA;
-	return GCHAR(p);
+	return ((int)((unsigned int)(unsigned char)GCHAR(p)));
 }
 
 /* Return character at p */

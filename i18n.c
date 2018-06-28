@@ -19,7 +19,7 @@
 #include "config.h"
 #include <stdlib.h>
 
-__RCSID("$MirOS: contrib/code/jupp/i18n.c,v 1.34 2018/06/26 21:22:32 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/i18n.c,v 1.35 2018/06/28 01:18:33 tg Exp $");
 
 #include "charmap.h"
 #include "utils.h"
@@ -504,8 +504,8 @@ int unictrl(unsigned int ucs)
 {
 	*unictrlbuf = 0;
 
-	/* ASCII control characters use one screen column */
-	if (ucs < 32 || ucs == 0x7F)
+	/* C0 control characters and raw octets use one screen column */
+	if (ucs < 32 || ucs == 0x7F || (ucs & 0x80000000))
 		return (1);
 
 	/* not a control or noncharacter? */
