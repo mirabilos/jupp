@@ -7,7 +7,7 @@
  */
 
 #ifdef LGEN_Q
-__IDSTRING(rcsid_bw_lgen_inc, "$MirOS: contrib/code/jupp/bw-lgen.inc,v 1.3 2018/06/28 01:31:02 tg Exp $");
+__IDSTRING(rcsid_bw_lgen_inc, "$MirOS: contrib/code/jupp/bw-lgen.inc,v 1.4 2018/06/28 01:51:47 tg Exp $");
 #define XCOL col
 #else
 #define XCOL (scr + x - ox)
@@ -124,9 +124,9 @@ __IDSTRING(rcsid_bw_lgen_inc, "$MirOS: contrib/code/jupp/bw-lgen.inc,v 1.3 2018/
 					wid = -1;
 				} else if (c == -2) {
 					/* Incomplete sequence */
-					++amnt;
 					--byte;
  LGEN_LABEL(ilseq):
+					++amnt;
 					ungetit = bc;
 					c = 0x1000FFFE;
 					wid = utf8_sm.ptr;
@@ -204,6 +204,8 @@ __IDSTRING(rcsid_bw_lgen_inc, "$MirOS: contrib/code/jupp/bw-lgen.inc,v 1.3 2018/
 		amnt = SEGSIZ - p->hdr->ehole;
 		goto LGEN_LABEL(loop);
 	}
+	if (utf8_sm.state)
+		goto LGEN_LABEL(ilseq);
 	goto eof;
 
 #undef XCOL
