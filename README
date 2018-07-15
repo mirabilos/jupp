@@ -3,8 +3,8 @@ This is Joe's Own Editor.  See the INFO file if you don't know what this is.
 Well actually, this is jupp, Programmers' Editor, the Editor which sucks less.
 It's got a Launchpad page, too: https://launchpad.net/jupp
 Although, you’re encouraged to ask stuff on IRC in #MirBSD on irc.freenode.net
-(Port 6697 SSL, 6667 insecure) or on miros-discuss@mirbsd.org (public mailing
-list, but do not send mail to junk@mirbsd.org, that's a spamtrap).
+(Port 6697 SSL, 6667 insecure) or on the miros-discuss public mailing list,
+see http://www.mirbsd.org/rss.htm#lists for details.
 
 =-=-=-=-=-=-=-=-=-=-=-=
 Installation procedure
@@ -431,4 +431,4 @@ joe's stdin/stdout to /dev/tty:
 	joe filename  </dev/tty >/dev/tty
 
 ___________________________________________________________________
-$MirOS: contrib/code/jupp/README,v 1.7 2018/02/01 02:33:44 tg Exp $
+$MirOS: contrib/code/jupp/README,v 1.8 2018/07/15 13:41:23 tg Exp $
