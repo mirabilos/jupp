@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jpicorc.in,v 1.32 2018/03/15 23:28:57 tg Exp $
+ $MirOS: contrib/code/jupp/jpicorc.in,v 1.33 2018/08/08 00:24:44 tg Exp $
 
                          Initialisation file for JOE
                                  Super Pico
@@ -527,6 +527,9 @@
 
  === TeX
 *.cls
+-syntax tex
+
+*.def
 -syntax tex
 
 *.sty
