@@ -2,7 +2,7 @@
 .if "0" == "1"
 #endif
 /*
- *	UNICODE/ISO-10646 conversion utilities
+ *	Universal Coded Character Set/ISO-10646 conversion utilities
  *	Copyright
  *		(C) 2004 Joseph H. Allen
  *
@@ -12,7 +12,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.30 2018/01/06 00:28:30 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.31 2018/08/10 02:53:42 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -22,7 +22,7 @@ __RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.30 2018/01/06 00:28:30 tg Exp $
 #include "path.h"
 #include "charmap.h"
 
-/* Convert from byte code to unicode.  Returns -1 for unknown. */
+/* Convert from byte code to UCS.  Returns -1 for unknown. */
 
 int
 to_uni(struct charmap *cset, int c)
@@ -30,7 +30,7 @@ to_uni(struct charmap *cset, int c)
 	return (cset->to_map[c]);
 }
 
-/* Convert from unicode to byte code.  Returns -1 for unknown. */
+/* Convert from UCS to byte code.  Returns -1 for unknown. */
 
 int
 from_uni(struct charmap *cset, int c)
@@ -1143,7 +1143,7 @@ rtn_arg(struct charmap *map, int c)
 static struct charmap *charmaps = NULL;
 
 /* Process a byte-oriented character map and add it to database.
-   Consults unicode database "i18n.c" to determine which characters are
+   Consults database "i18n.c" to determine which characters are
    uppercase, etc. */
 
 static struct charmap *
@@ -1318,7 +1318,7 @@ parse_charmap(const unsigned char *name, FILE *f)
 	return (b);
 }
 
-/* Byte wide character map to unicode conversion */
+/* Byte wide character map to UCS conversion */
 
 /*
  * Compare character map names.
@@ -1429,7 +1429,7 @@ main(int argc, char *argv[])
 		return (1);
 	}
 	u = ustol(argv[2], NULL, USTOL_TRIM | USTOL_EOS);
-	printf("Unicode=%X\n", uni = to_uni(map, u));
+	printf("UCS=%X\n", uni = to_uni(map, u));
 	printf("Local=%X\n", from_uni(map, uni));
 	return (0);
 }

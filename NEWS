@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.125 2018/08/08 00:35:24 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.126 2018/08/10 02:53:42 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
@@ -6,7 +6,7 @@ jupp-current
 - …
 - fix syntax highlighting for Assembly and Java™: string termination
 - unbreak reformat block when raw octets are present
-- update to Unicode 11.0.0
+- update to UCD 11.0.0
 - improve line generation / screen output code wrt. UTF-8 (still buggy)
 - make UTF-8 decoding more robust
 - fix Makefile.am EXTRA_DIST

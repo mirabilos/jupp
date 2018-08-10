@@ -2,7 +2,7 @@
 .if "0" == "1"
 #endif
 /*
- *	UNICODE/ISO-10646 functions for JOE
+ *	Universal Coded Character Set/ISO-10646 functions for JOE
  *	Copyright
  *		(C) 1992 Joseph H. Allen
  *	Copyright © 2014, 2017
@@ -19,7 +19,7 @@
 #include "config.h"
 #include <stdlib.h>
 
-__RCSID("$MirOS: contrib/code/jupp/i18n.c,v 1.35 2018/06/28 01:18:33 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/i18n.c,v 1.36 2018/08/10 02:53:43 tg Exp $");
 
 #include "charmap.h"
 #include "utils.h"
@@ -35,7 +35,7 @@ static size_t mb_ucsbsearch(const struct mb_ucsrange arr[], size_t elems,
     unsigned int val);
 
 /*
- * Generated from the Unicode Character Database, Version 11.0.0, by
+ * Generated from the UCD 11.0.0 by
  * MirOS: contrib/code/Snippets/eawparse,v 1.12 2017/09/06 16:05:45 tg Exp $
  */
 

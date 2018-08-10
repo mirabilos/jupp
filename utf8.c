@@ -10,7 +10,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/utf8.c,v 1.24 2018/06/28 01:18:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/utf8.c,v 1.25 2018/08/10 02:53:45 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -63,7 +63,7 @@ __RCSID("$MirOS: contrib/code/jupp/utf8.c,v 1.24 2018/06/28 01:18:34 tg Exp $");
 
 /* UTF-8 Encoder
  *
- * c is unicode character.
+ * c is a UCS character.
  * buf is 7 byte buffer: UTF-8 encoded character is written to this followed by a NUL terminator
  * returns length (not including terminator).
  */

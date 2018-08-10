@@ -9,14 +9,14 @@
 #define _Iutf8 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_utf8_h, "$MirOS: contrib/code/jupp/utf8.h,v 1.9 2018/06/28 01:18:34 tg Exp $");
+__IDSTRING(rcsid_utf8_h, "$MirOS: contrib/code/jupp/utf8.h,v 1.10 2018/08/10 02:53:45 tg Exp $");
 #endif
 
 #include "i18n.h"
 
 /* UTF-8 Encoder
  *
- * c is unicode character.
+ * c is a UCS character.
  * buf is 7 byte buffer- utf-8 coded character is written to this followed by a 0 termination.
  * returns length (not including terminator).
  */
