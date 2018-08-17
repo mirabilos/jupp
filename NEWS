@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.126 2018/08/10 02:53:42 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.127 2018/08/17 03:59:01 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
@@ -10,13 +10,13 @@ jupp-current
 - improve line generation / screen output code wrt. UTF-8 (still buggy)
 - make UTF-8 decoding more robust
 - fix Makefile.am EXTRA_DIST
-- highlight .def files as Teχ/LᴬTᴇX
+- highlight .def files as Tₑχ/LᴬTᴇΧ
 
 JOE 3.1jupp36
 
 - fix too-wide prompt for ` command (needs only 73 columns now)
 - make ^QV/^QP after ^K] work
-- fix Teχ/LᴬTᴇX highlighting on black-on-white terminals
+- fix Tₑχ/LᴬTᴇΧ highlighting on black-on-white terminals
 - don’t forcibly disable -highlight for NXC files
 - fix substitution of paths into generated files
 
