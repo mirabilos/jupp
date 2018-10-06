@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.127 2018/08/17 03:59:01 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.128 2018/10/06 23:31:30 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
@@ -10,7 +10,9 @@ jupp-current
 - improve line generation / screen output code wrt. UTF-8 (still buggy)
 - make UTF-8 decoding more robust
 - fix Makefile.am EXTRA_DIST
-- highlight .def files as Tₑχ/LᴬTᴇΧ
+- highlight .def and .dtx files as Tₑχ/LᴬTᴇΧ, .xsl (XSLT) as XML
+- handle .bin files as binary (no CRLF, hex editing)
+- improve shell grammar a little wrt. syntax highlighting
 
 JOE 3.1jupp36
 
