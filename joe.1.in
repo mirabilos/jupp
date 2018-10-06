@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.25 2017/08/09 00:59:09 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.26 2018/08/10 02:53:44 tg Exp $
 .\"-
 .TH JOE 1
 .SH Name
@@ -777,7 +777,7 @@ The \fBJOETERM\fR environment variable may be set to override the regular
 
 JOE uses two character maps for its operation: the terminal I/O character
 map, which determines how characters are sent to the terminal and whether
-the %a/%A message specifiers use Unicode, and the file encoding, which can
+the %a/%A message specifiers use UCS, and the file encoding, which can
 be specified per file using the \fB\-encoding\fR option and changed with
 the \fB^T E\fR command, and which defaults to the terminal I/O character
 map, which, in turn, is determined from the current locale, if the system

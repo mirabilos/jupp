@@ -255,9 +255,6 @@
 /* Define to 1 if you have the <utmp.h> header file. */
 #undef HAVE_UTMP_H
 
-/* Unix absolute paths base */
-#undef JOERC
-
 /* Use Win32 argv0-relative paths? */
 #undef JUPP_WIN32RELOC
 

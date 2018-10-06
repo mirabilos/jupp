@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jpicorc.in,v 1.31 2018/02/01 02:33:46 tg Exp $
+ $MirOS: contrib/code/jupp/jpicorc.in,v 1.34 2018/10/06 22:40:58 tg Exp $
 
                          Initialisation file for JOE
                                  Super Pico
@@ -197,6 +197,13 @@
  Filename with '.' is probably not a text file.
 *.*
 
+ Binary file
+*.bin
+--crlf
+--guess_crlf
+-encoding ascii
+-hex
+
  === Patterns with multiple wildcards
  Order is latest match wins, so...
 */patch-*
@@ -290,7 +297,6 @@
 -syntax c
 
 *.nxc
---highlight
 -syntax c
 
  === C Shell
@@ -530,6 +536,12 @@
 *.cls
 -syntax tex
 
+*.def
+-syntax tex
+
+*.dtx
+-syntax tex
+
 *.sty
 -syntax tex
 
@@ -552,6 +564,10 @@
 
  === XML
 *.xml
+-encoding utf8
+-syntax xml
+
+*.xsl
 -encoding utf8
 -syntax xml
 

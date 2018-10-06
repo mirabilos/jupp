@@ -9,14 +9,14 @@
 #define _Iutf8 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_utf8_h, "$MirOS: contrib/code/jupp/utf8.h,v 1.8 2017/12/06 23:02:08 tg Exp $");
+__IDSTRING(rcsid_utf8_h, "$MirOS: contrib/code/jupp/utf8.h,v 1.10 2018/08/10 02:53:45 tg Exp $");
 #endif
 
 #include "i18n.h"
 
 /* UTF-8 Encoder
  *
- * c is unicode character.
+ * c is a UCS character.
  * buf is 7 byte buffer- utf-8 coded character is written to this followed by a 0 termination.
  * returns length (not including terminator).
  */
@@ -30,6 +30,7 @@ struct utf8_sm {
 	int ptr;		/* Record pointer */
 	int state;		/* Current state.  0 = idle, anything else is no. of chars left in sequence */
 	int accu;		/* Character accumulator */
+	int minv;		/* Minimum value, for decoder */
 };
 
 /* UTF-8 Decoder

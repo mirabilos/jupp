@@ -2,7 +2,7 @@
  *	UTF-8 Utilities
  *	Copyright
  *		(C) 2004 Joseph H. Allen
- *		(c) 2004, 2006, 2011, 2013, 2014, 2017 Thorsten Glaser
+ *		(c) 2004, 2006, 2011, 2013, 2014, 2017, 2018 mirabilos
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
@@ -10,7 +10,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/utf8.c,v 1.23 2017/12/20 23:53:29 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/utf8.c,v 1.25 2018/08/10 02:53:45 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -63,8 +63,8 @@ __RCSID("$MirOS: contrib/code/jupp/utf8.c,v 1.23 2017/12/20 23:53:29 tg Exp $");
 
 /* UTF-8 Encoder
  *
- * c is unicode character.
- * buf is 7 byte buffer- utf-8 coded character is written to this followed by a 0 termination.
+ * c is a UCS character.
+ * buf is 7 byte buffer: UTF-8 encoded character is written to this followed by a NUL terminator
  * returns length (not including terminator).
  */
 
@@ -115,70 +115,68 @@ int utf8_encode(unsigned char *buf,int c)
 /* UTF-8 Decoder
  *
  * Returns 0 - 7FFFFFFF: decoded character
- *                   -1: character accepted, nothing decoded yet.
- *                   -2: incomplete sequence
- *                   -3: no sequence started, but character is between 128 - 191, 254 or 255
+ *                   -1: byte accepted, nothing decoded yet
+ *                   -2: illegal continuation byte or sequence
+ *                   -3: illegal start byte
  */
 
-int utf8_decode(struct utf8_sm *utf8_sm,unsigned char c)
+int
+utf8_decode(struct utf8_sm *utf8_sm, unsigned char c)
 {
 	if (utf8_sm->state) {
-		if ((c&0xC0)==0x80) {
-			utf8_sm->buf[utf8_sm->ptr++] = c;
-			--utf8_sm->state;
-			utf8_sm->accu = ((utf8_sm->accu<<6)|(c&0x3F));
-			if(!utf8_sm->state)
-				return utf8_sm->accu;
-		} else {
-			utf8_sm->state = 0;
-			return -2;
+		utf8_sm->buf[utf8_sm->ptr] = c;
+		if ((c ^= 0x80) < 0x40) {
+			/* trail byte */
+			++utf8_sm->ptr;
+			utf8_sm->accu = (utf8_sm->accu << 6) | c;
+			if (--utf8_sm->state)
+				return (-1);
+			if (utf8_sm->accu >= utf8_sm->minv)
+				return (utf8_sm->accu);
+			/* reject non-minimal-encoded sequence */
+			--utf8_sm->ptr;
 		}
-	} else if ((c&0xE0)==0xC0) {
-		/* 192 - 223 */
-		utf8_sm->buf[0] = c;
-		utf8_sm->ptr = 1;
+		utf8_sm->state = 0;
+		return (-2);
+	} else if (c < 0x80) {
+		utf8_sm->accu = c; /* known to be in [0; 127] */
+		utf8_sm->state = 0;
+	} else if (c < 0xC2) {
+ ilchar:
+		utf8_init(utf8_sm);
+		return (-3);
+	} else if (c < 0xE0) {
+		utf8_sm->accu = c & 0x1F;
 		utf8_sm->state = 1;
-		utf8_sm->accu = (c&0x1F);
-	} else if ((c&0xF0)==0xE0) {
-		/* 224 - 239 */
-		utf8_sm->buf[0] = c;
-		utf8_sm->ptr = 1;
+	} else if (c < 0xF0) {
+		utf8_sm->accu = c & 0x0F;
 		utf8_sm->state = 2;
-		utf8_sm->accu = (c&0x0F);
-	} else if ((c&0xF8)==0xF0) {
-		/* 240 - 247 */
-		utf8_sm->buf[0] = c;
-		utf8_sm->ptr = 1;
+	} else if (c < 0xF8) {
+		utf8_sm->accu = c & 0x07;
 		utf8_sm->state = 3;
-		utf8_sm->accu = (c&0x07);
-	} else if ((c&0xFC)==0xF8) {
-		/* 248 - 251 */
-		utf8_sm->buf[0] = c;
-		utf8_sm->ptr = 1;
+	} else if (c < 0xFC) {
+		utf8_sm->accu = c & 0x03;
 		utf8_sm->state = 4;
-		utf8_sm->accu = (c&0x03);
-	} else if ((c&0xFE)==0xFC) {
-		/* 252 - 253 */
-		utf8_sm->buf[0] = c;
-		utf8_sm->ptr = 1;
+	} else if (c < 0xFE) {
+		utf8_sm->accu = c & 0x01;
 		utf8_sm->state = 5;
-		utf8_sm->accu = (c&0x01);
-	} else if ((c&0x80)==0x00) {
-		/* 0 - 127 */
-		utf8_sm->buf[0] = c;
-		utf8_sm->ptr = 1;
-		utf8_sm->state = 0;
-		return c;
-	} else {
-		/* 128 - 191, 254, 255 */
-		utf8_sm->ptr = 0;
-		utf8_sm->state = 0;
-		return -3;
-	}
-	return -1;
+	} else
+		goto ilchar;
+
+	utf8_sm->minv = 1 << (5 * utf8_sm->state + 1);
+	utf8_sm->buf[0] = c;
+	utf8_sm->ptr = 1;
+
+	if (!utf8_sm->state)
+		/* ASCII */
+		return (utf8_sm->accu);
+
+	/* lead byte */
+	utf8_sm->minv = 1 << (5 * utf8_sm->state + 1);
+	return (-1);
 }
 
-/* Initialize state machine */
+/* Initialise state machine */
 
 void utf8_init(struct utf8_sm *utf8_sm)
 {

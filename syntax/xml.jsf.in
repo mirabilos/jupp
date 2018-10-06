@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/syntax/xml.jsf.in,v 1.4 2017/12/02 05:38:06 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/xml.jsf.in,v 1.5 2018/08/10 02:53:46 tg Exp $
 #-
 # Improved XML highlighter by: Brian Candler <B.Candler@pobox.com>
 
@@ -39,10 +39,10 @@
 
 # http://www.w3.org/TR/2004/REC-xml-20040204/
 #
-# NOTE: For UNICODE compatibility, the ranges
+# NOTE: For UCS compatibility, the ranges
 #	"A-Za-z_:"		-- first character of Name
 #	"A-Za-z0-9._:-"		-- subsequent characters of Name
-# ought to be replaced with some appropriate Unicode character classes
+# ought to be replaced with some appropriate wide character classes
 
 :content Idle
 	*		content

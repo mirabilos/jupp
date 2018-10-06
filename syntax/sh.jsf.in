@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/syntax/sh.jsf.in,v 1.4 2012/09/02 14:46:52 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/sh.jsf.in,v 1.5 2018/10/06 23:11:57 tg Exp $
 #-
 # JOE syntax highlight file for sh/ksh/bash
 
@@ -26,11 +26,13 @@
 =Var		magenta
 =Parenthesis	yellow
 =Connect	bold green
+=Bad		bold red
 
 # Syntax
 
 :idle Idle
-	*		idle
+	*		idlew
+	" \t\n"		idle
 	"#"		comment		recolor=-1
 	"\\"		escape		recolor=-1
 	"$"		subst		recolor=-1
@@ -38,7 +40,21 @@
 	"\""		string_dq	recolor=-1
 	"\`"		string_bq	recolor=-1
 	"()"		paren		noeat
-	"a-zA-Z{}![].:"	ident		buffer
+	"a-z{}![].:"	ident		buffer
+	"|&"		connector	recolor=-1
+	"<>"		redir		noeat
+	"0123456789"	redirnum	recolor=-1
+
+:idlew Idle
+	*		idlew
+	" \t\n"		idle
+	"\\"		escape		recolor=-1
+	"$"		subst		recolor=-1
+	"'"		string_sq	recolor=-1
+	"\""		string_dq	recolor=-1
+	"\`"		string_bq	recolor=-1
+	"()"		paren		noeat
+	"a-z{}![].:"	ident		buffer
 	"|&"		connector	recolor=-1
 	"<>"		redir		noeat
 	"0123456789"	redirnum	recolor=-1
@@ -51,33 +67,34 @@
 	*		idle
 
 :subst Var
-	*		idle
+	*		idlew
+	" \t\n"		idle
 	"'"		string_sq	recolor=-2
 	"\""		string_dq	recolor=-2
 	"("		paren		noeat recolor=-2
 	"{"		subst_brack
 	"a-zA-Z_"	subst_name
-	"0-9*@?\-$_!"	idle
+	"0-9*@?\-$_!"	idlew
 
 :subst_name Var
-	*		idle		noeat recolor=-1
+	*		idlew		noeat recolor=-1
+	" \t\n"		idle		noeat recolor=-1
 	"a-zA-Z0-9_"	subst_name
 
 :subst_brack Var
 	*		subst_brack
-	"}"		idle
+	"}"		idlew
 
 # Simplest case: no quoting allowed
 :string_sq Constant
 	*		string_sq
-	"\'"		idle
-
+	"\'"		idlew
 
 # double-quote: quoting, backqoutes and substitution allowed
 :string_dq Constant
 	*		string_dq
 	"$"		string_dq_subst	recolor=-1
-	"\""		idle
+	"\""		idlew
 	"\\"		string_dq_esc	recolor=-1
 	"`"		string_dq_bq	recolor=-1
 
@@ -130,7 +147,7 @@
 :string_bq Constant
 	*		string_bq
 	"$"		string_bq_subst	recolor=-1
-	"\`"		idle
+	"\`"		idlew
 	"\\"		string_bq_esc	recolor=-1
 
 # escape in backquote
@@ -160,8 +177,14 @@
 	"("		paren
 	")"		paren
 
+:bad Bad
+	*		idle
+
 :ident Idle
-	*		idle		noeat strings
+	*		idlew
+	"()"		bad		noeat recolor=-1
+	"a-z{}![].:"	ident
+	" \t\n&|;<>"	idle		noeat strings
 	"!"		kw
 	"{"		kw
 	"}"		kw
@@ -272,17 +295,16 @@
 	"pushd"		kw
 	"shopt"		kw
 done
-	"a-zA-Z0-9"	ident
 
 :kw Keyword
-	*		idle	noeat
+	*		idlew	noeat
 
 :connector Connect
 	*		idle	noeat
 	"|&"		connector
 
 :redirnum Connect
-	*		idle	noeat recolor=-2
+	*		idlew	noeat recolor=-2
 	"<>"		redir
 
 :redir Connect

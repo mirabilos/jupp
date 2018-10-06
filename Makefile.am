@@ -1,24 +1,41 @@
-# $MirOS: contrib/code/jupp/Makefile.am,v 1.18 2017/12/03 01:11:48 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.am,v 1.22 2018/06/28 02:03:45 tg Exp $
 
 AUTOMAKE_OPTIONS = foreign
 
 EXTRA_DIST = \
-	COPYING HINTS INFO LIST NEWS README README.cvs TODO \
-	charmaps/klingon.in dir.c docs/help-system.html jmacsrc.in \
-	joe.1.in joerc.in jpicorc.in jstarrc.in jupprc rjoerc.in \
-	syntax/asm.jsf.in syntax/c.jsf.in syntax/conf.jsf.in \
-	syntax/csh.jsf.in syntax/diff.jsf.in syntax/fortran.jsf.in \
-	syntax/html.jsf.in syntax/java.jsf.in syntax/lisp.jsf.in \
-	syntax/mail.jsf.in syntax/mason.jsf.in syntax/pascal.jsf.in \
-	syntax/perl.jsf.in syntax/php.jsf.in syntax/python.jsf.in \
-	syntax/sh.jsf.in syntax/tcl.jsf.in syntax/tex.jsf.in \
-	syntax/verilog.jsf.in syntax/vhdl.jsf.in syntax/xml.jsf.in
+	HINTS INFO LIST Make-w32.sh autogen.sh bw-lgen.inc dir.c \
+	docs/help-system.html jmacsrc.in joe.1.in joe.txt joerc.in \
+	jpicorc.in jstarrc.in jupprc popen.inc rjoerc.in setup.inf \
+	strlfun.inc
 
 JOE_ALIASES = jmacs jpico jstar jupp rjoe
+JOE_RCFILES = jmacsrc joerc jpicorc jstarrc jupprc rjoerc
+JOE_RC_EDIT = sed \
+		-e 's@''jrcbefore''@$(jrcbefore)g' \
+		-e 's@''jrcafter''@$(jrcafter)g' \
+		-e 's@''SPELL''@$(SPELL)g' \
+		<'$?' >$@~ && mv -f $@~ $@
+
+jmacsrc: jmacsrc.in
+	$(JOE_RC_EDIT)
+
+joerc: joerc.in
+	$(JOE_RC_EDIT)
+
+jpicorc: jpicorc.in
+	$(JOE_RC_EDIT)
+
+jstarrc: jstarrc.in
+	$(JOE_RC_EDIT)
+
+rjoerc: rjoerc.in
+	$(JOE_RC_EDIT)
+
+INCLUDES = -DJOERC="\"$(sysconf_joedir)/\""
 
 sysconfjoesubdir = @sysconfjoesubdir@
 sysconf_joedir = $(sysconfdir)$(sysconfjoesubdir)
-sysconf_joe_DATA = jmacsrc joerc jpicorc jstarrc jupprc rjoerc
+sysconf_joe_DATA = $(JOE_RCFILES)
 
 sysconf_syntaxdir = $(sysconf_joedir)/syntax
 sysconf_syntax_DATA = \
@@ -64,7 +81,7 @@ joe.1: joe.1.in
 	    -e 's!@''joeinitfile''@!$(man_joeinitfile)!g' \
 	    -e 's!@''joeresides''@!$(man_joeresides)!g' \
 	    -e 's!@''joeinitcopy''@!$(man_joeinitcopy)!g' \
-	    <$? >$@~
+	    <'$?' >$@~
 	mv -f $@~ $@
 
 install-exec-hook:
@@ -84,6 +101,8 @@ uninstall-local:
 	for i in $(JOE_ALIASES); do \
 		rm -f $(DESTDIR)$(bindir)/$$i $(DESTDIR)$(man1dir)/$$i.1; \
 	done
+
+CLEANFILES = $(JOE_RCFILES) joe.1
 
 distclean-local:
 	rm -f *~

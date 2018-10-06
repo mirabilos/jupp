@@ -9,7 +9,7 @@
 #define _JOE_PATH_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_path_h, "$MirOS: contrib/code/jupp/path.h,v 1.16 2018/01/06 00:28:32 tg Exp $");
+__IDSTRING(rcsid_path_h, "$MirOS: contrib/code/jupp/path.h,v 1.17 2018/03/15 22:48:01 tg Exp $");
 #endif
 
 #if defined(__MSDOS__) || defined(__DJGPP__) || defined(__EMX__) || \
@@ -29,6 +29,7 @@ unsigned char *joesep(unsigned char *path);
 #endif
 
 #if JUPP_WIN32RELOC
+#undef JOERC
 extern unsigned char has_JOERC, *get_JOERC;
 void init_JOERC(void);
 #else

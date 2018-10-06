@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/syntax/asm.jsf.in,v 1.5 2017/12/06 23:17:37 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/asm.jsf.in,v 1.6 2018/06/26 19:49:59 tg Exp $
 #-
 # JOE syntax highlight file for assembly language
 
@@ -223,8 +223,9 @@ done
 
 :string_control Escape
 	*		string_control
-	"\n"		reset
-	"diouxXeEfFgGaAcspn%SC"	string
+	"\""		reset
+	"diouxXeEfFgGaAcspn%SC\n"	string
+	"\\"		string_escape	recolor=-1
 
 :char Constant
 	*		char

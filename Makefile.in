@@ -14,8 +14,8 @@
 
 @SET_MAKE@
 
-# $MirOS: contrib/code/jupp/Makefile.in,v 1.17 2017/12/07 01:02:39 tg Exp $
-# $miros: contrib/code/jupp/Makefile.am,v 1.18 2017/12/03 01:11:48 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.in,v 1.19 2018/03/15 23:15:40 tg Exp $
+# $miros: contrib/code/jupp/Makefile.am,v 1.21 2018/03/15 23:07:46 tg Exp $
 
 
 
@@ -46,9 +46,7 @@ bin_PROGRAMS = joe$(EXEEXT) $(am__EXEEXT_1)
 @WANT_TERMIDX_TRUE@am__append_1 = termidx
 DIST_COMMON = README $(am__configure_deps) $(noinst_HEADERS) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(srcdir)/autoconf.h.in $(srcdir)/jmacsrc.in \
-	$(srcdir)/joerc.in $(srcdir)/jpicorc.in $(srcdir)/jstarrc.in \
-	$(srcdir)/rjoerc.in $(top_srcdir)/charmaps/klingon.in \
+	$(srcdir)/autoconf.h.in $(top_srcdir)/charmaps/klingon.in \
 	$(top_srcdir)/configure $(top_srcdir)/syntax/asm.jsf.in \
 	$(top_srcdir)/syntax/c.jsf.in $(top_srcdir)/syntax/conf.jsf.in \
 	$(top_srcdir)/syntax/csh.jsf.in \
@@ -80,9 +78,8 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno configure.status.lineno
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = autoconf.h
-CONFIG_CLEAN_FILES = joerc jmacsrc jstarrc rjoerc jpicorc syntax/c.jsf \
-	syntax/perl.jsf syntax/verilog.jsf syntax/sh.jsf \
-	syntax/python.jsf syntax/conf.jsf syntax/php.jsf \
+CONFIG_CLEAN_FILES = syntax/c.jsf syntax/perl.jsf syntax/verilog.jsf \
+	syntax/sh.jsf syntax/python.jsf syntax/conf.jsf syntax/php.jsf \
 	syntax/mail.jsf syntax/pascal.jsf syntax/html.jsf \
 	syntax/vhdl.jsf syntax/fortran.jsf syntax/java.jsf \
 	syntax/xml.jsf syntax/tcl.jsf charmaps/klingon syntax/lisp.jsf \
@@ -268,8 +265,16 @@ EXTRA_DIST = \
 	syntax/verilog.jsf.in syntax/vhdl.jsf.in syntax/xml.jsf.in
 
 JOE_ALIASES = jmacs jpico jstar jupp rjoe
+JOE_RCFILES = jmacsrc joerc jpicorc jstarrc jupprc rjoerc
+JOE_RC_EDIT = sed \
+		-e 's@''jrcbefore''@$(jrcbefore)g' \
+		-e 's@''jrcafter''@$(jrcafter)g' \
+		-e 's@''SPELL''@$(SPELL)g' \
+		<'$?' >$@~ && mv -f $@~ $@
+
+INCLUDES = -DJOERC="\"$(sysconf_joedir)/\""
 sysconf_joedir = $(sysconfdir)$(sysconfjoesubdir)
-sysconf_joe_DATA = jmacsrc joerc jpicorc jstarrc jupprc rjoerc
+sysconf_joe_DATA = $(JOE_RCFILES)
 sysconf_syntaxdir = $(sysconf_joedir)/syntax
 sysconf_syntax_DATA = \
 	syntax/asm.jsf syntax/c.jsf syntax/conf.jsf syntax/csh.jsf \
@@ -302,6 +307,7 @@ termidx_SOURCES = termidx.c
 man_joeinitfile = @joeinitfile@
 man_joeresides = @joeresides@
 man_joeinitcopy = @joeinitcopy@
+CLEANFILES = $(JOE_RCFILES) joe.1
 all: autoconf.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -357,16 +363,6 @@ $(srcdir)/autoconf.h.in: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 
 distclean-hdr:
 	-rm -f autoconf.h stamp-h1
-joerc: $(top_builddir)/config.status $(srcdir)/joerc.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-jmacsrc: $(top_builddir)/config.status $(srcdir)/jmacsrc.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-jstarrc: $(top_builddir)/config.status $(srcdir)/jstarrc.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-rjoerc: $(top_builddir)/config.status $(srcdir)/rjoerc.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-jpicorc: $(top_builddir)/config.status $(srcdir)/jpicorc.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
 syntax/c.jsf: $(top_builddir)/config.status $(top_srcdir)/syntax/c.jsf.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 syntax/perl.jsf: $(top_builddir)/config.status $(top_srcdir)/syntax/perl.jsf.in
@@ -658,7 +654,7 @@ distclean-tags:
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkdir_p) $(distdir)/. $(distdir)/charmaps $(distdir)/docs $(distdir)/syntax
+	$(mkdir_p) $(distdir)/charmaps $(distdir)/docs $(distdir)/syntax
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
@@ -806,6 +802,7 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
@@ -889,12 +886,27 @@ uninstall-man: uninstall-man1
 	uninstall-sysconf_charmapsDATA uninstall-sysconf_joeDATA \
 	uninstall-sysconf_syntaxDATA
 
+
+jmacsrc: jmacsrc.in
+	$(JOE_RC_EDIT)
+
+joerc: joerc.in
+	$(JOE_RC_EDIT)
+
+jpicorc: jpicorc.in
+	$(JOE_RC_EDIT)
+
+jstarrc: jstarrc.in
+	$(JOE_RC_EDIT)
+
+rjoerc: rjoerc.in
+	$(JOE_RC_EDIT)
 joe.1: joe.1.in
 	sed \
 	    -e 's!@''joeinitfile''@!$(man_joeinitfile)!g' \
 	    -e 's!@''joeresides''@!$(man_joeresides)!g' \
 	    -e 's!@''joeinitcopy''@!$(man_joeinitcopy)!g' \
-	    <$? >$@~
+	    <'$?' >$@~
 	mv -f $@~ $@
 
 install-exec-hook:

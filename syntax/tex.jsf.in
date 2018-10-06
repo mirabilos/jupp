@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/syntax/tex.jsf.in,v 1.1 2016/10/07 10:57:08 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/tex.jsf.in,v 1.2 2018/03/14 17:35:28 tg Exp $
 #-
 # JOE syntax highlight file for minimal Teχ (no verbatim or math)
 
@@ -6,8 +6,8 @@
 
 =Idle
 =Comment	green
-=Syntax		bold yellow
-=Keyword	bold white
+=Syntax		yellow
+=Keyword	bold
 =Special	bold red
 
 :idle Idle

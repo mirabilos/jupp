@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.35 2018/02/15 01:18:57 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.36 2018/08/10 02:53:45 tg Exp $");
 
 #include <string.h>
 
@@ -1166,7 +1166,7 @@ int utypebw(jobject jO, int k)
 
 /* Quoting */
 
-static B *unicodehist = NULL;	/* History of previously entered unicode characters */
+static B *unicodehist = NULL;	/* History of previously entered UCS characters */
 
 static int dounicode(BW *bw, unsigned char *s, void *object, int *notify)
 {
@@ -1228,7 +1228,7 @@ doquote(BW *bw, int c, void *object, int *notify)
 			if (bw->b->o.charmap->type)
 				goto unopoo;
  uhex_uni:
-			if (!wmkpw(bw->parent, UC "Unicode (ISO-10646) character in hex (^C to abort): ", &unicodehist, dounicode,
+			if (!wmkpw(bw->parent, UC "UCS (ISO-10646) character in hex (^C to abort): ", &unicodehist, dounicode,
 				   NULL, NULL, NULL, NULL, NULL, locale_map))
 				return 0;
 			else
@@ -1343,7 +1343,7 @@ doquote(BW *bw, int c, void *object, int *notify)
 }
 
 static char uquote_txt[] =
-    "Ctrl- (or 0-9 for dec. o for octal, x hex, u Unicode)";
+    "Ctrl- (or 0-9 for dec. o for octal, x hex, u UCS)";
 int
 uquote(BW *bw)
 {

@@ -1,9 +1,26 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.123 2018/02/14 22:28:12 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.128 2018/10/06 23:31:30 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
 
 - …
+- fix syntax highlighting for Assembly and Java™: string termination
+- unbreak reformat block when raw octets are present
+- update to UCD 11.0.0
+- improve line generation / screen output code wrt. UTF-8 (still buggy)
+- make UTF-8 decoding more robust
+- fix Makefile.am EXTRA_DIST
+- highlight .def and .dtx files as Tₑχ/LᴬTᴇΧ, .xsl (XSLT) as XML
+- handle .bin files as binary (no CRLF, hex editing)
+- improve shell grammar a little wrt. syntax highlighting
+
+JOE 3.1jupp36
+
+- fix too-wide prompt for ` command (needs only 73 columns now)
+- make ^QV/^QP after ^K] work
+- fix Tₑχ/LᴬTᴇΧ highlighting on black-on-white terminals
+- don’t forcibly disable -highlight for NXC files
+- fix substitution of paths into generated files
 
 JOE 3.1jupp35
 
