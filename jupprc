@@ -58,6 +58,13 @@
  Filename with '.' is probably not a text file.
 *.*
 
+ Binary file
+*.bin
+--crlf
+--guess_crlf
+-encoding ascii
+-hex
+
  === Patterns with multiple wildcards
  Order is latest match wins, so...
 */patch-*
@@ -393,6 +400,9 @@
 *.def
 -syntax tex
 
+*.dtx
+-syntax tex
+
 *.sty
 -syntax tex
 
@@ -415,6 +425,10 @@
 
  === XML
 *.xml
+-encoding utf8
+-syntax xml
+
+*.xsl
 -encoding utf8
 -syntax xml
 
@@ -512,7 +526,7 @@
 \i \i go to \uhttp://sf.net/projects/joe-editor/\u for upstream bug reports. JUPP 2.8 \i \i
 \i \i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\d(R)\d \i \i
 \i \i at \uhttp://mirbsd.de/jupp\u and by \bThorsten "\dmirabilos\d" Glaser <\utg@mirbsd.org\u>\b \i \i
-\i \i @(#) jupprc 2018-08-07; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
+\i \i @(#) jupprc 2018-10-06; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \i \i
 }
 
  #HOOK#3 additional help screens
