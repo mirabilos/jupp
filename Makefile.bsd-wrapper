@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.17 2018/03/15 23:15:40 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.18 2018/10/20 15:43:58 tg Exp $
 #-
 # make -f Makefile.bsd-wrapper CFPREFIX=/usr/mpkg sysconfjoesubdir=/joe
 
@@ -78,5 +78,12 @@ cats: joe.cat1 joe.ps1
 	    /Producer '(Artifex Ghostscript ${V_GHOSTSCRIPT:S/ghostscript-//:S/-artifex//} \(MirPorts\))' \
 	    /Keywords '('${CATS_KW:Q}')' /DOCINFO pdfmark \
 	    -f joe.ps1
+
+alljupps:
+	cd ${.CURDIR:Q} && r=$$(<CVS/Root) && cd .. && rm -rf j28 j37 j44 && \
+	    cvs -Rqd "$$r" co -d j28 -r joe-2_8-msdos jupp && \
+	    cvs -Rqd "$$r" co -d j37 -r jupprc-for-joe-3_7 jupp && \
+	    cvs -Rqd "$$r" co -d j44 -r jupprc-for-joe-4_4 jupp && \
+	    cd jupp && exec cvs -Rqd "$$r" up -PAd
 
 .include <bsd.cfwrap.mk>
