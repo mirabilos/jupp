@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.38 2018/06/27 22:39:02 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.39 2018/10/20 16:32:24 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -333,8 +333,8 @@ lgen(SCRN *t, int y,
 	long byte = p->byte;
 	unsigned char *bp;	/* Buffer pointer, 0 if not set */
 	int amnt;		/* Amount left in this segment of the buffer */
-	int c, ta, c1;
-	unsigned char bc;
+	int c, ta, c1 = 0;
+	unsigned char bc = 0;
 	int ungetit = -1;
 
 	struct utf8_sm utf8_sm;
