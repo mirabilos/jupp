@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jpicorc.in,v 1.34 2018/10/06 22:40:58 tg Exp $
+ $MirOS: contrib/code/jupp/jpicorc.in,v 1.35 2018/10/20 16:11:52 tg Exp $
 
                          Initialisation file for JOE
                                  Super Pico
@@ -805,14 +805,14 @@ keymap,"prompt",rtn			^D
 helpcard,"Paste",rtn,keymap,"Paste",rtn	^[ [ 2 0 0 ~
 nop					^[ [ 2 0 1 ~
 
-begin_marking,uparw,toggle_marking	^[ [ 1 ; 2 A	xterm shift-up mark
-begin_marking,dnarw,toggle_marking	^[ [ 1 ; 2 B	xterm shift-down mark
-begin_marking,rtarw,toggle_marking	^[ [ 1 ; 2 C	xterm shift-right mark
-begin_marking,ltarw,toggle_marking	^[ [ 1 ; 2 D	xterm shift-left mark
-begin_marking,bol,toggle_marking	^[ [ 1 ; 2 H	xterm shift-home
-begin_marking,eol,toggle_marking	^[ [ 1 ; 2 F	xterm shift-end
-begin_marking,bof,toggle_marking	^[ [ 1 ; 6 H	xterm shift-ctrl-home
-begin_marking,eof,toggle_marking	^[ [ 1 ; 6 F	xterm shift-ctrl-end
+setmark,":",uparw,gomark,":",begin_marking,uparw,toggle_marking	^[ [ 1 ; 2 A
+setmark,":",dnarw,gomark,":",begin_marking,dnarw,toggle_marking	^[ [ 1 ; 2 B
+setmark,":",rtarw,gomark,":",begin_marking,rtarw,toggle_marking	^[ [ 1 ; 2 C
+setmark,":",ltarw,gomark,":",begin_marking,ltarw,toggle_marking	^[ [ 1 ; 2 D
+setmark,":",bol,gomark,":",begin_marking,bol,toggle_marking	^[ [ 1 ; 2 H
+setmark,":",eol,gomark,":",begin_marking,eol,toggle_marking	^[ [ 1 ; 2 F
+setmark,":",bof,gomark,":",begin_marking,bof,toggle_marking	^[ [ 1 ; 6 H
+setmark,":",eof,gomark,":",begin_marking,eof,toggle_marking	^[ [ 1 ; 6 F
 
  ask,query,lose,query,abortbuf	^X	Exit after many questions
 ask,query,exsave	^X		Exit
