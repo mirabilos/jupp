@@ -1,18 +1,19 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.128 2018/10/06 23:31:30 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.129 2018/10/20 16:19:00 tg Exp $
 -------------------------------------------------------------------
 
-jupp-current
+JOE 3.1jupp37
 
-- …
 - fix syntax highlighting for Assembly and Java™: string termination
 - unbreak reformat block when raw octets are present
 - update to UCD 11.0.0
-- improve line generation / screen output code wrt. UTF-8 (still buggy)
+- improve line generation / screen output code wrt. UTF-8
 - make UTF-8 decoding more robust
 - fix Makefile.am EXTRA_DIST
 - highlight .def and .dtx files as Tₑχ/LᴬTᴇΧ, .xsl (XSLT) as XML
 - handle .bin files as binary (no CRLF, hex editing)
 - improve shell grammar a little wrt. syntax highlighting
+- fix occasionally stuck CUA marking (LP#1677671)
+- do not lose the mark during some macros
 
 JOE 3.1jupp36
 

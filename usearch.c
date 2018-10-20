@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.21 2017/12/16 22:10:55 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.22 2018/10/20 16:34:40 tg Exp $");
 
 #include <stdlib.h>
 
@@ -591,7 +591,7 @@ static int set_pattern(BW *bw, unsigned char *s, SRCH *srch, int *notify)
 	vsrm(srch->pattern);
 	srch->pattern = s;
 	if ((pbw = wmkpw(bw->parent, p, NULL, set_options, srchstr, pfabort, utypebw, srch, notify, bw->b->o.charmap)) != NULL) {
-		unsigned char buf[10];
+		unsigned char buf[12];
 
 		if (srch->ignore)
 			binsc(pbw->cursor, 'i');
@@ -599,8 +599,10 @@ static int set_pattern(BW *bw, unsigned char *s, SRCH *srch, int *notify)
 			binsc(pbw->cursor, 'r');
 		if (srch->backwards)
 			binsc(pbw->cursor, 'b');
-		if (srch->repeat >= 0)
-			joe_snprintf_1((char *)buf, sizeof(buf), "%d", srch->repeat), binss(pbw->cursor, buf);
+		if (srch->repeat >= 0) {
+			joe_snprintf_1((char *)buf, sizeof(buf), "%d", srch->repeat);
+			binss(pbw->cursor, buf);
+		}
 		pset(pbw->cursor, pbw->b->eof);
 		pbw->cursor->xcol = piscol(pbw->cursor);
 		srch->ignore = 0;

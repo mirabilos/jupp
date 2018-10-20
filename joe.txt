@@ -852,16 +852,16 @@ Environment variables
      JOE uses two character maps for its operation: the terminal
      I/O character map, which determines how characters are sent
      to the terminal and whether the %a/%A message specifiers use
-     Unicode, and the file encoding, which can be specified per
-     file using the -encoding option and changed with the ^T E
-     command, and which defaults to the terminal I/O character
-     map, which, in turn, is determined from the current locale,
-     if the system supports such, otherwise the LC_ALL, LC_CTYPE
-     and LANG environment variables (if they contain a period,
-     only the part after it and before an optional "at sign" is
-     used); on cygwin32 before 1.7.2, the codepage is used
-     instead if the POSIX locale environment variables are empty;
-     the environment variable JOECHARMAP can be used to manually
+     UCS, and the file encoding, which can be specified per file
+     using the -encoding option and changed with the ^T E com-
+     mand, and which defaults to the terminal I/O character map,
+     which, in turn, is determined from the current locale, if
+     the system supports such, otherwise the LC_ALL, LC_CTYPE and
+     LANG environment variables (if they contain a period, only
+     the part after it and before an optional "at sign" is used);
+     on cygwin32 before 1.7.2, the codepage is used instead if
+     the POSIX locale environment variables are empty; the
+     environment variable JOECHARMAP can be used to manually
      force one overriding all methods described above, and can be
      used together with -encoding to specify a different default
      file character map.
