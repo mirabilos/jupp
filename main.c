@@ -32,7 +32,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.43 2018/01/07 20:32:46 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.44 2018/11/11 18:15:37 tg Exp $");
 
 #include <fcntl.h>
 #include <string.h>
@@ -341,6 +341,8 @@ main_init(int argc, char **argv, char **envp, SCRN **np)
 
 			if (!orphan || !opened) {
 				bw = wmktw(maint, b);
+				if (!bw)
+					goto wmktw_failed;
 				if (er)
 					msgnwt(bw->parent, msgs[-er]);
 			} else
@@ -400,6 +402,11 @@ main_init(int argc, char **argv, char **envp, SCRN **np)
 	} else {
 		BW *bw = wmktw(maint, bfind(UC ""));
 
+		if (!bw) {
+ wmktw_failed:
+			fprintf(stderr, "maint->h < 1, cannot happen\n");
+			return (1);
+		}
 		if (bw->o.mnew)
 			exemac(bw->o.mnew);
 	}

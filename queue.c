@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/queue.c,v 1.5 2017/12/08 02:00:40 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/queue.c,v 1.6 2018/11/11 18:15:37 tg Exp $");
 
 #include <stdlib.h>
 
@@ -19,17 +19,18 @@ void *QUEUE;
 void *ITEM;
 void *LAST;
 
-void *alitem(void *list, int itemsize)
+void *
+alitem(void *list, size_t itemsize)
 {
 	STDITEM	*freelist = (STDITEM *)list;
 
 	if (qempty(STDITEM, link, freelist)) {
-		STDITEM *i = malloc(itemsize * 16);
-		STDITEM *z = (STDITEM *)((unsigned char *)i + itemsize * 16);
+		size_t num = 16;
+		unsigned char *i = malloc(itemsize * num);
 
-		while (i != z) {
+		while (num--) {
 			enquef(STDITEM, link, freelist, i);
-			i = (STDITEM *)((unsigned char *)i + itemsize);
+			i += itemsize;
 		}
 	}
 	return (void *)deque_f(STDITEM, link, freelist->link.prev);

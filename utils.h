@@ -11,7 +11,7 @@
 #define _JOE_UTILS_H 1
 
 #ifdef EXTERN_B_C
-__IDSTRING(rcsid_utils_h, "$MirOS: contrib/code/jupp/utils.h,v 1.12 2018/01/06 00:28:35 tg Exp $");
+__IDSTRING(rcsid_utils_h, "$MirOS: contrib/code/jupp/utils.h,v 1.13 2018/11/11 18:15:39 tg Exp $");
 #endif
 
 #include <signal.h>
@@ -26,7 +26,12 @@ signed long long_min(signed long a, signed long b);
 
 /* Versions of 'read' and 'write' which automatically retry when interrupted */
 ssize_t joe_read(int fd, void *buf, size_t siz);
-ssize_t joe_write(int fd, void *buf, size_t siz);
+ssize_t joe_write(int fd, const void *buf, size_t siz);
+
+/* Similarily, read and write an exact amount (up to EOF) */
+ssize_t joe_readex(int, void *, size_t);
+ssize_t joe_writex(int, const void *, size_t);
+/* these return -2 if the error occurs after bytes had been processed */
 
 #ifndef HAVE_SIGHANDLER_T
 typedef RETSIGTYPE (*sighandler_t)(int);

@@ -8,7 +8,7 @@
  */
 #include "config.h"
 
-__RCSID("$MirOS: contrib/code/jupp/utils.c,v 1.10 2018/01/06 00:28:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/utils.c,v 1.11 2018/11/11 18:15:39 tg Exp $");
 
 #include <errno.h>
 #include <stdlib.h>
@@ -42,7 +42,8 @@ signed long int long_min(signed long int a, signed long int b)
 }
 
 /* Versions of 'read' and 'write' which automatically retry when interrupted */
-ssize_t joe_read(int fd, void *buf, size_t size)
+ssize_t
+joe_read(int fd, void *buf, size_t size)
 {
 	ssize_t rt;
 
@@ -52,7 +53,8 @@ ssize_t joe_read(int fd, void *buf, size_t size)
 	return rt;
 }
 
-ssize_t joe_write(int fd, void *buf, size_t size)
+ssize_t
+joe_write(int fd, const void *buf, size_t size)
 {
 	ssize_t rt;
 
@@ -61,6 +63,49 @@ ssize_t joe_write(int fd, void *buf, size_t size)
 	} while (rt < 0 && errno == EINTR);
 	return rt;
 }
+
+/* Similarily, read and write an exact amount (up to EOF) */
+ssize_t
+joe_readex(int fd, void *buf_, size_t size)
+{
+	unsigned char *buf = buf_;
+	ssize_t rv = 0, z;
+
+	while (size) {
+		if ((z = read(fd, buf, size)) < 0) {
+			if (errno == EINTR)
+				continue;
+			return (rv ? /* fucked up since we got some */ -2 : -1);
+		}
+		if (z == 0)
+			break;
+		rv += z;
+		buf += z;
+		size -= z;
+	}
+	return (rv);
+}
+
+#if 0 /* unused */
+ssize_t
+joe_writex(int fd, const void *buf_, size_t size)
+{
+	const unsigned char *buf = buf_;
+	ssize_t rv = 0, z;
+
+	while (size) {
+		if ((z = write(fd, buf, size)) < 0) {
+			if (errno == EINTR)
+				continue;
+			return (rv ? /* fucked up since we got some */ -2 : -1);
+		}
+		rv += z;
+		buf += z;
+		size -= z;
+	}
+	return (rv);
+}
+#endif
 
 #ifndef SIG_ERR
 #define SIG_ERR ((sighandler_t) -1)

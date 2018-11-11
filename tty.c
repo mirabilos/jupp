@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tty.c,v 1.36 2018/01/06 00:28:33 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tty.c,v 1.37 2018/11/11 18:15:38 tg Exp $");
 
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
@@ -559,14 +559,21 @@ int ttflsh(void)
 	if (!have && !leave) {
 #if WANT_FORK
 		if (ackkbd != -1) {
+			ssize_t r;
+
 			fcntl(mpxfd, F_SETFL, O_NDELAY);
-			if (read(mpxfd, &pack, sizeof(struct packet) - 1024) > 0) {
-				fcntl(mpxfd, F_SETFL, 0);
-				joe_read(mpxfd, pack.data, pack.size);
-				have = 1;
-				tty_accept = pack.ch;
-			} else
-				fcntl(mpxfd, F_SETFL, 0);
+			r = read(mpxfd, &pack, 1);
+			fcntl(mpxfd, F_SETFL, 0);
+			if (r == 1) {
+				r = sizeof(struct packet) - 1024 - 1;
+				if (joe_readex(mpxfd, (US &pack) + 1, r) == r &&
+				    pack.size >= 0 && pack.size <= 1024 &&
+				    joe_readex(mpxfd, pack.data,
+				    pack.size) == pack.size) {
+					have = 1;
+					tty_accept = pack.ch;
+				}
+			}
 		} else
 #endif
 		  {
@@ -594,9 +601,6 @@ static time_t last_time;
 
 int ttgetc(void)
 {
-#if WANT_FORK
-	int stat_;
-#endif
 	time_t new_time;
 
 	tickon();
@@ -621,21 +625,24 @@ int ttgetc(void)
 	}
 #if WANT_FORK
 	if (ackkbd != -1) {
-		if (!have) {	/* Wait for input */
-			stat_ = read(mpxfd, &pack, sizeof(struct packet) - 1024);
+		ssize_t r;
+		if (!have) {
+			/* wait for input */
+			r = sizeof(struct packet) - 1024;
 
-			if (pack.size && stat_ > 0) {
-				joe_read(mpxfd, pack.data, pack.size);
-			} else if (stat_ < 1) {
+			if (joe_readex(mpxfd, &pack, r) != r ||
+			    pack.size < 0 || pack.size > 1024 ||
+			    joe_readex(mpxfd, pack.data,
+			    pack.size) != pack.size) {
 				if (winched || ticked)
 					goto loop;
-				else
-					ttsig(0);
+				ttsig(0);
 			}
 			tty_accept = pack.ch;
 		}
 		have = 0;
-		if (pack.who) {	/* Got bknd input */
+		if (pack.who) {
+			/* got background input */
 			if (tty_accept != NO_MORE_DATA) {
 				if (pack.who->func) {
 					pack.who->func(pack.who->object, pack.data, pack.size);
@@ -644,28 +651,22 @@ int ttgetc(void)
 			} else
 				mpxdied(pack.who);
 			goto loop;
+		} else if (tty_accept != NO_MORE_DATA) {
+			tickoff();
+			return tty_accept;
 		} else {
-			if (tty_accept != NO_MORE_DATA) {
-				tickoff();
-				return tty_accept;
-			}
-			else {
-				tickoff();
-				ttsig(0);
-				return 0;
-			}
+			tickoff();
+			ttsig(0);
+			return 0;
 		}
 	}
 #endif
 	if (have) {
 		have = 0;
-	} else {
-		if (read(fileno(termin), &havec, 1) < 1) {
-			if (winched || ticked)
-				goto loop;
-			else
-				ttsig(0);
-		}
+	} else if (read(fileno(termin), &havec, 1) < 1) {
+		if (winched || ticked)
+			goto loop;
+		ttsig(0);
 	}
 	tickoff();
 	return havec;
@@ -1075,8 +1076,11 @@ mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args,
 	}
 	m->ackfd = fds[1];
 
-	/* Fixes cygwin console bug: if you fork() with inverse video he assumes you want
-	 * ESC [ 0 m to keep it in inverse video from then on. */
+	/*
+	 * Fixes cygwin console bug: if you fork() with inverse video
+	 * it assumes you want ESC [ 0 m to keep it in inverse video
+	 * from then on.
+	 */
 	set_attr(maint->t,0);
 
 	/* Flush output */
@@ -1103,10 +1107,12 @@ mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args,
 
 	/* Create processes... */
 	if (!(m->kpid = fork())) {
-		/* This process copies data from shell to joe */
-		/* After each packet it sends to joe it waits for
-		   an acknowledgement from joe so that it can not get
-		   too far ahead with buffering */
+		/*
+		 * This process copies data from shell to joe.
+		 * After each packet it sends to joe it waits for
+		 * an acknowledgement from joe so that it can not get
+		 * too far ahead with buffering.
+		 */
 
 		/* Close joe side of pipes */
 		close(fds[1]);
@@ -1119,15 +1125,19 @@ mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args,
 
 		if (!(pid = fork())) {
 			/* This process becomes the shell */
+			unsigned char **env;
+
 			signrm(0);
 
 			/* Close pty (we only need tty) */
 			close(*ptyfd);
 
-			/* All of this stuff is for disassociating ourself from
-			   controlling tty (session leader) and starting a new
-			   session.  This is the most non-portable part of UNIX- second
-			   only to pty/tty pair creation. */
+			/*
+			 * All of this stuff is for dissociating ourself from
+			 * the controlling tty (session leader) and starting a
+			 * new session. This is the most non-portable part of
+			 * UNIX — second only to pty/tty pair creation.
+			 */
 #ifndef HAVE_LOGIN_TTY
 
 #ifdef TIOCNOTTY
@@ -1135,7 +1145,8 @@ mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args,
 			ioctl(x, TIOCNOTTY, 0);
 #endif
 
-			setsid();	/* I think you do setprgp(0,0) on systems with no setsid() */
+			/* I think you do setprgp(0,0) on systems with no setsid() */
+			setsid();
 #ifndef _MINIX
 /* http://mail-index.netbsd.org/pkgsrc-bugs/2011/06/13/msg043281.html */
 #ifndef SETPGRP_VOID
@@ -1147,13 +1158,15 @@ mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args,
 
 #endif
 			/* Close all fds */
-			for (x = 0; x != 32; ++x)
-				close(x);	/* Yes, this is quite a kludge... all in the
-						   name of portability */
+			for (x = 0; x != 32; ++x) {
+				/* Yes, this is quite a kludge... */
+				/* All in the name of portability */
+				close(x);
+			}
 
-			/* Open the TTY */
-			if ((x = open((char *)name, O_RDWR)) != -1) {	/* Standard input */
-				unsigned char **env = newenv(mainenv, UC "TERM=");
+			/* Open the TTY as standard input */
+			if ((x = open((char *)name, O_RDWR)) != -1) {
+				env = newenv(mainenv, UC "TERM=");
 
 #ifdef HAVE_LOGIN_TTY
 				login_tty(x);
@@ -1175,8 +1188,12 @@ mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args,
 				 */
 #endif
 
-				/* We could probably have a special TTY set-up for JOE, but for now
-				 * we'll just use the TTY setup for the TTY was was run on */
+				/*
+				 * We could probably have a special TTY
+				 * setup for JOE, but for now we'll just
+				 * use the TTY setup for the TTY was was
+				 * run on.
+				 */
 #ifdef HAVE_POSIX_TERMIOS
 				tcsetattr(0, TCSADRAIN, &oldterm);
 #else

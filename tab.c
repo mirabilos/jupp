@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tab.c,v 1.13 2017/12/20 23:49:06 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tab.c,v 1.14 2018/11/11 18:15:38 tg Exp $");
 
 #include <sys/stat.h>
 #include <stdlib.h>
@@ -80,9 +80,11 @@ static int get_entries(TAB *tab, int prv)
 	tab->type = malloc(tab->len);
 	for (a = 0; a != tab->len; a++) {
 		struct stat buf;
-		mset(&buf, 0, sizeof(struct stat));
 
-		stat((char *)(files[a]), &buf);
+		if (stat((char *)(files[a]), &buf)) {
+			tab->type[a] = 0;
+			continue;
+		}
 		if ((int)buf.st_ino == prv)
 			which = a;
 		if ((buf.st_mode & S_IFMT) == S_IFDIR)
@@ -141,11 +143,8 @@ static unsigned char **treload(TAB *tab,MENU *m, BW *bw, int flg,int *defer)
 
 	if ((which = get_entries(tab, tab->prv)) < 0)
 		return 0;
-	if (tab->path && tab->path[0])
-		stat((char *)tab->path, &buf);
-	else
-		stat(".", &buf);
-	tab->prv = buf.st_ino;
+	tab->prv = stat((tab->path && tab->path[0]) ? (char *)tab->path : ".",
+	    &buf) ? 0 : buf.st_ino;
 	if (!flg)
 		which = 0;
 

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/w.c,v 1.13 2017/12/20 22:52:11 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/w.c,v 1.14 2018/11/11 18:15:39 tg Exp $");
 
 #include <stdlib.h>
 
@@ -592,11 +592,12 @@ W *wcreate(SCREEN *t, WATOM *watom, W *where, W *target, W *original, int height
 	new->msgb = NULL;
 	new->msgt = NULL;
 	/* Set window's target and family */
-/* was:	if (new->win = target) {	which may be mistyped == */
-	if ((new->win = target) != NULL) {	/* A subwindow */
+	if ((new->win = target) != NULL) {
+		/* a subwindow */
 		new->main = target->main;
 		new->fixed = height;
-	} else {		/* A parent window */
+	} else {
+		/* a parent window */
 		new->main = new;
 		new->fixed = 0;
 	}
