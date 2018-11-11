@@ -567,6 +567,7 @@ int ttflsh(void)
 			if (r == 1) {
 				r = sizeof(struct packet) - 1024 - 1;
 				if (joe_readex(mpxfd, (US &pack) + 1, r) == r &&
+				    pack.size >= 0 && pack.size <= 1024 &&
 				    joe_readex(mpxfd, pack.data,
 				    pack.size) == pack.size) {
 					have = 1;
@@ -630,6 +631,7 @@ int ttgetc(void)
 			r = sizeof(struct packet) - 1024;
 
 			if (joe_readex(mpxfd, &pack, r) != r ||
+			    pack.size < 0 || pack.size > 1024 ||
 			    joe_readex(mpxfd, pack.data,
 			    pack.size) != pack.size) {
 				if (winched || ticked)
