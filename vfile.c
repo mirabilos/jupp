@@ -60,7 +60,13 @@ void vflsh(void)
 				    vfile->fd ? NULL : &vfile->fd);
 			if (!vfile->fd)
 				vfile->fd = open((char *)(vfile->name), O_RDWR);
-			lseek(vfile->fd, addr, 0);
+			if (lseek(vfile->fd, addr, 0) == (off_t)-1) {
+				/* should not happen, what now? */
+				close(vfile->fd);
+				vfile->fd = 0;
+				fputs("\nvfile lseek failed! \n", stderr);
+				continue;
+			}
 			if (addr + PGSIZE > vsize(vfile)) {
 				joe_write(vfile->fd, vlowest->data, vsize(vfile) - addr);
 				vfile->size = vsize(vfile);
