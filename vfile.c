@@ -65,7 +65,7 @@ void vflsh(void)
 				wtf = "open";
 				goto eek;
 			}
-			if (lseek(vfile->fd, addr, 0) == (off_t)-1) {
+			if (lseek(vfile->fd, addr, 0) < 0) {
 				/* should not happen, what now? */
 				wtf = "lseek";
  eek:
