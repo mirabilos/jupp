@@ -1075,8 +1075,11 @@ mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args,
 	}
 	m->ackfd = fds[1];
 
-	/* Fixes cygwin console bug: if you fork() with inverse video he assumes you want
-	 * ESC [ 0 m to keep it in inverse video from then on. */
+	/*
+	 * Fixes cygwin console bug: if you fork() with inverse video
+	 * it assumes you want ESC [ 0 m to keep it in inverse video
+	 * from then on.
+	 */
 	set_attr(maint->t,0);
 
 	/* Flush output */
@@ -1103,10 +1106,12 @@ mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args,
 
 	/* Create processes... */
 	if (!(m->kpid = fork())) {
-		/* This process copies data from shell to joe */
-		/* After each packet it sends to joe it waits for
-		   an acknowledgement from joe so that it can not get
-		   too far ahead with buffering */
+		/*
+		 * This process copies data from shell to joe.
+		 * After each packet it sends to joe it waits for
+		 * an acknowledgement from joe so that it can not get
+		 * too far ahead with buffering.
+		 */
 
 		/* Close joe side of pipes */
 		close(fds[1]);
@@ -1124,10 +1129,12 @@ mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args,
 			/* Close pty (we only need tty) */
 			close(*ptyfd);
 
-			/* All of this stuff is for disassociating ourself from
-			   controlling tty (session leader) and starting a new
-			   session.  This is the most non-portable part of UNIX- second
-			   only to pty/tty pair creation. */
+			/*
+			 * All of this stuff is for dissociating ourself from
+			 * the controlling tty (session leader) and starting a
+			 * new session. This is the most non-portable part of
+			 * UNIX — second only to pty/tty pair creation.
+			 */
 #ifndef HAVE_LOGIN_TTY
 
 #ifdef TIOCNOTTY
@@ -1135,7 +1142,8 @@ mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args,
 			ioctl(x, TIOCNOTTY, 0);
 #endif
 
-			setsid();	/* I think you do setprgp(0,0) on systems with no setsid() */
+			/* I think you do setprgp(0,0) on systems with no setsid() */
+			setsid();
 #ifndef _MINIX
 /* http://mail-index.netbsd.org/pkgsrc-bugs/2011/06/13/msg043281.html */
 #ifndef SETPGRP_VOID
@@ -1147,12 +1155,14 @@ mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args,
 
 #endif
 			/* Close all fds */
-			for (x = 0; x != 32; ++x)
-				close(x);	/* Yes, this is quite a kludge... all in the
-						   name of portability */
+			for (x = 0; x != 32; ++x) {
+				/* Yes, this is quite a kludge... */
+				/* All in the name of portability */
+				close(x);
+			}
 
-			/* Open the TTY */
-			if ((x = open((char *)name, O_RDWR)) != -1) {	/* Standard input */
+			/* Open the TTY as standard input */
+			if ((x = open((char *)name, O_RDWR)) != -1) {
 				unsigned char **env = newenv(mainenv, UC "TERM=");
 
 #ifdef HAVE_LOGIN_TTY
@@ -1175,8 +1185,12 @@ mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args,
 				 */
 #endif
 
-				/* We could probably have a special TTY set-up for JOE, but for now
-				 * we'll just use the TTY setup for the TTY was was run on */
+				/*
+				 * We could probably have a special TTY
+				 * setup for JOE, but for now we'll just
+				 * use the TTY setup for the TTY was was
+				 * run on.
+				 */
 #ifdef HAVE_POSIX_TERMIOS
 				tcsetattr(0, TCSADRAIN, &oldterm);
 #else
