@@ -89,12 +89,17 @@ void vflsh(void)
 	}
 }
 
-void vflshf(VFILE *vfile)
+/* write changed pages for a specific file to the disk */
+static void vflshf(VFILE *vfile);
+
+static void
+vflshf(VFILE *vfile)
 {
 	VPAGE *vp;
 	VPAGE *vlowest;
 	long addr;
 	int x;
+	const char *wtf;
 
  loop:
 	addr = LONG_MAX;
@@ -109,8 +114,21 @@ void vflshf(VFILE *vfile)
 		if (!vfile->name)
 			vfile->name = mktmp(NULL,
 			    vfile->fd ? NULL : &vfile->fd);
-		if (!vfile->fd) {
+		if (!vfile->fd)
 			vfile->fd = open((char *)(vfile->name), O_RDWR);
+		if (vfile->fd < 0) {
+			wtf = "open";
+			goto eek;
+		}
+		if (lseek(vfile->fd, addr, 0) < 0) {
+			/* should not happen, what now? */
+			wtf = "lseek";
+ eek:
+			close(vfile->fd);
+			vfile->fd = 0;
+			fprintf(stderr, "\nvfile %s failed! \n", wtf);
+			/* only called from vclose via main, maybe harmless? */
+			return;
 		}
 		lseek(vfile->fd, addr, 0);
 		if (addr + PGSIZE > vsize(vfile)) {

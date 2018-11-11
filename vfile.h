@@ -67,13 +67,6 @@ void vclose(VFILE *vfile);
 
 void vflsh(void);
 
-/* void vflshf(VFILE *vfile);
- *
- * Write changed pages for a specific file to the disk
- */
-
-void vflshf(VFILE *vfile);
-
 /* char *vlock(VFILE *vfile,long addr);
  *
  * Translate virtual address to physical address.  'addr' does not have
