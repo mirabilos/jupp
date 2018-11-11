@@ -1124,6 +1124,8 @@ mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args,
 
 		if (!(pid = fork())) {
 			/* This process becomes the shell */
+			unsigned char **env;
+
 			signrm(0);
 
 			/* Close pty (we only need tty) */
@@ -1163,7 +1165,7 @@ mpxmk(int *ptyfd, const unsigned char *cmd, unsigned char **args,
 
 			/* Open the TTY as standard input */
 			if ((x = open((char *)name, O_RDWR)) != -1) {
-				unsigned char **env = newenv(mainenv, UC "TERM=");
+				env = newenv(mainenv, UC "TERM=");
 
 #ifdef HAVE_LOGIN_TTY
 				login_tty(x);
