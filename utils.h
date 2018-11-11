@@ -11,7 +11,7 @@
 #define _JOE_UTILS_H 1
 
 #ifdef EXTERN_B_C
-__IDSTRING(rcsid_utils_h, "$MirOS: contrib/code/jupp/utils.h,v 1.12 2018/01/06 00:28:35 tg Exp $");
+__IDSTRING(rcsid_utils_h, "$MirOS: contrib/code/jupp/utils.h,v 1.14 2018/11/11 18:20:52 tg Exp $");
 #endif
 
 #include <signal.h>
@@ -71,7 +71,8 @@ void tty_xonoffbaudrst(void);
 long ustol(void *, void **, int);
 long ustolb(void *, void **, long, long, int);
 
-#define USTOC_MAX	4 /* arbitrary, but at least 4 */
+/* arbitrary, but at least 4 */
+#define USTOC_MAX	4
 
 size_t ustoc_hex(const void *, int *, size_t);
 size_t ustoc_oct(const void *, int *, size_t);

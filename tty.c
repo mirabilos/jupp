@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tty.c,v 1.36 2018/01/06 00:28:33 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tty.c,v 1.38 2018/11/11 18:20:51 tg Exp $");
 
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
@@ -33,20 +33,13 @@ int idleout = 1;
  * tty interface the system uses and what type of system
  * we actually have.
  */
-#ifdef HAVE_POSIX_TERMIOS
-#  include <termios.h>
-# ifdef HAVE_SYS_TERMIOS_H
-#  include <sys/termios.h>
-# endif
-#else
-#  ifdef HAVE_SYSV_TERMIO
-#    include <termio.h>
-#    include <sys/termio.h>
-#  else
-#   ifdef HAVE_SGTTY_H
-#    include <sgtty.h>
-#   endif
-#  endif
+#if defined(HAVE_POSIX_TERMIOS)
+#include <termios.h>
+#elif defined(HAVE_SYSV_TERMIO)
+#include <termio.h>
+#include <sys/termio.h>
+#elif defined(HAVE_SGTTY_H)
+#include <sgtty.h>
 #endif
 
 #ifdef HAVE_OPENPTY

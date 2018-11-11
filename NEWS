@@ -1,5 +1,16 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.129 2018/10/20 16:19:00 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.130 2018/11/11 18:56:00 tg Exp $
 -------------------------------------------------------------------
+
+jupp-current
+
+- …
+
+JOE 3.1jupp38
+
+- fix issues pointed out by Coverity
+- musl says to not use <sys/termios.h>
+- fix opening files like +DESC
+- update autoconf infrastructure
 
 JOE 3.1jupp37
 

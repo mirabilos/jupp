@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/vfile.c,v 1.16 2018/01/07 20:32:48 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/vfile.c,v 1.17 2018/11/11 18:15:39 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
