@@ -559,14 +559,20 @@ int ttflsh(void)
 	if (!have && !leave) {
 #if WANT_FORK
 		if (ackkbd != -1) {
+			ssize_t r;
+
 			fcntl(mpxfd, F_SETFL, O_NDELAY);
-			if (read(mpxfd, &pack, sizeof(struct packet) - 1024) > 0) {
-				fcntl(mpxfd, F_SETFL, 0);
-				joe_read(mpxfd, pack.data, pack.size);
-				have = 1;
-				tty_accept = pack.ch;
-			} else
-				fcntl(mpxfd, F_SETFL, 0);
+			r = read(mpxfd, &pack, 1);
+			fcntl(mpxfd, F_SETFL, 0);
+			if (r == 1) {
+				r = sizeof(struct packet) - 1024 - 1;
+				if (joe_readex(mpxfd, (US &pack) + 1, r) == r &&
+				    joe_readex(mpxfd, pack.data,
+				    pack.size) == pack.size) {
+					have = 1;
+					tty_accept = pack.ch;
+				}
+			}
 		} else
 #endif
 		  {
@@ -594,9 +600,6 @@ static time_t last_time;
 
 int ttgetc(void)
 {
-#if WANT_FORK
-	int stat_;
-#endif
 	time_t new_time;
 
 	tickon();
@@ -621,21 +624,23 @@ int ttgetc(void)
 	}
 #if WANT_FORK
 	if (ackkbd != -1) {
-		if (!have) {	/* Wait for input */
-			stat_ = read(mpxfd, &pack, sizeof(struct packet) - 1024);
+		ssize_t r;
+		if (!have) {
+			/* wait for input */
+			r = sizeof(struct packet) - 1024;
 
-			if (pack.size && stat_ > 0) {
-				joe_read(mpxfd, pack.data, pack.size);
-			} else if (stat_ < 1) {
+			if (joe_readex(mpxfd, &pack, r) != r ||
+			    joe_readex(mpxfd, pack.data,
+			    pack.size) != pack.size) {
 				if (winched || ticked)
 					goto loop;
-				else
-					ttsig(0);
+				ttsig(0);
 			}
 			tty_accept = pack.ch;
 		}
 		have = 0;
-		if (pack.who) {	/* Got bknd input */
+		if (pack.who) {
+			/* got background input */
 			if (tty_accept != NO_MORE_DATA) {
 				if (pack.who->func) {
 					pack.who->func(pack.who->object, pack.data, pack.size);
@@ -644,28 +649,22 @@ int ttgetc(void)
 			} else
 				mpxdied(pack.who);
 			goto loop;
+		} else if (tty_accept != NO_MORE_DATA) {
+			tickoff();
+			return tty_accept;
 		} else {
-			if (tty_accept != NO_MORE_DATA) {
-				tickoff();
-				return tty_accept;
-			}
-			else {
-				tickoff();
-				ttsig(0);
-				return 0;
-			}
+			tickoff();
+			ttsig(0);
+			return 0;
 		}
 	}
 #endif
 	if (have) {
 		have = 0;
-	} else {
-		if (read(fileno(termin), &havec, 1) < 1) {
-			if (winched || ticked)
-				goto loop;
-			else
-				ttsig(0);
-		}
+	} else if (read(fileno(termin), &havec, 1) < 1) {
+		if (winched || ticked)
+			goto loop;
+		ttsig(0);
 	}
 	tickoff();
 	return havec;

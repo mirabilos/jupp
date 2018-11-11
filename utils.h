@@ -26,7 +26,12 @@ signed long long_min(signed long a, signed long b);
 
 /* Versions of 'read' and 'write' which automatically retry when interrupted */
 ssize_t joe_read(int fd, void *buf, size_t siz);
-ssize_t joe_write(int fd, void *buf, size_t siz);
+ssize_t joe_write(int fd, const void *buf, size_t siz);
+
+/* Similarily, read and write an exact amount (up to EOF) */
+ssize_t joe_readex(int, void *, size_t);
+ssize_t joe_writex(int, const void *, size_t);
+/* these return -2 if the error occurs after bytes had been processed */
 
 #ifndef HAVE_SIGHANDLER_T
 typedef RETSIGTYPE (*sighandler_t)(int);
