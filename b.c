@@ -2045,10 +2045,8 @@ bload(const unsigned char *s)
 		fi = fopen((char *)n, "r");
 		if (!fi)
 			nowrite = 0;
-		if (fi) {
-			fstat(fileno(fi),&sbuf);
+		else if (!fstat(fileno(fi), &sbuf))
 			mod_time = sbuf.st_mtime;
-		}
 	}
 #if HAVE_BACKSLASH_PATHS
 	joesep(n);
