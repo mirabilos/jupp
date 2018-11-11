@@ -973,10 +973,11 @@ static int dofilt(BW *bw, unsigned char *s, void *object, int *notify)
 		return (-1);
 	}
 	if ((tf = mktmp(NULL, &fw)) == NULL) {
+		msgnw(bw->parent, UC "Cannot create temporary file");
+ lseekoops:
 		close(fr[0]);
 		close(fr[1]);
 		vsrm(s);
-		msgnw(bw->parent, UC "Cannot create temporary file");
 		return (-1);
 	}
 	unlink((char *)tf);
@@ -991,7 +992,11 @@ static int dofilt(BW *bw, unsigned char *s, void *object, int *notify)
 		bsavefd(tmp->bof, fw, tmp->eof->byte);
 	} else
 		bsavefd(markb, fw, markk->byte - markb->byte);
-	lseek(fw, (off_t)0, SEEK_SET);
+	if (lseek(fw, (off_t)0, SEEK_SET) < 0) {
+		msgnw(bw->parent, UC "lseek failed");
+		close(fw);
+		goto lseekoops;
+	}
 #if defined(HAVE_PUTENV) && (WANT_FORK || defined(HAVE_UNSETENV))
 	fname = vsncpy(NULL, 0, sc("JOE_FILENAME="));
 	tf = bw->b->name ? bw->b->name : (unsigned char *)"Unnamed";
