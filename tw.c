@@ -740,6 +740,8 @@ BW *wmktw(SCREEN *t, B *b)
 	TW *tw;
 
 	w = wcreate(t, &watomtw, NULL, NULL, NULL, t->h, NULL, NULL);
+	if (!w)
+		return (NULL);
 	wfit(w->t);
 	w->object.bw = bw = bwmk(w, b, 0);
 	bw->object = tw = malloc(sizeof(TW));
