@@ -18,6 +18,7 @@ __RCSID("$MirOS: contrib/code/jupp/vfile.c,v 1.16 2018/01/07 20:32:48 tg Exp $")
 #include "blocks.h"
 #include "queue.h"
 #include "path.h"
+#include "tty.h"
 #include "utils.h"
 #include "vfile.h"
 #include "vs.h"
