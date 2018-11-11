@@ -69,8 +69,8 @@ void vflsh(void)
 			if (lseek(vfile->fd, addr, 0) < 0) {
 				/* should not happen, what now? */
 				wtf = "lseek";
- eek:
 				close(vfile->fd);
+ eek:
 				vfile->fd = 0;
 				fprintf(stderr, "\nvfile %s failed! \n", wtf);
 				continue;
@@ -124,8 +124,8 @@ vflshf(VFILE *vfile)
 		if (lseek(vfile->fd, addr, 0) < 0) {
 			/* should not happen, what now? */
 			wtf = "lseek";
- eek:
 			close(vfile->fd);
+ eek:
 			vfile->fd = 0;
 			fprintf(stderr, "\nvfile %s failed! \n", wtf);
 			/* only called from vclose via main, maybe harmless? */
