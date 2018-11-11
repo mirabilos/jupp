@@ -237,7 +237,14 @@ unsigned char *vlock(VFILE *vfile, unsigned long addr)
 		if (!vfile->fd) {
 			vfile->fd = open((char *)(vfile->name), O_RDWR);
 		}
-		lseek(vfile->fd, addr, 0);
+		if (lseek(vfile->fd, addr, 0) < 0) {
+			static char washere = 0;
+
+			if (!washere++)
+				ttabrt(0, "vlock: lseek failed");
+			if (write(2, "vlock: lseek failed twice\n", 26)) {}
+			exit(1);
+		}
 		if (addr + PGSIZE > (unsigned long)vfile->size) {
 			joe_read(vfile->fd, vp->data, vfile->size - addr);
 			mset(vp->data + vfile->size - addr, 0, PGSIZE - (int) (vfile->size - addr));
