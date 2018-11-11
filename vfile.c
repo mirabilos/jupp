@@ -234,15 +234,15 @@ unsigned char *vlock(VFILE *vfile, unsigned long addr)
 	htab[((addr >> LPGSIZE) + (unsigned long)vfile) & (HTSIZE - 1)] = vp;
 
 	if (addr < (unsigned long)vfile->size) {
-		if (!vfile->fd) {
-			vfile->fd = open((char *)(vfile->name), O_RDWR);
-		}
-		if (lseek(vfile->fd, addr, 0) < 0) {
+		if (!vfile->fd && (vfile->fd = open((char *)(vfile->name),
+		    O_RDWR)) < 0)
+			vfile->fd = 0;
+		if (!vfile->fd || lseek(vfile->fd, addr, 0) < 0) {
 			static char washere = 0;
 
 			if (!washere++)
-				ttabrt(0, "vlock: lseek failed");
-			if (write(2, "vlock: lseek failed twice\n", 26)) {}
+				ttabrt(0, "vlock: open or lseek failed");
+			if (write(2, "vlock: open or lseek failed twice\n", 26)) {}
 			exit(1);
 		}
 		if (addr + PGSIZE > (unsigned long)vfile->size) {
