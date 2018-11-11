@@ -131,7 +131,6 @@ vflshf(VFILE *vfile)
 			/* only called from vclose via main, maybe harmless? */
 			return;
 		}
-		lseek(vfile->fd, addr, 0);
 		if (addr + PGSIZE > vsize(vfile)) {
 			joe_write(vfile->fd, vlowest->data, vsize(vfile) - addr);
 			vfile->size = vsize(vfile);
