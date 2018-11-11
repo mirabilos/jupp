@@ -42,6 +42,7 @@ void vflsh(void)
 	long last;
 	VFILE *vfile;
 	int x;
+	const char *wtf;
 
 	for (vfile = vfiles.link.next; vfile != &vfiles; vfile = vfile->link.next) {
 		last = -1;
@@ -60,11 +61,17 @@ void vflsh(void)
 				    vfile->fd ? NULL : &vfile->fd);
 			if (!vfile->fd)
 				vfile->fd = open((char *)(vfile->name), O_RDWR);
+			if (vfile->fd < 0) {
+				wtf = "open";
+				goto eek;
+			}
 			if (lseek(vfile->fd, addr, 0) == (off_t)-1) {
 				/* should not happen, what now? */
+				wtf = "lseek";
+ eek:
 				close(vfile->fd);
 				vfile->fd = 0;
-				fputs("\nvfile lseek failed! \n", stderr);
+				fprintf(stderr, "\nvfile %s failed! \n", wtf);
 				continue;
 			}
 			if (addr + PGSIZE > vsize(vfile)) {
