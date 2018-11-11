@@ -80,9 +80,11 @@ static int get_entries(TAB *tab, int prv)
 	tab->type = malloc(tab->len);
 	for (a = 0; a != tab->len; a++) {
 		struct stat buf;
-		mset(&buf, 0, sizeof(struct stat));
 
-		stat((char *)(files[a]), &buf);
+		if (stat((char *)(files[a]), &buf)) {
+			tab->type[a] = 0;
+			continue;
+		}
 		if ((int)buf.st_ino == prv)
 			which = a;
 		if ((buf.st_mode & S_IFMT) == S_IFDIR)
