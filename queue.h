@@ -120,7 +120,7 @@ extern void *LAST;
 	(type *)ITEM \
 	)
 
-void *alitem(void *list, int itemsize);
+void *alitem(void *list, size_t itemsize);
 void frchn(void *list, void *ch);
 
 #endif
