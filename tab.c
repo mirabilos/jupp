@@ -143,11 +143,8 @@ static unsigned char **treload(TAB *tab,MENU *m, BW *bw, int flg,int *defer)
 
 	if ((which = get_entries(tab, tab->prv)) < 0)
 		return 0;
-	if (tab->path && tab->path[0])
-		stat((char *)tab->path, &buf);
-	else
-		stat(".", &buf);
-	tab->prv = buf.st_ino;
+	tab->prv = stat((tab->path && tab->path[0]) ? (char *)tab->path : ".",
+	    &buf) ? 0 : buf.st_ino;
 	if (!flg)
 		which = 0;
 
