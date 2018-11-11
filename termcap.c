@@ -233,9 +233,9 @@ CAP *getcap(unsigned char *name, unsigned int baud, void (*out) (unsigned char *
 	if (f) {
 		struct stat buf, buf1;
 
-		fstat(fileno(f), &buf);
-		fstat(fileno(f1), &buf1);
-		if (buf.st_mtime > buf1.st_mtime)
+		if (fstat(fileno(f), &buf) || fstat(fileno(f1), &buf1))
+			fprintf(stderr, "cannot stat termcap index\n");
+		else if (buf.st_mtime > buf1.st_mtime)
 			idx = findidx(f, name);
 		else
 			fprintf(stderr, "%s is out of date\n", idxname);
