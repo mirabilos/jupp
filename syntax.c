@@ -352,7 +352,6 @@ struct high_syntax *load_dfa(const unsigned char *name)
 			if (!c) {
 			} else if (c=='"' || c=='*') {
 				if (state) {
-					struct high_cmd *cmd;
 					if (!parse_field(&p, UC "*")) {
 						int z;
 						for(z=0;z!=256;++z)
@@ -376,10 +375,11 @@ struct high_syntax *load_dfa(const unsigned char *name)
 						}
 					}
 					/* Create command */
-					cmd = calloc(1, sizeof(struct high_cmd));
 					parse_ws(&p,'#');
 					if(!parse_ident(&p,bf,255)) {
+						struct high_cmd *cmd = calloc(1, sizeof(struct high_cmd));
 						int z;
+
 						cmd->new_state = find_state(syntax,bf);
 
 						/* Parse options */
