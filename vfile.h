@@ -9,7 +9,7 @@
 #define _JOE_VFILE_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_vfile_h, "$MirOS: contrib/code/jupp/vfile.h,v 1.7 2017/12/06 21:17:05 tg Exp $");
+__IDSTRING(rcsid_vfile_h, "$MirOS: contrib/code/jupp/vfile.h,v 1.8 2018/11/11 18:15:39 tg Exp $");
 #endif
 
 /* Additions:
@@ -66,13 +66,6 @@ void vclose(VFILE *vfile);
  */
 
 void vflsh(void);
-
-/* void vflshf(VFILE *vfile);
- *
- * Write changed pages for a specific file to the disk
- */
-
-void vflshf(VFILE *vfile);
 
 /* char *vlock(VFILE *vfile,long addr);
  *

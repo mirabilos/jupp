@@ -32,7 +32,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.43 2018/01/07 20:32:46 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.45 2018/11/11 18:51:26 tg Exp $");
 
 #include <fcntl.h>
 #include <string.h>
@@ -72,6 +72,8 @@ const char null[] = "";
 #ifdef __CYGWIN__
 extern unsigned char *cygwin32_cmdline(void);
 #endif
+
+#define is_ofsopt(ap) (0[ap] == '+' && 1[ap] >= '0' && 1[ap] <= '9')
 
 /* Make windows follow cursor */
 
@@ -326,7 +328,7 @@ main_init(int argc, char **argv, char **envp, SCRN **np)
 	vmem = vtmp();
 
 	for (c = 1, backopt = 0; argv[c]; ++c)
-		if (argv[c][0] == '+' && argv[c][1]) {
+		if (is_ofsopt(argv[c])) {
 			if (!backopt)
 				backopt = c;
 		} else if (argv[c][0] == '-' && argv[c][1]) {
@@ -341,6 +343,8 @@ main_init(int argc, char **argv, char **envp, SCRN **np)
 
 			if (!orphan || !opened) {
 				bw = wmktw(maint, b);
+				if (!bw)
+					goto wmktw_failed;
 				if (er)
 					msgnwt(bw->parent, msgs[-er]);
 			} else
@@ -354,7 +358,7 @@ main_init(int argc, char **argv, char **envp, SCRN **np)
 
 					old_context = bw->o.context;
 					while (backopt != c) {
-						if (argv[backopt][0] == '+') {
+						if (is_ofsopt(argv[backopt])) {
 							lnum = ustol(argv[backopt] + 1, NULL, USTOL_TRIM | USTOL_EOS);
 							++backopt;
 						} else {
@@ -400,6 +404,11 @@ main_init(int argc, char **argv, char **envp, SCRN **np)
 	} else {
 		BW *bw = wmktw(maint, bfind(UC ""));
 
+		if (!bw) {
+ wmktw_failed:
+			fprintf(stderr, "maint->h < 1, cannot happen\n");
+			return (1);
+		}
 		if (bw->o.mnew)
 			exemac(bw->o.mnew);
 	}

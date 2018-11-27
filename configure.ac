@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/configure.ac,v 1.73 2018/10/20 16:19:00 tg Exp $
+# $MirOS: contrib/code/jupp/configure.ac,v 1.74 2018/11/11 18:20:51 tg Exp $
 #-
 # Process this file with autoconf to produce a configure script.
 
@@ -6,7 +6,7 @@
 AC_PREREQ(2.54)
 
 #### Here's the only place where to change version number ####
-AC_INIT(joe, 3.1jupp37)
+AC_INIT(joe, 3.1jupp38)
 #### But see main.c for the Copyright (c) owner and year! ####
 AC_CONFIG_SRCDIR([b.c])
 
@@ -156,9 +156,9 @@ AC_SUBST(jrcafter)
 
 AC_CHECK_HEADERS([ \
 	sys/dirent.h sys/ioctl.h sys/param.h sys/stat.h sys/termio.h \
-	sys/termios.h sys/time.h sys/types.h sys/wait.h errno.h fcntl.h \
+	sys/time.h sys/types.h sys/wait.h errno.h fcntl.h \
 	langinfo.h limits.h locale.h paths.h pty.h pwd.h sgtty.h signal.h \
-	stdlib.h string.h termio.h termios.h time.h unistd.h util.h utime.h \
+	stdlib.h string.h termio.h time.h unistd.h util.h utime.h \
 	utmp.h bsd/string.h selinux/context.h selinux/selinux.h \
 ])
 AC_HEADER_DIRENT

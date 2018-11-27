@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.39 2018/06/28 01:18:32 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.40 2018/11/11 18:15:37 tg Exp $");
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -2045,10 +2045,8 @@ bload(const unsigned char *s)
 		fi = fopen((char *)n, "r");
 		if (!fi)
 			nowrite = 0;
-		if (fi) {
-			fstat(fileno(fi),&sbuf);
+		else if (!fstat(fileno(fi), &sbuf))
 			mod_time = sbuf.st_mtime;
-		}
 	}
 #if HAVE_BACKSLASH_PATHS
 	joesep(n);
@@ -2340,12 +2338,14 @@ int bsavefd(P *p, int fd, long int size)
  * same name as buffer or is about to get this name).
  */
 
-int bsave(P *p, unsigned char *s, long int size, int flag)
+int
+bsave(P *p, unsigned char *s, long int size, int flag)
 {
 	FILE *f;
 	long skip, amnt;
 	struct stat sbuf;
 	int norm = 0;
+	char closemethod;
 
 	s = parsens(s, &skip, &amnt);
 
@@ -2356,17 +2356,22 @@ int bsave(P *p, unsigned char *s, long int size, int flag)
 		nescape(maint->t);
 		ttclsn();
 		f = popen((char *)(s + 1), "w");
-	} else if (s[0] == '>' && s[1] == '>')
+		closemethod = 2;
+	} else if (s[0] == '>' && s[1] == '>') {
 		f = fopen((char *)(s + 2), "a");
-	else if (!strcmp(s, "-")) {
+		closemethod = 1;
+	} else if (!strcmp(s, "-")) {
 		nescape(maint->t);
 		ttclsn();
 		f = stdout;
-	} else if (skip || amnt != LONG_MAX)
+		closemethod = 3;
+	} else if (skip || amnt != LONG_MAX) {
 		f = fopen((char *)s, "r+");
-	else {
+		closemethod = 1;
+	} else {
 		f = fopen((char *)s, "w");
 		norm = 1;
+		closemethod = 1;
 	}
 #if HAVE_BACKSLASH_PATHS
 	joesep(s);
@@ -2396,12 +2401,18 @@ int bsave(P *p, unsigned char *s, long int size, int flag)
 	}
 
  err:
-	if (s[0] == '!')
-		pclose(f);
-	else if (strcmp(s, "-"))
+	switch (closemethod) {
+	case 1:
 		fclose(f);
-	else
+		break;
+	case 2:
+		pclose(f);
+		break;
+	case 3:
+		/* do not close stdout */
 		fflush(f);
+		break;
+	}
 
 	/* Update orignal date of file */
 	/* If it's not named, it's about to be */

@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/vfile.c,v 1.16 2018/01/07 20:32:48 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/vfile.c,v 1.17 2018/11/11 18:15:39 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -18,6 +18,7 @@ __RCSID("$MirOS: contrib/code/jupp/vfile.c,v 1.16 2018/01/07 20:32:48 tg Exp $")
 #include "blocks.h"
 #include "queue.h"
 #include "path.h"
+#include "tty.h"
 #include "utils.h"
 #include "vfile.h"
 #include "vs.h"
@@ -42,6 +43,7 @@ void vflsh(void)
 	long last;
 	VFILE *vfile;
 	int x;
+	const char *wtf;
 
 	for (vfile = vfiles.link.next; vfile != &vfiles; vfile = vfile->link.next) {
 		last = -1;
@@ -60,7 +62,19 @@ void vflsh(void)
 				    vfile->fd ? NULL : &vfile->fd);
 			if (!vfile->fd)
 				vfile->fd = open((char *)(vfile->name), O_RDWR);
-			lseek(vfile->fd, addr, 0);
+			if (vfile->fd < 0) {
+				wtf = "open";
+				goto eek;
+			}
+			if (lseek(vfile->fd, addr, 0) < 0) {
+				/* should not happen, what now? */
+				wtf = "lseek";
+				close(vfile->fd);
+ eek:
+				vfile->fd = 0;
+				fprintf(stderr, "\nvfile %s failed! \n", wtf);
+				continue;
+			}
 			if (addr + PGSIZE > vsize(vfile)) {
 				joe_write(vfile->fd, vlowest->data, vsize(vfile) - addr);
 				vfile->size = vsize(vfile);
@@ -76,12 +90,17 @@ void vflsh(void)
 	}
 }
 
-void vflshf(VFILE *vfile)
+/* write changed pages for a specific file to the disk */
+static void vflshf(VFILE *vfile);
+
+static void
+vflshf(VFILE *vfile)
 {
 	VPAGE *vp;
 	VPAGE *vlowest;
 	long addr;
 	int x;
+	const char *wtf;
 
  loop:
 	addr = LONG_MAX;
@@ -96,10 +115,22 @@ void vflshf(VFILE *vfile)
 		if (!vfile->name)
 			vfile->name = mktmp(NULL,
 			    vfile->fd ? NULL : &vfile->fd);
-		if (!vfile->fd) {
+		if (!vfile->fd)
 			vfile->fd = open((char *)(vfile->name), O_RDWR);
+		if (vfile->fd < 0) {
+			wtf = "open";
+			goto eek;
 		}
-		lseek(vfile->fd, addr, 0);
+		if (lseek(vfile->fd, addr, 0) < 0) {
+			/* should not happen, what now? */
+			wtf = "lseek";
+			close(vfile->fd);
+ eek:
+			vfile->fd = 0;
+			fprintf(stderr, "\nvfile %s failed! \n", wtf);
+			/* only called from vclose via main, maybe harmless? */
+			return;
+		}
 		if (addr + PGSIZE > vsize(vfile)) {
 			joe_write(vfile->fd, vlowest->data, vsize(vfile) - addr);
 			vfile->size = vsize(vfile);
@@ -203,10 +234,17 @@ unsigned char *vlock(VFILE *vfile, unsigned long addr)
 	htab[((addr >> LPGSIZE) + (unsigned long)vfile) & (HTSIZE - 1)] = vp;
 
 	if (addr < (unsigned long)vfile->size) {
-		if (!vfile->fd) {
-			vfile->fd = open((char *)(vfile->name), O_RDWR);
+		if (!vfile->fd && (vfile->fd = open((char *)(vfile->name),
+		    O_RDWR)) < 0)
+			vfile->fd = 0;
+		if (!vfile->fd || lseek(vfile->fd, addr, 0) < 0) {
+			static char washere = 0;
+
+			if (!washere++)
+				ttabrt(0, "vlock: open or lseek failed");
+			if (write(2, "vlock: open or lseek failed twice\n", 26)) {}
+			exit(1);
 		}
-		lseek(vfile->fd, addr, 0);
 		if (addr + PGSIZE > (unsigned long)vfile->size) {
 			joe_read(vfile->fd, vp->data, vfile->size - addr);
 			mset(vp->data + vfile->size - addr, 0, PGSIZE - (int) (vfile->size - addr));
