@@ -598,7 +598,8 @@ Other requests:
 • plug memory leaks (Valgrind reports a few)
 • fix Coverity-pointed-out issues
 • fixup some joe4.4 jupprc ftypes
+• proper include, so ~/.jXXrc files can be half a dozen lines
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.49 2018/10/20 16:19:00 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.50 2019/08/02 01:07:25 tg Exp $
