@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/syntax/sh.jsf.in,v 1.6 2018/10/20 15:26:35 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/sh.jsf.in,v 1.7 2019/08/02 19:04:50 tg Exp $
 #-
 # JOE syntax highlight file for sh/ksh/bash
 
@@ -83,7 +83,21 @@
 
 :subst_brack Var
 	*		subst_brack
+	"\\"		subst_brack_cq
+	"\""		subst_brack_dq
+	"\'"		subst_brack_sq
 	"}"		idlew
+
+:subst_brack_cq Var
+	*		subst_brack
+
+:subst_brack_dq Var
+	*		subst_brack_dq
+	"\""		subst_brack
+
+:subst_brack_sq Var
+	*		subst_brack_sq
+	"\'"		subst_brack
 
 # Simplest case: no quoting allowed
 :string_sq Constant

@@ -599,7 +599,8 @@ Other requests:
 • fix Coverity-pointed-out issues
 • fixup some joe4.4 jupprc ftypes
 • proper include, so ~/.jXXrc files can be half a dozen lines
+• nested syntax highlighting states, with pop to go up
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.50 2019/08/02 01:07:25 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.51 2019/08/02 19:04:49 tg Exp $
