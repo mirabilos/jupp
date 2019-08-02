@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/rjoerc.in,v 1.35 2018/10/20 16:11:53 tg Exp $
+ $MirOS: contrib/code/jupp/rjoerc.in,v 1.36 2019/08/02 01:07:27 tg Exp $
 
                          Initialisation file for JOE
                             restricted access Joe
@@ -421,6 +421,16 @@
 -encoding utf8
 -syntax html
 
+*
++<\[Hh]\[Tt]\[Mm]\[Ll]\>
+-encoding utf8
+-syntax html
+
+*
++<!DOCTYPE \[Hh]\[Tt]\[Mm]\[Ll]\>
+-encoding utf8
+-syntax html
+
  === Java
 *.java
 -encoding utf8
@@ -570,6 +580,16 @@
 *.xsl
 -encoding utf8
 -syntax xml
+
+*
++<?xml
+-encoding utf8
+-syntax xml
+
+*
++<?xml\+\[^>]?>\+\[	 \n]<html\>
+-encoding utf8
+-syntax html
 
  === Text (except in jupp)
 *.asc
