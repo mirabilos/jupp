@@ -1,9 +1,10 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.131 2019/08/02 01:07:25 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.132 2019/08/02 19:04:49 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
 
 - Highlight HTML/XHTML and XML with content sniffing as well
+- Improve shell highlighting substitution quoting handling
 - …
 
 JOE 3.1jupp38
