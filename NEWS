@@ -1,10 +1,11 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.132 2019/08/02 19:04:49 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.133 2019/09/05 15:32:34 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
 
 - Highlight HTML/XHTML and XML with content sniffing as well
 - Improve shell highlighting substitution quoting handling
+- Update autoconf to fix FTBFS on arm64, ppc64le and riscv64
 - …
 
 JOE 3.1jupp38
