@@ -15,7 +15,7 @@ DriverVer=@ts@,3.1.@jwin@
 PROGRAMF="PROGRA~1"
 
 [SourceDisksNames]
-1="joe 3.1jupp@jwin@ Win32 installation floppy"
+1="joe 3.1jupp@jwin@ Win32 installation floppy",,
 
 [SourceDisksFiles]
 @files@
@@ -84,4 +84,4 @@ DefaultDestDir=24,%PROGRAMF%\jupp32
 jcm.Copy=24,%PROGRAMF%\jupp32\charmaps
 jsy.Copy=24,%PROGRAMF%\jupp32\syntax
 
-; $MirOS: contrib/code/jupp/setup.inf,v 1.8 2020/01/01 03:02:44 tg Exp $
+; $MirOS: contrib/code/jupp/setup.inf,v 1.9 2020/01/01 03:40:00 tg Exp $
