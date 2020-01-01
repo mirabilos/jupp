@@ -16,7 +16,6 @@ DriverVer=@ts@,3.1.@jwin@
 
 [DefaultInstall]
 CopyFiles=jupp.Copy,jrc.Copy,jcm.Copy,jsy.Copy
-DelFiles=damage32.Undo,damage64.Undo
 AddReg=jupp.AddReg,fopenas.AddReg
 MediaType=SOFTWARE
 
@@ -74,29 +73,11 @@ HKCR,"*\shell\jupp\command","",,"%24%\Programme\jupp32\jupp32.exe -CYGhack %L"
 HKCR,"*\shell\fopenas","",,"&Load with..."
 HKCR,"*\shell\fopenas\command","",,"rundll32 shell32,OpenAs_RunDLL %1"
 
-[damage32.Undo]
-cygwin1.dll,,,1
-jupp32.exe,,,1
-jmacs.exe,,,1
-joe.exe,,,1
-jpico.exe,,,1
-jstar.exe,,,1
-
-[damage64.Undo]
-cygwin1.dll,,,1
-jupp32.exe,,,1
-jmacs.exe,,,1
-joe.exe,,,1
-jpico.exe,,,1
-jstar.exe,,,1
-
 [DestinationDirs]
 ; possibly 16422,jupp32 but it's not documented since when this works;
 ; it _is_ documented that the drive is wrong on some systems though...
 DefaultDestDir=24,Programme\jupp32
-damage32.Undo=-1,C:\WINDOWS\system32
-damage64.Undo=-1,C:\WINDOWS
 jcm.Copy=24,Programme\jupp32\charmaps
 jsy.Copy=24,Programme\jupp32\syntax
 
-; $MirOS: contrib/code/jupp/setup.inf,v 1.6 2017/01/11 19:26:54 tg Exp $
+; $MirOS: contrib/code/jupp/setup.inf,v 1.7 2020/01/01 02:43:52 tg Exp $
