@@ -1,5 +1,5 @@
 #!/bin/mksh
-# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.23 2018/02/01 02:26:45 tg Exp $
+# $MirOS: contrib/code/jupp/Make-w32.sh,v 1.24 2020/01/01 01:33:33 tg Exp $
 
 usage() {
 	print -ru2 "Usage: $0 [-bCgn]"
@@ -33,12 +33,13 @@ set -ex
 
 jupp=$(sed -n "/^PACKAGE_VERSION='3\.1jupp\([0-9]*\)[~'].*\$/s//\1/p" configure)
 jwin=
-while (( jupp > 34 )); do
+jwnt=$jupp
+while (( jwnt > 34 )); do
 	jwin=${jwin}z
-	(( jupp -= 25 ))
+	(( jwnt -= 25 ))
 done
 typeset -i1 tmp
-(( tmp = 1#a - 10 + jupp ))
+(( tmp = 1#a - 10 + jwnt ))
 jwin=$jwin${tmp#1#}
 jtop=jwin31$jwin
 typeset -u jWIN=$jwin
