@@ -1,6 +1,6 @@
 ; Right-Click this and choose "_I_nstall" to install jupp!
 
-; © 2006, 2009, 2010, 2011, 2012, 2016, 2017
+; © 2006, 2009, 2010, 2011, 2012, 2016, 2017, 2019
 ;   by mirabilos <m@mirbsd.org>
 ; see copying.txt and jupprc for legal
 
@@ -8,15 +8,20 @@
 Signature="$CHICAGO$"
 DriverVer=@ts@,3.1.@jwin@
 
+[Strings]
+; 24,%PROGRAMF% is likely the same as 16422, but it is not documented
+; which versions this works on (just hope for the best); some systems
+; have a wrong drive letter; Win95 does not support using LFNs here.
+PROGRAMF="PROGRA~1"
+
 [SourceDisksNames]
-1="joe 3.1jupp@jwin@ Win32 installation floppy"
+1="joe 3.1jupp@jwin@ Win32 installation floppy",,
 
 [SourceDisksFiles]
 @files@
 
 [DefaultInstall]
 CopyFiles=jupp.Copy,jrc.Copy,jcm.Copy,jsy.Copy
-DelFiles=damage32.Undo,damage64.Undo
 AddReg=jupp.AddReg,fopenas.AddReg
 MediaType=SOFTWARE
 
@@ -68,35 +73,15 @@ xml.jsf
 [jupp.AddReg]
 HKCR,"*\shell\jupp","",,"&jupp"
 HKCR,"*\shell\jupp","Version",,"jupp 3.1.@jwin@ (i486)"
-HKCR,"*\shell\jupp\command","",,"%24%\Programme\jupp32\jupp32.exe -CYGhack %L"
+HKCR,"*\shell\jupp\command","",,"%24%\%PROGRAMF%\jupp32\jupp32.exe -CYGhack %L"
 
 [fopenas.AddReg]
 HKCR,"*\shell\fopenas","",,"&Load with..."
 HKCR,"*\shell\fopenas\command","",,"rundll32 shell32,OpenAs_RunDLL %1"
 
-[damage32.Undo]
-cygwin1.dll,,,1
-jupp32.exe,,,1
-jmacs.exe,,,1
-joe.exe,,,1
-jpico.exe,,,1
-jstar.exe,,,1
-
-[damage64.Undo]
-cygwin1.dll,,,1
-jupp32.exe,,,1
-jmacs.exe,,,1
-joe.exe,,,1
-jpico.exe,,,1
-jstar.exe,,,1
-
 [DestinationDirs]
-; possibly 16422,jupp32 but it's not documented since when this works;
-; it _is_ documented that the drive is wrong on some systems though...
-DefaultDestDir=24,Programme\jupp32
-damage32.Undo=-1,C:\WINDOWS\system32
-damage64.Undo=-1,C:\WINDOWS
-jcm.Copy=24,Programme\jupp32\charmaps
-jsy.Copy=24,Programme\jupp32\syntax
+DefaultDestDir=24,%PROGRAMF%\jupp32
+jcm.Copy=24,%PROGRAMF%\jupp32\charmaps
+jsy.Copy=24,%PROGRAMF%\jupp32\syntax
 
-; $MirOS: contrib/code/jupp/setup.inf,v 1.6 2017/01/11 19:26:54 tg Exp $
+; $MirOS: contrib/code/jupp/setup.inf,v 1.9 2020/01/01 03:40:00 tg Exp $

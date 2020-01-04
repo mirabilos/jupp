@@ -119,6 +119,7 @@ size_t strlcpy(char *, const char *, size_t)
 #ifdef MKSH_DONT_EMIT_IDSTRING
 #define __IDSTRING(prefix, string)	/* nothing */
 #elif defined(__ELF__) && defined(__GNUC__) && \
+    !(defined(__GNUC__) && defined(__mips16)) && \
     !defined(__llvm__) && !defined(__NWCC__) && !defined(NO_ASM)
 #define __IDSTRING(prefix, string)				\
 	__asm__(".section .comment"				\
@@ -136,7 +137,7 @@ size_t strlcpy(char *, const char *, size_t)
 #endif
 
 #ifdef EXTERN
-__IDSTRING(rcsid_config_h, "$MirOS: contrib/code/jupp/config.h,v 1.14 2017/12/08 02:17:21 tg Exp $");
+__IDSTRING(rcsid_config_h, "$MirOS: contrib/code/jupp/config.h,v 1.15 2020/01/04 00:04:13 tg Exp $");
 #endif
 
 #endif /* ifndef _JOE_CONFIG_H */
