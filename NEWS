@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.133 2019/09/05 15:32:34 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.134 2020/01/22 19:53:17 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
@@ -6,6 +6,9 @@ jupp-current
 - Highlight HTML/XHTML and XML with content sniffing as well
 - Improve shell highlighting substitution quoting handling
 - Update autoconf to fix FTBFS on arm64, ppc64le and riscv64
+- Fix SETUP.INF generation, make it run on Windows® 95, and
+  remove old upgrade code; install to PROGRA~1 universally
+- Work around a GCC on MIPS16 asm generation bug in IDSTRING
 - …
 
 JOE 3.1jupp38
