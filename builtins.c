@@ -1,7 +1,7 @@
 /* Built-in files */
 
 /*
-	LC_ALL=C grep -ve $'^[\t ]' -e '^-syntax' jupprc | sed \
+	LC_ALL=C grep -ve $'^[\t ]' -e '^-syntax' -e freedroidz jupprc | sed \
 	    -e '/^:cua/,$d' -e '/^:Pastecua/,/^$/d' -e 1d \
 	    -e 's/@(#) jupprc/@(#) blt_in/' | cat -s | while IFS= read -r x; do
 		x=${x//\\/\\\\}; print -r -- $'\t\t'\""${x//\"/\\\"}\n"\";
@@ -11,7 +11,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/builtins.c,v 1.32 2018/10/20 16:25:47 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/builtins.c,v 1.33 2020/01/31 17:02:15 tg Exp $");
 
 #ifndef JUPPRC_BUILTIN_NAME
 #define JUPPRC_BUILTIN_NAME "jupprc"
