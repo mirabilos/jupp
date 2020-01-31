@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jmacsrc.in,v 1.36 2019/08/02 01:07:25 tg Exp $
+ $MirOS: contrib/code/jupp/jmacsrc.in,v 1.37 2020/01/31 17:00:25 tg Exp $
 
                          Initialisation file for JOE
                                 GNU-Emacs Joe
@@ -551,6 +551,9 @@
 -syntax tex
 
 *.dtx
+-syntax tex
+
+*.lco
 -syntax tex
 
 *.sty
