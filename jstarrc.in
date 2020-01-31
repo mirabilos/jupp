@@ -1,4 +1,4 @@
- $MirOS: contrib/code/jupp/jstarrc.in,v 1.36 2019/08/02 01:07:26 tg Exp $
+ $MirOS: contrib/code/jupp/jstarrc.in,v 1.37 2020/01/31 17:00:26 tg Exp $
 
                          Initialisation file for JOE
                            WordStar / Turbo-C Joe
@@ -550,6 +550,9 @@
 -syntax tex
 
 *.dtx
+-syntax tex
+
+*.lco
 -syntax tex
 
 *.sty

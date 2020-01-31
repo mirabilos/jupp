@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.134 2020/01/22 19:53:17 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.135 2020/01/31 17:21:49 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
@@ -9,6 +9,8 @@ jupp-current
 - Fix SETUP.INF generation, make it run on Windows® 95, and
   remove old upgrade code; install to PROGRA~1 universally
 - Work around a GCC on MIPS16 asm generation bug in IDSTRING
+- Highlight more Tₑχ/LᴬTᴇΧ extensions
+- Shrink built-in jupprc size by dropping specialist command ^KF
 - …
 
 JOE 3.1jupp38
