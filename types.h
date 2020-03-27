@@ -1,8 +1,8 @@
-#ifndef _JOE_TYPES_H
-#define _JOE_TYPES_H
+#ifndef JUPP_TYPES_H
+#define JUPP_TYPES_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.37 2020/03/27 06:30:17 tg Exp $");
+__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.38 2020/03/27 06:38:58 tg Exp $");
 #endif
 
 /*-

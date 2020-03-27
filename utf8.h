@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _Iutf8
-#define _Iutf8 1
+#ifndef JUPP_UTF8_H
+#define JUPP_UTF8_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_utf8_h, "$MirOS: contrib/code/jupp/utf8.h,v 1.11 2020/03/27 06:08:18 tg Exp $");
+__IDSTRING(rcsid_utf8_h, "$MirOS: contrib/code/jupp/utf8.h,v 1.12 2020/03/27 06:39:00 tg Exp $");
 #endif
 
 #include "i18n.h"

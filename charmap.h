@@ -5,12 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-
-#ifndef _Icharmap
-#define _Icharmap 1
+#ifndef JUPP_CHARMAP_H
+#define JUPP_CHARMAP_H
 
 #ifdef EXTERN
-__RCSID("$MirOS: contrib/code/jupp/charmap.h,v 1.13 2020/03/27 06:08:12 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/charmap.h,v 1.14 2020/03/27 06:38:56 tg Exp $");
 #endif
 
 /* For sorted from_map entries */

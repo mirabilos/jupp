@@ -1,12 +1,3 @@
-#ifndef _Isyntax
-#define _Isyntax 1
-
-#ifdef EXTERN
-__IDSTRING(rcsid_syntax_h, "$MirOS: contrib/code/jupp/syntax.h,v 1.5 2017/12/02 17:00:50 tg Exp $");
-#endif
-
-#include "hash.h"
-
 /*
  *	Syntax highlighting DFA interpreter
  *	Copyright
@@ -14,6 +5,14 @@ __IDSTRING(rcsid_syntax_h, "$MirOS: contrib/code/jupp/syntax.h,v 1.5 2017/12/02 
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
+#ifndef JUPP_SYNTAX_H
+#define JUPP_SYNTAX_H
+
+#ifdef EXTERN
+__IDSTRING(rcsid_syntax_h, "$MirOS: contrib/code/jupp/syntax.h,v 1.6 2020/03/27 06:38:58 tg Exp $");
+#endif
+
+#include "hash.h"
 
 /* Color definition */
 

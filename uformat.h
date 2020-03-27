@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_UFORMAT_H
-#define _JOE_UFORMAT_H 1
+#ifndef JUPP_UFORMAT_H
+#define JUPP_UFORMAT_H
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_uformat_h, "$MirOS: contrib/code/jupp/uformat.h,v 1.6 2017/12/06 23:17:36 tg Exp $");
+__IDSTRING(rcsid_uformat_h, "$MirOS: contrib/code/jupp/uformat.h,v 1.7 2020/03/27 06:38:59 tg Exp $");
 #endif
 
 int ucenter(BW *bw);

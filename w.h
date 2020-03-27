@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_W_H
-#define _JOE_W_H 1
+#ifndef JUPP_W_H
+#define JUPP_W_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_w_h, "$MirOS: contrib/code/jupp/w.h,v 1.10 2020/03/27 06:08:18 tg Exp $");
+__IDSTRING(rcsid_w_h, "$MirOS: contrib/code/jupp/w.h,v 1.11 2020/03/27 06:39:01 tg Exp $");
 #endif
 
 /***************/

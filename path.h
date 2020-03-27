@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_PATH_H
-#define _JOE_PATH_H 1
+#ifndef JUPP_PATH_H
+#define JUPP_PATH_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_path_h, "$MirOS: contrib/code/jupp/path.h,v 1.18 2020/03/27 06:08:14 tg Exp $");
+__IDSTRING(rcsid_path_h, "$MirOS: contrib/code/jupp/path.h,v 1.19 2020/03/27 06:38:57 tg Exp $");
 #endif
 
 #if defined(__MSDOS__) || defined(__DJGPP__) || defined(__EMX__) || \

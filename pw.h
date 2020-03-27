@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_PW_H
-#define _JOE_PW_H 1
+#ifndef JUPP_PW_H
+#define JUPP_PW_H
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_pw_h, "$MirOS: contrib/code/jupp/pw.h,v 1.11 2020/03/27 06:08:14 tg Exp $");
+__IDSTRING(rcsid_pw_h, "$MirOS: contrib/code/jupp/pw.h,v 1.12 2020/03/27 06:38:57 tg Exp $");
 #endif
 
 /* BW *wmkpw(BW *bw,char *prompt,int (*func)(),char *huh,int (*abrt)(),

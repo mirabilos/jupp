@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_UNDO_H
-#define _JOE_UNDO_H 1
+#ifndef JUPP_UNDO_H
+#define JUPP_UNDO_H
 
 #ifdef EXTERN_B_C
-__IDSTRING(rcsid_undo_h, "$MirOS: contrib/code/jupp/undo.h,v 1.5 2017/12/06 21:17:03 tg Exp $");
+__IDSTRING(rcsid_undo_h, "$MirOS: contrib/code/jupp/undo.h,v 1.6 2020/03/27 06:38:59 tg Exp $");
 #endif
 
 extern int inundo;

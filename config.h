@@ -1,5 +1,5 @@
-#ifndef _JOE_CONFIG_H
-#define _JOE_CONFIG_H
+#ifndef JUPP_CONFIG_H
+#define JUPP_CONFIG_H
 
 /* see bottom for RCSID on this one */
 
@@ -137,7 +137,7 @@ size_t strlcpy(char *, const char *, size_t)
 #endif
 
 #ifdef EXTERN
-__IDSTRING(rcsid_config_h, "$MirOS: contrib/code/jupp/config.h,v 1.16 2020/01/09 14:39:14 tg Exp $");
+__IDSTRING(rcsid_config_h, "$MirOS: contrib/code/jupp/config.h,v 1.17 2020/03/27 06:38:56 tg Exp $");
 #endif
 
-#endif /* ifndef _JOE_CONFIG_H */
+#endif /* ifndef JUPP_CONFIG_H */

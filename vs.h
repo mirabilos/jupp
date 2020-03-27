@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_VS_H
-#define _JOE_VS_H 1
+#ifndef JUPP_VS_H
+#define JUPP_VS_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_vs_h, "$MirOS: contrib/code/jupp/vs.h,v 1.11 2018/01/07 20:32:48 tg Exp $");
+__IDSTRING(rcsid_vs_h, "$MirOS: contrib/code/jupp/vs.h,v 1.12 2020/03/27 06:39:01 tg Exp $");
 #endif
 
 #include <string.h>
@@ -356,4 +356,5 @@ int vsscan(const sELEMENT *a, int alen, const sELEMENT *b, int blen);
  * of the elements passed in 'b'.  Array 'b' must be sorted.
  */
 int vsspan(const sELEMENT *a, int alen, const sELEMENT *b, int blen);
+
 #endif

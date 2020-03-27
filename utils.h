@@ -7,11 +7,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_UTILS_H
-#define _JOE_UTILS_H 1
+#ifndef JUPP_UTILS_H
+#define JUPP_UTILS_H
 
 #ifdef EXTERN_B_C
-__IDSTRING(rcsid_utils_h, "$MirOS: contrib/code/jupp/utils.h,v 1.14 2018/11/11 18:20:52 tg Exp $");
+__IDSTRING(rcsid_utils_h, "$MirOS: contrib/code/jupp/utils.h,v 1.15 2020/03/27 06:39:00 tg Exp $");
 #endif
 
 #include <signal.h>

@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_BLOCKS_H
-#define _JOE_BLOCKS_H 1
+#ifndef JUPP_BLOCKS_H
+#define JUPP_BLOCKS_H
 
 #ifdef EXTERN_B_C
-__IDSTRING(rcsid_blocks_h, "$MirOS: contrib/code/jupp/blocks.h,v 1.8 2018/01/06 00:28:30 tg Exp $");
+__IDSTRING(rcsid_blocks_h, "$MirOS: contrib/code/jupp/blocks.h,v 1.9 2020/03/27 06:38:55 tg Exp $");
 #endif
 
 /* char *mmove(char *d,char *s,int sz); Copy 'sz' bytes from 's' to 'd'.
@@ -41,4 +41,5 @@ void **msetP(void **dest, void *c, int sz);
  * Count the number of occurances a character appears in a block
  */
 int mcnt(const unsigned char *blk, unsigned char c, int size);
+
 #endif

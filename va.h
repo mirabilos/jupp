@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_VA_H
-#define _JOE_VA_H 1
+#ifndef JUPP_VA_H
+#define JUPP_VA_H
 
 #ifdef EXTERN_B_C
-__IDSTRING(rcsid_va_h, "$MirOS: contrib/code/jupp/va.h,v 1.8 2018/01/07 20:32:47 tg Exp $");
+__IDSTRING(rcsid_va_h, "$MirOS: contrib/code/jupp/va.h,v 1.9 2020/03/27 06:39:00 tg Exp $");
 #endif
 
 #include "vs.h"

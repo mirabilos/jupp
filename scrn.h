@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_SCRN_H
-#define _JOE_SCRN_H 1
+#ifndef JUPP_SCRN_H
+#define JUPP_SCRN_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_scrn_h, "$MirOS: contrib/code/jupp/scrn.h,v 1.13 2020/03/27 06:08:15 tg Exp $");
+__IDSTRING(rcsid_scrn_h, "$MirOS: contrib/code/jupp/scrn.h,v 1.14 2020/03/27 06:38:58 tg Exp $");
 #endif
 
 #include "tty.h"		/* ttputc() */

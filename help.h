@@ -6,11 +6,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_HELP_H
-#define _JOE_HELP_H 1
+#ifndef JUPP_HELP_H
+#define JUPP_HELP_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_help_h, "$MirOS: contrib/code/jupp/help.h,v 1.9 2018/01/08 00:40:44 tg Exp $");
+__IDSTRING(rcsid_help_h, "$MirOS: contrib/code/jupp/help.h,v 1.10 2020/03/27 06:38:56 tg Exp $");
 #endif
 
 extern struct help *help_actual;

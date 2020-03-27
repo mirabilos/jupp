@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_CMD_H
-#define _JOE_CMD_H 1
+#ifndef JUPP_CMD_H
+#define JUPP_CMD_H
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_cmd_h, "$MirOS: contrib/code/jupp/cmd.h,v 1.9 2018/01/07 17:24:48 tg Exp $");
+__IDSTRING(rcsid_cmd_h, "$MirOS: contrib/code/jupp/cmd.h,v 1.10 2020/03/27 06:38:56 tg Exp $");
 #endif
 
 extern CMD cmds[];		/* Built-in commands */

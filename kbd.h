@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_KBD_H
-#define _JOE_KBD_H 1
+#ifndef JUPP_KBD_H
+#define JUPP_KBD_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_kbd_h, "$MirOS: contrib/code/jupp/kbd.h,v 1.6 2017/12/07 02:13:05 tg Exp $");
+__IDSTRING(rcsid_kbd_h, "$MirOS: contrib/code/jupp/kbd.h,v 1.7 2020/03/27 06:38:56 tg Exp $");
 #endif
 
 /* KMAP *mkkmap(void);

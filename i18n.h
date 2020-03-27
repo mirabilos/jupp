@@ -1,8 +1,8 @@
-#ifndef _Ii18n
-#define _Ii18n 1
+#ifndef JUPP_I18N_H
+#define JUPP_I18N_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_i18n_h, "$MirOS: contrib/code/jupp/i18n.h,v 1.13 2020/03/27 03:38:28 tg Exp $");
+__IDSTRING(rcsid_i18n_h, "$MirOS: contrib/code/jupp/i18n.h,v 1.14 2020/03/27 06:38:56 tg Exp $");
 #endif
 
 #ifdef TEST_I18N

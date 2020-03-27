@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_HASH_H
-#define _JOE_HASH_H 1
+#ifndef JUPP_HASH_H
+#define JUPP_HASH_H
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_hash_h, "$MirOS: contrib/code/jupp/hash.h,v 1.6 2017/12/06 21:41:02 tg Exp $");
+__IDSTRING(rcsid_hash_h, "$MirOS: contrib/code/jupp/hash.h,v 1.7 2020/03/27 06:38:56 tg Exp $");
 #endif
 
 unsigned long hash(const unsigned char *s);

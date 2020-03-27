@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_TERMCAP_H
-#define _JOE_TERMCAP_H 1
+#ifndef JUPP_TERMCAP_H
+#define JUPP_TERMCAP_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_termcap_h, "$MirOS: contrib/code/jupp/termcap.h,v 1.10 2020/03/27 06:30:17 tg Exp $");
+__IDSTRING(rcsid_termcap_h, "$MirOS: contrib/code/jupp/termcap.h,v 1.11 2020/03/27 06:38:58 tg Exp $");
 #endif
 
 /* CAP *getcap(char *s, int baud, int (*out)(char c));

@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_MAIN_H
-#define _JOE_MAIN_H 1
+#ifndef JUPP_MAIN_H
+#define JUPP_MAIN_H
 
 #ifdef EXTERN_B_C
-__IDSTRING(rcsid_main_h, "$MirOS: contrib/code/jupp/main.h,v 1.6 2017/12/06 21:16:58 tg Exp $");
+__IDSTRING(rcsid_main_h, "$MirOS: contrib/code/jupp/main.h,v 1.7 2020/03/27 06:38:57 tg Exp $");
 #endif
 
 extern const char null[];
