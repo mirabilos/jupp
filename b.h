@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_B_H
-#define _JOE_B_H 1
+#ifndef JUPP_B_H
+#define JUPP_B_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_b_h, "$MirOS: contrib/code/jupp/b.h,v 1.10 2018/01/06 00:28:30 tg Exp $");
+__IDSTRING(rcsid_b_h, "$MirOS: contrib/code/jupp/b.h,v 1.11 2020/03/27 06:38:55 tg Exp $");
 #endif
 
 extern unsigned char stdbuf[stdsiz];

@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_VFILE_H
-#define _JOE_VFILE_H 1
+#ifndef JUPP_VFILE_H
+#define JUPP_VFILE_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_vfile_h, "$MirOS: contrib/code/jupp/vfile.h,v 1.8 2018/11/11 18:15:39 tg Exp $");
+__IDSTRING(rcsid_vfile_h, "$MirOS: contrib/code/jupp/vfile.h,v 1.9 2020/03/27 06:39:00 tg Exp $");
 #endif
 
 /* Additions:
@@ -124,4 +124,5 @@ unsigned char *vlock(VFILE *vfile, unsigned long addr);
  */
 
 long my_valloc(VFILE *vfile, long int size);
+
 #endif

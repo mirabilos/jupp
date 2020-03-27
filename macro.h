@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_MACRO_H
-#define _JOE_MACRO_H 1
+#ifndef JUPP_MACRO_H
+#define JUPP_MACRO_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_macro_h, "$MirOS: contrib/code/jupp/macro.h,v 1.5 2017/12/06 21:16:57 tg Exp $");
+__IDSTRING(rcsid_macro_h, "$MirOS: contrib/code/jupp/macro.h,v 1.6 2020/03/27 06:38:57 tg Exp $");
 #endif
 
 /* Set when macro is recording: for status line */

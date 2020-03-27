@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_POSHIST_H
-#define _JOE_POSHIST_H 1
+#ifndef JUPP_POSHIST_H
+#define JUPP_POSHIST_H
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_poshist_h, "$MirOS: contrib/code/jupp/poshist.h,v 1.5 2017/12/06 21:16:58 tg Exp $");
+__IDSTRING(rcsid_poshist_h, "$MirOS: contrib/code/jupp/poshist.h,v 1.6 2020/03/27 06:38:57 tg Exp $");
 #endif
 
 void afterpos(void);

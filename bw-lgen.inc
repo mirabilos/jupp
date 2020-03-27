@@ -7,7 +7,7 @@
  */
 
 #ifdef LGEN_Q
-__IDSTRING(rcsid_bw_lgen_inc, "$MirOS: contrib/code/jupp/bw-lgen.inc,v 1.5 2018/06/28 03:11:18 tg Exp $");
+__IDSTRING(rcsid_bw_lgen_inc, "$MirOS: contrib/code/jupp/bw-lgen.inc,v 1.6 2020/03/27 06:08:11 tg Exp $");
 #define XCOL col
 #else
 #define XCOL (scr + x - ox)
@@ -108,11 +108,11 @@ __IDSTRING(rcsid_bw_lgen_inc, "$MirOS: contrib/code/jupp/bw-lgen.inc,v 1.5 2018/
 			int wid = -1;
 
 			/*
-			 * should be p->b->o.charmap->type logically
+			 * should be joe_maputf(p->b->o.charmap) logically
 			 * but they are identical here, and it helps
 			 * static analysers like Coverity
 			 */
-			if (bw->b->o.charmap->type) {
+			if (joe_maputf(bw->b->o.charmap)) {
 				/* UTF-8 */
 				c = utf8_decode(&utf8_sm, bc);
 

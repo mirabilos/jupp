@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_TTY_H
-#define _JOE_TTY_H 1
+#ifndef JUPP_TTY_H
+#define JUPP_TTY_H
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_tty_h, "$MirOS: contrib/code/jupp/tty.h,v 1.15 2018/01/07 20:32:47 tg Exp $");
+__IDSTRING(rcsid_tty_h, "$MirOS: contrib/code/jupp/tty.h,v 1.16 2020/03/27 06:38:58 tg Exp $");
 #endif
 
 /* void ttopen(void);  Open the tty (attached to stdin) for use inside of JOE

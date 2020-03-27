@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/kbd.c,v 1.14 2017/12/20 23:07:15 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/kbd.c,v 1.15 2020/03/27 06:08:13 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -158,14 +158,15 @@ kbuild(CAP *cap, KMAP *kmap, unsigned char *seq, void *bind, int *err,
 
 	if (!seql && seq[0] == '.' && seq[1]) {
 		int x, c;
-		const unsigned char *s;
+		const unsigned char *cs;
+		unsigned char *s;
 
 		for (x = 0; seq[x] && seq[x] != ' '; ++x) ;
 		c = seq[x];
 		seq[x] = 0;
-		s = jgetstr(cap, seq + 1);
+		cs = jgetstr(cap, seq + 1);
 		seq[x] = c;
-		if (s && (s = tcompile(cap, s, 0, 0, 0, 0))
+		if (cs && (s = tcompile(cap, cs, 0, 0, 0, 0))
 		    && (sLEN(s) > 1 || (signed char)s[0] < 0)) {
 			capseq = s;
 			seql = sLEN(s);

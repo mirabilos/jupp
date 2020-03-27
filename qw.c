@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/qw.c,v 1.12 2018/01/06 00:28:32 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/qw.c,v 1.13 2020/03/27 06:08:14 tg Exp $");
 
 #include <stdlib.h>
 
@@ -98,7 +98,7 @@ static int utypeqw(jobject jO, int c)
 	jpoly_int *func;
 	void *object = qw->object;
 
-	if (locale_map->type) {
+	if (joe_maputf(locale_map)) {
 		c = utf8_decode(&qw_sm, c);
 		if (c<0)
 			return 0;

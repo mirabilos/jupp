@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uisrch.c,v 1.15 2017/12/08 02:28:08 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uisrch.c,v 1.16 2020/03/27 06:08:17 tg Exp $");
 
 #include <stdlib.h>
 
@@ -199,15 +199,15 @@ static int itype(BW *bw, int c, struct isrch *isrch, int *notify)
 		/* Search */
  in:
 		/* Convert to/from utf-8 */
-		if (locale_map->type && !bw->b->o.charmap->type) {
+		if (joe_maputf(locale_map) && !joe_maputf(bw->b->o.charmap)) {
 			utf8_encode(buf,c);
 			c = from_utf8(bw->b->o.charmap,buf);
-		} else if(!locale_map->type && bw->b->o.charmap->type) {
+		} else if (!joe_maputf(locale_map) && joe_maputf(bw->b->o.charmap)) {
 			to_utf8(locale_map,buf,c);
 			c = utf8_decode_string(buf);
 		}
 
-		if (bw->b->o.charmap->type) {
+		if (joe_maputf(bw->b->o.charmap)) {
 			buf_len = utf8_encode(buf,c);
 		} else {
 			buf[0] = c;
@@ -225,24 +225,24 @@ static int itype(BW *bw, int c, struct isrch *isrch, int *notify)
 
 	isrch->prompt = vstrunc(isrch->prompt, isrch->ofst);
 
-	if (locale_map->type && !bw->b->o.charmap->type) {
+	if (joe_maputf(locale_map) && !joe_maputf(bw->b->o.charmap)) {
 		/* Translate bytes to utf-8 */
 		unsigned char buf[16];
 		int x;
 
 		for (x = 0; x != sLEN(isrch->pattern); ++x) {
-			tc = to_uni(bw->b->o.charmap, isrch->pattern[x]);
+			tc = joe_to_uni(bw->b->o.charmap, isrch->pattern[x]);
 			utf8_encode(buf, tc);
 			isrch->prompt = vsncpy(sv(isrch->prompt), sz(buf));
 		}
-	} else if (!locale_map->type && bw->b->o.charmap->type) {
+	} else if (!joe_maputf(locale_map) && joe_maputf(bw->b->o.charmap)) {
 		/* Translate utf-8 to bytes */
 		unsigned char *p = isrch->pattern;
 		int len = sLEN(isrch->pattern);
 
 		while (len) {
 			if ((tc = utf8_decode_fwrd(&p, &len)) >= 0) {
-				tc = from_uni(locale_map, tc);
+				tc = joe_from_uni(locale_map, tc);
 				isrch->prompt = vsadd(isrch->prompt, tc);
 			}
 		}

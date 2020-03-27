@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_UFILE_H
-#define _JOE_UFILE_H 1
+#ifndef JUPP_UFILE_H
+#define JUPP_UFILE_H
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_ufile_h, "$MirOS: contrib/code/jupp/ufile.h,v 1.8 2018/01/18 21:59:12 tg Exp $");
+__IDSTRING(rcsid_ufile_h, "$MirOS: contrib/code/jupp/ufile.h,v 1.9 2020/03/27 06:38:59 tg Exp $");
 #endif
 
 extern int exask;

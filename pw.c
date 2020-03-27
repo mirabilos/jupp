@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/pw.c,v 1.15 2018/01/06 00:28:32 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/pw.c,v 1.16 2020/03/27 06:08:14 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -215,7 +215,8 @@ WATOM watompw = {
 
 /* Create a prompt window */
 
-BW *wmkpw(W *w, const unsigned char *prompt, B **history, jpoly_int *func, const unsigned char *huh, jpoly_int *abrt, jpoly_int *tab, void *object, int *notify, struct charmap *map)
+BW *
+wmkpw(W *w, const unsigned char *prompt, B **history, jpoly_int *func, const unsigned char *huh, jpoly_int *abrt, jpoly_int *tab, void *object, int *notify, union charmap *map)
 {
 	W *new;
 	PW *pw;

@@ -8,7 +8,7 @@
 
 #include "config.h"
 
-__RCSID("$MirOS: contrib/code/jupp/builtin.c,v 1.10 2018/01/08 00:48:06 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/builtin.c,v 1.11 2020/03/27 06:08:11 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -17,7 +17,7 @@ __RCSID("$MirOS: contrib/code/jupp/builtin.c,v 1.10 2018/01/08 00:48:06 tg Exp $
 #include "builtin.h"
 #include "utils.h"
 
-#define zcmp(a,b) strcmp((char *)(a), (char *)(b))
+#define zcmp(a,b) strcmp((const char *)(a), (const char *)(b))
 
 JFILE *
 jfopen(const unsigned char *name, const char *mode)

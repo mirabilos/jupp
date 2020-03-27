@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.36 2018/08/10 02:53:45 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uedit.c,v 1.37 2020/03/27 06:08:17 tg Exp $");
 
 #include <string.h>
 
@@ -68,13 +68,13 @@ int uhome(BW *bw)
 	if (bw->o.indentfirst) {
 		if ((bw->o.smarthome) && (piscol(p) > pisindent(p))) {
 			p_goto_bol(p);
-			while (joe_isblank(p->b->o.charmap,brc(p)))
+			while (joe_isblank(brc(p)))
 				pgetc(p);
 		} else
 			p_goto_bol(p);
 	} else {
 		if (bw->o.smarthome && piscol(p)==0 && pisindent(p)) {
-			while (joe_isblank(p->b->o.charmap,brc(p)))
+			while (joe_isblank(brc(p)))
 				pgetc(p);
 		} else
 			p_goto_bol(p);
@@ -189,7 +189,7 @@ int u_goto_right(BW *bw)
 int u_goto_prev(BW *bw)
 {
 	P *p = pdup(bw->cursor);
-	struct charmap *map=bw->b->o.charmap;
+	union charmap *map = bw->b->o.charmap;
 	int c = prgetc(p);
 
 	if (joe_isalnux(map,c)) {
@@ -225,7 +225,7 @@ int u_goto_prev(BW *bw)
 int u_goto_next(BW *bw)
 {
 	P *p = pdup(bw->cursor);
-	struct charmap *map=bw->b->o.charmap;
+	union charmap *map = bw->b->o.charmap;
 	int c = brch(p);
 	int rtn = -1;
 
@@ -250,7 +250,7 @@ int u_goto_next(BW *bw)
 static P *pboi(P *p)
 {
 	p_goto_bol(p);
-	while (joe_isblank(p->b->o.charmap,brch(p)))
+	while (joe_isblank(brch(p)))
 		pgetc(p);
 	return p;
 }
@@ -268,9 +268,9 @@ static int pisedge(P *p)
 	pboi(q);
 	if (q->byte == p->byte)
 		goto left;
-	if (joe_isblank(p->b->o.charmap,(c = brch(p)))) {
+	if (joe_isblank((c = brch(p)))) {
 		pset(q, p);
-		if (joe_isblank(p->b->o.charmap,prgetc(q)))
+		if (joe_isblank(prgetc(q)))
 			goto no;
 		if (c == '\t')
 			goto right;
@@ -860,7 +860,7 @@ int ubacks(BW *bw, int k)
 int u_word_delete(BW *bw)
 {
 	P *p = pdup(bw->cursor);
-	struct charmap *map=bw->b->o.charmap;
+	union charmap *map = bw->b->o.charmap;
 	int c = brch(p);
 
 	if (joe_isalnux(map,c))
@@ -889,7 +889,7 @@ int ubackw(BW *bw)
 {
 	P *p = pdup(bw->cursor);
 	int c = prgetc(bw->cursor);
-	struct charmap *map=bw->b->o.charmap;
+	union charmap *map = bw->b->o.charmap;
 
 	if (joe_isalnux(map,c)) {
 		while (joe_isalnux(map,(c = prgetc(bw->cursor))))
@@ -996,7 +996,7 @@ struct utf8_sm utype_utf8_sm;
 
 int utypebw_raw(BW *bw, int k, int no_decode)
 {
-	struct charmap *map=bw->b->o.charmap;
+	union charmap *map = bw->b->o.charmap;
 
 	/* Hex mode overtype is real simple */
 	if (bw->o.hex && bw->o.overtype) {
@@ -1065,7 +1065,7 @@ int utypebw_raw(BW *bw, int k, int no_decode)
 			pfill(bw->cursor,bw->cursor->xcol,' '); /* Why no tabs? */
 
 		/* UTF8 decoder */
-		if(locale_map->type && !no_decode) {
+		if (joe_maputf(locale_map) && !no_decode) {
 			int utf8_char = utf8_decode(&utype_utf8_sm,k);
 
 			if(utf8_char >= 0)
@@ -1086,16 +1086,16 @@ int utypebw_raw(BW *bw, int k, int no_decode)
 			unsigned char ch = k;
 
 			binsm(bw->cursor, &ch, 1);
-			if (!bw->b->o.charmap->type)
+			if (!joe_maputf(bw->b->o.charmap))
 				no_decode = 1;
 		} else {
 			if (!no_decode) {
-				if(locale_map->type && !bw->b->o.charmap->type) {
-					unsigned char buf[10];
+				unsigned char buf[10];
+
+				if (joe_maputf(locale_map) && !joe_maputf(bw->b->o.charmap)) {
 					utf8_encode(buf,k);
 					k = from_utf8(bw->b->o.charmap,buf);
-				} else if(!locale_map->type && bw->b->o.charmap->type) {
-					unsigned char buf[10];
+				} else if (!joe_maputf(locale_map) && joe_maputf(bw->b->o.charmap)) {
 					to_utf8(locale_map,buf,k);
 					k = utf8_decode_string(buf);
 				}
@@ -1113,7 +1113,7 @@ int utypebw_raw(BW *bw, int k, int no_decode)
 			udelch(bw);
 
 		/* Not sure if we're in right position for wordwrap when we're in overtype mode */
-		if (bw->o.wordwrap && piscol(bw->cursor) > bw->o.rmargin && !joe_isblank(map,k)) {
+		if (bw->o.wordwrap && piscol(bw->cursor) > bw->o.rmargin && !joe_isblank(k)) {
 			wrapword(bw->cursor, (long) bw->o.lmargin, bw->o.french, NULL);
 			simple = 0;
 		}
@@ -1176,7 +1176,7 @@ static int dounicode(BW *bw, unsigned char *s, void *object, int *notify)
 	if (notify)
 		*notify = 1;
 	vsrm(s);
-	if (bw->b->o.charmap->type)
+	if (joe_maputf(bw->b->o.charmap))
 		utypebw_raw(bw, num, 1);
 	else {
 		unsigned char buf[8];
@@ -1225,7 +1225,7 @@ doquote(BW *bw, int c, void *object, int *notify)
 			else
 				return 0;
 		} else if ((c | 0x20) == 'u') {
-			if (bw->b->o.charmap->type)
+			if (joe_maputf(bw->b->o.charmap))
 				goto unopoo;
  uhex_uni:
 			if (!wmkpw(bw->parent, UC "UCS (ISO-10646) character in hex (^C to abort): ", &unicodehist, dounicode,
@@ -1234,7 +1234,7 @@ doquote(BW *bw, int c, void *object, int *notify)
 			else
 				return -1;
 		} else if ((c | 0x20) == 'r') {
-			if (!bw->b->o.charmap->type)
+			if (!joe_maputf(bw->b->o.charmap))
 				goto unopoo;
  uhex_raw:
 			quotestate = 3;
@@ -1243,7 +1243,7 @@ doquote(BW *bw, int c, void *object, int *notify)
 			else
 				return 0;
 		} else if ((c | 0x20) == 'x') {
-			if (bw->b->o.charmap->type)
+			if (joe_maputf(bw->b->o.charmap))
 				goto uhex_uni;
 			else
 				goto uhex_raw;
@@ -1348,7 +1348,7 @@ int
 uquote(BW *bw)
 {
 	quotestate = 0;
-	if (bw->b->o.charmap->type) {
+	if (joe_maputf(bw->b->o.charmap)) {
 		uquote_txt[36] = 'r';
 		uquote_txt[43] = 'x';
 	} else {

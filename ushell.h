@@ -4,11 +4,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_USHELL_H
-#define _JOE_USHELL_H 1
+#ifndef JUPP_USHELL_H
+#define JUPP_USHELL_H
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_ushell_h, "$MirOS: contrib/code/jupp/ushell.h,v 1.6 2017/12/06 21:17:03 tg Exp $");
+__IDSTRING(rcsid_ushell_h, "$MirOS: contrib/code/jupp/ushell.h,v 1.7 2020/03/27 06:39:00 tg Exp $");
 #endif
 
 int ubknd(BW *bw);

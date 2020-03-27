@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.32 2018/11/11 18:15:39 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/ublock.c,v 1.33 2020/03/27 06:08:17 tg Exp $");
 
 #include <sys/wait.h>
 #include <stdlib.h>
@@ -999,8 +999,8 @@ static int dofilt(BW *bw, unsigned char *s, void *object, int *notify)
 	}
 #if defined(HAVE_PUTENV) && (WANT_FORK || defined(HAVE_UNSETENV))
 	fname = vsncpy(NULL, 0, sc("JOE_FILENAME="));
-	tf = bw->b->name ? bw->b->name : (unsigned char *)"Unnamed";
-	fname = vsncpy(sv(fname), sz(tf));
+	sh = bw->b->name ? (const char *)bw->b->name : "Unnamed";
+	fname = vsncpy(sv(fname), sz(sh));
 #if !WANT_FORK
 	putenv((char *)fname);
 #endif

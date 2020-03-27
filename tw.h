@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_TW_H
-#define _JOE_TW_H 1
+#ifndef JUPP_TW_H
+#define JUPP_TW_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_tw_h, "$MirOS: contrib/code/jupp/tw.h,v 1.6 2017/12/06 21:17:01 tg Exp $");
+__IDSTRING(rcsid_tw_h, "$MirOS: contrib/code/jupp/tw.h,v 1.7 2020/03/27 06:38:58 tg Exp $");
 #endif
 
 BW *wmktw(SCREEN *t, B *b);

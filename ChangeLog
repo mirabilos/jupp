@@ -1,4 +1,4 @@
-Wed Nov 10 2004  Thorsten Glaser <tg@mirbsd.org>
+Wed Nov 10 2004  mirabilos <m@mirbsd.org>
 
 	Use anonCVS or CVSweb by the MirOS Project to retrieve changes
 	for MirJupp. I don't closely follow GNU coding standards.
@@ -1453,4 +1453,4 @@ Wed Jul 02 2001  Marek 'Marx' Grac <xgrac@fi.muni.cz>
 	able to find patch :(
 
 ______________________________________________________________________
-$MirOS: contrib/code/jupp/ChangeLog,v 1.11 2018/02/01 02:17:54 tg Exp $
+$MirOS: contrib/code/jupp/ChangeLog,v 1.12 2020/03/27 06:08:10 tg Exp $

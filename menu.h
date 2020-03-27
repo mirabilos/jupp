@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_MENU_H
-#define _JOE_MENU_H 1
+#ifndef JUPP_MENU_H
+#define JUPP_MENU_H
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_menu_h, "$MirOS: contrib/code/jupp/menu.h,v 1.6 2017/12/06 23:02:03 tg Exp $");
+__IDSTRING(rcsid_menu_h, "$MirOS: contrib/code/jupp/menu.h,v 1.7 2020/03/27 06:38:57 tg Exp $");
 #endif
 
 /* Create a menu */

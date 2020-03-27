@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/w.c,v 1.14 2018/11/11 18:15:39 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/w.c,v 1.15 2020/03/27 06:08:18 tg Exp $");
 
 #include <stdlib.h>
 
@@ -751,7 +751,8 @@ void msgnwt(W *w, const unsigned char *s)
 	w->msgt = s;
 }
 
-int urtn(jobject jO, int k)
+int
+urtn(jobject jO)
 {
 	BASE *b = jO.base;
 

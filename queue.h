@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_QUEUE
-#define _JOE_QUEUE 1
+#ifndef JUPP_QUEUE_H
+#define JUPP_QUEUE_H
 
 #ifdef EXTERN_B_C
-__IDSTRING(rcsid_queue_h, "$MirOS: contrib/code/jupp/queue.h,v 1.7 2018/11/11 18:15:37 tg Exp $");
+__IDSTRING(rcsid_queue_h, "$MirOS: contrib/code/jupp/queue.h,v 1.8 2020/03/27 06:38:57 tg Exp $");
 #endif
 
 extern void *ITEM;

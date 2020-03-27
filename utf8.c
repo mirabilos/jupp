@@ -2,7 +2,7 @@
  *	UTF-8 Utilities
  *	Copyright
  *		(C) 2004 Joseph H. Allen
- *		(c) 2004, 2006, 2011, 2013, 2014, 2017, 2018 mirabilos
+ *		(c) 2004, 2006, 2011, 2013, 2014, 2017, 2018, 2020 mirabilos
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
@@ -10,7 +10,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/utf8.c,v 1.25 2018/08/10 02:53:45 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/utf8.c,v 1.26 2020/03/27 06:08:18 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -227,10 +227,10 @@ int utf8_decode_fwrd(unsigned char **p,int *plen)
 extern unsigned int cygwin32_get_cp(void);
 #endif
 
-struct charmap *locale_map;
-			/* Character map of terminal */
-struct charmap *utf8_map;
-			/* Handy character map for UTF-8 */
+/* character map of terminal */
+union charmap *locale_map;
+/* handy character map for UTF-8 */
+union charmap *utf8_map;
 
 void
 joe_locale(void)
@@ -280,7 +280,7 @@ joe_locale(void)
 #endif
 	if (!locale_map)
 		locale_map = find_charmap(UC "ascii");
-	utf8_map = find_charmap(UC "utf-8");
+	utf8_map = find_charmap(JOE_MAPUTFCS);
 
 #ifndef TEST
 #ifdef defutf8
@@ -292,22 +292,21 @@ joe_locale(void)
 #endif
 }
 
-void to_utf8(struct charmap *map,unsigned char *s,int c)
+void
+to_utf8(union charmap *map, unsigned char *s, int c)
 {
-	int d = to_uni(map,c);
+	int d = joe_to_uni(map, c);
 
-	if (d==-1)
-		utf8_encode(s,'?');
-	else
-		utf8_encode(s,d);
+	utf8_encode(s, d == -1 ? '?' : d);
 }
 
-int from_utf8(struct charmap *map,unsigned char *s)
+int
+from_utf8(union charmap *map, unsigned char *s)
 {
 	int d = utf8_decode_string(s);
-	int c = from_uni(map,d);
-	if (c==-1)
+	int c = joe_from_uni(map, d);
+
+	if (c == -1)
 		return '?';
-	else
-		return c;
+	return c;
 }

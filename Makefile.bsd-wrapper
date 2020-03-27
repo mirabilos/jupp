@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.18 2018/10/20 15:43:58 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.19 2020/03/27 06:08:10 tg Exp $
 #-
 # make -f Makefile.bsd-wrapper CFPREFIX=/usr/mpkg sysconfjoesubdir=/joe
 
@@ -30,7 +30,7 @@ CFARGS+=	--enable-win32reloc
 FSFISLIB=	No
 
 .ifdef __CRAZY
-COPTS+=		-Wno-unused-parameter -Wno-cast-qual
+COPTS+=		-Wno-unused-parameter
 .  if exists(/usr/include/jupp.tmp.h) && !defined(wnostrict)
 CPPFLAGS+=	-DGCC_Wstrict_prototypes
 .  else

@@ -5,12 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-
-#ifndef _Icharmap
-#define _Icharmap 1
+#ifndef JUPP_CHARMAP_H
+#define JUPP_CHARMAP_H
 
 #ifdef EXTERN
-__RCSID("$MirOS: contrib/code/jupp/charmap.h,v 1.12 2017/12/20 23:33:56 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/charmap.h,v 1.14 2020/03/27 06:38:56 tg Exp $");
 #endif
 
 /* For sorted from_map entries */
@@ -22,69 +21,87 @@ struct pair {
 
 /* A character set */
 
-struct charmap {
-	struct charmap *next;		/* Linked list of loaded character maps */
-	const unsigned char *name;	/* Name of this one */
+union charmap;
 
-	int type;			/* 0=byte, 1=UTF-8 */
+struct charmap_head {
+	/* linked list of loaded character maps */
+	union charmap *next;
+	/* name of this character map, NULL = JOE_MAPUTFCS (UTF-8) */
+	const unsigned char *cs;
+};
 
-	/* Character predicate functions */
+struct charmap_byte {
+	struct charmap_head head;
 
-	int (*is_punct)(struct charmap *map,int c);
-	int (*is_print)(struct charmap *map,int c);
-	int (*is_space)(struct charmap *map,int c);
-	int (*is_alphx)(struct charmap *map,int c);
-	int (*is_alnux)(struct charmap *map,int c);
+	/* convert byte to UCS */
+	const int *to_map;
 
-	/* Character conversion functions */
+	/* number of pairs in from_map */
+	int from_size;
 
-	int (*to_lower)(struct charmap *map,int c);
-	int (*to_upper)(struct charmap *map,int c);
-	int (*to_uni)(struct charmap *map,int c);
-	int (*from_uni)(struct charmap *map,int c);
-
-	/* Information for byte-oriented character sets */
-
-	const int *to_map;		/* Convert byte to unicode */
-
-	unsigned char lower_map[256];	/* Convert to lower case */
+	/* case conversion */
+	unsigned char lower_map[256];
 	unsigned char upper_map[256];
 
-	struct pair from_map[256 + 2];	/* Convert from unicode to byte */
+	/* bitmap of attributes */
+	unsigned char alnux_map[32];
+	unsigned char alphx_map[32];
+	unsigned char print_map[32];
 
-	int from_size;			/* No. pairs in from_map */
+	/* convert UCS to bytes */
+	struct pair from_map[256 + 2];
+};
 
-	unsigned char print_map[32];	/* Bit map of printable characters */
-	unsigned char alphx_map[32];	/* Bit map of alphabetic characters and _ */
-	unsigned char alnux_map[32];	/* Bit map of alphanumeric characters and _ */
+union charmap {
+	struct charmap_head head;
+	struct charmap_byte byte;
 };
 
 /* Predicates */
 
-#define joe_ispunct(map,c) ((map)->is_punct((map),(c)))
-#define joe_isprint(map,c) ((map)->is_print((map),(c)))
-#define joe_isspace(map,c) ((map)->is_space((map),(c)))
-#define joe_isalphx(map,c) ((map)->is_alphx((map),(c)))
-#define joe_isalnux(map,c) ((map)->is_alnux((map),(c)))
-int joe_isblank(struct charmap *map,int c);
-int joe_isspace_eof(struct charmap *map,int c);
+extern const unsigned char JOE_MAPUTFCS[];
+#define joe_maputf(map)		((map)->head.cs == NULL)
+#define joe_mapname(map)	(joe_maputf(map) ? JOE_MAPUTFCS : \
+				    (map)->head.cs)
+
+#define joe_ispunct(map,c)	(joe_maputf(map) ? joe_iswpunct(c) : \
+				    byte_ispunct((map),(c)))
+#define joe_isprint(map,c)	(joe_maputf(map) ? joe_iswprint(c) : \
+				    byte_isprint((map),(c)))
+#define joe_isspace(map,c)	(joe_maputf(map) ? joe_iswspace(c) : \
+				    ((c) == 32 || ((c) >= 9 && (c) <= 13)))
+#define joe_isalphx(map,c)	(joe_maputf(map) ? joe_iswalpha(c) : \
+				    byte_isalphx((map),(c)))
+#define joe_isalnux(map,c)	(joe_maputf(map) ? joe_iswalnum(c) : \
+				    byte_isalnux((map),(c)))
+int joe_isblank(int c);
+int joe_isspace_eof(union charmap *map, int c);
 
 /* Conversion functions */
 
-#define joe_tolower(map,c) ((map)->to_lower((map),(c)))
-#define joe_toupper(map,c) ((map)->to_upper((map),(c)))
-#define joe_to_uni(map,c) ((map)->to_uni((map),(c)))
-#define joe_from_uni(map,c) ((map)->from_uni((map),(c)))
+#define joe_tolower(map,c)	(joe_maputf(map) ? joe_towlower(c) : \
+				    byte_tolower((map),(c)))
+#define joe_toupper(map,c)	(joe_maputf(map) ? joe_towupper(c) : \
+				    byte_toupper((map),(c)))
+#define joe_to_uni(map,c)	(joe_maputf(map) ? (c) : \
+				    (map)->byte.to_map[(c)])
+#define joe_from_uni(map,c)	(joe_maputf(map) ? (c) : \
+				    byte_from_uni((map),(c)))
 unsigned char *joe_strtolower(unsigned char *s);
 
 /* Find (load if necessary) a character set */
-struct charmap *find_charmap(const unsigned char *name);
+union charmap *find_charmap(const unsigned char *name);
 
 /* Get available encodings */
 unsigned char **get_encodings(void);
 
-int to_uni(struct charmap *cset, int c);
-int from_uni(struct charmap *cset, int c);
+int byte_from_uni(union charmap *, int);
+int byte_ispunct(union charmap *, int);
+int byte_isprint(union charmap *, int);
+int byte_isalphx(union charmap *, int);
+int byte_isalnux(union charmap *, int);
+int byte_tolower(union charmap *, int);
+int byte_toupper(union charmap *, int);
 
 #include "utf8.h"
 

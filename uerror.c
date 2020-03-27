@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uerror.c,v 1.11 2017/12/07 02:10:18 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uerror.c,v 1.12 2020/03/27 06:08:17 tg Exp $");
 
 #include "b.h"
 #include "bw.h"
@@ -123,7 +123,8 @@ static void freeall(void)
 
 /* First word on line with a '.' in it.  This is the file name.  The next number after that is the line number. */
 
-static int parseit(struct charmap *map,unsigned char *s, long int row)
+static int
+parseit(union charmap *map, unsigned char *s, long int row)
 {
 	int x, y, flg;
 	unsigned char *name = NULL;

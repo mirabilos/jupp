@@ -12,7 +12,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.31 2018/08/10 02:53:42 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.32 2020/03/27 06:08:11 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -22,33 +22,27 @@ __RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.31 2018/08/10 02:53:42 tg Exp $
 #include "path.h"
 #include "charmap.h"
 
-/* Convert from byte code to UCS.  Returns -1 for unknown. */
-
-int
-to_uni(struct charmap *cset, int c)
-{
-	return (cset->to_map[c]);
-}
+const unsigned char JOE_MAPUTFCS[] = "utf-8";
 
 /* Convert from UCS to byte code.  Returns -1 for unknown. */
 
 int
-from_uni(struct charmap *cset, int c)
+byte_from_uni(union charmap *cset, int c)
 {
 	int x, y, z;
 
 	x = 0;
-	y = cset->from_size-1;
+	y = cset->byte.from_size - 1;
 	z = -1;
 	/* this is not a bsearch and first/last are in reality from/to */
 	while (z != (x + y + 1) / 2) {
 		z = (x + y + 1) / 2;
-		if (c > cset->from_map[z].first)
+		if (c > cset->byte.from_map[z].first)
 			x = z;
-		else if (c < cset->from_map[z].first)
+		else if (c < cset->byte.from_map[z].first)
 			y = z;
 		else
-			return (cset->from_map[z].last);
+			return (cset->byte.from_map[z].last);
 	}
 	return (-1);
 }
@@ -111,7 +105,7 @@ static const struct {
 	{ UC "cp28599", UC "iso-8859-9" },
 	{ UC "cp28603", UC "iso-8859-13" },
 	{ UC "cp28605", UC "iso-8859-15" },
-	{ UC "cp65001", UC "utf-8" },
+	{ UC "cp65001", JOE_MAPUTFCS },
 	{ 0, 0 }
 };
 
@@ -1062,67 +1056,61 @@ pair_cmp(struct pair *a, struct pair *b)
 
 /* Predicate and conversion functions for byte-oriented charmaps */
 
-static int
-byte_ispunct(struct charmap *map, int c)
+int
+byte_ispunct(union charmap *map, int c)
 {
 	int ofst = (c >> 3);
 	int bitn = (1 << (c & 7));
 
 	if (c < 0 || c > 255)
 		return (0);
-	return (((map->print_map[ofst] & bitn) != 0) &&
-	    ((map->alnux_map[ofst] & bitn) == 0));
+	return (((map->byte.print_map[ofst] & bitn) != 0) &&
+	    ((map->byte.alnux_map[ofst] & bitn) == 0));
 }
 
-static int
-byte_isprint(struct charmap *map, int c)
+int
+byte_isprint(union charmap *map, int c)
 {
 	int ofst = (c >> 3);
 	int bitn = (1 << (c & 7));
 
 	if (c < 0 || c > 255)
 		return (0);
-	return ((map->print_map[ofst] & bitn) != 0);
+	return ((map->byte.print_map[ofst] & bitn) != 0);
 }
 
-static int
-byte_isspace(struct charmap *map, int c)
-{
-	return (c == 32 || (c >= 9 && c <= 13));
-}
-
-static int
-byte_isalphx(struct charmap *map, int c)
+int
+byte_isalphx(union charmap *map, int c)
 {
 	int ofst = (c >> 3);
 	int bitn = (1 << (c & 7));
 
 	if (c < 0 || c > 255)
 		return (0);
-	return ((map->alphx_map[ofst] & bitn) != 0);
+	return ((map->byte.alphx_map[ofst] & bitn) != 0);
 }
 
-static int
-byte_isalnux(struct charmap *map, int c)
+int
+byte_isalnux(union charmap *map, int c)
 {
 	int ofst = (c >> 3);
 	int bitn = (1 << (c & 7));
 
 	if (c < 0 || c > 255)
 		return (0);
-	return ((map->alnux_map[ofst] & bitn) != 0);
+	return ((map->byte.alnux_map[ofst] & bitn) != 0);
 }
 
-static int
-byte_tolower(struct charmap *map, int c)
+int
+byte_tolower(union charmap *map, int c)
 {
-	return ((c < 0 || c > 255) ? c : map->lower_map[c]);
+	return ((c < 0 || c > 255) ? c : map->byte.lower_map[c]);
 }
 
-static int
-byte_toupper(struct charmap *map, int c)
+int
+byte_toupper(union charmap *map, int c)
 {
-	return ((c < 0 || c > 255) ? c : map->upper_map[c]);
+	return ((c < 0 || c > 255) ? c : map->byte.upper_map[c]);
 }
 
 /* Load built-in character maps */
@@ -1133,46 +1121,29 @@ set_bit(unsigned char *map, int n)
 	map[n >> 3] |= (1 << (n & 7));
 }
 
-static int
-rtn_arg(struct charmap *map, int c)
-{
-	return (c);
-}
-
 /* loaded character sets */
-static struct charmap *charmaps = NULL;
+static union charmap *charmaps = NULL;
 
 /* Process a byte-oriented character map and add it to database.
    Consults database "i18n.c" to determine which characters are
    uppercase, etc. */
 
-static struct charmap *
+static union charmap *
 process_builtin(const struct builtin_charmap *builtin)
 {
 	int x, c, extra_b7, extra_2192;
-	struct charmap *map;
+	union charmap *map;
 
 	extra_b7 = builtin->extra_b7;
 	extra_2192 = builtin->extra_2192;
-	map = malloc(sizeof(struct charmap));
-	map->name = builtin->name;
-	map->type = 0;
-	map->is_punct = byte_ispunct;
-	map->is_print = byte_isprint;
-	map->is_space = byte_isspace;
-	map->is_alphx = byte_isalphx;
-	map->is_alnux = byte_isalnux;
-	map->to_lower = byte_tolower;
-	map->to_upper = byte_toupper;
-	map->to_uni = to_uni;
-	map->from_uni = from_uni;
-	map->from_size = 0;
-	map->to_map = builtin->to_uni;
+	map = calloc(1, sizeof(struct charmap_byte));
+	map->head.cs = builtin->name;
+	map->byte.to_map = builtin->to_uni;
 	for (x = 0; x != 256; ++x) {
-		if ((c = map->to_map[x]) != -1) {
-			map->from_map[map->from_size].first = c;
-			map->from_map[map->from_size].last = x;
-			++map->from_size;
+		if ((c = map->byte.to_map[x]) != -1) {
+			map->byte.from_map[map->byte.from_size].first = c;
+			map->byte.from_map[map->byte.from_size].last = x;
+			++map->byte.from_size;
 			if (c == 0xB7)
 				extra_b7 = -1;
 			if (c == 0x2192)
@@ -1180,63 +1151,57 @@ process_builtin(const struct builtin_charmap *builtin)
 		}
 	}
 	if (extra_b7 > 0) {
-		map->from_map[map->from_size].first = 0xB7;
-		map->from_map[map->from_size].last = extra_b7;
-		++map->from_size;
+		map->byte.from_map[map->byte.from_size].first = 0xB7;
+		map->byte.from_map[map->byte.from_size].last = extra_b7;
+		++map->byte.from_size;
 	}
 	if (extra_2192 > 0) {
-		map->from_map[map->from_size].first = 0x2192;
-		map->from_map[map->from_size].last = extra_2192;
-		++map->from_size;
+		map->byte.from_map[map->byte.from_size].first = 0x2192;
+		map->byte.from_map[map->byte.from_size].last = extra_2192;
+		++map->byte.from_size;
 	}
 
-	qsort(map->from_map, map->from_size, sizeof(struct pair),
+	qsort(map->byte.from_map, map->byte.from_size, sizeof(struct pair),
 	    (int (*)(const void *, const void *))pair_cmp);
 
-	for (x = 0; x != 32; ++x) {
-		map->print_map[x] = 0;
-		map->alphx_map[x] = 0;
-		map->alnux_map[x] = 0;
-	}
-
 	for (x = 0; x != 256; ++x) {
-		map->lower_map[x] = x;
-		map->upper_map[x] = x;
-		if ((c = map->to_map[x]) != -1) {
+		map->byte.lower_map[x] = x;
+		map->byte.upper_map[x] = x;
+		if ((c = map->byte.to_map[x]) != -1) {
 			int y, z;
 
-			if (joe_iswprint(NULL, c))
-				set_bit(map->print_map, x);
-			if (joe_iswalpha(NULL, c)) {
-				set_bit(map->alphx_map, x);
-				set_bit(map->alnux_map, x);
+			if (joe_iswprint(c))
+				set_bit(map->byte.print_map, x);
+			if (joe_iswalpha(c)) {
+				set_bit(map->byte.alphx_map, x);
+				set_bit(map->byte.alnux_map, x);
 			}
 
-			y = joe_towlower(NULL, c);
-			if ((z = from_uni(map, y)) != -1)
-				map->lower_map[x] = z;
+			y = joe_towlower(c);
+			if ((z = byte_from_uni(map, y)) != -1)
+				map->byte.lower_map[x] = z;
 
-			y = joe_towupper(NULL, c);
-			if ((z = from_uni(map, y)) != -1)
-				map->upper_map[x] = z;
+			y = joe_towupper(c);
+			if ((z = byte_from_uni(map, y)) != -1)
+				map->byte.upper_map[x] = z;
 		}
 	}
 
 	/* Set underbar <U+005F> */
 
-	if ((c = from_uni(map, 0x5F)) != -1) {
-		set_bit(map->alphx_map, c);
-		set_bit(map->alnux_map, c);
+	if ((c = byte_from_uni(map, 0x5F)) != -1) {
+		set_bit(map->byte.alphx_map, c);
+		set_bit(map->byte.alnux_map, c);
 	}
 
 	/* Put digits into alnum map */
 
 	for (x = 0x30; x != 0x3A; ++x) {
-		if ((c = from_uni(map, x)) != -1)
-			set_bit(map->alnux_map, c);
+		if ((c = byte_from_uni(map, x)) != -1)
+			set_bit(map->byte.alnux_map, c);
 	}
 
-	map->next = charmaps;
+	map->head.next = charmaps;
 	charmaps = map;
 
 	return (map);
@@ -1245,22 +1210,12 @@ process_builtin(const struct builtin_charmap *builtin)
 static void
 load_builtins(void)
 {
-	struct charmap *map;
+	union charmap *map;
 
 	/* install UTF-8 map (ties into i18n module) */
-	map = malloc(sizeof(struct charmap));
-	map->name = UC "utf-8";
-	map->type = 1;
-	map->to_uni = rtn_arg;
-	map->from_uni = rtn_arg;
-	map->is_punct = joe_iswpunct;
-	map->is_print = joe_iswprint;
-	map->is_space = joe_iswspace;
-	map->is_alphx = joe_iswalpha;
-	map->is_alnux = joe_iswalnum;
-	map->to_lower = joe_towlower;
-	map->to_upper = joe_towupper;
-	map->next = charmaps;
+	map = malloc(sizeof(struct charmap_head));
+	map->head.cs = NULL;
+	map->head.next = charmaps;
 	charmaps = map;
 }
 
@@ -1280,7 +1235,7 @@ parse_charmap(const unsigned char *name, FILE *f)
 		return (NULL);
 
 	b = malloc(sizeof(struct builtin_charmap));
-	b->name = (unsigned char *)strdup((char *)name);
+	b->name = (unsigned char *)strdup((const char *)name);
 
 	for (x = 0; x != 256; ++x)
 		b->to_uni[x] = -1;
@@ -1355,12 +1310,12 @@ map_name_cmp(const unsigned char *a, const unsigned char *b)
 
 /* Find a character map */
 
-struct charmap *
+union charmap *
 find_charmap(const unsigned char *name)
 {
 	unsigned char buf[1024];
 	unsigned char *p;
-	struct charmap *m;
+	union charmap *m;
 	struct builtin_charmap *b;
 	FILE *f = NULL;
 	int y;
@@ -1380,8 +1335,8 @@ find_charmap(const unsigned char *name)
 		}
 
 	/* Already loaded? */
-	for (m = charmaps; m; m = m->next)
-		if (!map_name_cmp(m->name, name))
+	for (m = charmaps; m; m = m->head.next)
+		if (!map_name_cmp(joe_mapname(m), name))
 			return (m);
 
 	/* Check ~/.jupp/charmaps */
@@ -1420,17 +1375,21 @@ find_charmap(const unsigned char *name)
 int
 main(int argc, char *argv[])
 {
-	struct charmap *map;
+	union charmap *map;
 	int u;
 	int uni;
 
-	if (!argv[1] || !argv[2] || !(map = find_charmap(argv[1]))) {
+	if (argc != 3) {
+		printf("Syntax: %s charmap codepoint\n", argv[0]);
+		return (1);
+	}
+	if (!(map = find_charmap(argv[1]))) {
 		printf("Not found\n");
 		return (1);
 	}
 	u = ustol(argv[2], NULL, USTOL_TRIM | USTOL_EOS);
-	printf("UCS=%X\n", uni = to_uni(map, u));
-	printf("Local=%X\n", from_uni(map, uni));
+	printf("UCS=%X\n", uni = joe_to_uni(map, u));
+	printf("Local=%X\n", joe_from_uni(map, uni));
 	return (0);
 }
 #endif
@@ -1450,7 +1409,7 @@ get_encodings(void)
 
 	/* Builtin maps */
 
-	r = vsncpy(NULL, 0, sc("utf-8"));
+	r = vsncpy(NULL, 0, sc(JOE_MAPUTFCS));
 	encodings = vaadd(encodings, r);
 
 	for (y = 0; y != NELEM(builtin_charmaps); ++y) {
@@ -1506,13 +1465,13 @@ get_encodings(void)
 /* This is not correct... (EBCDIC for example) */
 
 int
-joe_isblank(struct charmap *map, int c)
+joe_isblank(int c)
 {
 	return (c == 32 || c == 9);
 }
 
 int
-joe_isspace_eof(struct charmap *map, int c)
+joe_isspace_eof(union charmap *map, int c)
 {
 	return ((c == 0) || joe_isspace(map, c));
 }
@@ -1540,8 +1499,11 @@ CPPFLAGS+=	-DJUPP_WIN32RELOC=0 -D'JOERC="/etc/joe"'
 .include <bsd.own.mk>
 
 .ifdef __CRAZY
-COPTS+=		-Wno-unused-parameter -Wno-cast-qual
+.  if exists(/usr/include/jupp.tmp.h) && !defined(wnostrict)
+CPPFLAGS+=	-DGCC_Wstrict_prototypes
+.  else
 COPTS+=		-Wno-strict-prototypes
+.  endif
 .endif
 
 .include <bsd.prog.mk>

@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _JOE_UEDIT_H
-#define _JOE_UEDIT_H 1
+#ifndef JUPP_UEDIT_H
+#define JUPP_UEDIT_H
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_uedit_h, "$MirOS: contrib/code/jupp/uedit.h,v 1.9 2017/12/07 02:10:18 tg Exp $");
+__IDSTRING(rcsid_uedit_h, "$MirOS: contrib/code/jupp/uedit.h,v 1.10 2020/03/27 06:38:59 tg Exp $");
 #endif
 
 extern int pgamnt;

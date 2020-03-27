@@ -5,11 +5,11 @@
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
-#ifndef _Iutf8
-#define _Iutf8 1
+#ifndef JUPP_UTF8_H
+#define JUPP_UTF8_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_utf8_h, "$MirOS: contrib/code/jupp/utf8.h,v 1.10 2018/08/10 02:53:45 tg Exp $");
+__IDSTRING(rcsid_utf8_h, "$MirOS: contrib/code/jupp/utf8.h,v 1.12 2020/03/27 06:39:00 tg Exp $");
 #endif
 
 #include "i18n.h"
@@ -52,14 +52,16 @@ int utf8_decode_fwrd(unsigned char **p,int *plen);
 void utf8_init(struct utf8_sm *utf8_sm);
 
 void joe_locale(void);
-void to_utf8(struct charmap *map,unsigned char *s,int c);
-int from_utf8(struct charmap *map,unsigned char *s);
+void to_utf8(union charmap *map, unsigned char *s, int c);
+int from_utf8(union charmap *map, unsigned char *s);
 
 extern int utf8;
 
 int mk_wcwidth(int wide,int c);
 
-extern struct charmap *locale_map;	/* Default bytemap of terminal */
-extern struct charmap *utf8_map;	/* Bytemap for UTF-8 */
+/* default charmap of terminal */
+extern union charmap *locale_map;
+/* charmap for UTF-8 */
+extern union charmap *utf8_map;
 
 #endif

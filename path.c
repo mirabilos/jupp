@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.23 2018/01/07 20:32:46 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.24 2020/03/27 06:08:14 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -215,7 +215,7 @@ int mkpath(unsigned char *path)
 /********************************************************************/
 /* Create a temporary file */
 /********************************************************************/
-unsigned char *mktmp(unsigned char *where, int *fdp)
+unsigned char *mktmp(const unsigned char *where, int *fdp)
 {
 #ifndef HAVE_MKSTEMP
 	static unsigned seq = 0;
@@ -229,9 +229,9 @@ unsigned char *mktmp(unsigned char *where, int *fdp)
 	if (!where)
 		where = (unsigned char *)getenv("TEMP");
 	if (!where)
-		where = US _PATH_TMP;
+		where = UC _PATH_TMP;
 
-	namesize = strlen((char *)where) + 20;
+	namesize = strlen((const char *)where) + 20;
 	name = vsmk(namesize);	/* [G.Ghibo'] we need to use vsmk() and not malloc() as
 				   area returned by mktmp() is destroyed later with
 				   vsrm(); */
@@ -369,7 +369,7 @@ int chpwd(const unsigned char *path)
 {
 	if ((!path) || (!path[0]))
 		return 0;
-	return chdir((char *)path);
+	return chdir((const char *)path);
 }
 
 /* The pwd function */

@@ -1,13 +1,13 @@
-#ifndef _JOE_TYPES_H
-#define _JOE_TYPES_H
+#ifndef JUPP_TYPES_H
+#define JUPP_TYPES_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.35 2018/02/14 17:51:49 tg Exp $");
+__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.38 2020/03/27 06:38:58 tg Exp $");
 #endif
 
 /*-
  * Copyright © 2004, 2005, 2006, 2007, 2008, 2011, 2012, 2013,
- *	       2014, 2016, 2017, 2018
+ *	       2014, 2016, 2017, 2018, 2020
  *	Thorsten “mirabilos” Glaser <tg@mirbsd.org>
  *
  * Provided that these terms and disclaimer and all copyright notices
@@ -207,7 +207,7 @@ struct options {
 	unsigned char *syntax_name;	/* Name of syntax to use */
 	struct high_syntax *syntax;	/* Syntax for highlighting (load_dfa() from syntax_name happens in setopt()) */
 	unsigned char *map_name;	/* Name of character set */
-	struct charmap *charmap;	/* Character set */
+	union charmap *charmap;	/* Character set */
 	int	smarthome;	/* Set for smart home key */
 	int	indentfirst;	/* Smart home goes to indentation point first */
 	int	smartbacks;	/* Set for smart backspace key */
@@ -554,9 +554,7 @@ struct cap {
 	int	div;		/* tenths of MS per char */
 	int	baud;		/* Baud rate */
 	const unsigned char *pad;	/* Padding string or NULL to use NUL */
-	void	(*out) (unsigned char *, unsigned char);		/* Character output routine */
-	void	*outptr;	/* First arg passed to output routine.  Second
-				   arg is character to write */
+	int	(*out)(int);	/* character output routine */
 	int	dopadding;	/* Set if pad characters should be used */
 	const char *paste_on;	/* Enable bracketed paste mode */
 	const char *paste_off;	/* Disable bracketed paste mode */
