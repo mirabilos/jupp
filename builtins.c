@@ -11,7 +11,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/builtins.c,v 1.33 2020/01/31 17:02:15 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/builtins.c,v 1.34 2020/03/27 08:03:38 tg Exp $");
 
 #ifndef JUPPRC_BUILTIN_NAME
 #define JUPPRC_BUILTIN_NAME "jupprc"
@@ -170,7 +170,7 @@ const unsigned char * const builtins[] = {
 		"\\i \\i go to \\uhttp://sf.net/projects/joe-editor/\\u for upstream bug reports. JUPP 2.8 \\i \\i\n"
 		"\\i \\i for DOS compiled by A. Totlis, packed with LHarc 2.13; JUPP 3.x for UNIX\\d(R)\\d \\i \\i\n"
 		"\\i \\i at \\uhttp://mirbsd.de/jupp\\u and by \\bThorsten \"\\dmirabilos\\d\" Glaser <\\utg@mirbsd.org\\u>\\b \\i \\i\n"
-		"\\i \\i @(#) blt_in 2018-10-20; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \\i \\i\n"
+		"\\i \\i @(#) blt_in 2020-01-31; 3.1; autoCR-LF; UTF-8 via locale; per-file encoding \\i \\i\n"
 		"}\n"
 		"\n"
 		"{CharTable\n"
@@ -266,7 +266,6 @@ const unsigned char * const builtins[] = {
 		":def pastemain helpcard,\"Paste\",rtn,keymap,\"Paste\",rtn\n"
 		":def conflictmarker dosrch,\"\\\\^\\\\[<>=]\\\\[<>=]\\\\[<>=]\\\\[<>=]\\\\[<>=]\\\\[<>=]\\\\[<>=]\\\\[ \\\\n]\",rtn,rtn,ltarw\n"
 		":def fixwhitespace psh,setmark,\":\",eof,\" \",bof,\"a\",qrepl,\"\\\\[\",quote,\"i\",quote,\"k\",quote,\"l\",quote,\"m ]\\\\+\\\\[\",quote,\"i\",quote,\"k\",quote,\"l\",quote,\"m ]\\\\$\",rtn,rtn,rtn,\"r\",eof,rtn,ffirst,\"\\\\^\\\\[^\\\\n]\",rtn,\"b\",rtn,eol,markb,bof,delch,eof,markk,blkdel,ffirst,\"\\\\?\",rtn,\"b\",rtn,eol,rtn,gomark,\":\",eof\n"
-		":def freedroidz psh,splitw,prevw,scratch,\"nbc-Output\",rtn,nextw,save,markk,bol,markb,prevw,prevw,blkcpy,nextw,nextw,rtn,prevw,eol,\"'\",bol,qrepl,\"'\",rtn,rtn,\"'\\\\\\\\''\",rtn,\"r\",backs,backs,backs,bol,\"LC_ALL=C; export LC_ALL; fn='\",eol,\"; p=--posix; sed $p -e q </dev/null >/dev/null 2>&1 || p=; r=$(sed $p -e 's[^^][&]g; s\\\\^\\\\\\\\^g' <<EOF\",rtn,\"$fn\",rtn,\"EOF\",rtn,\"); (case $fn in *.nxc) ;; *) echo '==> Error: filename not *.nxc'; exit ;; esac; echo \\\"Compiling $fn\\\"; nbc -sm- -d \\\"$fn\\\" 2>&1; x=$?; if test $x = 0; then echo '==> OK'; else echo '==> Error code:' $x; fi) | tr '\\\\n' '' | sed $p -e 's!# *\\\\([^]*\\\\)File \\\"[^\\\"]*/\\\\('\\\"$r\\\"'\\\\)\\\" ; line \\\\([0-9]*\\\\)!\\\\2:\\\\3: \\\\1!g' -e 's!#\\\\([^]*\\\\)File \\\"\\\\([^\\\"]*\\\\)\\\" ; line \\\\([0-9]*\\\\)!\\\\2:\\\\3: \\\\1!g' | tr '' '\\\\n'\",rtn,nmark,filt,\"sh\",rtn,rtn,\"Press ^KQ to close this window!\",rtn,parserr\n"
 		":def docompile edit,rtn,filt,query,parserr\n"
 		":def filtall nmark,filt,uparw\n"
 		":def pvsrch prevpos,gomark,\":\"\n"
@@ -392,9 +391,6 @@ const unsigned char * const builtins[] = {
 		"fnext		.k3\n"
 		"fnext		^L\n"
 		"fnext		^[ [ 1 3 ~\n"
-		"freedroidz	^K F\n"
-		"freedroidz	^K ^F\n"
-		"freedroidz	^K f\n"
 		"fwrdc		^Q H ^@ TO \xFF\n"
 		"fwrdc		^Q ^H ^@ TO \xFF\n"
 		"fwrdc		^Q h ^@ TO \xFF\n"

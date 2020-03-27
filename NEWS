@@ -1,7 +1,11 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.135 2020/01/31 17:21:49 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.136 2020/03/27 08:03:37 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
+
+- …
+
+JOE 3.1jupp39
 
 - Highlight HTML/XHTML and XML with content sniffing as well
 - Improve shell highlighting substitution quoting handling
@@ -11,7 +15,10 @@ jupp-current
 - Work around a GCC on MIPS16 asm generation bug in IDSTRING
 - Highlight more Tₑχ/LᴬTᴇΧ extensions
 - Shrink built-in jupprc size by dropping specialist command ^KF
-- …
+- Use more consistent header guards
+- Update to UCD 13.0.0
+- Major overhaul of charmap handling
+- Massive dead parameter and code elimination and warning fixes
 
 JOE 3.1jupp38
 
