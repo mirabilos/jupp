@@ -14,7 +14,7 @@
 #include "config.h"
 #include <stdlib.h>
 
-__RCSID("$MirOS: contrib/code/jupp/i18n.c,v 1.37 2020/03/27 02:49:53 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/i18n.c,v 1.38 2020/03/27 03:38:27 tg Exp $");
 
 /*-
  * Parts Copyright © 1991–2020 Unicode, Inc. All rights reserved.
@@ -599,7 +599,7 @@ joe_wcwidth(unsigned int ucs)
 /* Macro for generating joe_iswXXX functions */
 
 #define MAKE_ISW(what)						\
-	int joe_isw##what(struct charmap *foo, int c)		\
+	int joe_isw##what(int c)				\
 	{							\
 		return ((mb_ucsbsearch(data_wctype_##what,	\
 		    NELEM(data_wctype_##what),			\
@@ -2473,12 +2473,12 @@ static const struct mb_ucsrange data_wctype_alpha[] = {
 
 MAKE_ISW(alpha)
 
-int joe_iswalnum(struct charmap *foo, int c)
+int joe_iswalnum(int c)
 {
-	return ((c >= 0x30 && c <= 0x39) ? 1 : joe_iswalpha(foo, c));
+	return ((c >= 0x30 && c <= 0x39) ? 1 : joe_iswalpha(c));
 }
 
-int joe_iswdigit(struct charmap *foo, int c)
+int joe_iswdigit(int c)
 {
 	return ((c >= 0x30 && c <= 0x39) ? 1 : 0);
 }
@@ -5832,7 +5832,7 @@ static const int data_wcdelta_toupper[] = {
 	34
 };
 
-int joe_towupper(struct charmap *foo, int c)
+int joe_towupper(int c)
 {
 	size_t idx;
 
@@ -7168,7 +7168,7 @@ static const int data_wcdelta_tolower[] = {
 	34
 };
 
-int joe_towlower(struct charmap *foo, int c)
+int joe_towlower(int c)
 {
 	size_t idx;
 
@@ -7193,19 +7193,19 @@ main(int argc,char *argv[])
 	if (!vp)
 		return (1);
 	printf("Properties of character %X:\n",c);
-	printf("upper=%X\n",joe_iswupper(NULL,c));
-	printf("lower=%X\n",joe_iswlower(NULL,c));
-	printf("alpha=%X\n",joe_iswalpha(NULL,c));
-	printf("digit=%X\n",joe_iswdigit(NULL,c));
-	printf("cntrl=%X\n",joe_iswcntrl(NULL,c));
-	printf("punct=%X\n",joe_iswpunct(NULL,c));
-	printf("graph=%X\n",joe_iswgraph(NULL,c));
-	printf("print=%X\n",joe_iswprint(NULL,c));
-	printf("xdigit=%X\n",joe_iswxdigit(NULL,c));
-	printf("blank=%X\n",joe_iswblank(NULL,c));
+	printf("upper=%X\n",joe_iswupper(c));
+	printf("lower=%X\n",joe_iswlower(c));
+	printf("alpha=%X\n",joe_iswalpha(c));
+	printf("digit=%X\n",joe_iswdigit(c));
+	printf("cntrl=%X\n",joe_iswcntrl(c));
+	printf("punct=%X\n",joe_iswpunct(c));
+	printf("graph=%X\n",joe_iswgraph(c));
+	printf("print=%X\n",joe_iswprint(c));
+	printf("xdigit=%X\n",joe_iswxdigit(c));
+	printf("blank=%X\n",joe_iswblank(c));
 	printf("width=%X\n",joe_wcwidth(c));
-	printf("toupper=%X\n",joe_towupper(NULL,c));
-	printf("tolower=%X\n",joe_towlower(NULL,c));
+	printf("toupper=%X\n",joe_towupper(c));
+	printf("tolower=%X\n",joe_towlower(c));
 	return (0);
 }
 #endif
@@ -7221,7 +7221,6 @@ CPPFLAGS+=	-DTEST -DTEST_I18N
 .include <bsd.own.mk>
 
 .ifdef __CRAZY
-COPTS+=		-Wno-unused-parameter
 .  if exists(/usr/include/jupp.tmp.h) && !defined(wnostrict)
 CPPFLAGS+=	-DGCC_Wstrict_prototypes
 .  else
