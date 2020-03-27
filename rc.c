@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.48 2020/03/27 06:08:15 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.49 2020/03/27 06:46:05 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -352,7 +352,7 @@ static void izopts(void)
  * glopt(name,arg,options,1): set file local option
  */
 int
-glopt(unsigned char *s, unsigned char *arg, OPTIONS *opts, int set)
+glopt(const unsigned char *s, unsigned char *arg, OPTIONS *opts, int set)
 {
 	int val;
 	int ret = 0;
