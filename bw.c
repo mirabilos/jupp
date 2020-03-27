@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.39 2018/10/20 16:32:24 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/bw.c,v 1.40 2020/03/27 06:08:11 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -587,7 +587,7 @@ void bwgen(BW *w, int linums)
 						lgena(t, y, t->compose, w->x, w->x + w->w, q, w->offset, 0L, 0L);
 				else
 					lgena(t, y, t->compose, w->x, w->x + w->w, q, w->offset, from, to);
-				magic(t, y, screen, attr, t->compose, (int) (w->cursor->xcol - w->offset + w->x));
+				magic(t, y, screen, t->compose, (int) (w->cursor->xcol - w->offset + w->x));
 			} */
 			if (dosquare)
 				if (w->top->line + y - w->y >= fromline && w->top->line + y - w->y <= toline)
@@ -617,7 +617,7 @@ void bwgen(BW *w, int linums)
 						lgena(t, y, t->compose, w->x, w->x + w->w, q, w->offset, 0L, 0L);
 				else
 					lgena(t, y, t->compose, w->x, w->x + w->w, q, w->offset, from, to);
-				magic(t, y, screen, attr, t->compose, (int) (w->cursor->xcol - w->offset + w->x));
+				magic(t, y, screen, t->compose, (int) (w->cursor->xcol - w->offset + w->x));
 			} */
 			if (dosquare)
 				if (w->top->line + y - w->y >= fromline && w->top->line + y - w->y <= toline)
@@ -717,8 +717,8 @@ int ustat_j(BW *bw)
 		    "** Line %ld  Col %ld  Offset %ld(0x%lX)  %s %d(0%o/0x%X) Width %d **",
 		    bw->cursor->line + 1, piscol(bw->cursor) + 1,
 		    bw->cursor->byte, bw->cursor->byte,
-		    bw->b->o.charmap->name, c, c, c,
-		    bw->o.charmap->type ? joe_wcwidth(c) : 1);
+		    joe_mapname(bw->b->o.charmap), c, c, c,
+		    joe_maputf(bw->o.charmap) ? joe_wcwidth(c) : 1);
 	msgnw(bw->parent, buf);
 	return 0;
 }

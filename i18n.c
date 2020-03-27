@@ -14,7 +14,7 @@
 #include "config.h"
 #include <stdlib.h>
 
-__RCSID("$MirOS: contrib/code/jupp/i18n.c,v 1.38 2020/03/27 03:38:27 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/i18n.c,v 1.39 2020/03/27 06:08:12 tg Exp $");
 
 /*-
  * Parts Copyright © 1991–2020 Unicode, Inc. All rights reserved.
@@ -579,7 +579,7 @@ joe_wcwidth(unsigned int ucs)
 #ifndef TEST
 	/* If terminal is not UTF-8 or file is not UTF-8: width is 1 */
 	/* FIXME */
-	if (!locale_map->type)
+	if (!joe_maputf(locale_map))
 		return (1);
 #endif
 

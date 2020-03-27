@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.22 2018/10/20 16:34:40 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/usearch.c,v 1.23 2020/03/27 06:08:18 tg Exp $");
 
 #include <stdlib.h>
 
@@ -88,9 +88,16 @@ get_word_list(B *b, int ignore)
 		}
 	prm(p);
 
-	for (idx = 0;idx != h->len;++idx)
-		for (t = h->tab[idx];t;t=t->next)
-			list = vaadd(list, /* checked */ US t->name);
+	for (idx = 0; idx != h->len; ++idx)
+		for (t = h->tab[idx]; t; t = t->next) {
+			union {
+				const unsigned char *ro;
+				unsigned char *rw;
+			} checked_name;
+
+			checked_name.ro = t->name;
+			list = vaadd(list, checked_name.rw);
+		}
 	if (list)
 		vasort(list, sLEN(list));
 
@@ -266,7 +273,8 @@ static P *searchf(BW *bw,SRCH *srch, P *p)
 	start = pdup(p);
 	end = pdup(p);
 
-	for (x = 0; x != sLEN(pattern) && pattern[x] != '\\' && (pattern[x]<128 || !p->b->o.charmap->type); ++x)
+	for (x = 0; x != sLEN(pattern) && pattern[x] != '\\' &&
+	    (pattern[x] < 128 || !joe_maputf(p->b->o.charmap)); ++x)
 		if (srch->ignore)
 			pattern[x] = joe_tolower(p->b->o.charmap,pattern[x]);
  wrapped:
@@ -322,7 +330,8 @@ static P *searchb(BW *bw,SRCH *srch, P *p)
 	start = pdup(p);
 	end = pdup(p);
 
-	for (x = 0; x != sLEN(pattern) && pattern[x] != '\\' && (pattern[x]<128 || !p->b->o.charmap->type); ++x)
+	for (x = 0; x != sLEN(pattern) && pattern[x] != '\\' &&
+	    (pattern[x] < 128 || !joe_maputf(p->b->o.charmap)); ++x)
 		if (srch->ignore)
 			pattern[x] = joe_tolower(p->b->o.charmap,pattern[x]);
 
@@ -466,7 +475,7 @@ static P *insert(SRCH *srch, P *p, unsigned char *s, int len)
 			} else {
 				unsigned char *a=(unsigned char *)s+x;
 				int l=len-x;
-				binsc(p,escape(p->b->o.charmap->type,&a,&l));
+				binsc(p, escape(joe_maputf(p->b->o.charmap), &a, &l));
 				pgetc(p);
 				len -= a - (unsigned char *)s;
 				s = a;
@@ -635,7 +644,7 @@ static int dofirst(BW *bw, int back, int repl)
 		if (byte == bw->cursor->byte)
 			prgetc(bw->cursor);
 		jO.bw = bw;
-		return urtn(jO, -1);
+		return (urtn(jO));
 	}
 	srch = setmark(mksrch(NULL, NULL, 0, back, -1, repl, 0));
 	srch->addr = bw->cursor->byte;

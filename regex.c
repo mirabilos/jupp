@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/regex.c,v 1.10 2017/12/06 23:02:04 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/regex.c,v 1.11 2020/03/27 06:08:15 tg Exp $");
 
 #include "b.h"
 #include "charmap.h"
@@ -249,8 +249,8 @@ int pmatch(unsigned char **pieces, unsigned char *regex, int len, P *p, int n, i
 	int c, d;
 	P *q = pdup(p);
 	P *o = NULL;
-	int isutf8 = p->b->o.charmap->type;
-	struct charmap *map = p->b->o.charmap;
+	unsigned char isutf8 = joe_maputf(p->b->o.charmap);
+	union charmap *map = p->b->o.charmap;
 	struct utf8_sm sm;
 
 	utf8_init(&sm);

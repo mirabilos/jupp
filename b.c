@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.40 2018/11/11 18:15:37 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.41 2020/03/27 06:08:11 tg Exp $");
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -454,7 +454,7 @@ int pisblank(P *p)
 	P *q = pdup(p);
 
 	p_goto_bol(q);
-	while (joe_isblank(p->b->o.charmap,brc(q)))
+	while (joe_isblank(brc(q)))
 		pgetb(q);
 	if (piseol(q)) {
 		prm(q);
@@ -470,7 +470,7 @@ int piseolblank(P *p)
 {
 	P *q = pdup(p);
 
-	while (joe_isblank(p->b->o.charmap,brc(q)))
+	while (joe_isblank(brc(q)))
 		pgetb(q);
 	if (piseol(q)) {
 		prm(q);
@@ -488,7 +488,7 @@ long pisindent(P *p)
 	long col;
 
 	p_goto_bol(q);
-	while (joe_isblank(p->b->o.charmap,brc(q)))
+	while (joe_isblank(brc(q)))
 		pgetc(q);
 	col = q->col;
 	prm(q);
@@ -578,7 +578,7 @@ pgetc(P *p)
 	if ((b = pgetb(p)) == NO_MORE_DATA)
 		return (b);
 
-	if (p->b->o.charmap->type) {
+	if (joe_maputf(p->b->o.charmap)) {
 		struct utf8_sm utf8_sm;
 
 		utf8_init(&utf8_sm);
@@ -696,7 +696,7 @@ prgetc(P *p)
 {
 	P *q, *r;
 
-	if (!p->b->o.charmap->type || pisbol(p))
+	if (!joe_maputf(p->b->o.charmap) || pisbol(p))
 		return (prgetb(p));
 
 	q = pdup(p);
@@ -781,7 +781,7 @@ P *p_goto_indent(P *p, int c)
 /* move p to the end of line */
 P *p_goto_eol(P *p)
 {
-	if (p->b->o.crlf || p->b->o.charmap->type)
+	if (p->b->o.crlf || joe_maputf(p->b->o.charmap))
 		while (!piseol(p))
 			pgetc(p);
 	else
@@ -886,7 +886,7 @@ P *pline(P *p, long line)
 P *pcol(P *p, long goalcol)
 {
 	p_goto_bol(p);
-	if(p->b->o.charmap->type) {
+	if(joe_maputf(p->b->o.charmap)) {
 		do {
 			int c;
 			int wid;
@@ -958,7 +958,7 @@ P *pcolwse(P *p, long goalcol)
 P *pcoli(P *p, long goalcol)
 {
 	p_goto_bol(p);
-	if (p->b->o.charmap->type) {
+	if (joe_maputf(p->b->o.charmap)) {
 		while (p->col < goalcol) {
 			int c;
 			c = brc(p);
@@ -1096,7 +1096,7 @@ static P *fifind(P *p, unsigned char *s, int len)
 {
 	long amnt = p->b->eof->byte - p->byte;
 	int x;
-	struct charmap *map = p->b->o.charmap;
+	union charmap *map = p->b->o.charmap;
 	unsigned char table[256], c;
 
 	if (len > amnt)
@@ -1254,7 +1254,7 @@ static P *frifind(P *p, unsigned char *s, int len)
 	long amnt = p->byte;
 	int x;
 	unsigned char table[256], c;
-	struct charmap *map = p->b->o.charmap;
+	union charmap *map = p->b->o.charmap;
 
 	if (len > p->b->eof->byte - p->byte) {
 		x = len - (p->b->eof->byte - p->byte);
@@ -1863,7 +1863,7 @@ P *binsbyte(P *p, unsigned char c)
 /* UTF-8 encode a character and insert it */
 P *binsc(P *p, int c)
 {
-	if (c>127 && p->b->o.charmap->type) {
+	if (c>127 && joe_maputf(p->b->o.charmap)) {
 		unsigned char buf[8];
 		int len = utf8_encode(buf,c);
 		return binsm(p,buf,len);
@@ -2233,7 +2233,7 @@ bfind_scratch(const unsigned char *s)
 	b->internal = 0;
 	b->rdonly = b->o.readonly;
 	b->er = error;
-	b->name = (unsigned char *)strdup((char *)s);
+	b->name = (unsigned char *)strdup((const char *)s);
 	b->scratch = 1;
 	return b;
 }
@@ -2443,7 +2443,7 @@ int brc(P *p)
 int
 brch(P *p)
 {
-	return (p->b->o.charmap->type ? brch_u8(p) : brc(p));
+	return (joe_maputf(p->b->o.charmap) ? brch_u8(p) : brc(p));
 }
 
 static int

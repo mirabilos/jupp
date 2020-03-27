@@ -9,7 +9,7 @@
 #define _JOE_PATH_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_path_h, "$MirOS: contrib/code/jupp/path.h,v 1.17 2018/03/15 22:48:01 tg Exp $");
+__IDSTRING(rcsid_path_h, "$MirOS: contrib/code/jupp/path.h,v 1.18 2020/03/27 06:08:14 tg Exp $");
 #endif
 
 #if defined(__MSDOS__) || defined(__DJGPP__) || defined(__EMX__) || \
@@ -97,7 +97,7 @@ int mkpath(unsigned char *path);
  * string six chars long which makes this file unique.
  * If second argument is not NULL, fd is kept open and stored there.
 */
-unsigned char *mktmp(unsigned char *where, int *fdp);
+unsigned char *mktmp(const unsigned char *where, int *fdp);
 
 /* Change drive and directory */
 #define chddir chdir

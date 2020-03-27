@@ -2,12 +2,12 @@
 #define _JOE_TYPES_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.35 2018/02/14 17:51:49 tg Exp $");
+__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.36 2020/03/27 06:08:16 tg Exp $");
 #endif
 
 /*-
  * Copyright © 2004, 2005, 2006, 2007, 2008, 2011, 2012, 2013,
- *	       2014, 2016, 2017, 2018
+ *	       2014, 2016, 2017, 2018, 2020
  *	Thorsten “mirabilos” Glaser <tg@mirbsd.org>
  *
  * Provided that these terms and disclaimer and all copyright notices
@@ -207,7 +207,7 @@ struct options {
 	unsigned char *syntax_name;	/* Name of syntax to use */
 	struct high_syntax *syntax;	/* Syntax for highlighting (load_dfa() from syntax_name happens in setopt()) */
 	unsigned char *map_name;	/* Name of character set */
-	struct charmap *charmap;	/* Character set */
+	union charmap *charmap;	/* Character set */
 	int	smarthome;	/* Set for smart home key */
 	int	indentfirst;	/* Smart home goes to indentation point first */
 	int	smartbacks;	/* Set for smart backspace key */

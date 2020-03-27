@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/macro.c,v 1.20 2018/01/07 23:51:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/macro.c,v 1.21 2020/03/27 06:08:13 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -133,7 +133,7 @@ MACRO *mparse(MACRO *m, unsigned char *buf, int *sta)
  macroloop:
 
 	/* Skip whitespace */
-	while (joe_isblank(locale_map,buf[x]))
+	while (joe_isblank(buf[x]))
 		++x;
 
 	/* If the buffer is only whitespace then treat as unknown command */
@@ -227,13 +227,13 @@ MACRO *mparse(MACRO *m, unsigned char *buf, int *sta)
 	}
 
 	/* Skip whitespace */
-	while (joe_isblank(locale_map,buf[x]))
+	while (joe_isblank(buf[x]))
 		++x;
 
 	/* Do we have a comma? */
 	if (buf[x] == ',') {
 		++x;
-		while (joe_isblank(locale_map,buf[x]))
+		while (joe_isblank(buf[x]))
 			++x;
 		if (buf[x] && buf[x] != '\r' && buf[x] != '\n')
 			goto macroloop;

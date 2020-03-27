@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/tw.c,v 1.23 2018/11/11 18:15:38 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/tw.c,v 1.24 2020/03/27 06:08:16 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -291,7 +291,7 @@ stagen(unsigned char *stalin, BW *bw, const unsigned char *s, int fill)
 				stalin = vsncpy(sv(stalin), sz(buf));
 				break;
 			case 'a':
-				if (bw->b->o.charmap->type && !(special_aA && (brch(bw->cursor) & 0x80000000))) {
+				if (joe_maputf(bw->b->o.charmap) && !(special_aA && (brch(bw->cursor) & 0x80000000))) {
 					/* UTF-8: don't display decimal value */
 					buf[0] = 'u';
 					buf[1] = 0;
@@ -307,7 +307,7 @@ stagen(unsigned char *stalin, BW *bw, const unsigned char *s, int fill)
 				stalin = vsncpy(sv(stalin), sz(buf));
 				break;
 			case 'A':
-				if (bw->b->o.charmap->type) {
+				if (joe_maputf(bw->b->o.charmap)) {
 					/* UTF-8, display UCS-2 value */
 					if (!piseof(bw->cursor)) {
 						int uch = brch(bw->cursor);

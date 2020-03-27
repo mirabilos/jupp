@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/termcap.c,v 1.26 2018/11/11 18:15:38 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/termcap.c,v 1.27 2020/03/27 06:08:16 tg Exp $");
 
 #include <sys/stat.h>
 #include <stdlib.h>
@@ -394,12 +394,24 @@ CAP *setcap(CAP *cap, unsigned int baud, void (*out) (unsigned char *, unsigned 
 	return cap;
 }
 
+#ifdef TERMINFO
+/* const-dirty curses interface to the terminfo capability database */
+union compat_hack {
+	char *rw;
+	const unsigned char *ro;
+};
+#endif
+
 int
 getflag(CAP *cap, const unsigned char *name)
 {
 #ifdef TERMINFO
-	if (cap->abuf)
-		return tgetflag((char *)name);
+	if (cap->abuf) {
+		union compat_hack hack;
+
+		hack.ro = name;
+		return tgetflag(hack.rw);
+	}
 #endif
 	return findcap(cap, name) != NULL;
 }
@@ -410,9 +422,13 @@ jgetstr(CAP *cap, const unsigned char *name)
 	struct sortentry *s;
 
 #ifdef TERMINFO
-	if (cap->abuf)
-		return (const unsigned char *)tgetstr((char *)name,
+	if (cap->abuf) {
+		union compat_hack hack;
+
+		hack.ro = name;
+		return (const unsigned char *)tgetstr(hack.rw,
 		    (char **)&cap->abufp);
+	}
 #endif
 	s = findcap(cap, name);
 	if (s)
@@ -427,8 +443,12 @@ getnum(CAP *cap, const unsigned char *name)
 	struct sortentry *s;
 
 #ifdef TERMINFO
-	if (cap->abuf)
-		return tgetnum((char *)name);
+	if (cap->abuf) {
+		union compat_hack hack;
+
+		hack.ro = name;
+		return tgetnum(hack.rw);
+	}
 #endif
 	s = findcap(cap, name);
 	if (s && s->value)

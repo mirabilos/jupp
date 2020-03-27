@@ -5,7 +5,8 @@ GCC
 ---
 
 Disable the following warnings; the code doesn't cope with it:
--Wno-pointer-sign -Wno-unused-parameter -Wno-cast-qual
+-Wno-pointer-sign
+-Wno-unused-parameter
 -Wno-strict-prototypes
 
 UTF-8
@@ -125,4 +126,4 @@ will not insert.
 - Search, incremental search, and search & replace all operate as usual.
 
 ___________________________________________________________________
-$MirOS: contrib/code/jupp/HINTS,v 1.17 2018/08/10 02:53:42 tg Exp $
+$MirOS: contrib/code/jupp/HINTS,v 1.18 2020/03/27 06:08:10 tg Exp $

@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/termidx.c,v 1.7 2017/12/08 02:28:06 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/termidx.c,v 1.8 2020/03/27 06:08:16 tg Exp $");
 
 #include <string.h>
 
@@ -72,7 +72,8 @@ static void gen(unsigned char *s, FILE *fd)
 	}
 }
 
-int main(int argc, char *argv[])
+int
+main(void)
 {
 	unsigned char array[65536];
 

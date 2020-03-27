@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.45 2018/06/28 03:11:13 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.46 2020/03/27 06:08:15 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -29,7 +29,7 @@ int usetabs = 0;
 int assume_color = 0;
 
 static int
-xlat(int chkasis, int c, int *ap, struct charmap *map)
+xlat(int chkasis, int c, int *ap, union charmap *map)
 {
 	if (joe_isprint(map, c))
 		return (c);
@@ -110,19 +110,19 @@ void
 outatr_help(SCRN *t, int *scrn, int *attrf, int xx, int yy, int c, int a)
 {
 	/* kludge for help_display() only */
-	if (locale_map->type)
+	if (joe_maputf(locale_map))
 		c = xlat(0, c, &a, locale_map);
 	outatr(locale_map, t, scrn, attrf, xx, yy, c, a);
 }
 
 void
-outatr(struct charmap *map, SCRN *t, int *scrn, int *attrf, int xx, int yy, int c, int a)
+outatr(union charmap *map, SCRN *t, int *scrn, int *attrf, int xx, int yy, int c, int a)
 {
 	int wid = 1;
 
-	if (locale_map->type) {
+	if (joe_maputf(locale_map)) {
 		/* to UTF-8 terminal */
-		if (map->type) {
+		if (joe_maputf(map)) {
 			/* from UTF-8 file */
 			switch ((wid = unictrl(c))) {
 			case 0:
@@ -138,7 +138,7 @@ outatr(struct charmap *map, SCRN *t, int *scrn, int *attrf, int xx, int yy, int 
 			}
 		} else {
 			/* from SBCS file */
-			c = to_uni(map, xlat(1, c, &a, map));
+			c = joe_to_uni(map, xlat(1, c, &a, map));
 			if (c < 32 || (c >= 0x7F && c < 0xA0)) {
 				c = 0xFFFD;
 				a = (a | UNDERLINE) ^ INVERSE;
@@ -146,14 +146,14 @@ outatr(struct charmap *map, SCRN *t, int *scrn, int *attrf, int xx, int yy, int 
 		}
 	} else {
 		/* to SBCS terminal */
-		if (map->type) {
+		if (joe_maputf(map)) {
 			/* from UTF-8 file */
 
 			/* don't convert control chars below 256 */
 			if ((c >= 0x20 && c < 0x7F) || c >= 0xA0) {
 				if (unictrl(c))
 					a ^= UNDERLINE;
-				if ((c = from_uni(locale_map, c)) == -1) {
+				if ((c = joe_from_uni(locale_map, c)) == -1) {
 					c = '!';
 					a |= UNDERLINE;
 				}
@@ -173,10 +173,10 @@ outatr(struct charmap *map, SCRN *t, int *scrn, int *attrf, int xx, int yy, int 
 		cpos(t, xx, yy);
 	if (t->attrib != a)
 		set_attr(t, a);
-	if (!locale_map->type) {
+	if (!joe_maputf(locale_map)) {
 		/* SBCS terminal */
 		ttputc(c);
-	} else if (map->type && *unictrlbuf) {
+	} else if (joe_maputf(map) && *unictrlbuf) {
 		/* UTF-8 control char, masked */
 		ttputs(unictrlbuf);
 	} else {
@@ -214,6 +214,7 @@ static void setregn(SCRN *t, int top, int bot)
 
 /* Enter insert mode */
 
+#ifdef notyet
 static void setins(SCRN *t, int x)
 {
 	if (t->ins != 1 && t->im) {
@@ -221,6 +222,7 @@ static void setins(SCRN *t, int x)
 		texec(t->cap, t->im, 1, x, 0, 0, 0);
 	}
 }
+#endif
 
 /* Exit insert mode */
 
@@ -1085,6 +1087,7 @@ int cpos(register SCRN *t, register int x, register int y)
 	return 0;
 }
 
+#ifdef notyet
 static void doinschr(SCRN *t, int x, int y, int *s, int *as, int n)
 {
 	int a;
@@ -1144,7 +1147,8 @@ static void dodelchr(SCRN *t, int x, int y, int n)
 /* Insert/Delete within line */
 /* FIXME: doesn't know about attr */
 
-void magic(SCRN *t, int y, int *cs, int *ca,int *s, int *a, int placex)
+void
+magic(SCRN *t, int y, int *cs, int *s, int *a, int placex)
 {
 	struct s_hentry *htab = t->htab;
 	int *ofst = t->ofst;
@@ -1251,6 +1255,7 @@ void magic(SCRN *t, int y, int *cs, int *ca,int *s, int *a, int placex)
 		}
 	}
 }
+#endif
 
 static void doupscrl(SCRN *t, int top, int bot, int amnt)
 {
@@ -1644,7 +1649,7 @@ void genfield(SCRN *t,int *scrn,int *attr,int x,int y,int ofst,unsigned char *s,
 		int wid = -1;
 		int my_atr = atr;
 		if (fmt) my_atr |= *fmt++;
-		if (locale_map->type) {
+		if (joe_maputf(locale_map)) {
 			/* UTF-8 mode: decode character and determine its width */
 			c = utf8_decode(&sm,c);
 			if (c >= 0)
@@ -1702,7 +1707,7 @@ void genfield(SCRN *t,int *scrn,int *attr,int x,int y,int ofst,unsigned char *s,
 
 int txtwidth(unsigned char *s,int len)
 {
-	if (locale_map->type) {
+	if (joe_maputf(locale_map)) {
 		int col=0;
 		struct utf8_sm sm;
 		utf8_init(&sm);
@@ -1763,7 +1768,7 @@ void genfmt(SCRN *t, int x, int y, int ofst, const unsigned char *s, int flg)
 			}
 		} else {
 			int wid = -1;
-			if (locale_map->type) {
+			if (joe_maputf(locale_map)) {
 				/* UTF-8 mode: decode character and determine its width */
 				c = utf8_decode(&sm,c);
 				if (c >= 0) {
@@ -1834,7 +1839,8 @@ int fmtlen(const unsigned char *s)
 			}
 		} else {
 			int wid = 0;
-			if(locale_map->type) {
+
+			if (joe_maputf(locale_map)) {
 				c = utf8_decode(&sm,c);
 				if (c>=0)
 					wid = joe_wcwidth(c);
@@ -1885,7 +1891,8 @@ int fmtpos(unsigned char *s, int goal)
 			}
 		} else {
 			int wid = 0;
-			if(locale_map->type) {
+
+			if (joe_maputf(locale_map)) {
 				c = utf8_decode(&sm,c);
 				if (c>=0)
 					wid = joe_wcwidth(c);

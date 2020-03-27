@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.26 2018/01/06 00:28:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/umath.c,v 1.27 2020/03/27 06:08:18 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -58,7 +58,7 @@ get(const unsigned char *str)
 	v->set = 0;
 	v->next = vars;
 	vars = v;
-	v->name = (unsigned char *)strdup((char *)str);
+	v->name = (unsigned char *)strdup((const char *)str);
 	return v;
 }
 

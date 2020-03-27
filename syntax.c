@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/syntax.c,v 1.25 2018/11/11 18:15:38 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/syntax.c,v 1.26 2020/03/27 06:08:16 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -95,7 +95,7 @@ octetutf(P *p)
 			return (NO_MORE_DATA);
 
 		utfstate.limit = utf8_encode(utfstate.buf,
-		    to_uni(p->b->o.charmap, c));
+		    joe_to_uni(p->b->o.charmap, c));
 		utfstate.start = 0;
 		utfstate.first = 1;
 	}
@@ -124,7 +124,8 @@ int parse(struct high_syntax *syntax, P *line, int state)
 	int *attr = attr_buf;
 	int c;			/* Current character */
 	int ofst = 0;	/* record length after we've stopped buffering */
-	int (*getoctet)(P *) = line->b->o.charmap->type ? utfoctet : octetutf;
+	int (*getoctet)(P *) = joe_maputf(line->b->o.charmap) ?
+	    utfoctet : octetutf;
 
 	memset(&utfstate, 0, sizeof(utfstate));
 	buf[0] = 0;

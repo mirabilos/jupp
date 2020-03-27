@@ -9,14 +9,14 @@
 #define _JOE_PW_H 1
 
 #ifdef EXTERN_CMD_C
-__IDSTRING(rcsid_pw_h, "$MirOS: contrib/code/jupp/pw.h,v 1.10 2017/12/08 02:17:22 tg Exp $");
+__IDSTRING(rcsid_pw_h, "$MirOS: contrib/code/jupp/pw.h,v 1.11 2020/03/27 06:08:14 tg Exp $");
 #endif
 
 /* BW *wmkpw(BW *bw,char *prompt,int (*func)(),char *huh,int (*abrt)(),
 	     int (*tab)(),void *object,int *notify);
  * Create a prompt window for the given window
  */
-BW *wmkpw(W *w, const unsigned char *prompt, B **history, jpoly_int *func, const unsigned char *huh, jpoly_int *abrt, jpoly_int *tab, void *object, int *notify, struct charmap *map);
+BW *wmkpw(W *w, const unsigned char *prompt, B **history, jpoly_int *func, const unsigned char *huh, jpoly_int *abrt, jpoly_int *tab, void *object, int *notify, union charmap *map);
 
 int ucmplt(BW *bw, int k);
 

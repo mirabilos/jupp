@@ -565,7 +565,6 @@ Other requests:
   option perhaps? Android definitely, Cygwin definitely not…)
 • merge syntax handling code from joe-3.7+
 • merge math from joe-3.7+
-• make -Wcast-qual clean
 • write a jupp(1) mdoc page
 • use mirkev (better code for hashtables)
 • attach labels to ftypes; allow ftypes to inherit from these
@@ -603,4 +602,4 @@ Other requests:
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.51 2019/08/02 19:04:49 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.52 2020/03/27 06:08:10 tg Exp $

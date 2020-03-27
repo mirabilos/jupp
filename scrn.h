@@ -9,7 +9,7 @@
 #define _JOE_SCRN_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_scrn_h, "$MirOS: contrib/code/jupp/scrn.h,v 1.12 2018/01/08 00:56:27 tg Exp $");
+__IDSTRING(rcsid_scrn_h, "$MirOS: contrib/code/jupp/scrn.h,v 1.13 2020/03/27 06:08:15 tg Exp $");
 #endif
 
 #include "tty.h"		/* ttputc() */
@@ -111,7 +111,7 @@ void utf8_putc(int c);
 
 #define HAS_COMBINING 0x200000
 
-void outatr(struct charmap *map,SCRN *t,int *scrn,int *attrf,int xx,int yy,int c,int a);
+void outatr(union charmap *map, SCRN *t, int *scrn, int *attrf, int xx, int yy, int c, int a);
 void outatr_help(SCRN *, int *, int *, int, int, int, int);
 
 /* int eraeol(SCRN *t,int x,int y);
@@ -146,7 +146,7 @@ void nscroll(SCRN *t);
  *
  * Figure out and execute line shifting
  */
-void magic(SCRN *t, int y, int *cs, int *ca, int *s, int *a,int placex);
+void magic(SCRN *t, int y, int *cs, int *s, int *a, int placex);
 
 int clrins(SCRN *t);
 

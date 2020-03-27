@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.47 2018/02/14 17:45:30 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.48 2020/03/27 06:08:15 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -66,7 +66,7 @@ kmap_getcontext(const unsigned char *name, int docreate)
 	c = malloc(sizeof(struct context));
 
 	c->next = contexts;
-	c->name = (unsigned char *)strdup((char *)name);
+	c->name = (unsigned char *)strdup((const char *)name);
 	contexts = c;
 	return c->kmap = mkkmap();
 }
@@ -166,7 +166,7 @@ lazy_opts(OPTIONS *o)
 	if (!o->charmap)
 		o->charmap = fdefault.charmap;
 	/* Hex not allowed with UTF-8 */
-	if (o->hex && o->charmap->type) {
+	if (o->hex && joe_maputf(o->charmap)) {
 		o->charmap = find_charmap(UC "c");
 	}
 }
@@ -682,14 +682,14 @@ static int
 doencoding(BW *bw, unsigned char *s, int *xx, int *notify)
 {
 	int ret = 0;
-	struct charmap *map;
+	union charmap *map;
 
 	if (*s)
 		map = find_charmap(s);
 	else
 		map = fdefault.charmap;
 
-	if (map && map->type && check_for_hex(bw)) {
+	if (map && joe_maputf(map) && check_for_hex(bw)) {
 		vsrm(s);
 		msgnw(bw->parent, UC "UTF-8 encoding not allowed with hex-edit windows");
 		if (notify)
@@ -699,7 +699,8 @@ doencoding(BW *bw, unsigned char *s, int *xx, int *notify)
 
 	if (map) {
 		bw->o.charmap = map;
-		joe_snprintf_1((char *)msgbuf, JOE_MSGBUFSIZE, "%s encoding assumed for this file", map->name);
+		joe_snprintf_1((char *)msgbuf, JOE_MSGBUFSIZE,
+		    "%s encoding assumed for this file", joe_mapname(map));
 		msgnw(bw->parent, msgbuf);
 	} else
 		msgnw(bw->parent, UC "Character set not found");
@@ -761,7 +762,7 @@ doopt(MENU *m, int x, void *object, int flg)
 		/* Kill UTF-8 and CR-LF mode if we switch to hex display */
 		if (glopts[x].ofst == (unsigned char *)&fdefault.hex - (unsigned char *)&fdefault &&
 		    bw->o.hex) {
-			if (bw->b->o.charmap->type) {
+			if (joe_maputf(bw->b->o.charmap)) {
 				doencoding(bw, vsncpy(NULL, 0, sc("c")),
 				    NULL, NULL);
 			}
@@ -769,7 +770,8 @@ doopt(MENU *m, int x, void *object, int flg)
 		}
 		break;
 	case 1:
-		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, *glopts[x].set.i);
+		joe_snprintf_1((char *)buf, OPT_BUF_SIZE,
+		    (const char *)glopts[x].yes, *glopts[x].set.i);
 		xx = malloc(sizeof(int));
 
 		*xx = x;
@@ -783,9 +785,11 @@ doopt(MENU *m, int x, void *object, int flg)
 			return -1;
 	case 2:
 		if (*glopts[x].set.us)
-			joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, *glopts[x].set.us);
+			joe_snprintf_1((char *)buf, OPT_BUF_SIZE,
+			    (const char *)glopts[x].yes, *glopts[x].set.us);
 		else
-			joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes, "");
+			joe_snprintf_1((char *)buf, OPT_BUF_SIZE,
+			    (const char *)glopts[x].yes, "");
 		xx = malloc(sizeof(int));
 
 		*xx = x;
@@ -814,7 +818,8 @@ doopt(MENU *m, int x, void *object, int flg)
 			return -1;
 
 	case 9:
-		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes,
+		joe_snprintf_1((char *)buf, OPT_BUF_SIZE,
+		    (const char *)glopts[x].yes,
 		    bw->b->o.syntax ? bw->b->o.syntax->name : UC "(unset)");
 		m->parent->notify = 0;
 		wabort(m->parent);
@@ -824,8 +829,9 @@ doopt(MENU *m, int x, void *object, int flg)
 			return -1;
 
 	case 13:
-		joe_snprintf_1((char *)buf, OPT_BUF_SIZE, (char *)glopts[x].yes,
-		    bw->b->o.charmap ? bw->b->o.charmap->name : UC "(unset)");
+		joe_snprintf_1((char *)buf, OPT_BUF_SIZE,
+		    (const char *)glopts[x].yes,
+		    bw->b->o.charmap ? joe_mapname(bw->b->o.charmap) : UC "(unset)");
 		m->parent->notify = 0;
 		wabort(m->parent);
 		if (wmkpw(bw->parent, buf, NULL, doencoding, NULL, NULL, encodingcmplt, NULL, notify, locale_map))
@@ -911,7 +917,7 @@ umode(BW *bw)
 		case 13:
 			/* XXX aligns differently so it doesn't get too large */
 			joe_snprintf_2(s[x] + 12, OPT_BUF_SIZE - 12, "%*s", (int)n - 9,
-			    bw->b->o.charmap ? bw->b->o.charmap->name : UC "(unset)");
+			    bw->b->o.charmap ? joe_mapname(bw->b->o.charmap) : UC "(unset)");
 			break;
 		default:
 			s[x][n] = '\0';
@@ -1019,14 +1025,14 @@ procrc(CAP *cap, const unsigned char *name)
 			buf[x] = 0;
 			if (x != 1)
 				if (!strcmp(buf + 1, "def")) {
-					for (buf[x] = c; joe_isblank(locale_map,buf[x]); ++x) ;
+					for (buf[x] = c; joe_isblank(buf[x]); ++x) ;
 					for (y = x; !joe_isspace_eof(locale_map,buf[y]); ++y) ;
 					c = buf[y];
 					buf[y] = 0;
 					if (y == x) {
 						err = 1;
 						fprintf(stderr, "\n%s:%d: command name missing from :def", name, line);
-					} else if (joe_isblank(locale_map, c) &&
+					} else if (joe_isblank(c) &&
 					    (m = mparse(NULL, buf + y + 1, &sta)))
 						addcmd(buf + x, m);
 					else {
@@ -1035,7 +1041,7 @@ procrc(CAP *cap, const unsigned char *name)
 					}
 				} else if (!strcmp(buf + 1, "inherit"))
 					if (context) {
-						for (buf[x] = c; joe_isblank(locale_map,buf[x]); ++x) ;
+						for (buf[x] = c; joe_isblank(buf[x]); ++x) ;
 						for (c = x; !joe_isspace_eof(locale_map,buf[c]); ++c) ;
 						buf[c] = 0;
 						if (c != x)
@@ -1048,7 +1054,7 @@ procrc(CAP *cap, const unsigned char *name)
 						err = 1;
 						fprintf(stderr, "\n%s:%d: No context selected for :inherit", name, line);
 				} else if (!strcmp(buf + 1, "include")) {
-					for (buf[x] = c; joe_isblank(locale_map,buf[x]); ++x) ;
+					for (buf[x] = c; joe_isblank(buf[x]); ++x) ;
 					for (c = x; !joe_isspace_eof(locale_map,buf[c]); ++c) ;
 					buf[c] = 0;
 					if (c != x) {
@@ -1069,7 +1075,7 @@ procrc(CAP *cap, const unsigned char *name)
 					}
 				} else if (!strcmp(buf + 1, "delete"))
 					if (context) {
-						for (buf[x] = c; joe_isblank(locale_map,buf[x]); ++x) ;
+						for (buf[x] = c; joe_isblank(buf[x]); ++x) ;
 						for (y = x; buf[y] != 0 && buf[y] != '\t' && buf[y] != '\n' && (buf[y] != ' ' || buf[y + 1]
 														!= ' '); ++y) ;
 						buf[y] = 0;

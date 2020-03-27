@@ -1,4 +1,4 @@
-#define JUPP_IS_COPYRIGHT_C_BY "2018 mirabilos"
+#define JUPP_IS_COPYRIGHT_C_BY "2020 mirabilos"
 
 /*-
  * Copyright (c) 2004ff. Thorsten Glaser
@@ -32,7 +32,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.45 2018/11/11 18:51:26 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.46 2020/03/27 06:08:14 tg Exp $");
 
 #include <fcntl.h>
 #include <string.h>
@@ -188,7 +188,7 @@ int edloop(int flg)
 unsigned char **mainenv;
 
 static int
-main_init(int argc, char **argv, char **envp, SCRN **np)
+main_init(char **argv, char **envp, SCRN **np)
 {
 	CAP *cap;
 	unsigned char *s;
@@ -425,7 +425,8 @@ main_init(int argc, char **argv, char **envp, SCRN **np)
 		joe_snprintf_5((char *)msgbuf, JOE_MSGBUFSIZE,
 		    "\\i[ Joe's Own Editor v" VERSION
 		    " | %s | %s " JUPP_IS_COPYRIGHT_C_BY " ]%s%s%s",
-		    locale_map->name, locale_map->type ? "©" : "(c)",
+		    joe_mapname(locale_map),
+		    joe_maputf(locale_map) ? "©" : "(c)",
 		    uninvert ? "\\i " : fdefault.hmsg ? " " : "",
 		    uninvert ? fdefault.hmsg + 2 : fdefault.hmsg ?
 		    fdefault.hmsg : "", uninvert ? "" : "\\i");
@@ -443,7 +444,7 @@ main(int argc, char **argv, char **envp)
 {
 	SCRN *n;
 
-	if ((main_rv = main_init(argc, argv, envp, &n)))
+	if ((main_rv = main_init(argv, envp, &n)))
 		return (main_rv);
 
 	edloop(0);
