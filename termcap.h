@@ -9,19 +9,18 @@
 #define _JOE_TERMCAP_H 1
 
 #ifdef EXTERN
-__IDSTRING(rcsid_termcap_h, "$MirOS: contrib/code/jupp/termcap.h,v 1.9 2017/12/08 02:46:46 tg Exp $");
+__IDSTRING(rcsid_termcap_h, "$MirOS: contrib/code/jupp/termcap.h,v 1.10 2020/03/27 06:30:17 tg Exp $");
 #endif
 
-/* CAP *getcap(char *s,int baud,void (*out)(void *outptr,char c),void *outptr);
+/* CAP *getcap(char *s, int baud, int (*out)(char c));
  *
  * Get CAP entry for terminal named in 's'.  If 's' is zero, the name in
  * the environment variable 'TERM' is used instead.  Space for the returned
  * CAP is allocated from the heap using malloc.
  *
  * 'baud'   is the baud rate used for 'texec' to calculate number of pad chars
- * 'out'    is the function 'texec' uses to output characters
- * 'outptr' is the passed as the first arg to 'out'
- *          the second arg contains the char to output
+ * 'out'    is the function 'texec' uses to output characters, expected to
+ *          both output as well as return its (sole) argument
  *
  * This is how 'getcap' finds the entry:  First a list of file names is
  * built.  If the environment variable 'TERMCAP' begins with a '/', it
@@ -49,13 +48,13 @@ __IDSTRING(rcsid_termcap_h, "$MirOS: contrib/code/jupp/termcap.h,v 1.9 2017/12/0
  * done for self-refering 'tc=filename' links (so all of core will be
  * allocated if there are any).
  */
-CAP *getcap(unsigned char *name, unsigned int baudrate, void (*out) (unsigned char *, unsigned char), void *outptr);
+CAP *getcap(unsigned char *name, unsigned int baudrate, int (*out)(int));
 
-/* CAP *setcap(CAP *cap,int baud,void (*out)(void *outptr,char c),void *outptr);
+/* CAP *setcap(CAP *cap, int baud, void (*out)(char c));
  *
- * Reset baud, out and outptr for a CAP
+ * Reset baud and out for a CAP
  */
-CAP *setcap(CAP *cap, unsigned int baudrate, void (*out) (unsigned char *, unsigned char), void *outptr);
+CAP *setcap(CAP *cap, unsigned int baudrate, int (*out)(int));
 
 /* char *jgetstr(CAP *cap,char *name);
  *

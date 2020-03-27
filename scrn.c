@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.46 2020/03/27 06:08:15 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/scrn.c,v 1.47 2020/03/27 06:30:16 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -283,9 +283,11 @@ int eraeol(SCRN *t, int x, int y)
 	return 0;
 }
 
-static void out(unsigned char *t, unsigned char c)
+static int
+out(int c)
 {
 	ttputc(c);
+	return (c);
 }
 
 SCRN *nopen(CAP *cap)
@@ -296,7 +298,7 @@ SCRN *nopen(CAP *cap)
 	ttopen();
 
 	t->cap = cap;
-	setcap(cap, baud, out, NULL);
+	setcap(cap, baud, out);
 
 	t->li = getnum(t->cap, UC "li");
 	if (t->li < 1)

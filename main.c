@@ -32,7 +32,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.46 2020/03/27 06:08:14 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/main.c,v 1.47 2020/03/27 06:30:16 tg Exp $");
 
 #include <fcntl.h>
 #include <string.h>
@@ -219,7 +219,7 @@ main_init(char **argv, char **envp, SCRN **np)
 	if ((s = (unsigned char *)getenv("JOETERM")) != NULL)
 		joeterm = s;
 
-	if (!(cap = getcap(NULL, 9600, NULL, NULL))) {
+	if (!(cap = getcap(NULL, 9600, NULL))) {
 		fprintf(stderr, "Couldn't load termcap/terminfo entry\n");
 		return 1;
 	}

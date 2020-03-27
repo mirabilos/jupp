@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/termcap.c,v 1.27 2020/03/27 06:08:16 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/termcap.c,v 1.28 2020/03/27 06:30:16 tg Exp $");
 
 #include <sys/stat.h>
 #include <stdlib.h>
@@ -140,7 +140,8 @@ findidx(FILE *file, const unsigned char *name)
 
 /* Load termcap entry */
 
-CAP *getcap(unsigned char *name, unsigned int baud, void (*out) (unsigned char *, unsigned char), void *outptr)
+CAP *
+getcap(unsigned char *name, unsigned int baud, int (*out)(int))
 {
 	CAP *cap;
 	FILE *f, *f1;
@@ -167,7 +168,7 @@ CAP *getcap(unsigned char *name, unsigned int baud, void (*out) (unsigned char *
 	cap->abuf = malloc(4096);
 	cap->abufp = cap->abuf;
 	if (tgetent((char *)cap->tbuf, (char *)name) == 1)
-		return setcap(cap, baud, out, outptr);
+		return setcap(cap, baud, out);
 	else {
 		free(cap->abuf);
 		cap->abuf = NULL;
@@ -360,7 +361,7 @@ CAP *getcap(unsigned char *name, unsigned int baud, void (*out) (unsigned char *
 	for(x=0;x!=cap->sortlen;++x)
 		printf("%s = %s\n",cap->sort[x].name,cap->sort[x].value);
 */
-	return setcap(cap, baud, out, outptr);
+	return setcap(cap, baud, out);
 }
 
 static struct sortentry *
@@ -385,12 +386,12 @@ findcap(CAP *cap, const unsigned char *name)
 	return NULL;
 }
 
-CAP *setcap(CAP *cap, unsigned int baud, void (*out) (unsigned char *, unsigned char), void *outptr)
+CAP *
+setcap(CAP *cap, unsigned int baud, int (*out)(int))
 {
 	cap->baud = baud;
 	cap->div = 100000 / baud;
 	cap->out = out;
-	cap->outptr = outptr;
 	return cap;
 }
 
@@ -514,15 +515,6 @@ escape(const unsigned char **s)
 		return c;
 }
 
-#ifdef TERMINFO
-static CAP *outcap;
-static int outout(int c)
-{
-	outcap->out(outcap->outptr, c);
-	return(c);	/* act like putchar() - return written char */
-}
-#endif
-
 void
 texec(CAP *cap, const unsigned char *s, int l, int a0, int a1, int a2, int a3)
 {
@@ -539,9 +531,8 @@ texec(CAP *cap, const unsigned char *s, int l, int a0, int a1, int a2, int a3)
 	if (cap->abuf) {
 		unsigned char *aa;
 
-		outcap = cap;
 		aa = (unsigned char *)tgoto((const char *)s, a1, a0);
-		tputs((char *)aa, l, outout);
+		tputs((char *)aa, l, cap->out);
 		return;
 	}
 #endif
@@ -573,7 +564,7 @@ texec(CAP *cap, const unsigned char *s, int l, int a0, int a1, int a2, int a3)
 			switch (x = a[0], c = escape(&s)) {
 			case 'C':
 				if (x >= 96) {
-					cap->out(cap->outptr, x / 96);
+					cap->out((unsigned char)(x / 96));
 					x %= 96;
 				}
 				/* FALLTHROUGH */
@@ -582,7 +573,7 @@ texec(CAP *cap, const unsigned char *s, int l, int a0, int a1, int a2, int a3)
 					x += escape(&s);
 				/* FALLTHROUGH */
 			case '.':
-				cap->out(cap->outptr, x);
+				cap->out((unsigned char)x);
 				++a;
 				break;
 			case 'd':
@@ -599,15 +590,16 @@ texec(CAP *cap, const unsigned char *s, int l, int a0, int a1, int a2, int a3)
 					++c;
 					x -= 100;
 				}
-				cap->out(cap->outptr, c);
+				cap->out((unsigned char)c);
  two:
 				c = '0';
 				while (x >= 10) {
 					++c;
 					x -= 10;
 				}
-				cap->out(cap->outptr, c);
-			      one:cap->out(cap->outptr, '0' + x);
+				cap->out((unsigned char)c);
+ one:
+				cap->out((unsigned char)('0' + x));
 				++a;
 				break;
 			case 'r':
@@ -680,12 +672,12 @@ texec(CAP *cap, const unsigned char *s, int l, int a0, int a1, int a2, int a3)
 					escape(&s);
 				/* FALLTHROUGH */
 			default:
-				cap->out(cap->outptr, '%');
-				cap->out(cap->outptr, c);
+				cap->out((unsigned char)'%');
+				cap->out((unsigned char)c);
 			}
 		} else {
 			--s;
-			cap->out(cap->outptr, escape(&s));
+			cap->out((unsigned char)escape(&s));
 		}
 
 /* Output padding characters */
@@ -693,12 +685,12 @@ texec(CAP *cap, const unsigned char *s, int l, int a0, int a1, int a2, int a3)
 		if (cap->pad)
 			while (tenth >= cap->div)
 				for (s = cap->pad; *s; ++s) {
-					cap->out(cap->outptr, *s);
+					cap->out((unsigned char)(*s));
 					tenth -= cap->div;
 				}
 		else
 			while (tenth >= cap->div) {
-				cap->out(cap->outptr, 0);
+				cap->out(0);
 				tenth -= cap->div;
 			}
 	}
@@ -708,14 +700,16 @@ texec(CAP *cap, const unsigned char *s, int l, int a0, int a1, int a2, int a3)
 
 static int total;
 
-static void cst(unsigned char *ptr, unsigned char c)
+static int
+cst(int c)
 {
 	++total;
+	return (c);
 }
 
 int tcost(CAP *cap, const unsigned char *s, int l, int a0, int a1, int a2, int a3)
 {
-	void (*out)(unsigned char *, unsigned char) = cap->out;
+	int (*out)(int) = cap->out;
 
 	if (!s)
 		return 10000;
@@ -727,15 +721,17 @@ int tcost(CAP *cap, const unsigned char *s, int l, int a0, int a1, int a2, int a
 }
 
 static unsigned char *ssp;
-static void cpl(unsigned char *ptr, unsigned char c)
+static int
+cpl(int c)
 {
-	ssp = vsadd(ssp, c);
+	ssp = vsadd(ssp, (unsigned char)c);
+	return (c);
 }
 
 unsigned char *
 tcompile(CAP *cap, const unsigned char *s, int a0, int a1, int a2, int a3)
 {
-	void (*out) (unsigned char *, unsigned char) = cap->out;
+	int (*out)(int) = cap->out;
 	int divider = cap->div;
 
 	if (!s)

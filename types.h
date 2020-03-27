@@ -2,7 +2,7 @@
 #define _JOE_TYPES_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.36 2020/03/27 06:08:16 tg Exp $");
+__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.37 2020/03/27 06:30:17 tg Exp $");
 #endif
 
 /*-
@@ -554,9 +554,7 @@ struct cap {
 	int	div;		/* tenths of MS per char */
 	int	baud;		/* Baud rate */
 	const unsigned char *pad;	/* Padding string or NULL to use NUL */
-	void	(*out) (unsigned char *, unsigned char);		/* Character output routine */
-	void	*outptr;	/* First arg passed to output routine.  Second
-				   arg is character to write */
+	int	(*out)(int);	/* character output routine */
 	int	dopadding;	/* Set if pad characters should be used */
 	const char *paste_on;	/* Enable bracketed paste mode */
 	const char *paste_off;	/* Disable bracketed paste mode */
