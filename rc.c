@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.49 2020/03/27 06:46:05 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.50 2020/04/07 11:56:41 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -329,7 +329,7 @@ static void izopts(void)
 		}
 	isiz = 1;
 }
-#define RELOPT(lopts, opt) (*((int *)(((unsigned char *)(lopts)) + glopts[opt].ofst)))
+#define RELOPT(lopts,opt) (*((int *)(((unsigned char *)(lopts)) + glopts[opt].ofst)))
 
 /*-
  * Set a global or local option:

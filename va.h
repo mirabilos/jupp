@@ -9,7 +9,7 @@
 #define JUPP_VA_H
 
 #ifdef EXTERN_B_C
-__IDSTRING(rcsid_va_h, "$MirOS: contrib/code/jupp/va.h,v 1.9 2020/03/27 06:39:00 tg Exp $");
+__IDSTRING(rcsid_va_h, "$MirOS: contrib/code/jupp/va.h,v 1.10 2020/04/07 11:56:41 tg Exp $");
 #endif
 
 #include "vs.h"
@@ -201,14 +201,14 @@ aELEMENT *_vaset(aELEMENT *vary, int pos, aELEMENT el);
  * Return array,size pair of rest of array beginning at pos.  If
  * pos is past end of array, gives size of 0.
  */
-#define arest(a, p) ((a) + (p)), (((p) > aLEN(a)) ? 0 : aLen(a) - (p))
+#define arest(a,p) ((a) + (p)), (((p) > aLEN(a)) ? 0 : aLen(a) - (p))
 
 /* { aELEMENT *, int } apart(aELEMENT *vary, int pos, int len);
  * Return array,size pair of 'len' elements of array beginning with pos.  If
  * pos is past end of array, gives size of 0.  If pos+len is past end of array,
  * returns number of elements to end of array.
  */
-#define apart(a, p, l) \
+#define apart(a,p,l) \
  ((a) + (p)), ((p) >= aLEN(a) ? 0 : ((p) + (l) > aLen(a) ? aLen(a) - (p) : (l)))
 
 /* aELEMENT vaget(aELEMENT *vary, int pos);
@@ -217,7 +217,7 @@ aELEMENT *_vaset(aELEMENT *vary, int pos, aELEMENT el);
  * does not make a duplicate of the returned element.  If you want that, pass
  * the return value of this to adup.
  */
-#define vaget(a, p) ((p) >= aLEN(a) ? aterm : (a)[p])
+#define vaget(a,p) ((p) >= aLEN(a) ? aterm : (a)[p])
 
 /*************************/
 /* Searching and Sorting */

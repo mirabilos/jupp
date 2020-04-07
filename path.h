@@ -9,7 +9,7 @@
 #define JUPP_PATH_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_path_h, "$MirOS: contrib/code/jupp/path.h,v 1.19 2020/03/27 06:38:57 tg Exp $");
+__IDSTRING(rcsid_path_h, "$MirOS: contrib/code/jupp/path.h,v 1.20 2020/04/07 11:56:41 tg Exp $");
 #endif
 
 #if defined(__MSDOS__) || defined(__DJGPP__) || defined(__EMX__) || \
@@ -25,7 +25,7 @@ __IDSTRING(rcsid_path_h, "$MirOS: contrib/code/jupp/path.h,v 1.19 2020/03/27 06:
 #if HAVE_BACKSLASH_PATHS
 unsigned char *joesep(unsigned char *path);
 #else
-#define joesep(path) (path)
+#define joesep(path)	(path)
 #endif
 
 #if JUPP_WIN32RELOC

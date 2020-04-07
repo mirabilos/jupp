@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.24 2020/03/27 06:08:14 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/path.c,v 1.25 2020/04/07 11:56:40 tg Exp $");
 
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -67,7 +67,7 @@ __RCSID("$MirOS: contrib/code/jupp/path.c,v 1.24 2020/03/27 06:08:14 tg Exp $");
 #endif
 
 #if HAVE_DRIVE_LETTERS
-#define do_if_drive_letter(path, command) do {		\
+#define do_if_drive_letter(path,command) do {		\
 	if ((path)[1] == ':') {				\
 		drvltrhlprv = (path)[0] | 0x20;		\
 		if (drvltrhlprv >= 'a' &&		\
@@ -77,7 +77,7 @@ __RCSID("$MirOS: contrib/code/jupp/path.c,v 1.24 2020/03/27 06:08:14 tg Exp $");
 } while (/* CONSTCOND */ 0)
 #define drvltrhlpr unsigned char drvltrhlprv
 #else
-#define do_if_drive_letter(path, command) do { } while (/* CONSTCOND */ 0)
+#define do_if_drive_letter(path,command) do { } while (/* CONSTCOND */ 0)
 #define drvltrhlpr /* nothing */
 #endif
 #define skip_drive_letter(path)	do_if_drive_letter((path), (path) += 2)

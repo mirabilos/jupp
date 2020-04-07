@@ -11,7 +11,7 @@
 #define JUPP_UTILS_H
 
 #ifdef EXTERN_B_C
-__IDSTRING(rcsid_utils_h, "$MirOS: contrib/code/jupp/utils.h,v 1.15 2020/03/27 06:39:00 tg Exp $");
+__IDSTRING(rcsid_utils_h, "$MirOS: contrib/code/jupp/utils.h,v 1.16 2020/04/07 11:56:41 tg Exp $");
 #endif
 
 #include <signal.h>
@@ -38,9 +38,9 @@ typedef RETSIGTYPE (*sighandler_t)(int);
 #endif
 
 #ifdef NEED_TO_REINSTALL_SIGNAL
-#define REINSTALL_SIGHANDLER(sig, handler) joe_set_signal(sig, handler)
+#define REINSTALL_SIGHANDLER(sig,handler) joe_set_signal(sig, handler)
 #else
-#define REINSTALL_SIGHANDLER(sig, handler) do {} while(0)
+#define REINSTALL_SIGHANDLER(sig,handler) do {} while(0)
 #endif
 
 /* wrapper to hide signal interface differrencies */
