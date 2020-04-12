@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/hash.c,v 1.7 2018/01/07 23:51:34 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/hash.c,v 1.8 2020/04/07 11:56:40 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -16,7 +16,7 @@ __RCSID("$MirOS: contrib/code/jupp/hash.c,v 1.7 2018/01/07 23:51:34 tg Exp $");
 #include "hash.h"
 #include "utils.h"
 
-#define hnext(accu, c) (((accu) << 4) + ((accu) >> 28) + (c))
+#define hnext(accu,c)	(((accu) << 4) + ((accu) >> 28) + (c))
 
 static HENTRY *freentry = NULL;
 

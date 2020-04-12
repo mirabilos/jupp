@@ -9,7 +9,7 @@
 #define JUPP_VS_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_vs_h, "$MirOS: contrib/code/jupp/vs.h,v 1.12 2020/03/27 06:39:01 tg Exp $");
+__IDSTRING(rcsid_vs_h, "$MirOS: contrib/code/jupp/vs.h,v 1.13 2020/04/07 11:56:42 tg Exp $");
 #endif
 
 #include <string.h>
@@ -120,7 +120,7 @@ typedef unsigned char sELEMENT;
 
 /* Compare a single element */
 /* int scmp(); */
-#define scmp(a, b) ((a) > (b) ? 1 : ((a) == (b) ? 0 : -1))
+#define scmp(a,b) ((a) > (b) ? 1 : ((a) == (b) ? 0 : -1))
 
 /* A blank element */
 /* extern sELEMENT sblank; */
@@ -248,7 +248,7 @@ sELEMENT *vsdup(sELEMENT *vary);
  */
 sELEMENT *_vsset(sELEMENT *vary, int pos, sELEMENT el);
 
-#define vsset(v, p, el)  \
+#define vsset(v,p,el)  \
  (!(v) || (p) > sLen(v) || (p) >= sSiz(v) ?  \
   _vsset((v), (p), (el)) \
  : \
@@ -264,7 +264,7 @@ sELEMENT *_vsset(sELEMENT *vary, int pos, sELEMENT el);
  * if 'vary' is 0.  This does not duplicate element: call
  * vsadd(vary,sdup(element));  If you need it duplicated.
  */
-#define vsadd(v, el) \
+#define vsadd(v,el) \
  (!(v) || sLen(v) == sSiz(v) ? \
   _vsset((v), sLEN(v), (el)) \
  : \
@@ -298,14 +298,14 @@ sELEMENT *_vsset(sELEMENT *vary, int pos, sELEMENT el);
  * Return array, size pair of rest of array beginning at pos.  If
  * pos is past end of array, gives size of 0.
  */
-#define srest(a, p) ((a) + (p)), (((p) > sLEN(a)) ? 0 : sLen(a) - (p))
+#define srest(a,p) ((a) + (p)), (((p) > sLEN(a)) ? 0 : sLen(a) - (p))
 
 /* { sELEMENT *, int } spart(sELEMENT *vary, int pos, int len);
  * Return array,size pair of 'len' elements of array beginning with pos.  If
  * pos is past end of array, gives size of 0.  If pos+len is past end of array,
  * returns number of elements to end of array.
  */
-#define spart(a, p, l) \
+#define spart(a,p,l) \
  ((a) + (p)), ((p) >= sLEN(a) ? 0 : ((p) + (l) > sLen(a) ? sLen(a) - (p) : (l)))
 
 /* sELEMENT vsget(sELEMENT *vary, int pos);
@@ -314,7 +314,7 @@ sELEMENT *_vsset(sELEMENT *vary, int pos, sELEMENT el);
  * does not make a duplicate of the returned element.  If you want that, pass
  * the return value of this to sdup.
  */
-#define vsget(a, p) ((p) >= sLEN(a) ? sterm : (a)[p])
+#define vsget(a,p) ((p) >= sLEN(a) ? sterm : (a)[p])
 
 /*************************/
 /* Searching and Sorting */

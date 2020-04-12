@@ -2,7 +2,7 @@
 #define JUPP_TYPES_H
 
 #ifdef EXTERN
-__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.38 2020/03/27 06:38:58 tg Exp $");
+__IDSTRING(rcsid_types_h, "$MirOS: contrib/code/jupp/types.h,v 1.39 2020/04/07 11:56:41 tg Exp $");
 #endif
 
 /*-
@@ -104,17 +104,17 @@ struct jalloc_item {
 #endif
 #endif
 
-#define notok2mul(max, val, c)	(((val) != 0) && ((c) != 0) && \
+#define notok2mul(max,val,c)	(((val) != 0) && ((c) != 0) && \
 				    (((max) / (c)) < (val)))
-#define notok2add(max, val, c)	((val) > ((max) - (c)))
-#define notoktomul(val, cnst)	notok2mul(SIZE_MAX, (val), (cnst))
-#define notoktoadd(val, cnst)	notok2add(SIZE_MAX, (val), (cnst))
+#define notok2add(max,val,c)	((val) > ((max) - (c)))
+#define notoktomul(val,cnst)	notok2mul(SIZE_MAX, (val), (cnst))
+#define notoktoadd(val,cnst)	notok2add(SIZE_MAX, (val), (cnst))
 
 void jalloc_init(void);
 void *jalloc(void *, size_t, size_t);
 void jfree(void *);
 
-#define ralloc(nmemb, size)	(notoktomul(nmemb, size) ? NULL : \
+#define ralloc(nmemb,size)	(notoktomul(nmemb, size) ? NULL : \
 				    malloc((nmemb) * (size)))
 
 typedef struct header H;

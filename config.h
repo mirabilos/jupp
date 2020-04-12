@@ -117,17 +117,17 @@ size_t strlcpy(char *, const char *, size_t)
 #define __IDSTRING_CONCAT(l,p)		__LINTED__ ## l ## _ ## p
 #define __IDSTRING_EXPAND(l,p)		__IDSTRING_CONCAT(l,p)
 #ifdef MKSH_DONT_EMIT_IDSTRING
-#define __IDSTRING(prefix, string)	/* nothing */
+#define __IDSTRING(prefix,string)	/* nothing */
 #elif defined(__ELF__) && defined(__GNUC__) && \
     !(defined(__GNUC__) && defined(__mips16) && (__GNUC__ >= 8)) && \
     !defined(__llvm__) && !defined(__NWCC__) && !defined(NO_ASM)
-#define __IDSTRING(prefix, string)				\
+#define __IDSTRING(prefix,string)				\
 	__asm__(".section .comment"				\
 	"\n	.ascii	\"@(\"\"#)" #prefix ": \""		\
 	"\n	.asciz	\"" string "\""				\
 	"\n	.previous")
 #else
-#define __IDSTRING(prefix, string)				\
+#define __IDSTRING(prefix,string)				\
 	static const char __IDSTRING_EXPAND(__LINE__,prefix) []	\
 	    __attribute__((__used__)) = "@(""#)" #prefix ": " string
 #endif
@@ -137,7 +137,7 @@ size_t strlcpy(char *, const char *, size_t)
 #endif
 
 #ifdef EXTERN
-__IDSTRING(rcsid_config_h, "$MirOS: contrib/code/jupp/config.h,v 1.17 2020/03/27 06:38:56 tg Exp $");
+__IDSTRING(rcsid_config_h, "$MirOS: contrib/code/jupp/config.h,v 1.18 2020/04/07 11:56:40 tg Exp $");
 #endif
 
 #endif /* ifndef JUPP_CONFIG_H */
