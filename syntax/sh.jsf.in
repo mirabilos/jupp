@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/syntax/sh.jsf.in,v 1.7 2019/08/02 19:04:50 tg Exp $
+# $MirOS: contrib/code/jupp/syntax/sh.jsf.in,v 1.8 2020/04/13 16:05:19 tg Exp $
 #-
 # JOE syntax highlight file for sh/ksh/bash
 
@@ -264,35 +264,35 @@
 	"newgrp"	kw	# not in bash
 	"stop"		kw	# not in bash (suspends a process)
 # additional ksh builtins
-	"alias"		kw
 	"select"	kw
 	"function"	kw
-	"command"	kw
-	"fc"		kw
-	"let"		kw
-	"print"		kw
-	"unalias"	kw
-	"whence"	kw
-	"history"	kw
 	"time"		kw
-	"typeset"	kw
-	"local"		kw
-	"global"	kw
 	"."		kw
 	":"		kw
-	"true"		kw
-	"false"		kw
+	"alias"		kw
+	"autoload"	kw
 	"cat"		kw
+	"command"	kw
+	"extproc"	kw
+	"false"		kw
+	"fc"		kw
+	"functions"	kw
+	"history"	kw
+	"integer"	kw
+	"let"		kw
+	"local"		kw
 	"mknod"		kw
+	"nameref"	kw
+	"nohup"		kw
+	"print"		kw
+	"r"		kw
 	"realpath"	kw
 	"rename"	kw
 	"sleep"		kw
-	"autoload"	kw
-	"functions"	kw
-	"integer"	kw
-	"nameref"	kw
-	"nohup"		kw
-	"r"		kw
+	"true"		kw
+	"typeset"	kw
+	"unalias"	kw
+	"whence"	kw
 # additional bash builtins
 	"source"	kw
 	"bind"		kw
