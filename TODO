@@ -593,7 +593,7 @@ Other requests:
   while at it maybe? and replace autoconf with mirtoconf, and use
   serial numbers for versions (jupp-26 follows joe-3.1jupp25)
 • do charset conversion and support more charsets, both SBCS and
-  UCS (UTF-{16,32}{BE,LE} for example) sponsored by ⮡ tarent
+  UCS (UTF-{16,32}{BE,LE} for example) sponsored by ⮡ tarent
 • plug memory leaks (Valgrind reports a few)
 • fix Coverity-pointed-out issues
 • fixup some joe4.4 jupprc ftypes
@@ -602,4 +602,4 @@ Other requests:
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.52 2020/03/27 06:08:10 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.53 2020/05/22 02:58:07 tg Exp $
