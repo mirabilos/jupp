@@ -1,9 +1,10 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.136 2020/03/27 08:03:37 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.137 2020/09/08 14:35:34 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
 
-- …
+- update UCD to fix new Hangul Jamo widths (D7B0‥D7FF)
+- sh.jsf: update list of ksh “keywords” and sort it
 
 JOE 3.1jupp39
 
