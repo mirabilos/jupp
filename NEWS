@@ -1,10 +1,13 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.137 2020/09/08 14:35:34 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.138 2020/10/02 02:21:32 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
 
 - update UCD to fix new Hangul Jamo widths (D7B0‥D7FF)
 - sh.jsf: update list of ksh “keywords” and sort it
+- manpage: document indent chars for format/fmtblk (Debian #968926)
+- HINTS: something | jupp -mold notmod -
+- improve preformatted jupp32 manpage generation
 
 JOE 3.1jupp39
 

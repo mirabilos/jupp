@@ -42,10 +42,11 @@ Description
      it under the terms of the GNU General Public License, Ver-
      sion 1, as published by the Free Software Foundation.
      (main.c contains more detailed exceptions.) I have no plans
-     for turning JOE into a commercial or share-ware product. See
-     the source code for exact authorship and licencing informa-
-     tion. JOE is available over the Internet from http://joe-
-     editor.sf.net/. JUPP is available at http://mirbsd.de/jupp.
+     for turning JOE into a commercial or share-ware product.
+     See the source code for exact authorship and licencing
+     information.  JOE is available over the Internet from
+     http://joe-editor.sf.net/.  JUPP is available at
+     http://mirbsd.de/jupp.
 
 Usage
      To start the editor, type joe followed by zero or more names
@@ -102,7 +103,7 @@ Usage
      a number of behavior defaults by copying JOE's initialisa-
      tion file (joerc in the same directory as the binary resides
      in) to .joerc in your home directory and then by modifying
-     it. See the section joerc below. The filename is actually
+     it.  See the section joerc below.  The filename is actually
      .namerc where name is the argv[0] the editor is called with.
 
      Custom syntax files are loaded from .jupp/syntax/name.jsf in
@@ -234,7 +235,8 @@ Command Line Options
      Each of these options may be specified in the joerc file as
      well.  In addition, the NOXON, BAUD, LINES, COLUMNS and
      DOPADDING options may be specified with environment vari-
-     ables. See the section Environment variables below.
+     ables.  See the section Environment variables below.
+
      The following options may be specified before each filename
      on the command line:
 
@@ -282,7 +284,7 @@ Command Line Options
 
      -keymap name
           Use an alternate section of the joerc file for the key
-          sequence bindings. For example, joe, jstar, rjoe and
+          sequence bindings.  For example, joe, jstar, rjoe and
           jupp support -keymap cua to make ^Z, ^X, ^C and ^V do
           the same thing as in contemporary GUI editors.
 
@@ -326,7 +328,7 @@ Editing Tasks
      line.
 
      If you want to indent the text you enter, you can use the
-     TAB key. This inserts a special control character which
+     TAB key.  This inserts a special control character which
      makes the characters which follow it begin at the next TAB
      STOP.  TAB STOPS normally occur every 8 columns, but this
      can be changed with the ^T D command.  Python programmers
@@ -347,7 +349,7 @@ Editing Tasks
      Hit ^A to move the cursor to the beginning of the line it's
      on.  Hit ^E to move the cursor to the end of the line.  Hit
      ^U or ^V for scrolling the cursor up or down 1/2 a screen's
-     worth. "Scrolling" means that the text on the screen moves,
+     worth.  "Scrolling" means that the text on the screen moves,
      but the cursor stays at the same place relative to the
      screen.  Hit ^K U or ^K V to move the cursor to the begin-
      ning or the end of the file.  Look at the help screens in
@@ -356,7 +358,7 @@ Editing Tasks
      If you make a mistake, you can hit ^_ to "undo" it.  On most
      keyboards you hit just ^- to get ^_, but on some you might
      have to hold both the Shift and Control keys down at the
-     same time to get it. If you "undo" too much, you can "redo"
+     same time to get it.  If you "undo" too much, you can "redo"
      the changes back into existence by hitting ^^ (type this
      with just ^6 on most keyboards).
 
@@ -403,7 +405,9 @@ Editing Tasks
      mand "fills in" the paragraph that the cursor is in, fitting
      as many words in a line as is possible.  A paragraph, in
      this case, is a block of text separated above and below by a
-     blank line.
+     blank line or a line beginning with a period (".").  Lines
+     can be indented by tab, any of the !#$%&)*+,-./:;=>?@\]^_|}~
+     characters or spaces.
 
      The margins which JOE uses for paragraph formatting and
      word-wrap can be set with the ^T L and ^T R commands.  If
@@ -419,15 +423,16 @@ Editing Tasks
      Sometimes it's tiresome to have to delete old text before or
      after you insert new text.  This happens, for example, when
      you are changing a table and you want to maintain the column
-     position of the right side of the table. When this occurs,
-     you can put the editor in over-type mode with ^T T. When the
-     editor is in this mode, the characters you type in replace
-     existing characters, in the way an idealised typewriter
-     would.  Also, Backspace simply moves left instead of delet-
-     ing the character to the left, when it's not at the end or
-     beginning of a line.  Over-type mode is not the natural way
-     of dealing with text electronically, so you should go back
-     to insert-mode as soon as possible by typing ^T T again.
+     position of the right side of the table.  When this occurs,
+     you can put the editor in over-type mode with ^T T.  When
+     the editor is in this mode, the characters you type in
+     replace existing characters, in the way an idealised type-
+     writer would.  Also, Backspace simply moves left instead of
+     deleting the character to the left, when it's not at the end
+     or beginning of a line.  Over-type mode is not the natural
+     way of dealing with text electronically, so you should go
+     back to insert-mode as soon as possible by typing ^T T
+     again.
 
      If you need to insert while you're in over-type mode, hit
      ^@.  This inserts a single SPACE into the text.
@@ -526,7 +531,7 @@ Editing Tasks
      Hit ^K F to have the editor search forwards or backwards for
      a text fragment (string) for you.  You will be prompted for
      the text to search for.  After you hit Return, you are
-     prompted to enter options. You can just hit Return again to
+     prompted to enter options.  You can just hit Return again to
      have the editor immediately search forwards for the text, or
      you can enter one or more of these options:
 
@@ -590,7 +595,7 @@ Editing Tasks
           brackets.
 
      \c   This works like \*, but matches a balanced C-language
-          expression. For example, if you search for malloc(\c),
+          expression.  For example, if you search for malloc(\c),
           then JOE will find all function calls to malloc, even
           if there was a ) within the parenthesis.
 
@@ -644,8 +649,8 @@ Editing Tasks
 
      Address:\3,\2,\0,\1
 
-     To shuffle the information the way you want it. After hit-
-     ting return, the search would begin, and the sample line
+     To shuffle the information the way you want it. After
+     hitting return, the search would begin, and the sample line
      would be changed to:
 
      Address: England, London, S. Holmes, 221b Baker St.
@@ -660,8 +665,8 @@ Editing Tasks
      press ^K K.  The text between the ^K B and ^K K should
      become highlighted.  Now you can move your cursor to some-
      place else in your document and press ^K M to move the
-     highlighted text there. You can press ^K C to make a copy of
-     the highlighted text and insert it to where the cursor is
+     highlighted text there.  You can press ^K C to make a copy
+     of the highlighted text and insert it to where the cursor is
      positioned.  ^K Y to deletes the highlighted text.  ^K W,
      writes the highlighted text to a file.
 
@@ -727,7 +732,7 @@ Editing Tasks
      lowed by a number from 0 to 9.  The status line will display
      (Macro n recording...).  Now, type in the series of keys-
      trokes that you want to be able to repeat.  The commands you
-     type will have their usual effect. Hit ^K ] to stop record-
+     type will have their usual effect.  Hit ^K ] to stop record-
      ing the macro.  Hit ^K followed by the number you recorded
      the macro in to execute one iteration of the key-strokes.
 
@@ -738,11 +743,11 @@ Editing Tasks
 
      Which starts the macro recording, moves the cursor to the
      beginning of the line, inserts "**", moves the cursor down
-     one line, and then ends the recording. Since we included the
-     key-strokes needed to position the cursor on the next line,
-     we can repeatedly use this macro without having to move the
-     cursor ourselves, something you should always keep in mind
-     when recording a macro.
+     one line, and then ends the recording.  Since we included
+     the key-strokes needed to position the cursor on the next
+     line, we can repeatedly use this macro without having to
+     move the cursor ourselves, something you should always keep
+     in mind when recording a macro.
 
      If you find that the macro you are recording itself has a
      repeated set of key-strokes in it, you can record a macro
@@ -756,6 +761,7 @@ Editing Tasks
      fied number of times.  Hit ^K \, type in the number of times
      you want the command repeated and press Return.  The next
      edit command you now give will be repeated that many times.
+
      For example, to delete the next 20 lines of text, type:
 
      ^K  20<return>^Y
@@ -785,11 +791,12 @@ Editing Tasks
      can be used to lookup a symbol (functions, defined con-
      stants, etc.), load the file where the symbol is defined
      into the current window and position the cursor to where the
-     symbol is defined. ^K ; prompts you for the symbol you want,
-     but uses the symbol the cursor was on as a default.  Since
-     ^K ; loads the definition file into the current window, you
-     probably want to split the window first with ^K O, to have
-     both the original file and the definition file loaded.
+     symbol is defined.  ^K ; prompts you for the symbol you
+     want, but uses the symbol the cursor was on as a default.
+     Since ^K ; loads the definition file into the current win-
+     dow, you probably want to split the window first with ^K O,
+     to have both the original file and the definition file
+     loaded.
 
      Shell windows
      Hit ^K ' to run a command shell in one of JOE's windows.
@@ -801,8 +808,8 @@ Editing Tasks
      shell window).  This command is useful for recording the
      results of shell commands- for example the output of make,
      the result of grepping a set of files for a string, or
-     directory listings from FTP sessions. Besides typeable char-
-     acters, the keys ^C, Backspace, DEL, Return and ^D are
+     directory listings from FTP sessions.  Besides typeable
+     characters, the keys ^C, Backspace, DEL, Return and ^D are
      passed to the shell.  Type the shell exit command to stop
      recording shell output.  If you press ^C in a shell window,
      when the cursor is not at the end of the window, the shell
@@ -904,6 +911,7 @@ Filenames
           octal (ex.: 0777) or hexadecimal (ex.: 0xFF).  For
           example, use joe /dev/fd0,508,2 to edit bytes 508 and
           509 of the first floppy drive in Linux.
+
      -    Use this to get input from the standard input or to
           write output to the standard output.  For example, you
           can put joe in a pipe of commands: quota -v | joe - |
@@ -913,15 +921,15 @@ Filenames
 The joerc file
      ^T options, the help screens and the key-sequence to editor
      command bindings are all defined in JOE's initialisation
-     file. If you make a copy of this file (which resides in the
+     file.  If you make a copy of this file (which resides in the
      same directory as the binary) to $HOME/.joerc, you can cus-
-     tomise these settings to your liking. The syntax of the ini-
-     tialisation file should be fairly obvious, and there are
+     tomise these settings to your liking.  The syntax of the
+     initialisation file should be fairly obvious, and there are
      further instruction in it.
 
 Acknowledgments
-     JOE was written by Joseph H. Allen. If you have bug reports
-     or questions, e-mail them to jhallen@world.std.com. Larry
+     JOE was written by Joseph H. Allen.  If you have bug reports
+     or questions, e-mail them to jhallen@world.std.com.  Larry
      Foard (entropy@world.std.com) and Gary Gray
      (ggray@world.std.com) also helped with the creation of JOE.
      Thorsten "mirabilos" Glaser (tg@mirbsd.org) created JUPP,
