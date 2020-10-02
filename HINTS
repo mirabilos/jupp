@@ -13,7 +13,8 @@ Useful tricks
 -------------
 
 $ diff -u filea fileb | jupp -mold notmod -
- or mc: diff -up %f %D/%F | jupp -mold notmod - %f
+ or mc: diff -up %D/%F %f | jupp -mold notmod -
+ also: diff -up %f %D/%F | jupp -mold notmod - %f
 
 UTF-8
 -----
@@ -252,4 +253,4 @@ popen.inc (optional) is:
  * SUCH DAMAGE.
 
 ___________________________________________________________________
-$MirOS: contrib/code/jupp/HINTS,v 1.20 2020/10/02 00:36:02 tg Exp $
+$MirOS: contrib/code/jupp/HINTS,v 1.21 2020/10/02 01:36:45 tg Exp $
