@@ -9,6 +9,13 @@ Disable the following warnings; the code doesn't cope with it:
 -Wno-unused-parameter
 -Wno-strict-prototypes
 
+Useful tricks
+-------------
+
+$ diff -u filea fileb | jupp -mold notmod -
+ or mc: diff -up %D/%F %f | jupp -mold notmod -
+ also: diff -up %f %D/%F | jupp -mold notmod - %f
+
 UTF-8
 -----
 
@@ -246,4 +253,4 @@ popen.inc (optional) is:
  * SUCH DAMAGE.
 
 ___________________________________________________________________
-$MirOS: contrib/code/jupp/HINTS,v 1.19 2020/03/27 08:28:53 tg Exp $
+$MirOS: contrib/code/jupp/HINTS,v 1.21 2020/10/02 01:36:45 tg Exp $

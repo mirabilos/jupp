@@ -14,7 +14,7 @@
 #include "config.h"
 #include <stdlib.h>
 
-__RCSID("$MirOS: contrib/code/jupp/i18n.c,v 1.39 2020/03/27 06:08:12 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/i18n.c,v 1.40 2020/06/20 02:27:52 tg Exp $");
 
 /*-
  * Parts Copyright © 1991–2020 Unicode, Inc. All rights reserved.
@@ -66,7 +66,7 @@ static size_t mb_ucsbsearch(const struct mb_ucsrange arr[], size_t elems,
 
 /*
  * Generated from the UCD 13.0.0 - see /usr/share/doc/legal/LICENCE-BSD - by
- * MirOS: contrib/code/Snippets/eawparse,v 1.14 2020/03/27 01:33:21 tg Exp $
+ * MirOS: contrib/code/Snippets/eawparse,v 1.15 2020/06/15 20:31:13 tg Exp $
  */
 
 static const struct mb_ucsrange mb_ucs_combining[] = {
@@ -280,6 +280,7 @@ static const struct mb_ucsrange mb_ucs_combining[] = {
 	{ 0xABE5, 0xABE5 },
 	{ 0xABE8, 0xABE8 },
 	{ 0xABED, 0xABED },
+	{ 0xD7B0, 0xD7FF },
 	{ 0xFB1E, 0xFB1E },
 	{ 0xFE00, 0xFE0F },
 	{ 0xFE20, 0xFE2F },
