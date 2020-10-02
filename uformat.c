@@ -8,7 +8,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/uformat.c,v 1.15 2020/03/27 06:08:17 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/uformat.c,v 1.16 2020/10/02 00:16:42 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>
@@ -77,15 +77,16 @@ ucenter(BW *bw)
 static int
 cpara(int c)
 {
-	if (c == '\t' ||
-	    (c >= ' ' && c <= '&' && c != '"') ||
-	    (c >= /*(*/ ')' && c <= '/') ||
-	    (c >= ':' && c <= '@' && c != '<') ||
-	    (c >= '\\' && c <= '_') ||
-	    (c >= '|' && c <= '~'))
-		return 1;
-	else
-		return 0;
+	if (c < '0')
+		return (c != '"' && c != '\'' && c != '('/*)*/ &&
+		    (c >= ' ' || c == '\t'));
+	if (c < ':')
+		return (0);
+	if (c < 'A')
+		return (c != '<');
+	if (c < '`')
+		return (c > /*[*/']');
+	return (c > '{'/*}*/ && c <= '~');
 }
 
 /* Return true if line is definitly not a paragraph line.

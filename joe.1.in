@@ -1,6 +1,14 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.26 2018/08/10 02:53:44 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.27 2020/10/02 00:16:42 tg Exp $
 .\"-
 .TH JOE 1
+.ie \n(.g \{\
+.	ds TI \(ti
+.	ds ha \(ha
+.\}
+.el \{\
+.	ds TI ~
+.	ds ha ^
+.\}
 .SH Name
 joe \- Joe's Own Editor
 .SH Syntax
@@ -366,7 +374,9 @@ Aside for Word-wrap mode, JOE does not automatically keep paragraphs
 formatted like some word-processors.  Instead, if you need a paragraph to be
 reformatted, hit \fB^K J\fR.  This command "fills in" the paragraph that the
 cursor is in, fitting as many words in a line as is possible.  A paragraph,
-in this case, is a block of text separated above and below by a blank line.
+in this case, is a block of text separated above and below by a blank line
+or a line beginning with a full stop ("."). Lines can be indented by tab,
+any of the \fB!#$%&)*+,\-./:;=>?@\e]\*(ha_|}\*(TI\fR characters or spaces.
 
 The margins which JOE uses for paragraph formatting and word-wrap can be set
 with the \fB^T L\fR and \fB^T R\fR commands.  If the left margin is set to
