@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.28 2020/10/02 01:43:08 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.29 2020/10/02 01:43:35 tg Exp $
 .\"-
 .TH JOE 1
 .ie \n(.g \{\
@@ -450,7 +450,7 @@ This command "fills in" the paragraph that the
 cursor is in, fitting as many words in a line as is possible.
 A paragraph,
 in this case, is a block of text separated above and below by a blank line
-or a line beginning with a full stop (".").
+or a line beginning with a period (".").
 Lines can be indented by tab,
 any of the \fB!#$%&)*+,\-./:;=>?@\e]\*(ha_|}\*(TI\fR characters or spaces.
 
