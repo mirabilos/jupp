@@ -599,7 +599,8 @@ Other requests:
 • fixup some joe4.4 jupprc ftypes
 • proper include, so ~/.jXXrc files can be half a dozen lines
 • nested syntax highlighting states, with pop to go up
+• merge neat tricks from website with HINTS, à la mksh.faq
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.53 2020/05/22 02:58:07 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.54 2020/10/02 00:36:02 tg Exp $
