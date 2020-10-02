@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.20 2020/10/02 01:42:10 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.bsd-wrapper,v 1.21 2020/10/02 02:14:25 tg Exp $
 #-
 # make -f Makefile.bsd-wrapper CFPREFIX=/usr/mpkg sysconfjoesubdir=/joe
 
@@ -46,8 +46,7 @@ jupplink: config.status
 	@ln -sf joe jupp
 
 winman: joe.1
-	nroff -Tcol -mandoc joe.1 | col -bx >joe.txt~
-	print '$$-3,$$d\n,g/^MirBSD/.-3,.+10d\nwq' | ed -s joe.txt~
+	nroff -Tcol -man.old -rg1 joe.1 | col -bx >joe.txt~
 	cat -s joe.txt~ | sed \
 	    -e 's/\(jupp\)\( .global-options\)/\132\2/' \
 	    -e '1d' -e '$$d' -e $$'s/$$/\r/' >joe.txt
