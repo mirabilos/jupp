@@ -1,4 +1,4 @@
-# $MirOS: contrib/code/jupp/Makefile.am,v 1.22 2018/06/28 02:03:45 tg Exp $
+# $MirOS: contrib/code/jupp/Makefile.am,v 1.23 2020/10/29 22:16:24 tg Exp $
 
 AUTOMAKE_OPTIONS = foreign
 
@@ -9,7 +9,8 @@ EXTRA_DIST = \
 	strlfun.inc
 
 JOE_ALIASES = jmacs jpico jstar jupp rjoe
-JOE_RCFILES = jmacsrc joerc jpicorc jstarrc jupprc rjoerc
+JOE_RCFILES = jmacsrc joerc jpicorc jstarrc rjoerc
+JOE_RCEXTRA = jupprc
 JOE_RC_EDIT = sed \
 		-e 's@''jrcbefore''@$(jrcbefore)g' \
 		-e 's@''jrcafter''@$(jrcafter)g' \
@@ -35,7 +36,7 @@ INCLUDES = -DJOERC="\"$(sysconf_joedir)/\""
 
 sysconfjoesubdir = @sysconfjoesubdir@
 sysconf_joedir = $(sysconfdir)$(sysconfjoesubdir)
-sysconf_joe_DATA = $(JOE_RCFILES)
+sysconf_joe_DATA = $(JOE_RCFILES) $(JOE_RCEXTRA)
 
 sysconf_syntaxdir = $(sysconf_joedir)/syntax
 sysconf_syntax_DATA = \
