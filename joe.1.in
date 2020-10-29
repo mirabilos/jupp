@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.31 2020/10/29 23:19:58 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.32 2020/10/29 23:54:53 tg Exp $
 .\"-
 .TH JOE 1
 .\" disable pagination if called with -rg1
@@ -16,14 +16,14 @@
 .	ds ha ^
 .\}
 .ie n \{\
-.	ds EM \ \*(en\ \&
+.	ds EM \ \(em\ \&
 .\}
 .el \{\
 .	ds EM \f(TR\^\(em\^\fP
 .\}
-.SH Name
-joe \- Joe's Own Editor
-.SH Syntax
+.SH NAME
+joe\*(EMJoe's Own Editor
+.SH SYNTAX
 .B joe [global-options] [ [local-options] filename ]...
 
 .B jstar [global-options] [ [local-options] filename ]...
@@ -35,7 +35,7 @@ joe \- Joe's Own Editor
 .B jpico [global-options] [ [local-options] filename ]...
 
 .B jupp [global-options] [ [local-options] filename ]...
-.SH Description
+.SH DESCRIPTION
 JOE is a powerful ASCII text screen editor.
 It has a "mode-less" user
 interface which is similar to many user-friendly PC editors.
@@ -65,13 +65,13 @@ determines the personality of the editor.
 JUPP is free software; you can distribute it and/or modify it under the
 terms of the GNU General Public License, Version 1, as published by the
 Free Software Foundation.
-(main.c contains more detailed exceptions.)
+See main.c (contains more detailed exceptions).
 I have no plans for turning JOE into a commercial or shareware product.
-See the source code for exact authorship and licencing information.
+Check the source code for exact authorship and licencing information.
 JOE is available over the Internet from \fBhttp://joe\-editor.sf.net/\fR.
 JUPP is available at \fBhttp://mirbsd.de/jupp\fR.
 
-.SH Usage
+.SH USAGE
 
 To start the editor, type \fBjoe\fR followed by zero or more names of files
 you want to edit.
@@ -156,7 +156,7 @@ be set, particularly if your terminal screen is not updating as you think it
 should.
 See the section \fBEnvironment variables\fR below.
 
-.SH Command Line Options
+.SH COMMAND LINE OPTIONS
 
 The following global options may be specified on the command line:
 
@@ -177,7 +177,7 @@ inserts delays for baud rates below 19200, which bypasses tty buffering so
 that typeahead will interrupt the screen output.
 Scrolling commands will
 not be used for 38400 baud.
-This is useful for X terminals and other console
+This is useful for X-Window terminals and other console
 ttys which really aren't going over a serial line.
 
 .IP \-beep
@@ -336,7 +336,7 @@ usually have autoindent enabled.
 Wordwrap is enabled on other files, but rc
 files have it disabled.
 
-.SH Editing Tasks
+.SH EDITING TASKS
 .SS Basic Editing
 
 When you type characters into the editor, they are normally inserted into
@@ -483,7 +483,7 @@ and you want to maintain the column position of the right side of the table.
 When this occurs, you can put the editor in overtype mode with \fB^T T\fR.
 When the editor is in this mode, the characters you type in replace existing
 characters, in the way an idealised typewriter would.
-Also, \fBBackspace\fR
+Additionally, \fBBackspace\fR
 simply moves left instead of deleting the character to the left, when it's
 not at the end or beginning of a line.
 Overtype mode is not the natural
@@ -500,22 +500,22 @@ Each character is represented by a number.
 For example, the number for 'A'
 is 65 and the number for '1' is 49.
 All of the characters which you
-normally see have numbers in the range of 32 to 126 (this particular
+normally see have numbers in the range of 32\ to\ 126 (this particular
 arbitrary assignment between characters and numbers is called the ASCII
 character set).
-The numbers outside of this range, from 0 to 255, aren't
+The numbers outside of this range, from 0\ to\ 255, aren't
 usually displayed, but sometimes have other special meanings.
 The number
 10, for example, is used for the line breaks.
 You can enter these special,
 non-displayed \fBcontrol characters\fR by first hitting \fB`\fR and then
 hitting a character in the range \fB@ A B C ... X Y Z [ ^ ] \e _\fR to get
-the number 0 to 31, and ? to get 127.
-For example, if you hit \fB` J\fR,
-you'll insert a line break character, or if you hit \fB` I\fR, you'll insert
+the number 0\ to\ 31, and ? to get 127.
+For example, if you hit \fB`\ J\fR,
+you'll insert a line break character, or if you hit \fB`\ I\fR, you'll insert
 a TAB character (which does the same thing the TAB key does).
 A useful
-control character to enter is 12 (\fB` L\fR), which causes most printers to
+control character to enter is 12 (\fB`\ L\fR), which causes most printers to
 advance to the top of the page.
 You'll notice that JOE displays this
 character as an underlined L.
@@ -528,7 +528,7 @@ above 128 in inverse video.
 Some foreign languages, which have more letters
 than English, use the meta characters for the rest of their alphabet.
 You
-have to put the editor in \fBASIS\fR mode (described later) to have these
+have to put the editor in \fBas-is\fR mode (described later) to have these
 passed untranslated to the terminal.
 
 .SS Prompts
@@ -835,7 +835,7 @@ Macros allow you to record a series of keystrokes and replay them with the
 press of two keys.
 This is useful to automate repetitive tasks.
 To start a
-macro recording, hit \fB^K [\fR followed by a number from 0 to 9.
+macro recording, hit \fB^K [\fR followed by a number from 0\ to\ 9.
 The
 status line will display (Macro n recording...).
 Now, type in the series of
@@ -890,8 +890,7 @@ with the \fB^K /\fR command\*(EMif you want to sort a column, for example.
 The
 insert file command, \fB^K R\fR is also effected.
 
-When rectangle mode is selected, overtype mode is also useful
-(\fB^T T\fR).
+When rectangle mode is selected, overtype mode (\fB^T T\fR) is also useful.
 When overtype mode is selected, rectangles will replace
 existing text instead of getting inserted before it.
 Also the delete block
@@ -936,7 +935,7 @@ shell output.
 If you press \fB^C\fR in a shell window, when the cursor is
 not at the end of the window, the shell is \fBkill\fRed.
 
-.SH \fBEnvironment\ variables
+.SH ENVIRONMENT VARIABLES
 
 For JOE to operate correctly, a number of other environment settings must be
 correct.
@@ -1009,7 +1008,7 @@ output of the computer, you can set the environment variable \fBDOPADDING\fR
 to have \fBJOE\fR slow down the output by interspersing PAD characters
 between the terminal screen update sequences.
 
-.SH Filenames
+.SH FILENAMES
 Wherever JOE expects you to enter a file name, whether on the command line
 or in prompts within the editor, you may also type:
 
@@ -1040,7 +1039,7 @@ For example, you can put joe in a pipe of commands:
 quota.
 
 
-.SH The\ joerc file
+.SH THE JOERC FILE
 \fB^T\fR options, the help screens and the key-sequence to editor command
 bindings are all defined in JOE's initialisation file.
 If you make a copy of this file (@joeinitcopy@) to \fB$HOME/.joerc\fR,
@@ -1048,7 +1047,7 @@ you can customise these settings to your liking.
 The syntax of the initialisation file should be fairly obvious,
 and there are further instruction in it.
 
-.SH Acknowledgments
+.SH ACKNOWLEDGMENTS
 JOE was written by Joseph H. Allen.
 If you have bug reports or questions, eMail them to jhallen@world.std.com.
 Larry Foard (entropy@world.std.com) and Gary Gray (ggray@world.std.com)
@@ -1056,6 +1055,6 @@ also helped with the creation of JOE.
 Thorsten "mirabilos" Glaser (tg@mirbsd.org) created JUPP, and the 16-bit MS-DOS
 version of JUPP 2.8 was compiled by Andreas Totlis (atotlis@t\-online.de).
 
-.SH Bugs
+.SH BUGS
 This manual page describes only the JOE flavour; documentation for JUPP is
 especially missing.
