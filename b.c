@@ -9,7 +9,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.41 2020/03/27 06:08:11 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/b.c,v 1.42 2020/10/30 03:11:03 tg Exp $");
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -671,7 +671,7 @@ static int prgetb1(P *p)
 	p->valcol = 0;
 	if (c == '\n')
 		--p->line;
-	return c;
+	return (c & 0xFF);
 }
 
 /* move p to the previous byte */
@@ -1576,7 +1576,8 @@ static B *bcut(P *from, P *to)
 				if (i)
 					enqueb(H, link, h, i);
 			} else {
-				splicef(H, link, h, snip(H, link, a->link.next, to->hdr->link.prev));
+				H *hs = snip(H, link, a->link.next, to->hdr->link.prev);
+				splicef(H, link, h, hs);
 				if (i)
 					enqueb(H, link, h, i);
 		} else if (!h)

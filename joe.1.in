@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.32 2020/10/29 23:54:53 tg Exp $
+.\" $MirOS: contrib/code/jupp/joe.1.in,v 1.33 2020/10/30 03:11:04 tg Exp $
 .\"-
 .TH JOE 1
 .\" disable pagination if called with -rg1
@@ -22,7 +22,7 @@
 .	ds EM \f(TR\^\(em\^\fP
 .\}
 .SH NAME
-joe\*(EMJoe's Own Editor
+joe \- Joe's Own Editor
 .SH SYNTAX
 .B joe [global-options] [ [local-options] filename ]...
 

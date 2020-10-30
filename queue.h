@@ -9,7 +9,7 @@
 #define JUPP_QUEUE_H
 
 #ifdef EXTERN_B_C
-__IDSTRING(rcsid_queue_h, "$MirOS: contrib/code/jupp/queue.h,v 1.8 2020/03/27 06:38:57 tg Exp $");
+__IDSTRING(rcsid_queue_h, "$MirOS: contrib/code/jupp/queue.h,v 1.9 2020/10/30 03:11:05 tg Exp $");
 #endif
 
 extern void *ITEM;
@@ -71,11 +71,15 @@ extern void *LAST;
 	(type *)ITEM \
 	)
 
-#define promote(type,member,queue,item) \
-	enquef(type,member,(queue),deque_f(type,member,(item)))
+#define promote(type,member,queue,item) do { \
+	LAST = (void *)deque_f(type, member, (item)); \
+	enquef(type, member, (queue), LAST); \
+	} while (/* CONSTCOND */ 0)
 
-#define demote(type,member,queue,item) \
-	enqueb(type,member,(queue),deque_f(type,member,(item)))
+#define demote(type,member,queue,item) do { \
+	LAST = (void *)deque_f(type, member, (item)); \
+	enqueb(type, member, (queue), LAST); \
+	} while (/* CONSTCOND */ 0)
 
 #define splicef(type,member,queue,chain) do { \
 	ITEM = (void *)(chain); \
