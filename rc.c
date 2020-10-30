@@ -1,7 +1,9 @@
 /*
  *	*rc file parser
  *	Copyright
- *		(C) 1992 Joseph H. Allen;
+ *		(C) 1992 Joseph H. Allen
+ *	Copyright © 2005, 2006, 2009, 2010, 2011, 2012, 2017, 2018, 2020
+ *		mirabilos <m@mirbsd.org>
  *
  *	This file is part of JOE (Joe's Own Editor)
  */
@@ -9,7 +11,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.50 2020/04/07 11:56:41 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/rc.c,v 1.51 2020/10/29 23:57:40 tg Exp $");
 
 #include <string.h>
 #include <stdlib.h>
@@ -873,7 +875,7 @@ umode(BW *bw)
 		if (glopts[x].menu[0] == ' ' || glopts[x].menu[1] == ' ')
 			strlcpy(s[x], glopts[x].menu, OPT_BUF_SIZE);
 		else {
-			strlcpy(s[x] + 2, glopts[x].menu, OPT_BUF_SIZE);
+			strlcpy(s[x] + 2, glopts[x].menu, OPT_BUF_SIZE - 2);
 			s[x][0] = s[x][2];
 			s[x][1] = ' ';
 		}

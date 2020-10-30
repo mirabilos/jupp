@@ -1,9 +1,9 @@
 JOE(1)              UNIX Programmer's Manual               JOE(1)
 
-Name
+NAME
      joe - Joe's Own Editor
 
-Syntax
+SYNTAX
      joe [global-options] [ [local-options] filename ]...
 
      jstar [global-options] [ [local-options] filename ]...
@@ -16,18 +16,18 @@ Syntax
 
      jupp32 [global-options] [ [local-options] filename ]...
 
-Description
-     JOE is a powerful ASCII-text screen editor.  It has a
+DESCRIPTION
+     JOE is a powerful ASCII text screen editor.  It has a
      "mode-less" user interface which is similar to many user-
      friendly PC editors.  Users of Micro-Pro's WordStar or
      Borland's "Turbo" languages will feel at home.  JOE is a
-     full featured UNIX screen-editor though, and has many
+     full featured UNIX screen editor though, and has many
      features for editing programs and text.
 
      JOE also emulates several other editors.  JSTAR is a close
      imitation of WordStar with many "JOE" extensions.  JPICO is
      a close imitation of the Pine mailing system's PICO editor,
-     but with many extensions and improvements.  JMACS is a GNU-
+     but with many extensions and improvements.  JMACS is a GNU
      EMACS imitation.  RJOE is a restricted version of JOE, which
      allows you to edit only the files specified on the command
      line.
@@ -40,15 +40,15 @@ Description
 
      JUPP is free software; you can distribute it and/or modify
      it under the terms of the GNU General Public License, Ver-
-     sion 1, as published by the Free Software Foundation.
-     (main.c contains more detailed exceptions.) I have no plans
-     for turning JOE into a commercial or share-ware product.
-     See the source code for exact authorship and licencing
+     sion 1, as published by the Free Software Foundation.  See
+     main.c (contains more detailed exceptions).  I have no plans
+     for turning JOE into a commercial or shareware product.
+     Check the source code for exact authorship and licencing
      information.  JOE is available over the Internet from
      http://joe-editor.sf.net/.  JUPP is available at
      http://mirbsd.de/jupp.
 
-Usage
+USAGE
      To start the editor, type joe followed by zero or more names
      of files you want to edit.  Each file name may be preceded
      by a local option setting (see the local options table which
@@ -69,16 +69,16 @@ Usage
      spaces as one argument from Explorer at all).
 
      Once you are in the editor, you can type in text and use
-     special control-character sequences to perform other editing
-     tasks.  To find out what the control-character sequences
+     special control character sequences to perform other editing
+     tasks.  To find out what the control character sequences
      are, read the rest of this man page or type ^K H for help in
      the editor.
 
-     Now for some obscure computer-lore:
+     Now for some obscure computer lore:
 
      The ^ means that you hold down the Control key while press-
      ing the following key (the same way the Shift key works for
-     uppercase letters).  A number of control-key sequences are
+     uppercase letters).  A number of control key sequences are
      duplicated on other keys, so that you don't need to press
      the control key: ESC will work in place of ^[, Del will work
      in place of ^?, Backspace will work in place of ^H, Tab will
@@ -110,7 +110,7 @@ Usage
      your home directory and .jupp/charmaps/name holds custom
      charmaps (name here is the name of the syntax or charmap).
 
-     To have JOE used as your default editor for e-mail and News,
+     To have JOE used as your default editor for eMail and News,
      you need to set the EDITOR and VISUAL environment variables
      in your shell initialisation file (.cshrc or .profile) to
      refer to JOE (the joe binary usually resides as
@@ -121,7 +121,7 @@ Usage
      screen is not updating as you think it should.  See the sec-
      tion Environment variables below.
 
-Command Line Options
+COMMAND LINE OPTIONS
      The following global options may be specified on the command
      line:
 
@@ -142,8 +142,8 @@ Command Line Options
           19200, which bypasses tty buffering so that typeahead
           will interrupt the screen output.  Scrolling commands
           will not be used for 38400 baud.  This is useful for
-          X-terms and other console ttys which really aren't
-          going over a serial line.
+          X-Window terminals and other console ttys which really
+          aren't going over a serial line.
 
      -beep
           Joe will beep on command errors and when the cursor
@@ -172,7 +172,7 @@ Command Line Options
 
      -force
           This option makes sure that the last line of the file
-          has a line-feed which it's saved.
+          has a line feed when it is saved.
 
      -help
           The editor will start with the help screen on if this
@@ -182,7 +182,7 @@ Command Line Options
           Normally the column number and control-key prefix
           fields of the status lines are on a one second delay to
           reduce CPU consumption, but with this option they are
-          updated after each key-stroke.
+          updated after each keystroke.
 
      -lightoff
           The block highlighting will go away after any block
@@ -209,7 +209,7 @@ Command Line Options
           displayed when the editor starts.
 
      -nosta
-          This option eliminates the top-most status line.  It's
+          This option eliminates the topmost status line.  It's
           nice for when you only want to see your text on the
           screen or if you're using a vt52.
 
@@ -289,12 +289,12 @@ Command Line Options
           the same thing as in contemporary GUI editors.
 
      These options can also be specified in the joerc file.  They
-     can be set depending on the file-name extension.  Programs
+     can be set depending on the filename extension.  Programs
      (.c, .h or .p extension) usually have autoindent enabled.
      Wordwrap is enabled on other files, but rc files have it
      disabled.
 
-Editing Tasks
+EDITING TASKS
      Basic Editing
 
      When you type characters into the editor, they are normally
@@ -307,11 +307,11 @@ Editing Tasks
      after the text you want to delete and hit Backspace a number
      of times.
 
-     Hit the Enter or Return key to insert a line-break.  For
+     Hit the Enter or Return key to insert a line break.  For
      example, if the cursor was in the middle of a line and you
      hit Return, the line would be split into two lines with the
      cursor appearing at the beginning of the second line.  Hit
-     Backspace at the beginning of a line to eliminate a line-
+     Backspace at the beginning of a line to eliminate a line
      break.
 
      Use the arrow keys to move around the file.  If your key-
@@ -341,7 +341,7 @@ Editing Tasks
      There are many other keys for deleting text and moving
      around the file.  For example, hit ^D to delete the charac-
      ter the cursor is on instead of deleting backwards like
-     Backspace.  ^D will also delete a line-break if the cursor
+     Backspace.  ^D will also delete a line break if the cursor
      is at the end of a line.  Type ^Y to delete the entire line
      the cursor is on or ^J to delete just from the cursor to the
      end of the line.
@@ -365,9 +365,9 @@ Editing Tasks
      If you were editing in one place within the file, and you
      then temporarily had to look or edit some other place within
      the file, you can get back to the original place by hitting
-     ^K -.  This command actually returns you to the last place
+     ^K-.  This command actually returns you to the last place
      you made a change in the file.  You can step through a his-
-     tory of places with ^K - and ^K =, in the same way you can
+     tory of places with ^K- and ^K =, in the same way you can
      step through the history of changes with the "undo" and
      "redo" commands.
 
@@ -400,7 +400,7 @@ Editing Tasks
      joerc file to change this and other defaults.
 
      Aside for Word-wrap mode, JOE does not automatically keep
-     paragraphs formatted like some word-processors.  Instead, if
+     paragraphs formatted like some word processors.  Instead, if
      you need a paragraph to be reformatted, hit ^K J.  This com-
      mand "fills in" the paragraph that the cursor is in, fitting
      as many words in a line as is possible.  A paragraph, in
@@ -418,52 +418,52 @@ Editing Tasks
      If you want to center a line within the margins, use the ^K
      A command.
 
-     Over-type mode
+     Overtype mode
 
      Sometimes it's tiresome to have to delete old text before or
      after you insert new text.  This happens, for example, when
      you are changing a table and you want to maintain the column
      position of the right side of the table.  When this occurs,
-     you can put the editor in over-type mode with ^T T.  When
-     the editor is in this mode, the characters you type in
-     replace existing characters, in the way an idealised type-
-     writer would.  Also, Backspace simply moves left instead of
+     you can put the editor in overtype mode with ^T T.  When the
+     editor is in this mode, the characters you type in replace
+     existing characters, in the way an idealised typewriter
+     would.  Additionally, Backspace simply moves left instead of
      deleting the character to the left, when it's not at the end
-     or beginning of a line.  Over-type mode is not the natural
+     or beginning of a line.  Overtype mode is not the natural
      way of dealing with text electronically, so you should go
-     back to insert-mode as soon as possible by typing ^T T
+     back to insert mode as soon as possible by typing ^T T
      again.
 
-     If you need to insert while you're in over-type mode, hit
-     ^@.  This inserts a single SPACE into the text.
+     If you need to insert while you're in overtype mode, hit ^@.
+     This inserts a single SPACE into the text.
 
      Control and Meta characters
 
      Each character is represented by a number.  For example, the
      number for 'A' is 65 and the number for '1' is 49.  All of
      the characters which you normally see have numbers in the
-     range of 32 - 126 (this particular arbitrary assignment
+     range of 32 to 126 (this particular arbitrary assignment
      between characters and numbers is called the ASCII character
      set).  The numbers outside of this range, from 0 to 255,
      aren't usually displayed, but sometimes have other special
-     meanings.  The number 10, for example, is used for the
-     line-breaks.  You can enter these special, non-displayed
-     control characters by first hitting ` and then hitting a
-     character in the range @ A B C ... X Y Z [ ^ ] \ _ to get
-     the number 0 - 31, and ? to get 127.  For example, if you
-     hit ` J, you'll insert a line-break character, or if you hit
-     ` I, you'll insert a TAB character (which does the same
-     thing the TAB key does).  A useful control character to
-     enter is 12 (` L), which causes most printers to advance to
-     the top of the page.  You'll notice that JOE displays this
-     character as an underlined L.  You can enter the characters
-     above 127, the meta characters, by first hitting ^\.  This
-     adds 128 to the next (possibly control) character entered.
-     JOE displays characters above 128 in inverse-video.  Some
-     foreign languages, which have more letters than English, use
-     the meta characters for the rest of their alphabet.  You
-     have to put the editor in ASIS mode (described later) to
-     have these passed untranslated to the terminal.
+     meanings.  The number 10, for example, is used for the line
+     breaks.  You can enter these special, non-displayed control
+     characters by first hitting ` and then hitting a character
+     in the range @ A B C ... X Y Z [ ^ ] \ _ to get the number
+     0 to 31, and ? to get 127.  For example, if you hit ` J,
+     you'll insert a line break character, or if you hit ` I,
+     you'll insert a TAB character (which does the same thing the
+     TAB key does).  A useful control character to enter is 12
+     (` L), which causes most printers to advance to the top of
+     the page.  You'll notice that JOE displays this character as
+     an underlined L.  You can enter the characters above 127,
+     the meta characters, by first hitting ^\.  This adds 128 to
+     the next (possibly control) character entered.  JOE displays
+     characters above 128 in inverse video.  Some foreign
+     languages, which have more letters than English, use the
+     meta characters for the rest of their alphabet.  You have to
+     put the editor in as-is mode (described later) to have these
+     passed untranslated to the terminal.
 
      Prompts
      If you hit TAB at any file name prompt, joe will attempt to
@@ -521,7 +521,7 @@ Editing Tasks
 
      If you need to temporarily stop the editor and go back to
      the shell, hit ^K Z.  You might want to do this to stop
-     whatever you're editing and answer an e-mail message or read
+     whatever you're editing and answer an eMail message or read
      this man page, for example.  You have to type fg or exit
      (you'll be told which when you hit ^K Z) to return to the
      editor.
@@ -582,7 +582,7 @@ Editing Tasks
      \< \>
           These match the beginning and end of a word.  For exam-
           ple, if you give \<\*is\*\>, then joe will find whole
-          words which have the sub-string is within them.
+          words which have the substring is within them.
 
      \[...]
           This matches any single character which appears within
@@ -624,7 +624,7 @@ Editing Tasks
      \\   Use this if you need to put a \ in the replacement
           string.
 
-     \n   Use this if you need to put a line-break in the
+     \n   Use this if you need to put a line break in the
           replacement string.
 
      Some examples:
@@ -734,7 +734,7 @@ Editing Tasks
      trokes that you want to be able to repeat.  The commands you
      type will have their usual effect.  Hit ^K ] to stop record-
      ing the macro.  Hit ^K followed by the number you recorded
-     the macro in to execute one iteration of the key-strokes.
+     the macro in to execute one iteration of the keystrokes.
 
      For example, if you want to put "**" in front of a number of
      lines, you can type:
@@ -744,13 +744,13 @@ Editing Tasks
      Which starts the macro recording, moves the cursor to the
      beginning of the line, inserts "**", moves the cursor down
      one line, and then ends the recording.  Since we included
-     the key-strokes needed to position the cursor on the next
+     the keystrokes needed to position the cursor on the next
      line, we can repeatedly use this macro without having to
      move the cursor ourselves, something you should always keep
      in mind when recording a macro.
 
      If you find that the macro you are recording itself has a
-     repeated set of key-strokes in it, you can record a macro
+     repeated set of keystrokes in it, you can record a macro
      within the macro, as long as you use a different macro
      number.  Also you can execute previously recorded macros
      from within new macros.
@@ -770,16 +770,16 @@ Editing Tasks
      Type ^T X to have ^K B and ^K K select rectangular blocks
      instead of stream-of-text blocks.  This mode is useful for
      moving, copying, deleting or saving columns of text.  You
-     can also filter columns of text with the ^K / command- if
+     can also filter columns of text with the ^K / command - if
      you want to sort a column, for example.  The insert file
      command, ^K R is also effected.
 
-     When rectangle mode is selected, over-type mode is also use-
-     ful (^T T).  When over-type mode is selected, rectangles
+     When rectangle mode is selected, overtype mode (^T T) is
+     also useful.  When overtype mode is selected, rectangles
      will replace existing text instead of getting inserted
      before it.  Also the delete block command (^K Y) will clear
      the selected rectangle with SPACEs and TABs instead of
-     deleting it.  Over-type mode is especially useful for the
+     deleting it.  Overtype mode is especially useful for the
      filter block command (^K /), since it will maintain the ori-
      ginal width of the selected column.
 
@@ -806,7 +806,7 @@ Editing Tasks
      executed in the shell is appended to the shell window (the
      cursor will follow this output if it's at the end of the
      shell window).  This command is useful for recording the
-     results of shell commands- for example the output of make,
+     results of shell commands - for example the output of make,
      the result of grepping a set of files for a string, or
      directory listings from FTP sessions.  Besides typeable
      characters, the keys ^C, Backspace, DEL, Return and ^D are
@@ -815,7 +815,7 @@ Editing Tasks
      when the cursor is not at the end of the window, the shell
      is killed.
 
-Environment variables
+ENVIRONMENT VARIABLES
      For JOE to operate correctly, a number of other environment
      settings must be correct.  The throughput (baud rate) of the
      connection between the computer and your terminal must be
@@ -828,8 +828,8 @@ Environment variables
      modem, but the terminal server you are connected to connects
      to the computer a 9600 baud, you want to set your speed as
      9600 baud.  The special baud rate of 38400 or extb is used
-     to indicate that you have a very-high speed connection, such
-     as a memory mapped console or an X-window terminal emulator.
+     to indicate that you have a very high-speed connection, such
+     as a memory mapped console or an X-Window terminal emulator.
      If you can't use stty to set the actual throughput (perhaps
      because of a modem communicating with the computer at a dif-
      ferent rate than it's communicating over the phone line),
@@ -889,7 +889,7 @@ Environment variables
      interspersing PAD characters between the terminal screen
      update sequences.
 
-Filenames
+FILENAMES
      Wherever JOE expects you to enter a file name, whether on
      the command line or in prompts within the editor, you may
      also type:
@@ -918,7 +918,7 @@ Filenames
           mail root, if you want to complain about your low
           quota.
 
-The joerc file
+THE JOERC FILE
      ^T options, the help screens and the key-sequence to editor
      command bindings are all defined in JOE's initialisation
      file.  If you make a copy of this file (which resides in the
@@ -927,15 +927,15 @@ The joerc file
      initialisation file should be fairly obvious, and there are
      further instruction in it.
 
-Acknowledgments
+ACKNOWLEDGMENTS
      JOE was written by Joseph H. Allen.  If you have bug reports
-     or questions, e-mail them to jhallen@world.std.com.  Larry
+     or questions, eMail them to jhallen@world.std.com.  Larry
      Foard (entropy@world.std.com) and Gary Gray
      (ggray@world.std.com) also helped with the creation of JOE.
      Thorsten "mirabilos" Glaser (tg@mirbsd.org) created JUPP,
      and the 16-bit MS-DOS version of JUPP 2.8 was compiled by
      Andreas Totlis (atotlis@t-online.de).
 
-Bugs
+BUGS
      This manual page describes only the JOE flavour; documenta-
      tion for JUPP is especially missing.

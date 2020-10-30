@@ -671,7 +671,7 @@ static int prgetb1(P *p)
 	p->valcol = 0;
 	if (c == '\n')
 		--p->line;
-	return c;
+	return (c & 0xFF);
 }
 
 /* move p to the previous byte */

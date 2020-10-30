@@ -1059,46 +1059,50 @@ pair_cmp(struct pair *a, struct pair *b)
 int
 byte_ispunct(union charmap *map, int c)
 {
-	int ofst = (c >> 3);
-	int bitn = (1 << (c & 7));
+	if (c >= 0 && c <= 255) {
+		int ofst = (c >> 3);
+		int bitn = (1 << (c & 7));
 
-	if (c < 0 || c > 255)
-		return (0);
-	return (((map->byte.print_map[ofst] & bitn) != 0) &&
-	    ((map->byte.alnux_map[ofst] & bitn) == 0));
+		return (((map->byte.print_map[ofst] & bitn) != 0) &&
+		    ((map->byte.alnux_map[ofst] & bitn) == 0));
+	}
+	return (0);
 }
 
 int
 byte_isprint(union charmap *map, int c)
 {
-	int ofst = (c >> 3);
-	int bitn = (1 << (c & 7));
+	if (c >= 0 && c <= 255) {
+		int ofst = (c >> 3);
+		int bitn = (1 << (c & 7));
 
-	if (c < 0 || c > 255)
-		return (0);
-	return ((map->byte.print_map[ofst] & bitn) != 0);
+		return ((map->byte.print_map[ofst] & bitn) != 0);
+	}
+	return (0);
 }
 
 int
 byte_isalphx(union charmap *map, int c)
 {
-	int ofst = (c >> 3);
-	int bitn = (1 << (c & 7));
+	if (c >= 0 && c <= 255) {
+		int ofst = (c >> 3);
+		int bitn = (1 << (c & 7));
 
-	if (c < 0 || c > 255)
-		return (0);
-	return ((map->byte.alphx_map[ofst] & bitn) != 0);
+		return ((map->byte.alphx_map[ofst] & bitn) != 0);
+	}
+	return (0);
 }
 
 int
 byte_isalnux(union charmap *map, int c)
 {
-	int ofst = (c >> 3);
-	int bitn = (1 << (c & 7));
+	if (c >= 0 && c <= 255) {
+		int ofst = (c >> 3);
+		int bitn = (1 << (c & 7));
 
-	if (c < 0 || c > 255)
-		return (0);
-	return ((map->byte.alnux_map[ofst] & bitn) != 0);
+		return ((map->byte.alnux_map[ofst] & bitn) != 0);
+	}
+	return (0);
 }
 
 int
