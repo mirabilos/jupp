@@ -71,17 +71,15 @@ extern void *LAST;
 	(type *)ITEM \
 	)
 
-#define promote(type,member,queue,item) \
-	( \
-	LAST = (void *)deque_f(type, member, (item)), \
-	enquef(type, member, (queue), LAST) \
-	)
+#define promote(type,member,queue,item) do { \
+	LAST = (void *)deque_f(type, member, (item)); \
+	enquef(type, member, (queue), LAST); \
+	} while (/* CONSTCOND */ 0)
 
-#define demote(type,member,queue,item) \
-	( \
-	LAST = (void *)deque_f(type, member, (item)), \
-	enqueb(type, member, (queue), LAST) \
-	)
+#define demote(type,member,queue,item) do { \
+	LAST = (void *)deque_f(type, member, (item)); \
+	enqueb(type, member, (queue), LAST); \
+	} while (/* CONSTCOND */ 0)
 
 #define splicef(type,member,queue,chain) do { \
 	ITEM = (void *)(chain); \
