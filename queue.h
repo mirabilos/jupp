@@ -9,7 +9,7 @@
 #define JUPP_QUEUE_H
 
 #ifdef EXTERN_B_C
-__IDSTRING(rcsid_queue_h, "$MirOS: contrib/code/jupp/queue.h,v 1.8 2020/03/27 06:38:57 tg Exp $");
+__IDSTRING(rcsid_queue_h, "$MirOS: contrib/code/jupp/queue.h,v 1.9 2020/10/30 03:11:05 tg Exp $");
 #endif
 
 extern void *ITEM;

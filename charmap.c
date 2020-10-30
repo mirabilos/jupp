@@ -12,7 +12,7 @@
 #include "config.h"
 #include "types.h"
 
-__RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.32 2020/03/27 06:08:11 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/charmap.c,v 1.33 2020/10/30 03:11:04 tg Exp $");
 
 #include <stdlib.h>
 #include <string.h>

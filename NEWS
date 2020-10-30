@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.139 2020/10/29 23:58:31 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.140 2020/10/30 03:14:08 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
@@ -14,6 +14,8 @@ JOE 3.1jupp40
 - improve preformatted jupp32 manpage generation; tweak manpage
 - do not delete a nōn-generated file on “make clean”
 - fix crash on Ins/^V on Mac OSX
+- update SELinux client to current API
+- fix some Coverity warnings
 
 JOE 3.1jupp39
 

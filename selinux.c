@@ -1,6 +1,6 @@
 #include "config.h"
 
-__RCSID("$MirOS: contrib/code/jupp/selinux.c,v 1.11 2017/12/06 23:02:05 tg Exp $");
+__RCSID("$MirOS: contrib/code/jupp/selinux.c,v 1.12 2020/10/30 03:11:05 tg Exp $");
 
 #if defined(HAVE_SELINUX_CONTEXT_H) && defined(HAVE_SELINUX_SELINUX_H) && \
     defined(HAVE_SELINUX_FUN)
@@ -24,8 +24,8 @@ copy_security_context(const char *from_file, const char *to_file)
 {
 	int status = 0;
 #ifdef WITH_SELINUX
-	security_context_t from_context;
-	security_context_t to_context;
+	char *from_context;
+	char *to_context;
 
 	if (selinux_enabled == -1)
 		selinux_enabled = (is_selinux_enabled() > 0);
