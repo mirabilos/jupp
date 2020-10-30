@@ -72,10 +72,16 @@ extern void *LAST;
 	)
 
 #define promote(type,member,queue,item) \
-	enquef(type,member,(queue),deque_f(type,member,(item)))
+	( \
+	LAST = (void *)deque_f(type, member, (item)), \
+	enquef(type, member, (queue), LAST) \
+	)
 
 #define demote(type,member,queue,item) \
-	enqueb(type,member,(queue),deque_f(type,member,(item)))
+	( \
+	LAST = (void *)deque_f(type, member, (item)), \
+	enqueb(type, member, (queue), LAST) \
+	)
 
 #define splicef(type,member,queue,chain) do { \
 	ITEM = (void *)(chain); \

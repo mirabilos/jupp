@@ -1576,7 +1576,8 @@ static B *bcut(P *from, P *to)
 				if (i)
 					enqueb(H, link, h, i);
 			} else {
-				splicef(H, link, h, snip(H, link, a->link.next, to->hdr->link.prev));
+				H *hs = snip(H, link, a->link.next, to->hdr->link.prev);
+				splicef(H, link, h, hs);
 				if (i)
 					enqueb(H, link, h, i);
 		} else if (!h)
