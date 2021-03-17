@@ -1,4 +1,4 @@
-$MirOS: contrib/code/jupp/NEWS,v 1.141 2021/03/16 22:37:34 tg Exp $
+$MirOS: contrib/code/jupp/NEWS,v 1.142 2021/03/17 15:34:53 tg Exp $
 -------------------------------------------------------------------
 
 jupp-current
@@ -13,7 +13,7 @@ JOE 3.1jupp40
 - HINTS: something | jupp -mold notmod -
 - improve preformatted jupp32 manpage generation; tweak manpage
 - do not delete a nōn-generated file on “make clean”
-- fix crash on Ins/^V or ^O on musl-libc and Mac OSX
+- fix crash on Ins/^V or ^O with standalone fortify-headers or on Mac OSX
 - update SELinux client to current API
 - fix some Coverity warnings
 
