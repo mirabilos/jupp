@@ -422,6 +422,10 @@ Refactoring
 Syntax Highlighting:
 --------------------
 
+Bugs:
+
+- ksh: ((# … )) is highlighted as comment [probably rather hard, ( is solo]
+
 Support for more languages:
 
  Paragraph reformat mode for TeX files.
@@ -603,4 +607,4 @@ Other requests:
 • …
 
 __________________________________________________________________
-$MirOS: contrib/code/jupp/TODO,v 1.54 2020/10/02 00:36:02 tg Exp $
+$MirOS: contrib/code/jupp/TODO,v 1.55 2021/04/26 23:20:35 tg Exp $
